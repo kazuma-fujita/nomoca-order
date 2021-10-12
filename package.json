@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^1.2.20",
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.4.1",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.3.0",
     "@mui/material": "^5.0.3",
+    "aws-amplify": "^4.3.2",
     "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2"
