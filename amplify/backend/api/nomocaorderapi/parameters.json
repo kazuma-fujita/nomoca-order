@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "nomocaorderapi",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authnomocaorder0f71faa3",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

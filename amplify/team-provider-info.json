@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nomocaorder-dev-184316-authRole",
+      "UnauthRoleArn": "arn:aws:iam::409193243105:role/amplify-nomocaorder-dev-184316-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::409193243105:role/amplify-nomocaorder-dev-184316-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-nomocaorder-dev-184316-deployment",
+      "UnauthRoleName": "amplify-nomocaorder-dev-184316-unauthRole",
+      "StackName": "amplify-nomocaorder-dev-184316",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:409193243105:stack/amplify-nomocaorder-dev-184316/d62987b0-2b40-11ec-afb5-0ab47b535f6d",
+      "AmplifyAppId": "d2sd5z0aon9dbx"
+    },
+    "categories": {
+      "auth": {
+        "nomocaorder0f71faa3": {}
+      }
+    }
+  }
+}
