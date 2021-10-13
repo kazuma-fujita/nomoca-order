@@ -19,9 +19,6 @@ a {
   --amplify-primary-color: #29b6f6;
   --amplify-primary-tint: #4fc3f7;
   --amplify-primary-shade: #0288d1;
-  --amplify-tertiary-color: #ce93d8;
-  --amplify-secondary-tint: #f3e5f5;
-  --amplify-secondary-shade: #ab47bc;
 }
 
 amplify-authenticator {

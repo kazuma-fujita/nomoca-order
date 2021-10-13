@@ -6,7 +6,7 @@ import Amplify, { Auth } from 'aws-amplify';
 import { AmplifySignOut } from '@aws-amplify/ui-react';
 import { CognitoUserInterface, onAuthUIStateChange, AuthState } from '@aws-amplify/ui-components';
 import awsconfig from 'aws-exports';
-import styles from '/styles/Home.module.css';
+import styles from 'styles/Home.module.css';
 import { Path } from 'constants/path';
 
 Amplify.configure(awsconfig);

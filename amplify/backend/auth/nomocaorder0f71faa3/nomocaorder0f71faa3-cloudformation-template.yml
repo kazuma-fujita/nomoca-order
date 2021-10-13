@@ -163,6 +163,7 @@ Resources:
       EmailVerificationMessage: |
         Nomoca Stand 備品発注サービス Nomoca Order のご利用ありがとうございます。<br>
         Eメールアドレスの確認のため、セキュリティコードを入力してください。<br>
+        <br>
         セキリティコードは {####} です。<br>
         <br>
         <br>
@@ -186,6 +187,7 @@ Resources:
             この度は Nomoca Stand 備品発注サービス Nomoca Order のご利用ありがとうございます。<br>
             下記のURLからメールアドレスと仮パスワードでログインして、ご希望のパスワードへご変更ください。<br>
             <br>
+            <ログインURL><br>
             https://order.nomoca.com <br>
             <br>
             メールアドレス: {username} <br>

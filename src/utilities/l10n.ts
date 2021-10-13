@@ -44,7 +44,8 @@ export const L10n = {
     'Have an account?': 'アカウントをお持ちですか？',
     'Sign in': 'ログイン',
     'Create a new account': '新しいアカウントを作成',
-    'Reset your password': 'メールアドレス確認の為セキリティコードを送信します',
+    'Reset your password':
+      'メールアドレス確認の為セキリティコードを送信します。メールに記載されたセキリティコードと新しいパスワードを入力してください。',
     'User does not exist.': 'アカウントが存在しません',
     'Incorrect username or password.': 'メールアドレスまたはパスワードが違います',
     'User is not confirmed.': 'セキュリティコードによるアカウント認証がされていません',
