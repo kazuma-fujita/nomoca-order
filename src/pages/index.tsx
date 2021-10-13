@@ -8,6 +8,7 @@ import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import awsconfig from 'aws-exports';
 import styles from 'styles/Home.module.css';
 import { Path } from 'constants/path';
+import Link from 'components/atoms/link';
 
 Amplify.configure(awsconfig);
 
@@ -44,7 +45,9 @@ const AuthPage: React.FC<Props> = (props: Props) => {
         <AmplifySignIn slot='sign-in' hideSignUp={true} />
         <AmplifySignUp slot='sign-up' formFields={[{ type: 'username' }, { type: 'password' }]} />
       </AmplifyAuthenticator>
-      <div>サインインしますと利用規約に同意したことになります</div>
+      <div>
+        サインインしますと <Link href='/'>利用規約</Link> に同意したことになります
+      </div>
     </div>
   );
 };
@@ -54,7 +57,7 @@ export default AuthPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: 'Authentication',
+      pageTitle: 'Nomoca Order',
     },
   };
 };
