@@ -9,6 +9,7 @@ import awsconfig from 'aws-exports';
 import styles from 'styles/Home.module.css';
 import { Path } from 'constants/path';
 import Link from 'components/atoms/link';
+import { Typography, Box } from '@mui/material';
 
 Amplify.configure(awsconfig);
 
@@ -39,15 +40,16 @@ const AuthPage: React.FC<Props> = (props: Props) => {
       <Head>
         <title>{props.pageTitle}</title>
       </Head>
-      <h1 className={styles.title}>{props.pageTitle}</h1>
+      <Typography variant='h2'>{props.pageTitle}</Typography>
+      <Box mb={2} />
       <AmplifyAuthenticator usernameAlias='email'>
         <AmplifyVerifyContact />
         <AmplifySignIn slot='sign-in' hideSignUp={true} />
         <AmplifySignUp slot='sign-up' formFields={[{ type: 'username' }, { type: 'password' }]} />
       </AmplifyAuthenticator>
-      <div>
-        サインインしますと <Link href='/'>利用規約</Link> に同意したことになります
-      </div>
+      <Typography variant='body2'>
+        ログインしますと <Link href='/'>利用規約</Link> に同意したことになります
+      </Typography>
     </div>
   );
 };
