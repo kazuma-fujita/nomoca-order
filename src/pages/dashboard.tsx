@@ -8,12 +8,13 @@ import { CognitoUserInterface, onAuthUIStateChange, AuthState } from '@aws-ampli
 import awsconfig from 'aws-exports';
 import styles from 'styles/Home.module.css';
 import { Path } from 'constants/path';
+import { SideDrawer } from 'components/atoms/drawer';
 
 Amplify.configure(awsconfig);
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const DashboardPage: NextPage<Props> = (props: Props) => {
+const DashboardPage = (props: Props) => {
   const router = useRouter();
   const [user, setUser] = useState<CognitoUserInterface | undefined>();
 
@@ -44,6 +45,7 @@ const DashboardPage: NextPage<Props> = (props: Props) => {
         <title>{props.pageTitle}</title>
       </Head>
       <main className={styles.main}>
+        <SideDrawer />
         <h1 className={styles.title}>{props.pageTitle}</h1>
         <div className={styles.description}>
           <div>Hello, {user && user.username}</div>

@@ -15,7 +15,7 @@ Amplify.configure(awsconfig);
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const AuthPage: React.FC<Props> = (props: Props) => {
+const AuthPage = (props: Props) => {
   const router = useRouter();
   useEffect(() => {
     // 高速に遷移するため事前に遷移先画面をprefetchする
