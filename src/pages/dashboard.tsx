@@ -1,16 +1,14 @@
-import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import { useState, useEffect } from 'react';
-import Amplify, { Auth } from 'aws-amplify';
-import { AppBar, IconButton, Toolbar } from '@mui/material';
+import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import { AmplifySignOut } from '@aws-amplify/ui-react';
-import { CognitoUserInterface, onAuthUIStateChange, AuthState } from '@aws-amplify/ui-components';
+import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from 'aws-exports';
-import styles from 'styles/Home.module.css';
+import { GlobalNavigation } from 'components/molecules/global-navigation';
 import { Path } from 'constants/path';
-import { SideDrawer } from 'components/atoms/side-drawer';
-import MenuIcon from '@mui/icons-material/Menu';
+import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import styles from 'styles/Home.module.css';
 
 Amplify.configure(awsconfig);
 
@@ -19,7 +17,6 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 const DashboardPage = (props: Props) => {
   const router = useRouter();
   const [user, setUser] = useState<CognitoUserInterface | undefined>();
-
   useEffect(() => {
     router.prefetch(Path.Index);
     (async () => {
@@ -47,14 +44,7 @@ const DashboardPage = (props: Props) => {
         <title>{props.pageTitle}</title>
       </Head>
       <main className={styles.main}>
-        <AppBar>
-          <Toolbar>
-            <IconButton>
-              <MenuIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <SideDrawer />
+        <GlobalNavigation />
         <h1 className={styles.title}>{props.pageTitle}</h1>
         <div className={styles.description}>
           <div>Hello, {user && user.username}</div>
