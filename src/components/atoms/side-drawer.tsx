@@ -1,15 +1,13 @@
-import { Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, IconButton, styled } from '@mui/material';
-import { useToggle } from 'react-use';
-import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
-import LockIcon from '@mui/icons-material/Lock';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import EditIcon from '@mui/icons-material/Edit';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
-import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import EditIcon from '@mui/icons-material/Edit';
+import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
+import { Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, styled } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
-import { useToggleDrawer } from 'stores/use-toggle-drawer';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import Link from 'components/atoms/link';
+// import Link from 'next/link';
 
 type Props = {
   on: boolean;
@@ -51,7 +49,7 @@ export const SideDrawer = (props: Props) => {
       <Divider />
       <List>
         {listOrderItems.map((item) => (
-          <ListItem button key={item.path}>
+          <ListItem button key={item.path} component={Link} href={item.path}>
             <ListItemIcon>
               <SvgIcon component={item.icon} />
             </ListItemIcon>
@@ -62,7 +60,7 @@ export const SideDrawer = (props: Props) => {
       <Divider />
       <List>
         {listSettingItems.map((item) => (
-          <ListItem button key={item.path}>
+          <ListItem button key={item.path} component={Link} href={item.path}>
             <ListItemIcon>
               <SvgIcon component={item.icon} />
             </ListItemIcon>
