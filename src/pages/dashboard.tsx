@@ -3,12 +3,14 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Amplify, { Auth } from 'aws-amplify';
+import { AppBar, IconButton, Toolbar } from '@mui/material';
 import { AmplifySignOut } from '@aws-amplify/ui-react';
 import { CognitoUserInterface, onAuthUIStateChange, AuthState } from '@aws-amplify/ui-components';
 import awsconfig from 'aws-exports';
 import styles from 'styles/Home.module.css';
 import { Path } from 'constants/path';
 import { SideDrawer } from 'components/atoms/drawer';
+import MenuIcon from '@mui/icons-material/Menu';
 
 Amplify.configure(awsconfig);
 
@@ -45,6 +47,13 @@ const DashboardPage = (props: Props) => {
         <title>{props.pageTitle}</title>
       </Head>
       <main className={styles.main}>
+        <AppBar>
+          <Toolbar>
+            <IconButton>
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
         <SideDrawer />
         <h1 className={styles.title}>{props.pageTitle}</h1>
         <div className={styles.description}>
