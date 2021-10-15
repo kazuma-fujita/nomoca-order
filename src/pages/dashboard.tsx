@@ -9,7 +9,7 @@ import { CognitoUserInterface, onAuthUIStateChange, AuthState } from '@aws-ampli
 import awsconfig from 'aws-exports';
 import styles from 'styles/Home.module.css';
 import { Path } from 'constants/path';
-import { SideDrawer } from 'components/atoms/drawer';
+import { SideDrawer } from 'components/atoms/side-drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 
 Amplify.configure(awsconfig);
