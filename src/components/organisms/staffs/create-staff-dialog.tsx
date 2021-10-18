@@ -13,7 +13,8 @@ import { useCreateStaff } from 'hooks/staffs/use-create-staff';
 import { Staff } from 'API';
 import { StaffNameTextField } from 'components/atoms/staff-name-text-field';
 import { Box } from '@mui/material';
-import { ErrorAlert } from '../../atoms/error-alert';
+import { ErrorAlert } from 'components/atoms/error-alert';
+import { Add } from '@mui/icons-material';
 
 export const CreateStaffDialog = () => {
   // const { handleSubmit, watch, register, formState } = useForm<Staff>();
@@ -24,7 +25,7 @@ export const CreateStaffDialog = () => {
 
   return (
     <div>
-      <Button variant='outlined' onClick={toggle}>
+      <Button onClick={toggle} variant='outlined' color='primary' startIcon={<Add />}>
         担当者を追加する
       </Button>
       <Dialog open={on} onClose={toggle}>
