@@ -29,10 +29,10 @@ export const useCreateStaff = () => {
       }
     };
 
-  const createStaff = useCallback(async (name: string) => {
+  const createStaff = useCallback(async (data: Staff) => {
     setIsLoading(true);
     try {
-      mutate(SWRKey.StaffList, onCreateStaff(name), false);
+      mutate(SWRKey.StaffList, onCreateStaff(data.name), false);
     } catch (error) {
       setIsLoading(false);
       setError(error as Error);
