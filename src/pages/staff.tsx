@@ -2,13 +2,12 @@ import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-ampli
 import { AmplifySignOut } from '@aws-amplify/ui-react';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from 'aws-exports';
-import { GlobalNavigation } from 'components/molecules/global-navigation';
 import { Path } from 'constants/path';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import styles from 'styles/Home.module.css';
+import { StaffTemplate } from 'components/templates/staff-template';
 
 Amplify.configure(awsconfig);
 
@@ -43,7 +42,7 @@ const StaffPage = (props: Props) => {
       <Head>
         <title>{props.pageTitle}</title>
       </Head>
-      <GlobalNavigation />
+      <StaffTemplate />
     </>
   );
 };
@@ -53,7 +52,7 @@ export default StaffPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: 'Staff',
+      pageTitle: '担当者管理',
     },
   };
 };

@@ -151,3 +151,32 @@ export const listComments = /* GraphQL */ `
     }
   }
 `;
+export const getStaff = /* GraphQL */ `
+  query GetStaff($id: ID!) {
+    getStaff(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listStaffs = /* GraphQL */ `
+  query ListStaffs(
+    $filter: ModelStaffFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStaffs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;

@@ -260,3 +260,45 @@ export const deleteComment = /* GraphQL */ `
     }
   }
 `;
+export const createStaff = /* GraphQL */ `
+  mutation CreateStaff(
+    $input: CreateStaffInput!
+    $condition: ModelStaffConditionInput
+  ) {
+    createStaff(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateStaff = /* GraphQL */ `
+  mutation UpdateStaff(
+    $input: UpdateStaffInput!
+    $condition: ModelStaffConditionInput
+  ) {
+    updateStaff(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteStaff = /* GraphQL */ `
+  mutation DeleteStaff(
+    $input: DeleteStaffInput!
+    $condition: ModelStaffConditionInput
+  ) {
+    deleteStaff(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;

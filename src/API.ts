@@ -169,6 +169,36 @@ export type DeleteCommentInput = {
   id: string,
 };
 
+export type CreateStaffInput = {
+  id?: string | null,
+  name: string,
+};
+
+export type ModelStaffConditionInput = {
+  name?: ModelStringInput | null,
+  and?: Array< ModelStaffConditionInput | null > | null,
+  or?: Array< ModelStaffConditionInput | null > | null,
+  not?: ModelStaffConditionInput | null,
+};
+
+export type Staff = {
+  __typename: "Staff",
+  id: string,
+  name: string,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type UpdateStaffInput = {
+  id: string,
+  name?: string | null,
+};
+
+export type DeleteStaffInput = {
+  id: string,
+};
+
 export type ModelBlogFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -199,6 +229,20 @@ export type ModelCommentFilterInput = {
   and?: Array< ModelCommentFilterInput | null > | null,
   or?: Array< ModelCommentFilterInput | null > | null,
   not?: ModelCommentFilterInput | null,
+};
+
+export type ModelStaffFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  and?: Array< ModelStaffFilterInput | null > | null,
+  or?: Array< ModelStaffFilterInput | null > | null,
+  not?: ModelStaffFilterInput | null,
+};
+
+export type ModelStaffConnection = {
+  __typename: "ModelStaffConnection",
+  items?:  Array<Staff | null > | null,
+  nextToken?: string | null,
 };
 
 export type CreateBlogMutationVariables = {
@@ -504,6 +548,54 @@ export type DeleteCommentMutation = {
   } | null,
 };
 
+export type CreateStaffMutationVariables = {
+  input: CreateStaffInput,
+  condition?: ModelStaffConditionInput | null,
+};
+
+export type CreateStaffMutation = {
+  createStaff?:  {
+    __typename: "Staff",
+    id: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateStaffMutationVariables = {
+  input: UpdateStaffInput,
+  condition?: ModelStaffConditionInput | null,
+};
+
+export type UpdateStaffMutation = {
+  updateStaff?:  {
+    __typename: "Staff",
+    id: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteStaffMutationVariables = {
+  input: DeleteStaffInput,
+  condition?: ModelStaffConditionInput | null,
+};
+
+export type DeleteStaffMutation = {
+  deleteStaff?:  {
+    __typename: "Staff",
+    id: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
 export type GetBlogQueryVariables = {
   id: string,
 };
@@ -682,6 +774,42 @@ export type ListCommentsQuery = {
       content: string,
       createdAt: string,
       updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetStaffQueryVariables = {
+  id: string,
+};
+
+export type GetStaffQuery = {
+  getStaff?:  {
+    __typename: "Staff",
+    id: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListStaffsQueryVariables = {
+  filter?: ModelStaffFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListStaffsQuery = {
+  listStaffs?:  {
+    __typename: "ModelStaffConnection",
+    items?:  Array< {
+      __typename: "Staff",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -942,5 +1070,50 @@ export type OnDeleteCommentSubscription = {
     content: string,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnCreateStaffSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnCreateStaffSubscription = {
+  onCreateStaff?:  {
+    __typename: "Staff",
+    id: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateStaffSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnUpdateStaffSubscription = {
+  onUpdateStaff?:  {
+    __typename: "Staff",
+    id: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteStaffSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnDeleteStaffSubscription = {
+  onDeleteStaff?:  {
+    __typename: "Staff",
+    id: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
   } | null,
 };

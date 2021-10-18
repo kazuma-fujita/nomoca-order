@@ -233,3 +233,36 @@ export const onDeleteComment = /* GraphQL */ `
     }
   }
 `;
+export const onCreateStaff = /* GraphQL */ `
+  subscription OnCreateStaff($owner: String!) {
+    onCreateStaff(owner: $owner) {
+      id
+      name
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateStaff = /* GraphQL */ `
+  subscription OnUpdateStaff($owner: String!) {
+    onUpdateStaff(owner: $owner) {
+      id
+      name
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteStaff = /* GraphQL */ `
+  subscription OnDeleteStaff($owner: String!) {
+    onDeleteStaff(owner: $owner) {
+      id
+      name
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
