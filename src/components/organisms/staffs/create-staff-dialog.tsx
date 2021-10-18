@@ -7,8 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useToggle } from 'react-use';
+import Form from '../../atoms/form';
+import { useForm } from 'react-hook-form';
 
 export const CreateStaffDialog = () => {
+  // const { handleSubmit, watch, register, errors } = useForm();
   const [on, toggle] = useToggle(false);
 
   return (
@@ -17,6 +20,7 @@ export const CreateStaffDialog = () => {
         担当者を追加する
       </Button>
       <Dialog open={on} onClose={toggle}>
+        {/* <Form onSubmit={}> */}
         <DialogTitle>担当者を追加する</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>担当者名を追加する</DialogContentText> */}
@@ -26,6 +30,7 @@ export const CreateStaffDialog = () => {
           <Button onClick={toggle}>キャンセル</Button>
           <Button onClick={toggle}>追加する</Button>
         </DialogActions>
+        {/* </Form> */}
       </Dialog>
     </div>
   );

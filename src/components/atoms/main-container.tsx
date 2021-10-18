@@ -1,10 +1,11 @@
 import { Container } from '@mui/material';
 import { ReactNode } from 'react';
 
-export const CenteringContainer: React.FC = ({ children }) => {
+export const MainContainer: React.FC = ({ children }) => {
   return (
     <>
       <Container
+        component='main'
         sx={{
           flex: '1',
           display: 'flex',
