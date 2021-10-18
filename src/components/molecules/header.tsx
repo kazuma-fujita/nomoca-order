@@ -2,7 +2,7 @@ import { SideDrawer } from 'components/atoms/side-drawer';
 import { AppBar } from 'components/molecules/app-bar';
 import { useToggle } from 'react-use';
 
-export const GlobalNavigation = () => {
+export const Header = () => {
   const [on, toggle] = useToggle(false);
   return (
     <>

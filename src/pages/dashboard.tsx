@@ -2,7 +2,6 @@ import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-ampli
 import { AmplifySignOut } from '@aws-amplify/ui-react';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from 'aws-exports';
-import { GlobalNavigation } from 'components/molecules/global-navigation';
 import { Path } from 'constants/path';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
@@ -44,7 +43,6 @@ const DashboardPage = (props: Props) => {
         <title>{props.pageTitle}</title>
       </Head>
       <main className={styles.main}>
-        <GlobalNavigation />
         <h1 className={styles.title}>{props.pageTitle}</h1>
         <div className={styles.description}>
           <div>Hello, {user && user.username}</div>

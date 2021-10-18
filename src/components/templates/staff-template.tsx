@@ -1,11 +1,14 @@
-import { GlobalNavigation } from 'components/molecules/global-navigation';
 import { StaffList } from 'components/organisms/staffs/staff-list';
+import { CreateStaffDialog } from 'components/organisms/staffs/create-staff-dialog';
+import { MainContainer } from '../molecules/main-container';
 
 export const StaffTemplate = () => {
   return (
     <>
-      <GlobalNavigation />
-      <StaffList />
+      <MainContainer>
+        <CreateStaffDialog />
+        <StaffList />
+      </MainContainer>
     </>
   );
 };

@@ -6,7 +6,7 @@ export const StaffList = () => {
   // if (error) return <ErrorAlert>{error}</ErrorAlert>;
   if (error) return <p>{error}</p>;
   if (!data) return <p>Now Loading</p>;
-  if (data.length === 0) return <p>Please, create staff.</p>;
+  if (data.length === 0) return <p>担当者を追加してください</p>;
   return (
     <table>
       <tbody>
