@@ -8,9 +8,14 @@ import { Staff } from 'API';
 //   errors: FieldErrors<Staff>;
 // }
 
+interface Props extends UseFormReturn<Staff> {
+  disabled: boolean;
+}
+
 const MAX_LENGTH = 5;
 
-export const StaffNameTextField: React.FC<UseFormReturn<Staff>> = (props) => {
+// export const StaffNameTextField: React.FC<UseFormReturn<Staff>> = (props) => {
+export const StaffNameTextField: React.FC<Props> = (props) => {
   return (
     <TextField
       required
@@ -21,6 +26,8 @@ export const StaffNameTextField: React.FC<UseFormReturn<Staff>> = (props) => {
       margin='dense'
       fullWidth
       autoFocus
+      disabled={props.disabled}
+      // defaultValue='hey'
       inputProps={{
         maxLength: MAX_LENGTH,
       }}

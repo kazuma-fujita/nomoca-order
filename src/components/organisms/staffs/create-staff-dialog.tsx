@@ -15,46 +15,52 @@ import { StaffNameTextField } from 'components/atoms/staff-name-text-field';
 import { Box } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/error-alert';
 import { Add } from '@mui/icons-material';
+import { useCallback } from 'react';
 
 export const CreateStaffDialog = () => {
   // const { handleSubmit, watch, register, formState } = useForm<Staff>();
-  const useFormReturn = useForm<Staff>();
-  const { handleSubmit } = useFormReturn;
-  const { createStaff, isLoading, error } = useCreateStaff();
+  const useFormReturn = useForm<Staff>({ defaultValues: { name: '' } });
+  const { handleSubmit, reset: resetForm } = useFormReturn;
+  const { createStaff, isLoading, error, resetState } = useCreateStaff();
   const [on, toggle] = useToggle(false);
+  const submitHandler = useCallback(async (data: Staff) => {
+    await createStaff(data.name);
+    if (!error) {
+      resetForm();
+      toggle();
+    }
+  }, []);
+  const cancelHandler = useCallback(() => {
+    resetForm();
+    resetState();
+    toggle();
+  }, []);
 
   return (
-    <div>
-      <Button onClick={toggle} variant='outlined' color='primary' startIcon={<Add />}>
+    <>
+      <Button onClick={toggle} variant='outlined' startIcon={<Add />}>
         担当者を追加する
       </Button>
-      <Dialog open={on} onClose={toggle}>
-        <Form onSubmit={handleSubmit(createStaff)}>
+      <Dialog open={on}>
+        <Form onSubmit={handleSubmit(submitHandler)}>
           <DialogTitle>担当者を追加する</DialogTitle>
           <DialogContent>
             {/* <DialogContentText>担当者名を追加する</DialogContentText> */}
-            {/* <TextField
-              required
-              type='text'
-              id='name'
-              label='担当者名'
-              autoComplete='off'
-              margin='dense'
-              fullWidth
-              autoFocus
-              inputRef={register}
-            /> */}
-            <Box mt={2} mb={2}>
-              <StaffNameTextField {...useFormReturn} />
-            </Box>
             {error && <ErrorAlert>{error}</ErrorAlert>}
+            <Box mt={2} mb={2}>
+              <StaffNameTextField {...useFormReturn} disabled={isLoading} />
+            </Box>
           </DialogContent>
           <DialogActions>
-            <Button onClick={toggle}>キャンセル</Button>
-            <Button type='submit'>追加する</Button>
+            <Button onClick={cancelHandler} disabled={isLoading}>
+              キャンセル
+            </Button>
+            <Button type='submit' variant='contained' disabled={isLoading}>
+              追加する
+            </Button>
           </DialogActions>
         </Form>
       </Dialog>
-    </div>
+    </>
   );
 };

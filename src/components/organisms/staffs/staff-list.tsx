@@ -1,10 +1,11 @@
 import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
+import { ErrorAlert } from 'components/atoms/error-alert';
 
 export const StaffList = () => {
   const { error, data } = useFetchStaffList();
   // const { removeTodo } = useRemoveTodo();
   // if (error) return <ErrorAlert>{error}</ErrorAlert>;
-  if (error) return <p>{error}</p>;
+  if (error) return <ErrorAlert>{error}</ErrorAlert>;
   if (!data) return <p>Now Loading</p>;
   if (data.length === 0) return <p>担当者を追加してください</p>;
   return (
