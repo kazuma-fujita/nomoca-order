@@ -1,6 +1,7 @@
 import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 import { ErrorAlert } from 'components/atoms/error-alert';
 import { UpdateStaffButton } from './update-staff-button';
+import { DeleteStaffButton } from './delete-staff-button';
 
 export const StaffList = () => {
   const { error, data } = useFetchStaffList();
@@ -31,7 +32,7 @@ export const StaffList = () => {
               <UpdateStaffButton id={item.id} name={item.name} />
             </td>
             <td>
-              <button>Delete</button>
+              <DeleteStaffButton id={item.id} name={item.name} />
             </td>
           </tr>
         ))}
