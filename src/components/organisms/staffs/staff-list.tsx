@@ -1,5 +1,6 @@
 import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 import { ErrorAlert } from 'components/atoms/error-alert';
+import { UpdateStaffButton } from './update-staff-button';
 
 export const StaffList = () => {
   const { error, data } = useFetchStaffList();
@@ -8,6 +9,7 @@ export const StaffList = () => {
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   if (!data) return <p>Now Loading</p>;
   if (data.length === 0) return <p>担当者を追加してください</p>;
+  // const updateHandler = useCallback((id: string, name: string) => {}, [id]);
   return (
     <table>
       <tbody>
@@ -16,6 +18,7 @@ export const StaffList = () => {
           <th>Name</th>
           <th>Created at</th>
           <th>Updated at</th>
+          <th>Update</th>
           <th>Delete</th>
         </tr>
         {data.map((item) => (
@@ -24,6 +27,9 @@ export const StaffList = () => {
             <td>{item.name}</td>
             <td>{item.createdAt}</td>
             <td>{item.updatedAt}</td>
+            <td>
+              <UpdateStaffButton id={item.id} name={item.name} />
+            </td>
             <td>
               <button>Delete</button>
             </td>
