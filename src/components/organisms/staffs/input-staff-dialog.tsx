@@ -1,5 +1,6 @@
-import { Add } from '@mui/icons-material';
+import { Add, SvgIconComponent } from '@mui/icons-material';
 import { Box } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,13 +10,14 @@ import { Staff } from 'API';
 import { ErrorAlert } from 'components/atoms/error-alert';
 import { StaffNameTextField } from 'components/atoms/staff-name-text-field';
 import { useCreateStaff } from 'hooks/staffs/use-create-staff';
-import { BaseSyntheticEvent, useCallback } from 'react';
+import { BaseSyntheticEvent, ReactElement, useCallback } from 'react';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import Form from 'components/atoms/form';
 
 type Props = {
   label: string;
+  startIcon: ReactElement;
   on: boolean;
   isLoading: boolean;
   error: Error | null;
@@ -37,12 +39,18 @@ export const InputStaffDialog = (props: Props) => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.cancelHandler} disabled={props.isLoading}>
+          <LoadingButton onClick={props.cancelHandler} loadingIndicator='Loading...' loading={props.isLoading}>
             キャンセル
-          </Button>
-          <Button type='submit' variant='contained' disabled={props.isLoading}>
+          </LoadingButton>
+          <LoadingButton
+            type='submit'
+            variant='contained'
+            loading={props.isLoading}
+            loadingPosition='start'
+            startIcon={props.startIcon}
+          >
             {props.label}する
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Form>
     </Dialog>

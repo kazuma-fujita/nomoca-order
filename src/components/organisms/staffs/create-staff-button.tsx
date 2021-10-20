@@ -35,6 +35,7 @@ export const CreateStaffButton = () => {
       </Button>
       <InputStaffDialog
         label={label}
+        startIcon={<Add />}
         on={on}
         isLoading={isLoading}
         error={error}

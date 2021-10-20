@@ -1,11 +1,8 @@
-import { Edit, Delete } from '@mui/icons-material';
+import { Delete } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import { Staff } from 'API';
 import { useDeleteStaff } from 'hooks/staffs/use-delete-staff';
 import { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
-import { InputStaffDialog } from './input-staff-dialog';
 import { DeleteStaffDialog } from './delete-staff-dialog';
 
 type Props = {

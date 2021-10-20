@@ -1,19 +1,12 @@
-import { Add } from '@mui/icons-material';
+import { Delete } from '@mui/icons-material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Staff } from 'API';
-import { ErrorAlert } from 'components/atoms/error-alert';
-import { StaffNameTextField } from 'components/atoms/staff-name-text-field';
-import { useCreateStaff } from 'hooks/staffs/use-create-staff';
-import { BaseSyntheticEvent, useCallback } from 'react';
-import { useForm, UseFormReturn } from 'react-hook-form';
-import { useToggle } from 'react-use';
-import Form from 'components/atoms/form';
 import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { ErrorAlert } from 'components/atoms/error-alert';
 
 type Props = {
   label: string;
@@ -37,12 +30,19 @@ export const DeleteStaffDialog = (props: Props) => {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.cancelHandler} disabled={props.isLoading}>
+        <LoadingButton onClick={props.cancelHandler} loadingIndicator='Loading...' loading={props.isLoading}>
           キャンセル
-        </Button>
-        <Button onClick={props.submitHandler} variant='contained' color='error' disabled={props.isLoading}>
+        </LoadingButton>
+        <LoadingButton
+          onClick={props.submitHandler}
+          variant='contained'
+          color='error'
+          loading={props.isLoading}
+          loadingPosition='start'
+          startIcon={<Delete />}
+        >
           {props.label}する
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

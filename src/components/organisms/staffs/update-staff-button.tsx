@@ -35,11 +35,12 @@ export const UpdateStaffButton = (props: Props) => {
   const label = '編集';
   return (
     <>
-      <Button onClick={toggle} variant='outlined' startIcon={<Edit />}>
+      <Button onClick={toggle} variant='outlined' startIcon={<Edit fontSize='small' />}>
         {label}
       </Button>
       <InputStaffDialog
         label={label}
+        startIcon={<Edit />}
         on={on}
         isLoading={isLoading}
         error={error}
