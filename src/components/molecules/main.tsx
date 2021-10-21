@@ -1,13 +1,20 @@
 import { ReactNode } from 'react';
 import { MainContainer } from 'components/atoms/main-container';
 import { Header } from 'components/molecules/header';
-import { Container } from '@mui/material';
+import { Container, Box } from '@mui/material';
 
 export const Main: React.FC = ({ children }) => {
   return (
+    // <>
+    //   <Header />
+    //   <MainContainer>{children}</MainContainer>
+    // </>
     <>
       <Header />
-      <MainContainer>{children}</MainContainer>
+      <Box height='12vh' />
+      <Box ml={8} mr={8}>
+        {children}
+      </Box>
     </>
   );
 };

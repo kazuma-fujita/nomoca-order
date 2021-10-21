@@ -10,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { CircularProgress } from '@mui/material';
 
 const header = [
   {
@@ -53,15 +54,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export const StaffList = () => {
   const { error, data } = useFetchStaffList();
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
-  if (!data) return <p>Now Loading</p>;
+  if (!data) return <CircularProgress />;
   if (data.length === 0) return <p>担当者を追加してください</p>;
   return (
-    <TableContainer component={Paper} sx={{ maxWidth: 640 }}>
+    // <TableContainer component={Paper} sx={{ maxWidth: 640 }}>
+    <TableContainer component={Paper}>
       <Table aria-label='staffs table'>
         <TableHead>
           <TableRow>
             {header.map((item, index) => (
               <StyledTableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
+                {/* <StyledTableCell key={index} align='center'> */}
                 {item.label}
               </StyledTableCell>
             ))}
