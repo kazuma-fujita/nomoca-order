@@ -1,4 +1,10 @@
 export enum Path {
   Index = '/',
-  Dashboard = 'dashboard',
+  SingleOrder = 'single-order',
+  SubscriptionOrder = 'subscription-order',
+  Staff = 'staff',
+  Clinic = 'clinic',
+  Term = 'term',
+  ChangePassword = 'change-password',
+  SignOut = 'sign-out',
 }

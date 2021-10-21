@@ -3,12 +3,13 @@ import { CreateStaffButton } from 'components/organisms/staffs/create-staff-butt
 import { Main } from 'components/molecules/main';
 import { Grid, Box } from '@mui/material';
 
-export const StaffTemplate = () => {
+export const SubscriptionOrderTemplate = () => {
   return (
     <Main>
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Grid container justifyContent='flex-end'>
+            HEY
             <CreateStaffButton />
           </Grid>
         </Grid>

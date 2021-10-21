@@ -4,12 +4,25 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
-import { Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, styled } from '@mui/material';
-import SvgIcon from '@mui/material/SvgIcon';
+import {
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  styled,
+  ListItemButton,
+} from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
+import SvgIcon, { SvgIconTypeMap } from '@mui/material/SvgIcon';
 import Link from 'components/atoms/link';
-// import Link from 'next/link';
+import { HeaderItem } from 'components/molecules/header';
+import { useRouter } from 'next/router';
 
 type Props = {
+  drawerItems: HeaderItem[][];
   on: boolean;
   toggle: (nextValue?: any) => void;
 };
@@ -24,15 +37,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export const SideDrawer = (props: Props) => {
-  const listOrderItems = [
-    { path: 'singleOrder', icon: ShoppingCartIcon, label: '注文' },
-    { path: 'subscriptionOrder', icon: WifiProtectedSetupIcon, label: '定期便申し込み' },
-  ];
-  const listSettingItems = [
-    { path: 'staff', icon: PeopleIcon, label: '担当者管理' },
-    { path: 'editClinic', icon: EditIcon, label: '施設情報編集' },
-    { path: 'term', icon: FormatAlignLeftIcon, label: '利用規約' },
-  ];
+  const router = useRouter();
   return (
     <Drawer
       open={props.on}
@@ -47,27 +52,26 @@ export const SideDrawer = (props: Props) => {
         </IconButton>
       </DrawerHeader>
       <Divider />
-      <List>
-        {listOrderItems.map((item) => (
-          <ListItem button key={item.path} component={Link} href={item.path}>
-            <ListItemIcon>
-              <SvgIcon component={item.icon} />
-            </ListItemIcon>
-            <ListItemText primary={item.label} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {listSettingItems.map((item) => (
-          <ListItem button key={item.path} component={Link} href={item.path}>
-            <ListItemIcon>
-              <SvgIcon component={item.icon} />
-            </ListItemIcon>
-            <ListItemText primary={item.label} />
-          </ListItem>
-        ))}
-      </List>
+      {props.drawerItems.map((items, index) => (
+        <div key={index}>
+          <List>
+            {items.map((item) => (
+              <ListItemButton
+                selected={`/${item.path}` === router.pathname}
+                key={item.path}
+                component={Link}
+                href={item.path}
+              >
+                <ListItemIcon>
+                  <SvgIcon component={item.icon} />
+                </ListItemIcon>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            ))}
+          </List>
+          <Divider />
+        </div>
+      ))}
     </Drawer>
   );
 };

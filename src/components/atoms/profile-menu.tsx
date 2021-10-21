@@ -1,13 +1,14 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import { Menu, MenuItem, IconButton, Toolbar, ListItemIcon, ListItemText, Divider } from '@mui/material';
-import { useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LockIcon from '@mui/icons-material/Lock';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
-import React from 'react';
+import { HeaderItem } from 'components/molecules/header';
+import React, { useState } from 'react';
 
-export const ProfileMenu = () => {
+type Props = {
+  menuItems: HeaderItem[][];
+};
+
+export const ProfileMenu = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -18,12 +19,8 @@ export const ProfileMenu = () => {
     setAnchorEl(null);
   };
 
-  // const listItems = [
-  //   { path: 'changePassword', icon: LockIcon, label: 'パスワード変更' },
-  //   { path: 'logout', icon: LogoutIcon, label: 'ログアウト' },
-  // ];
   return (
-    <div>
+    <>
       <IconButton
         size='large'
         aria-label='account of current user'
@@ -49,28 +46,20 @@ export const ProfileMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {/* {listItems.map((item, index) => (
-            <MenuItem onClick={handleClose} key={item.path}>
-              <ListItemIcon>
-                <SvgIcon component={item.icon} fontSize='small' />
-              </ListItemIcon>
-              <ListItemText primary={item.label} />
-            </MenuItem>
-        ))} */}
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <LockIcon fontSize='small' />
-          </ListItemIcon>
-          <ListItemText primary='パスワード変更' />
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <LogoutIcon fontSize='small' />
-          </ListItemIcon>
-          <ListItemText primary='ログアウト' />
-        </MenuItem>
+        {props.menuItems.map((items, index) => (
+          <div key={index}>
+            {items.map((item) => (
+              <MenuItem onClick={handleClose} key={item.path}>
+                <ListItemIcon>
+                  <SvgIcon component={item.icon} fontSize='small' />
+                </ListItemIcon>
+                <ListItemText primary={item.label} />
+              </MenuItem>
+            ))}
+            {index === 0 && <Divider />}
+          </div>
+        ))}
       </Menu>
-    </div>
+    </>
   );
 };

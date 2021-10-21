@@ -1,8 +1,11 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar as MuiAppBar, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar as MuiAppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
 import { ProfileMenu } from 'components/atoms/profile-menu';
+import { HeaderItem } from 'components/molecules/header';
 
 type Props = {
+  screenName: string;
+  menuItems: HeaderItem[][];
   on: boolean;
   toggle: (nextValue?: any) => void;
 };
@@ -15,9 +18,12 @@ export const AppBar = (props: Props) => {
           <MenuIcon />
         </IconButton>
         <Typography variant='h5' component='div' sx={{ flexGrow: 1 }}>
-          Nomoca Order
+          {props.screenName}
         </Typography>
-        <ProfileMenu />
+        <Box sx={{ display: { md: 'flex' } }}>
+          <Typography variant='h6'>Nomoca Order</Typography>
+        </Box>
+        <ProfileMenu menuItems={props.menuItems} />
       </Toolbar>
     </MuiAppBar>
   );

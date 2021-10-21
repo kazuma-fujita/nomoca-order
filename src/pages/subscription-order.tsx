@@ -1,19 +1,21 @@
 import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import { AmplifySignOut } from '@aws-amplify/ui-react';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from 'aws-exports';
-import { StaffTemplate } from 'components/templates/staff-template';
 import { Path } from 'constants/path';
-import { ScreenName } from 'constants/screen-name';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { StaffTemplate } from 'components/templates/staff-template';
+import { SubscriptionOrderTemplate } from 'components/templates/subscription-order-template';
+import { ScreenName } from 'constants/screen-name';
 
 Amplify.configure(awsconfig);
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const StaffPage = (props: Props) => {
+const SubscriptionOrderPage = (props: Props) => {
   const router = useRouter();
   const [user, setUser] = useState<CognitoUserInterface | undefined>();
   useEffect(() => {
@@ -42,17 +44,17 @@ const StaffPage = (props: Props) => {
       <Head>
         <title>{props.pageTitle}</title>
       </Head>
-      <StaffTemplate />
+      <SubscriptionOrderTemplate />
     </>
   );
 };
 
-export default StaffPage;
+export default SubscriptionOrderPage;
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.Staff,
+      pageTitle: ScreenName.SubscriptionOrder,
     },
   };
 };
