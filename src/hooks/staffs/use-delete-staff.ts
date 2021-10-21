@@ -5,7 +5,7 @@ import { SWRKey } from 'constants/swr-key';
 import { deleteStaff as deleteStaffQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
-import { parseErrorResponse } from 'utilities/parse-error-response';
+import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useDeleteStaff = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ export const useDeleteStaff = () => {
         }
       } catch (error) {
         setIsLoading(false);
-        setError(parseErrorResponse(error));
+        setError(parseResponseError(error));
         console.error('delete error:', error);
         throw error as Error;
       }

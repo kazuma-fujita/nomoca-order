@@ -5,7 +5,7 @@ import { SWRKey } from 'constants/swr-key';
 import { updateStaff as updateStaffQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
-import { parseErrorResponse } from 'utilities/parse-error-response';
+import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useUpdateStaff = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ export const useUpdateStaff = () => {
         }
       } catch (error) {
         setIsLoading(false);
-        setError(parseErrorResponse(error));
+        setError(parseResponseError(error));
         console.error('update error:', error);
         throw error as Error;
       }

@@ -5,7 +5,7 @@ import { SWRKey } from 'constants/swr-key';
 import { createStaff as createStaffQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
-import { parseErrorResponse } from 'utilities/parse-error-response';
+import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useCreateStaff = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +34,7 @@ export const useCreateStaff = () => {
         }
       } catch (error) {
         setIsLoading(false);
-        setError(parseErrorResponse(error));
+        setError(parseResponseError(error));
         console.error('create error:', error);
         throw error as Error;
       }
@@ -75,7 +75,7 @@ export const useCreateStaff = () => {
 //         }
 //       } catch (error) {
 //         setIsLoading(false);
-//         setError(parseErrorResponse(error));
+//         setError(parseResponseError(error));
 //         console.error('create error:', error);
 //         throw error as Error;
 //       }

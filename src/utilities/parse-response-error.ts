@@ -1,6 +1,6 @@
 import { GraphQLResult } from '@aws-amplify/api';
 
-export const parseErrorResponse = (error: any): Error | null => {
+export const parseResponseError = (error: any): Error | null => {
   if (!error) return null;
   const errorResult = error as Error;
   const graphqlResult = error as GraphQLResult;
