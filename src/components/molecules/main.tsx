@@ -1,7 +1,5 @@
-import { ReactNode } from 'react';
-import { MainContainer } from 'components/atoms/main-container';
+import { Box } from '@mui/material';
 import { Header } from 'components/molecules/header';
-import { Container, Box } from '@mui/material';
 
 export const Main: React.FC = ({ children }) => {
   return (

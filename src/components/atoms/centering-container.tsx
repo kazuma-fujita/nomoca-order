@@ -1,7 +1,7 @@
 import { Container } from '@mui/material';
 import { ReactNode } from 'react';
 
-export const MainContainer: React.FC = ({ children }) => {
+export const CenteringContainer: React.FC = ({ children }) => {
   return (
     <>
       <Container
