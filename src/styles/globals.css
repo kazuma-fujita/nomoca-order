@@ -20,9 +20,9 @@ body {
 */
 
 :root {
-  --amplify-primary-color: #2a9bcf;
-  --amplify-primary-tint: #4fc3f7;
-  --amplify-primary-shade: #0288d1;
+  --amplify-primary-color: #0284c7;
+  --amplify-primary-tint: #e0f2fe;
+  --amplify-primary-shade: #0c4a6e;
 }
 
 amplify-authenticator {

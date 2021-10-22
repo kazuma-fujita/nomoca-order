@@ -4,6 +4,7 @@ import awsconfig from 'aws-exports';
 import { StaffTemplate } from 'components/templates/staff-template';
 import { Path } from 'constants/path';
 import { ScreenName } from 'constants/screen-name';
+import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -52,7 +53,7 @@ export default StaffPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.Staff,
+      pageTitle: ScreenName.Staff + TitleSuffix,
     },
   };
 };

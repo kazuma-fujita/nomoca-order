@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { StaffTemplate } from 'components/templates/staff-template';
 import { SubscriptionOrderTemplate } from 'components/templates/subscription-order-template';
 import { ScreenName } from 'constants/screen-name';
+import { TitleSuffix } from 'constants/title-suffix';
 
 Amplify.configure(awsconfig);
 
@@ -54,7 +55,7 @@ export default SubscriptionOrderPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.SubscriptionOrder,
+      pageTitle: ScreenName.SubscriptionOrder + TitleSuffix,
     },
   };
 };
