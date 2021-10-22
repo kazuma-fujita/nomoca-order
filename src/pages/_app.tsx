@@ -10,6 +10,7 @@ import { SWRConfig } from 'swr';
 import createEmotionCache from 'utilities/create-emotion-cache';
 import { L10n } from 'utilities/l10n';
 import { loggingMiddleware } from 'utilities/logging-middleware';
+import { CurrentUserContextProvider, useCurrentUser } from '../stores/use-current-user';
 
 I18n.setLanguage('ja'); // Add
 I18n.putVocabularies(L10n); // Add
@@ -23,17 +24,22 @@ interface MyAppProps extends AppProps {
 
 function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
+  const { currentUser, error, groups } = useCurrentUser();
+  console.log('currentUser:', currentUser);
+  console.log('auth error:', error);
+  console.log('auth groups:', groups);
   return (
-    <SWRConfig value={{ use: [loggingMiddleware] }}>
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </CacheProvider>
-    </SWRConfig>
+    <CurrentUserContextProvider>
+      <SWRConfig value={{ use: [loggingMiddleware] }}>
+        <CacheProvider value={emotionCache}>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </CacheProvider>
+      </SWRConfig>
+    </CurrentUserContextProvider>
   );
 }
 

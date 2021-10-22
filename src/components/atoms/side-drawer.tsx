@@ -20,6 +20,7 @@ import SvgIcon, { SvgIconTypeMap } from '@mui/material/SvgIcon';
 import Link from 'components/atoms/link';
 import { HeaderItem } from 'components/molecules/header';
 import { useRouter } from 'next/router';
+import { useCurrentUser } from '../../stores/use-current-user';
 
 type Props = {
   drawerItems: HeaderItem[][];
@@ -37,6 +38,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export const SideDrawer = (props: Props) => {
+  const { currentUser, error } = useCurrentUser();
+  console.log('SideDrawer user:', currentUser);
+  console.log('SideDrawer error:', error);
   const router = useRouter();
   return (
     <Drawer
