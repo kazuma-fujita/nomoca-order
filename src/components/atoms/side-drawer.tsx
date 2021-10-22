@@ -1,26 +1,9 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import EditIcon from '@mui/icons-material/Edit';
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
-import PeopleIcon from '@mui/icons-material/People';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
-import {
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  styled,
-  ListItemButton,
-} from '@mui/material';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
-import SvgIcon, { SvgIconTypeMap } from '@mui/material/SvgIcon';
+import { Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, styled } from '@mui/material';
+import SvgIcon from '@mui/material/SvgIcon';
 import Link from 'components/atoms/link';
 import { HeaderItem } from 'components/molecules/header';
 import { useRouter } from 'next/router';
-import { useCurrentUser } from '../../stores/use-current-user';
 
 type Props = {
   drawerItems: HeaderItem[][];
@@ -38,9 +21,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export const SideDrawer = (props: Props) => {
-  const { currentUser, error } = useCurrentUser();
-  console.log('SideDrawer user:', currentUser);
-  console.log('SideDrawer error:', error);
   const router = useRouter();
   return (
     <Drawer

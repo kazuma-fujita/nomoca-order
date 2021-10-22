@@ -30,7 +30,7 @@ export const L10n = {
     'Back to Sign In': 'ログインに戻る',
     'Send Code': 'コードを送信',
     'Resend Code': 'コードを再送',
-    Email: '登録メールアドレスにセキリティコードを送信する',
+    Email: 'チェックをつけてコードを送信してください',
     Confirm: '確認',
     Submit: '送信',
     Change: '変更',
