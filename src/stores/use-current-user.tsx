@@ -67,12 +67,12 @@ export const useVerifyAuthenticated = () => {
       }
     })();
     // TODO: ログアウトのハンドリング。全画面で必要ない？
-    return onAuthUIStateChange((nextAuthState, authData) => {
-      console.log('after auth nextAuthState:', nextAuthState);
-      if (nextAuthState === AuthState.SignedOut) {
-        router.replace(Path.Index);
-      }
-    });
+    // return onAuthUIStateChange((nextAuthState, authData) => {
+    //   console.log('after auth nextAuthState:', nextAuthState);
+    //   if (nextAuthState === AuthState.SignedOut) {
+    //     router.replace(Path.Index);
+    //   }
+    // });
   }, []);
 };
 
@@ -98,19 +98,39 @@ export const useVerifyBeforeAuthenticate = () => {
   }, []);
 };
 
-export const useVerifySignOut = () => {
+export const useSignOut = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
   useEffect(() => {
     // 高速に遷移するため事前に遷移先画面をprefetchする
     router.prefetch(Path.Index);
+    // 画面ステータスをみてログイン画面に遷移
     return onAuthUIStateChange((nextAuthState, authData) => {
       console.log('sign out nextAuthState:', nextAuthState);
       if (nextAuthState === AuthState.SignedOut) {
-        deleteAllCache();
         router.replace(Path.Index);
       }
     });
   }, []);
+  const signOut = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await Auth.signOut({ global: true });
+      deleteAllCache();
+      setIsLoading(false);
+      setError(null);
+    } catch (error) {
+      console.log('error signing out: ', error);
+      setIsLoading(false);
+      setError(parseResponseError(error));
+    }
+  }, []);
+  const resetState = useCallback(() => {
+    setIsLoading(false);
+    setError(null);
+  }, []);
+  return { signOut, isLoading, error, resetState };
 };
 
 const deleteAllCache = () => {

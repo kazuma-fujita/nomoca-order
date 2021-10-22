@@ -11,9 +11,13 @@ import createEmotionCache from 'utilities/create-emotion-cache';
 import { L10n } from 'utilities/l10n';
 import { loggingMiddleware } from 'utilities/logging-middleware';
 import { CurrentUserContextProvider, useCurrentUser } from '../stores/use-current-user';
+import Amplify from 'aws-amplify';
+import awsconfig from 'aws-exports';
 
 I18n.setLanguage('ja'); // Add
 I18n.putVocabularies(L10n); // Add
+
+Amplify.configure(awsconfig);
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -25,9 +29,7 @@ interface MyAppProps extends AppProps {
 function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const { currentUser, error, groups } = useCurrentUser();
-  console.log('currentUser:', currentUser);
-  console.log('auth error:', error);
-  console.log('auth groups:', groups);
+  console.log('_app currentUser:', currentUser);
   return (
     <CurrentUserContextProvider>
       <SWRConfig value={{ use: [loggingMiddleware] }}>

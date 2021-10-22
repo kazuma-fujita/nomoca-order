@@ -20,7 +20,7 @@ export const AppBar = (props: Props) => {
         <Typography variant='h5' component='div' sx={{ flexGrow: 1 }}>
           {props.screenName}
         </Typography>
-        <Box sx={{ display: { md: 'flex' } }}>
+        <Box sx={{ display: { md: 'flex' } }} mr={2}>
           <Typography variant='h6'>Nomoca Order</Typography>
         </Box>
         <ProfileMenu menuItems={props.menuItems} />

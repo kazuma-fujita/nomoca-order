@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
 
-Amplify.configure(awsconfig);
+// Amplify.configure(awsconfig);
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
