@@ -162,9 +162,24 @@ Resources:
       EmailVerificationSubject: Nomoca Orderからセキリティコードをお送りします
       EmailVerificationMessage: |
         Nomoca Stand 備品発注サービス Nomoca Order のご利用ありがとうございます。<br>
+        <br>
         Eメールアドレスの確認のため、セキュリティコードを入力してください。<br>
         <br>
         セキリティコードは {####} です。<br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
         <br>
         <br>
         <br>
@@ -185,6 +200,7 @@ Resources:
           EmailSubject: Nomoca Orderから仮パスワードをお送りします
           EmailMessage: |
             この度は Nomoca Stand 備品発注サービス Nomoca Order のご利用ありがとうございます。<br>
+            <br>
             下記のURLからメールアドレスと仮パスワードでログインして、ご希望のパスワードへご変更ください。<br>
             <br>
             <ログインURL><br>
@@ -192,6 +208,19 @@ Resources:
             <br>
             メールアドレス: {username} <br>
             仮パスワード: {####} <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
             <br>
             <br>
             <br>
