@@ -6,11 +6,12 @@ import { SWRKey } from 'constants/swr-key';
 import { listSubscriptionOrders } from 'graphql/queries';
 import useSWR from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { DateFormat } from 'constants/date-format';
 
 const translator = (item: SubscriptionOrder): SubscriptionOrder => {
   const copyItem: SubscriptionOrder = { ...item };
-  copyItem.createdAt = format(parseISO(item.createdAt), 'yyyy/MM/dd');
-  copyItem.updatedAt = format(parseISO(item.updatedAt), 'yyyy/MM/dd HH:mm');
+  copyItem.createdAt = format(parseISO(item.createdAt), DateFormat.YMD);
+  copyItem.updatedAt = format(parseISO(item.updatedAt), DateFormat.YMDHM);
   return copyItem;
 };
 
