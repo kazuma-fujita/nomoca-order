@@ -19,32 +19,28 @@ export const useDeleteSubscriptionOrder = () => {
 
   // mutateの第2引数function
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
-  const onDeleteSubscriptionOrder =
-    (id: string) =>
-    async (data: SubscriptionOrder[]): Promise<SubscriptionOrder[]> => {
-      setIsLoading(true);
-      try {
-        const subscriptionOrder: DeleteSubscriptionOrderInput = { id: id };
-        const variables: DeleteSubscriptionOrderMutationVariables = { input: subscriptionOrder };
-        const result = (await API.graphql(
-          graphqlOperation(deleteSubscriptionOrderQuery, variables)
-        )) as GraphQLResult<DeleteSubscriptionOrderMutation>;
-        setIsLoading(false);
-        setError(null);
-        if (result.data && result.data.deleteSubscriptionOrder) {
-          const deletedSubscriptionOrder = result.data.deleteSubscriptionOrder;
-          console.log('deletedSubscriptionOrder:', deletedSubscriptionOrder);
-          return data.filter((item) => item.id !== id);
-        } else {
-          throw Error('The API deleted data but it returned null.');
-        }
-      } catch (error) {
-        setIsLoading(false);
-        setError(parseResponseError(error));
-        console.error('delete error:', error);
-        throw error as Error;
+  const onDeleteSubscriptionOrder = (id: string) => async (data: SubscriptionOrder[]) => {
+    setIsLoading(true);
+    try {
+      const subscriptionOrder: DeleteSubscriptionOrderInput = { id: id };
+      const variables: DeleteSubscriptionOrderMutationVariables = { input: subscriptionOrder };
+      const result = (await API.graphql(
+        graphqlOperation(deleteSubscriptionOrderQuery, variables)
+      )) as GraphQLResult<DeleteSubscriptionOrderMutation>;
+      setIsLoading(false);
+      setError(null);
+      if (result.data && result.data.deleteSubscriptionOrder) {
+        return data.filter((item) => item.id !== id);
+      } else {
+        throw Error('The API deleted data but it returned null.');
       }
-    };
+    } catch (error) {
+      setIsLoading(false);
+      setError(parseResponseError(error));
+      console.error('delete error:', error);
+      // throw error as Error;
+    }
+  };
 
   // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const deleteSubscriptionOrder = useCallback(
