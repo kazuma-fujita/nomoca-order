@@ -2,6 +2,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar as MuiAppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
 import { ProfileMenu } from 'components/atoms/profile-menu';
 import { HeaderItem } from 'components/molecules/header';
+import { ProductName } from 'constants/product-name';
 
 type Props = {
   screenName: string;
@@ -21,7 +22,7 @@ export const AppBar = (props: Props) => {
           {props.screenName}
         </Typography>
         <Box sx={{ display: { md: 'flex' } }}>
-          <Typography variant='h6'>Nomoca Order</Typography>
+          <Typography variant='h6'>{ProductName}</Typography>
         </Box>
         <ProfileMenu menuItems={props.menuItems} />
       </Toolbar>

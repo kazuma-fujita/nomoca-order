@@ -1,1 +1,3 @@
-export const TitleSuffix = ' | Nomoca Order';
+import { ProductName } from './product-name';
+
+export const TitleSuffix = ` | ${ProductName}`;
