@@ -1,13 +1,12 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Divider, IconButton, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
 import SvgIcon from '@mui/material/SvgIcon';
+import Link from 'components/atoms/link';
 import { HeaderItem } from 'components/molecules/header';
+import { SignOutMenuItem } from 'components/organisms/sign-out/sign-out-menu-item';
 import { Path } from 'constants/path';
 import React, { useState } from 'react';
-import { SignOutMenuItem } from 'components/organisms/sign-out/sign-out-menu-item';
-import Link from 'components/atoms/link';
-import { useRouter } from 'next/router';
-import Button from '@mui/material/Button';
 
 type Props = {
   menuItems: HeaderItem[][];
@@ -28,7 +27,7 @@ export const ProfileMenu = (props: Props) => {
   return (
     <>
       <IconButton
-        // size='large'
+        size='large'
         aria-label='account of current user'
         aria-controls='menu-appbar'
         aria-haspopup='true'
@@ -38,9 +37,9 @@ export const ProfileMenu = (props: Props) => {
         <AccountCircleIcon />
       </IconButton>
       {props.email && (
-        <Button color='inherit' onClick={handleMenu} size='small'>
+        <Typography variant='body2' fontWeight='bold'>
           {props.email}
-        </Button>
+        </Typography>
       )}
       <Menu
         anchorEl={anchorEl}

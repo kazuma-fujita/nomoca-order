@@ -11,9 +11,10 @@ import { SideDrawer } from 'components/atoms/side-drawer';
 import { AppBar } from 'components/molecules/app-bar';
 import { Path } from 'constants/path';
 import { ScreenName } from 'constants/screen-name';
+import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { useToggle } from 'react-use';
-import { useCurrentUser, useSignOut } from 'stores/use-current-user';
+import { useCurrentUser } from 'stores/use-current-user';
 
 export type HeaderItem = {
   path: string;
@@ -27,7 +28,6 @@ export const Header = () => {
   const [on, toggle] = useToggle(false);
   const router = useRouter();
   const { email, isOperator } = useCurrentUser();
-  // const { signOut } = useSignOut();
   console.log('Header email:', email);
   console.log('Header isOperator:', isOperator);
   const drawerItems: HeaderItem[][] = isOperator
@@ -53,7 +53,7 @@ export const Header = () => {
     [{ path: Path.ChangePassword, icon: LockIcon, label: ScreenName.ChangePassword }],
     [{ path: Path.SignOut, icon: LogoutIcon, label: ScreenName.SignOut }],
   ];
-  // TODO: findItemsが無かった場合ローカルキャッシュを消してログイン画面へ遷移させること
+  // TODO: findItemsが無かった場合400 or 404画面へ遷移
   var findItems = drawerItems
     .map((items) => items.find((item) => `/${item.path}` === router.pathname))
     .filter((item) => item);
@@ -62,12 +62,10 @@ export const Header = () => {
       .map((items) => items.find((item) => `/${item.path}` === router.pathname))
       .filter((item) => item);
   }
-  // console.log('findItems:', findItems);
-  // if (findItems === undefined || findItems.length === 0) {
-  //   signOut();
-  //   return <></>;
-  // }
-  // console.log('findItems:', findItems);
+  if (findItems.length === 0) {
+    // Nextの組み込み400 Bad Requestページを表示
+    return <Error statusCode={400} />;
+  }
   const appBarLabel = findItems[0]!.label;
   return (
     <>
