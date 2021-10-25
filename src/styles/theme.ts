@@ -14,6 +14,7 @@ const theme = createTheme({
     //   main: red.A400,
     // },
   },
+  // Button文字大文字自動変換禁止
   typography: { button: { textTransform: 'none' } },
 });
 

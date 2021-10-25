@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 
 const header = [
   {
@@ -34,16 +34,26 @@ const header = [
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.primary.light,
-    color: theme.palette.common.black,
+    color: theme.palette.text.secondary,
   },
   // [`&.${tableCellClasses.body}`]: {
   //   fontSize: 14,
   // },
 }));
 
+const EmptyTableBody: React.FC = ({ children }) => {
+  return (
+    <StyledTableRow>
+      <StyledTableCell colSpan={header.length} align='center'>
+        {children}
+      </StyledTableCell>
+    </StyledTableRow>
+  );
+};
+
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
+  '&:nth-of-type(even)': {
+    backgroundColor: theme.palette.grey[50],
   },
   // hide last border
   '&:last-child td, &:last-child th': {
@@ -54,35 +64,41 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export const StaffList = () => {
   const { error, data } = useFetchStaffList();
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
-  if (!data) return <CircularProgress />;
-  if (data.length === 0) return <p>担当者を追加してください</p>;
   return (
-    // <TableContainer component={Paper} sx={{ maxWidth: 640 }}>
     <TableContainer component={Paper}>
       <Table aria-label='staffs table'>
         <TableHead>
           <TableRow>
             {header.map((item, index) => (
               <StyledTableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
-                {/* <StyledTableCell key={index} align='center'> */}
-                {item.label}
+                <Typography variant='body2' fontWeight='bold'>
+                  {item.label}
+                </Typography>
               </StyledTableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
-            <StyledTableRow key={item.id}>
-              <StyledTableCell>{item.name}</StyledTableCell>
-              <StyledTableCell>{item.updatedAt}</StyledTableCell>
-              <StyledTableCell align='center'>
-                <UpdateStaffButton id={item.id} name={item.name} />
-              </StyledTableCell>
-              <StyledTableCell align='center'>
-                <DeleteStaffButton id={item.id} name={item.name} />
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {!data ? (
+            <EmptyTableBody>
+              <CircularProgress />
+            </EmptyTableBody>
+          ) : data.length == 0 ? (
+            <EmptyTableBody>担当者を追加してください</EmptyTableBody>
+          ) : (
+            data.map((item) => (
+              <StyledTableRow key={item.id}>
+                <StyledTableCell>{item.name}</StyledTableCell>
+                <StyledTableCell>{item.updatedAt}</StyledTableCell>
+                <StyledTableCell align='center'>
+                  <UpdateStaffButton id={item.id} name={item.name} />
+                </StyledTableCell>
+                <StyledTableCell align='center'>
+                  <DeleteStaffButton id={item.id} name={item.name} />
+                </StyledTableCell>
+              </StyledTableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>
