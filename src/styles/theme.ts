@@ -14,6 +14,7 @@ const theme = createTheme({
     //   main: red.A400,
     // },
   },
+  typography: { button: { textTransform: 'none' } },
 });
 
 export default theme;

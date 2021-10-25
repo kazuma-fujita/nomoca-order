@@ -7,13 +7,14 @@ import React, { useState } from 'react';
 import { SignOutMenuItem } from 'components/organisms/sign-out/sign-out-menu-item';
 import Link from 'components/atoms/link';
 import { useRouter } from 'next/router';
+import Button from '@mui/material/Button';
 
 type Props = {
   menuItems: HeaderItem[][];
+  email: string | null;
 };
 
 export const ProfileMenu = (props: Props) => {
-  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -27,15 +28,20 @@ export const ProfileMenu = (props: Props) => {
   return (
     <>
       <IconButton
-        size='large'
+        // size='large'
         aria-label='account of current user'
         aria-controls='menu-appbar'
         aria-haspopup='true'
-        onClick={handleMenu}
         color='inherit'
+        onClick={handleMenu}
       >
         <AccountCircleIcon />
       </IconButton>
+      {props.email && (
+        <Button color='inherit' onClick={handleMenu} size='small'>
+          {props.email}
+        </Button>
+      )}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}

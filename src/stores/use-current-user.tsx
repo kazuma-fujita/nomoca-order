@@ -13,6 +13,7 @@ type ProviderProps = {
   error: Error | undefined;
   mutateUser: KeyedMutator<CognitoUserInterface>;
   groups: string[] | undefined;
+  email: string | null;
   isOperator: boolean;
 };
 
@@ -28,16 +29,19 @@ export const CurrentUserContextProvider = ({ ...props }) => {
     error,
     mutate: mutateUser,
   } = useSWR<CognitoUserInterface, Error>(SWRKey.CurrentUser, null);
-  // cognito:groupsはUserGroup名配列が格納される。payloadからUserGroupが取得出来ない場合undefinedが返却される
+  // cognito:groupsはUserGroup名配列が格納される
+  // currentUserは存在していてpayloadからUserGroupが取得出来ない(どのUserGroupにも所属していない)場合undefinedが返却される
   const groups: string[] | undefined = currentUser
     ? currentUser.signInUserSession.accessToken.payload['cognito:groups']
     : undefined;
+  const email: string = currentUser ? currentUser.attributes.email : null;
   const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
   console.log('CurrentUserContextProvider user:', currentUser);
   const value = useMemo(
-    () => ({ currentUser, error, mutateUser, groups, isOperator }),
-    [currentUser, error, mutateUser, groups, isOperator]
+    () => ({ currentUser, error, mutateUser, groups, email, isOperator }),
+    [currentUser, error, mutateUser, groups, email, isOperator]
   );
+  console.log('email:', email);
   return <CurrentUserContext.Provider value={value} {...props} />;
   // return <CurrentUserContext.Provider value={{ currentUser, error, mutateUser, groups, isOperator }} {...props} />;
 };
@@ -120,7 +124,9 @@ export const useSignOut = () => {
   useEffect(() => {
     // componentがunmountされてからログイン画面へ遷移させる
     return () => {
-      router.replace(Path.Index);
+      if (isSignedOut) {
+        router.replace(Path.Index);
+      }
     };
   }, [isSignedOut]);
 
@@ -130,7 +136,6 @@ export const useSignOut = () => {
       try {
         // globalにsign out実行。他にログインしている端末があれば全てsign out
         await Auth.signOut({ global: true });
-        console.log('signOut here2');
         // Store(useSWR)のCacheをクリア
         cache.delete(SWRKey.CurrentUser);
         cache.delete(SWRKey.StaffList);
