@@ -1,4 +1,5 @@
 export enum SWRKey {
-  StaffList = 'staffList',
   CurrentUser = 'currentUser',
+  StaffList = 'staffList',
+  SubscriptionOrderList = 'subscriptionOrderList',
 }
