@@ -41,7 +41,6 @@ export const CurrentUserContextProvider = ({ ...props }) => {
     () => ({ currentUser, error, mutateUser, groups, email, isOperator }),
     [currentUser, error, mutateUser, groups, email, isOperator]
   );
-  console.log('email:', email);
   return <CurrentUserContext.Provider value={value} {...props} />;
   // return <CurrentUserContext.Provider value={{ currentUser, error, mutateUser, groups, isOperator }} {...props} />;
 };
@@ -130,25 +129,24 @@ export const useSignOut = () => {
     };
   }, [isSignedOut]);
 
-  const signOut = useCallback(() => {
+  // 利用側でasync/awaitできるようにPromise<void>を返却
+  const signOut = useCallback(async (): Promise<void> => {
     setIsLoading(true);
-    (async () => {
-      try {
-        // globalにsign out実行。他にログインしている端末があれば全てsign out
-        await Auth.signOut({ global: true });
-        // Store(useSWR)のCacheをクリア
-        cache.delete(SWRKey.CurrentUser);
-        cache.delete(SWRKey.StaffList);
-        setIsLoading(false);
-        setError(null);
-        // ログイン画面へ遷移
-        setIsSignedOut(true);
-      } catch (error) {
-        console.log('error signing out: ', error);
-        setIsLoading(false);
-        setError(parseResponseError(error));
-      }
-    })();
+    try {
+      // globalにsign out実行。他にログインしている端末があれば全てsign out
+      await Auth.signOut({ global: true });
+      // Store(useSWR)のCacheをクリア
+      cache.delete(SWRKey.CurrentUser);
+      cache.delete(SWRKey.StaffList);
+      setIsLoading(false);
+      setError(null);
+      // ログイン画面へ遷移
+      setIsSignedOut(true);
+    } catch (error) {
+      console.log('error signing out: ', error);
+      setIsLoading(false);
+      setError(parseResponseError(error));
+    }
   }, []);
   const resetState = useCallback(() => {
     setIsLoading(false);
