@@ -31,7 +31,7 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
     resetState();
     toggle();
   }, []);
-  const label = '編集';
+  const label = '編集する';
   return (
     <>
       <Button onClick={toggle} variant='outlined' startIcon={<Edit fontSize='small' />}>

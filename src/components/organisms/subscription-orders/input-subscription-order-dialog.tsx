@@ -24,7 +24,7 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
   return (
     <Dialog open={props.on}>
       <Form onSubmit={props.submitHandler}>
-        <DialogTitle>定期便を{props.label}する</DialogTitle>
+        <DialogTitle>定期便を{props.label}</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>担当者名を追加する</DialogContentText> */}
           {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
@@ -43,7 +43,7 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
             loadingPosition='start'
             startIcon={props.startIcon}
           >
-            {props.label}する
+            {props.label}
           </LoadingButton>
         </DialogActions>
       </Form>
