@@ -169,6 +169,32 @@ export type DeleteCommentInput = {
   id: string,
 };
 
+export type CreateSubscriptionOrderInput = {
+  id?: string | null,
+};
+
+export type ModelSubscriptionOrderConditionInput = {
+  and?: Array< ModelSubscriptionOrderConditionInput | null > | null,
+  or?: Array< ModelSubscriptionOrderConditionInput | null > | null,
+  not?: ModelSubscriptionOrderConditionInput | null,
+};
+
+export type SubscriptionOrder = {
+  __typename: "SubscriptionOrder",
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type UpdateSubscriptionOrderInput = {
+  id: string,
+};
+
+export type DeleteSubscriptionOrderInput = {
+  id: string,
+};
+
 export type CreateStaffInput = {
   id?: string | null,
   name: string,
@@ -229,6 +255,19 @@ export type ModelCommentFilterInput = {
   and?: Array< ModelCommentFilterInput | null > | null,
   or?: Array< ModelCommentFilterInput | null > | null,
   not?: ModelCommentFilterInput | null,
+};
+
+export type ModelSubscriptionOrderFilterInput = {
+  id?: ModelIDInput | null,
+  and?: Array< ModelSubscriptionOrderFilterInput | null > | null,
+  or?: Array< ModelSubscriptionOrderFilterInput | null > | null,
+  not?: ModelSubscriptionOrderFilterInput | null,
+};
+
+export type ModelSubscriptionOrderConnection = {
+  __typename: "ModelSubscriptionOrderConnection",
+  items?:  Array<SubscriptionOrder | null > | null,
+  nextToken?: string | null,
 };
 
 export type ModelStaffFilterInput = {
@@ -548,6 +587,51 @@ export type DeleteCommentMutation = {
   } | null,
 };
 
+export type CreateSubscriptionOrderMutationVariables = {
+  input: CreateSubscriptionOrderInput,
+  condition?: ModelSubscriptionOrderConditionInput | null,
+};
+
+export type CreateSubscriptionOrderMutation = {
+  createSubscriptionOrder?:  {
+    __typename: "SubscriptionOrder",
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateSubscriptionOrderMutationVariables = {
+  input: UpdateSubscriptionOrderInput,
+  condition?: ModelSubscriptionOrderConditionInput | null,
+};
+
+export type UpdateSubscriptionOrderMutation = {
+  updateSubscriptionOrder?:  {
+    __typename: "SubscriptionOrder",
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteSubscriptionOrderMutationVariables = {
+  input: DeleteSubscriptionOrderInput,
+  condition?: ModelSubscriptionOrderConditionInput | null,
+};
+
+export type DeleteSubscriptionOrderMutation = {
+  deleteSubscriptionOrder?:  {
+    __typename: "SubscriptionOrder",
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
 export type CreateStaffMutationVariables = {
   input: CreateStaffInput,
   condition?: ModelStaffConditionInput | null,
@@ -774,6 +858,40 @@ export type ListCommentsQuery = {
       content: string,
       createdAt: string,
       updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetSubscriptionOrderQueryVariables = {
+  id: string,
+};
+
+export type GetSubscriptionOrderQuery = {
+  getSubscriptionOrder?:  {
+    __typename: "SubscriptionOrder",
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListSubscriptionOrdersQueryVariables = {
+  filter?: ModelSubscriptionOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSubscriptionOrdersQuery = {
+  listSubscriptionOrders?:  {
+    __typename: "ModelSubscriptionOrderConnection",
+    items?:  Array< {
+      __typename: "SubscriptionOrder",
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -1070,6 +1188,48 @@ export type OnDeleteCommentSubscription = {
     content: string,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnCreateSubscriptionOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateSubscriptionOrderSubscription = {
+  onCreateSubscriptionOrder?:  {
+    __typename: "SubscriptionOrder",
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateSubscriptionOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateSubscriptionOrderSubscription = {
+  onUpdateSubscriptionOrder?:  {
+    __typename: "SubscriptionOrder",
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteSubscriptionOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteSubscriptionOrderSubscription = {
+  onDeleteSubscriptionOrder?:  {
+    __typename: "SubscriptionOrder",
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 

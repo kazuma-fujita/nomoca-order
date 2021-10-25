@@ -19,6 +19,12 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
   content: String!
 }
 
+type SubscriptionOrder
+  @model
+  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read, update] }, { allow: owner }]) {
+  id: ID!
+}
+
 type Staff @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!

@@ -151,6 +151,37 @@ export const listComments = /* GraphQL */ `
     }
   }
 `;
+export const getSubscriptionOrder = /* GraphQL */ `
+  query GetSubscriptionOrder($id: ID!) {
+    getSubscriptionOrder(id: $id) {
+      id
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listSubscriptionOrders = /* GraphQL */ `
+  query ListSubscriptionOrders(
+    $filter: ModelSubscriptionOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubscriptionOrders(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const getStaff = /* GraphQL */ `
   query GetStaff($id: ID!) {
     getStaff(id: $id) {
