@@ -27,8 +27,7 @@ export type HeaderItem = {
 export const Header = () => {
   const [on, toggle] = useToggle(false);
   const router = useRouter();
-  const { email, isOperator } = useCurrentUser();
-  console.log('Header email:', email);
+  const { isOperator } = useCurrentUser();
   console.log('Header isOperator:', isOperator);
   const drawerItems: HeaderItem[][] = isOperator
     ? [
@@ -69,7 +68,7 @@ export const Header = () => {
   const appBarLabel = findItems[0]!.label;
   return (
     <>
-      <AppBar screenName={appBarLabel} menuItems={menuItems} email={email} on={on} toggle={toggle} />
+      <AppBar screenName={appBarLabel} menuItems={menuItems} on={on} toggle={toggle} />
       <SideDrawer drawerItems={drawerItems} on={on} toggle={toggle} />
     </>
   );

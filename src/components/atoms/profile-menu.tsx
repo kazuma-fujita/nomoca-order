@@ -7,13 +7,14 @@ import { HeaderItem } from 'components/molecules/header';
 import { SignOutMenuItem } from 'components/organisms/sign-out/sign-out-menu-item';
 import { Path } from 'constants/path';
 import React, { useState } from 'react';
+import { useCurrentUser } from 'stores/use-current-user';
 
 type Props = {
   menuItems: HeaderItem[][];
-  email: string | null;
 };
 
 export const ProfileMenu = (props: Props) => {
+  const { email } = useCurrentUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -23,6 +24,8 @@ export const ProfileMenu = (props: Props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  console.log('Profile menu email:', email);
 
   return (
     <>
@@ -36,9 +39,9 @@ export const ProfileMenu = (props: Props) => {
       >
         <AccountCircleIcon />
       </IconButton>
-      {props.email && (
+      {email && (
         <Typography variant='body2' fontWeight='bold'>
-          {props.email}
+          {email}
         </Typography>
       )}
       <Menu

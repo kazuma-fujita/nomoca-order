@@ -6,7 +6,6 @@ import { HeaderItem } from 'components/molecules/header';
 type Props = {
   screenName: string;
   menuItems: HeaderItem[][];
-  email: string | null;
   on: boolean;
   toggle: (nextValue?: any) => void;
 };
@@ -24,7 +23,7 @@ export const AppBar = (props: Props) => {
         <Box sx={{ display: { md: 'flex' } }}>
           <Typography variant='h6'>Nomoca Order</Typography>
         </Box>
-        <ProfileMenu menuItems={props.menuItems} email={props.email} />
+        <ProfileMenu menuItems={props.menuItems} />
       </Toolbar>
     </MuiAppBar>
   );
