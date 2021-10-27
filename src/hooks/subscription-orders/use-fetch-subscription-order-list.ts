@@ -18,6 +18,7 @@ const translator = (item: SubscriptionOrder): SubscriptionOrder => {
 const fetcher = async () => {
   const result = (await API.graphql(
     graphqlOperation(listSubscriptionOrders)
+    // graphqlOperation(listSubscriptionOrders, { filter: { id: { contains: '25' } } })
   )) as GraphQLResult<ListSubscriptionOrdersQuery>;
   if (result.data && result.data.listSubscriptionOrders && result.data.listSubscriptionOrders.items) {
     return result.data.listSubscriptionOrders.items as SubscriptionOrder[];

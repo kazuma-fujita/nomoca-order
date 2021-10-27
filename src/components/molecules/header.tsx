@@ -62,8 +62,8 @@ export const Header = () => {
       .filter((item) => item);
   }
   if (findItems.length === 0) {
-    // Nextの組み込み400 Bad Requestページを表示
-    return <Error statusCode={400} />;
+    // Nextの組み込み401 Unauthorizedページを表示
+    return <Error statusCode={401} />;
   }
   const appBarLabel = findItems[0]!.label;
   return (

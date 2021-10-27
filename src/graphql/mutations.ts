@@ -267,6 +267,13 @@ export const createSubscriptionOrder = /* GraphQL */ `
   ) {
     createSubscriptionOrder(input: $input, condition: $condition) {
       id
+      staff {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
       owner
@@ -280,6 +287,13 @@ export const updateSubscriptionOrder = /* GraphQL */ `
   ) {
     updateSubscriptionOrder(input: $input, condition: $condition) {
       id
+      staff {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
       owner
@@ -293,6 +307,13 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
   ) {
     deleteSubscriptionOrder(input: $input, condition: $condition) {
       id
+      staff {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
       owner

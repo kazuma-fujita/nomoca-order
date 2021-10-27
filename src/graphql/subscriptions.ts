@@ -237,6 +237,13 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
   subscription OnCreateSubscriptionOrder($owner: String) {
     onCreateSubscriptionOrder(owner: $owner) {
       id
+      staff {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
       owner
@@ -247,6 +254,13 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
   subscription OnUpdateSubscriptionOrder($owner: String) {
     onUpdateSubscriptionOrder(owner: $owner) {
       id
+      staff {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
       owner
@@ -257,6 +271,13 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
   subscription OnDeleteSubscriptionOrder($owner: String) {
     onDeleteSubscriptionOrder(owner: $owner) {
       id
+      staff {
+        id
+        name
+        createdAt
+        updatedAt
+        owner
+      }
       createdAt
       updatedAt
       owner

@@ -23,6 +23,7 @@ type SubscriptionOrder
   @model
   @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read, update] }, { allow: owner }]) {
   id: ID!
+  staff: Staff @connection
 }
 
 type Staff @model @auth(rules: [{ allow: owner }]) {
