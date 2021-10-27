@@ -10,6 +10,7 @@ import { Staff } from 'API';
 
 interface Props extends UseFormReturn<Staff> {
   disabled: boolean;
+  name?: string;
 }
 
 const MAX_LENGTH = 5;
@@ -27,7 +28,7 @@ export const StaffNameTextField: React.FC<Props> = (props) => {
       fullWidth
       autoFocus
       disabled={props.disabled}
-      // defaultValue='hey'
+      defaultValue={props.name ?? ''}
       inputProps={{
         maxLength: MAX_LENGTH,
       }}

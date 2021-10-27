@@ -13,16 +13,16 @@ type Props = {
 };
 
 export const UpdateStaffButton = (props: Props) => {
-  // const { handleSubmit, watch, register, formState } = useForm<Staff>();
-  const useFormReturn = useForm<Staff>({ defaultValues: { name: props.name } });
-  const { handleSubmit, reset: resetForm } = useFormReturn;
+  // const useFormReturn = useForm<Staff>({ defaultValues: { name: props.name } });
+  const useFormReturn = useForm<Staff>();
+  const { handleSubmit, reset: resetForm, clearErrors } = useFormReturn;
   const { updateStaff, isLoading, error, resetState } = useUpdateStaff();
   const [on, toggle] = useToggle(false);
   const submitHandler = handleSubmit(
     useCallback(async (data: Staff) => {
       await updateStaff(props.id, data.name);
       if (!error) {
-        resetForm();
+        clearErrors();
         toggle();
       }
     }, [])
@@ -47,6 +47,7 @@ export const UpdateStaffButton = (props: Props) => {
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
         useFormReturn={useFormReturn}
+        name={props.name}
       />
     </>
   );

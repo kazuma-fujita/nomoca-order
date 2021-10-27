@@ -24,6 +24,7 @@ type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
   cancelHandler: () => void;
   useFormReturn: UseFormReturn<Staff, object>;
+  name?: string;
 };
 
 export const InputStaffDialog = (props: Props) => {
@@ -35,7 +36,7 @@ export const InputStaffDialog = (props: Props) => {
           {/* <DialogContentText>担当者名を追加する</DialogContentText> */}
           {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
           <Box mt={2} mb={2}>
-            <StaffNameTextField {...props.useFormReturn} disabled={props.isLoading} />
+            <StaffNameTextField {...props.useFormReturn} disabled={props.isLoading} name={props.name} />
           </Box>
         </DialogContent>
         <DialogActions>
