@@ -15,6 +15,7 @@ const translator = (item: Staff): Staff => {
 
 const fetcher = async () => {
   const result = (await API.graphql(graphqlOperation(listStaffs))) as GraphQLResult<ListStaffsQuery>;
+  console.log('call staff fetcher:', result);
   if (result.data && result.data.listStaffs && result.data.listStaffs.items) {
     return result.data.listStaffs.items as Staff[];
   } else {

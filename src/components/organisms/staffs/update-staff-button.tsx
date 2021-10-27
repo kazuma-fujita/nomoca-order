@@ -2,7 +2,7 @@ import { Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { Staff } from 'API';
 import { useUpdateStaff } from 'hooks/staffs/use-update-staff';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { InputStaffDialog } from './input-staff-dialog';
@@ -18,10 +18,14 @@ export const UpdateStaffButton = (props: Props) => {
   const { handleSubmit, reset: resetForm, clearErrors } = useFormReturn;
   const { updateStaff, isLoading, error, resetState } = useUpdateStaff();
   const [on, toggle] = useToggle(false);
+  // useEffect(() => {
+  //   resetForm({ name: props.name });
+  // }, []);
   const submitHandler = handleSubmit(
     useCallback(async (data: Staff) => {
       await updateStaff(props.id, data.name);
       if (!error) {
+        // cancelHandler();
         clearErrors();
         toggle();
       }

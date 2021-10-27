@@ -20,11 +20,11 @@ export const useCreateSubscriptionOrder = () => {
   // mutateの第2引数function
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onCreateSubscriptionOrder =
-    () =>
+    (staffID: string) =>
     async (data: SubscriptionOrder[]): Promise<SubscriptionOrder[]> => {
       setIsLoading(true);
       try {
-        const subscriptionOrder: CreateSubscriptionOrderInput = {};
+        const subscriptionOrder: CreateSubscriptionOrderInput = { staffID: staffID };
         const variables: CreateSubscriptionOrderMutationVariables = { input: subscriptionOrder };
         const result = (await API.graphql(
           graphqlOperation(createSubscriptionOrderQuery, variables)
@@ -47,7 +47,7 @@ export const useCreateSubscriptionOrder = () => {
 
   // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const createSubscriptionOrder = useCallback(
-    async () => mutate(SWRKey.SubscriptionOrderList, onCreateSubscriptionOrder(), false),
+    async (staffID: string) => mutate(SWRKey.SubscriptionOrderList, onCreateSubscriptionOrder(staffID), false),
     []
   );
 

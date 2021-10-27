@@ -14,6 +14,10 @@ import { CircularProgress, Typography } from '@mui/material';
 
 const header = [
   {
+    label: '担当者',
+    minWidth: 160,
+  },
+  {
     label: '定期便開始日',
     minWidth: 160,
   },
@@ -88,10 +92,11 @@ export const SubscriptionOrderList = () => {
           ) : (
             data.map((item) => (
               <StyledTableRow key={item.id}>
+                <StyledTableCell>{item.staff.name}</StyledTableCell>
                 <StyledTableCell>{item.createdAt}</StyledTableCell>
                 <StyledTableCell>{item.updatedAt}</StyledTableCell>
                 <StyledTableCell align='center'>
-                  <UpdateSubscriptionOrderButton id={item.id} />
+                  <UpdateSubscriptionOrderButton id={item.id} staffID={item.staff.id} />
                 </StyledTableCell>
                 <StyledTableCell align='center'>
                   <DeleteSubscriptionOrderButton id={item.id} />

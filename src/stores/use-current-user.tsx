@@ -55,7 +55,6 @@ export const useVerifyAuthenticated = () => {
       try {
         // Cognitoから認証情報取得
         const currentUser = await Auth.currentAuthenticatedUser();
-        console.log('useVerifyAuthenticated user:', currentUser);
         // Global stateの更新。useSWRの第2引数にfalseを指定すると再検証(再fetch)をしない
         mutateUser(currentUser, false);
       } catch (error) {

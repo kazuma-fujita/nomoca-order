@@ -62,7 +62,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export const StaffList = () => {
-  const { error, data } = useFetchStaffList();
+  const { data, error } = useFetchStaffList();
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <TableContainer component={Paper}>

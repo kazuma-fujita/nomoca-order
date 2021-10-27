@@ -1,29 +1,29 @@
 import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { SubscriptionOrder } from 'API';
+import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 import { useCreateSubscriptionOrder } from 'hooks/subscription-orders/use-create-subscription-order';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
 
 export const CreateSubscriptionOrderButton = () => {
-  // const { handleSubmit, watch, register, formState } = useForm<SubscriptionOrder>();
-  const useFormReturn = useForm<SubscriptionOrder>({ defaultValues: {} });
+  const useFormReturn = useForm<SubscriptionOrder>();
   const { handleSubmit, reset: resetForm } = useFormReturn;
   const { createSubscriptionOrder, isLoading, error, resetState } = useCreateSubscriptionOrder();
+  const { data: staffList, error: fetchStaffListError } = useFetchStaffList();
   const [on, toggle] = useToggle(false);
   const submitHandler = handleSubmit(
     useCallback(async (data: SubscriptionOrder) => {
-      await createSubscriptionOrder();
+      await createSubscriptionOrder(data.staffID);
       if (!error) {
-        resetForm();
-        toggle();
+        cancelHandler();
       }
     }, [])
   );
   const cancelHandler = useCallback(() => {
-    resetForm();
+    resetForm({ staffID: '' });
     resetState();
     toggle();
   }, []);
@@ -42,6 +42,7 @@ export const CreateSubscriptionOrderButton = () => {
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
         useFormReturn={useFormReturn}
+        staffList={staffList}
       />
     </>
   );

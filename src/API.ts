@@ -171,10 +171,11 @@ export type DeleteCommentInput = {
 
 export type CreateSubscriptionOrderInput = {
   id?: string | null,
-  subscriptionOrderStaffId?: string | null,
+  staffID: string,
 };
 
 export type ModelSubscriptionOrderConditionInput = {
+  staffID?: ModelIDInput | null,
   and?: Array< ModelSubscriptionOrderConditionInput | null > | null,
   or?: Array< ModelSubscriptionOrderConditionInput | null > | null,
   not?: ModelSubscriptionOrderConditionInput | null,
@@ -183,7 +184,8 @@ export type ModelSubscriptionOrderConditionInput = {
 export type SubscriptionOrder = {
   __typename: "SubscriptionOrder",
   id: string,
-  staff?: Staff | null,
+  staffID: string,
+  staff: Staff,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -200,7 +202,7 @@ export type Staff = {
 
 export type UpdateSubscriptionOrderInput = {
   id: string,
-  subscriptionOrderStaffId?: string | null,
+  staffID?: string | null,
 };
 
 export type DeleteSubscriptionOrderInput = {
@@ -262,6 +264,7 @@ export type ModelCommentFilterInput = {
 
 export type ModelSubscriptionOrderFilterInput = {
   id?: ModelIDInput | null,
+  staffID?: ModelIDInput | null,
   and?: Array< ModelSubscriptionOrderFilterInput | null > | null,
   or?: Array< ModelSubscriptionOrderFilterInput | null > | null,
   not?: ModelSubscriptionOrderFilterInput | null,
@@ -599,14 +602,15 @@ export type CreateSubscriptionOrderMutation = {
   createSubscriptionOrder?:  {
     __typename: "SubscriptionOrder",
     id: string,
-    staff?:  {
+    staffID: string,
+    staff:  {
       __typename: "Staff",
       id: string,
       name: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -622,14 +626,15 @@ export type UpdateSubscriptionOrderMutation = {
   updateSubscriptionOrder?:  {
     __typename: "SubscriptionOrder",
     id: string,
-    staff?:  {
+    staffID: string,
+    staff:  {
       __typename: "Staff",
       id: string,
       name: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -645,14 +650,15 @@ export type DeleteSubscriptionOrderMutation = {
   deleteSubscriptionOrder?:  {
     __typename: "SubscriptionOrder",
     id: string,
-    staff?:  {
+    staffID: string,
+    staff:  {
       __typename: "Staff",
       id: string,
       name: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -898,14 +904,15 @@ export type GetSubscriptionOrderQuery = {
   getSubscriptionOrder?:  {
     __typename: "SubscriptionOrder",
     id: string,
-    staff?:  {
+    staffID: string,
+    staff:  {
       __typename: "Staff",
       id: string,
       name: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -924,14 +931,15 @@ export type ListSubscriptionOrdersQuery = {
     items?:  Array< {
       __typename: "SubscriptionOrder",
       id: string,
-      staff?:  {
+      staffID: string,
+      staff:  {
         __typename: "Staff",
         id: string,
         name: string,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null,
+      },
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1242,14 +1250,15 @@ export type OnCreateSubscriptionOrderSubscription = {
   onCreateSubscriptionOrder?:  {
     __typename: "SubscriptionOrder",
     id: string,
-    staff?:  {
+    staffID: string,
+    staff:  {
       __typename: "Staff",
       id: string,
       name: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1264,14 +1273,15 @@ export type OnUpdateSubscriptionOrderSubscription = {
   onUpdateSubscriptionOrder?:  {
     __typename: "SubscriptionOrder",
     id: string,
-    staff?:  {
+    staffID: string,
+    staff:  {
       __typename: "Staff",
       id: string,
       name: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1286,14 +1296,15 @@ export type OnDeleteSubscriptionOrderSubscription = {
   onDeleteSubscriptionOrder?:  {
     __typename: "SubscriptionOrder",
     id: string,
-    staff?:  {
+    staffID: string,
+    staff:  {
       __typename: "Staff",
       id: string,
       name: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
