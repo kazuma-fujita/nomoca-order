@@ -30,6 +30,7 @@ export const useDeleteSubscriptionOrder = () => {
       setIsLoading(false);
       setError(null);
       if (result.data && result.data.deleteSubscriptionOrder) {
+        console.log('deleteSubscriptionOrder:', result.data.deleteSubscriptionOrder);
         return data.filter((item) => item.id !== id);
       } else {
         throw Error('The API deleted data but it returned null.');

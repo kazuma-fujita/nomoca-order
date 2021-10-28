@@ -1,7 +1,5 @@
-import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
-import { ErrorAlert } from 'components/atoms/error-alert';
-import { UpdateStaffButton } from './update-staff-button';
-import { DeleteStaffButton } from './delete-staff-button';
+import { CircularProgress, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,8 +7,10 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { CircularProgress, Typography } from '@mui/material';
+import { ErrorAlert } from 'components/atoms/error-alert';
+import { useStaffList } from 'stores/use-staff-list';
+import { DeleteStaffButton } from './delete-staff-button';
+import { UpdateStaffButton } from './update-staff-button';
 
 const header = [
   {
@@ -62,7 +62,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export const StaffList = () => {
-  const { data, error } = useFetchStaffList();
+  const { data, error } = useStaffList();
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <TableContainer component={Paper}>

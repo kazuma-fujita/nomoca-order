@@ -5,8 +5,8 @@ import { useUpdateSubscriptionOrder } from 'hooks/subscription-orders/use-update
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
+import { useStaffList } from 'stores/use-staff-list';
 import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
-import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 
 type Props = {
   id: string;
@@ -16,7 +16,7 @@ type Props = {
 export const UpdateSubscriptionOrderButton = (props: Props) => {
   const useFormReturn = useForm<SubscriptionOrder>();
   const { handleSubmit, reset: resetForm, clearErrors } = useFormReturn;
-  const { data: staffList, error: fetchStaffListError } = useFetchStaffList();
+  const { data: staffList } = useStaffList();
   const { updateSubscriptionOrder, isLoading, error, resetState } = useUpdateSubscriptionOrder();
   const [on, toggle] = useToggle(false);
   useEffect(() => {
