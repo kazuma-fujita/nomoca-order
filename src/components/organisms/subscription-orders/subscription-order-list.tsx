@@ -11,6 +11,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { CircularProgress, Typography } from '@mui/material';
+import { useFormatDate } from 'hooks/date-hooks/use-format-date';
+import { useFormatDateHourMinute } from 'hooks/date-hooks/use-format-date-hour-minute';
 
 const header = [
   {
@@ -67,6 +69,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export const SubscriptionOrderList = () => {
   const { error, data } = useFetchSubscriptionOrderList();
+  const { formatDate } = useFormatDate();
+  const { formatDateHourMinute } = useFormatDateHourMinute();
+
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <TableContainer component={Paper}>
@@ -93,8 +98,8 @@ export const SubscriptionOrderList = () => {
             data.map((item) => (
               <StyledTableRow key={item.id}>
                 <StyledTableCell>{item.staff.name}</StyledTableCell>
-                <StyledTableCell>{item.createdAt}</StyledTableCell>
-                <StyledTableCell>{item.updatedAt}</StyledTableCell>
+                <StyledTableCell>{formatDate(item.createdAt)}</StyledTableCell>
+                <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                 <StyledTableCell align='center'>
                   <UpdateSubscriptionOrderButton id={item.id} staffID={item.staff.id} />
                 </StyledTableCell>

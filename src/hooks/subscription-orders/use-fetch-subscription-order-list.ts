@@ -8,12 +8,12 @@ import useSWR from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { DateFormat } from 'constants/date-format';
 
-const translator = (item: SubscriptionOrder): SubscriptionOrder => {
-  const copyItem: SubscriptionOrder = { ...item };
-  copyItem.createdAt = format(parseISO(item.createdAt), DateFormat.YMD);
-  copyItem.updatedAt = format(parseISO(item.updatedAt), DateFormat.YMDHM);
-  return copyItem;
-};
+// const translator = (item: SubscriptionOrder): SubscriptionOrder => {
+//   const copyItem: SubscriptionOrder = { ...item };
+//   copyItem.createdAt = format(parseISO(item.createdAt), DateFormat.YMD);
+//   copyItem.updatedAt = format(parseISO(item.updatedAt), DateFormat.YMDHM);
+//   return copyItem;
+// };
 
 const fetcher = async () => {
   const result = (await API.graphql(
@@ -29,8 +29,9 @@ const fetcher = async () => {
 };
 
 export const useFetchSubscriptionOrderList = () => {
-  const { data: responseData, error: responseError } = useSWR(SWRKey.SubscriptionOrderList, fetcher);
+  // const { data: responseData, error: responseError } = useSWR(SWRKey.SubscriptionOrderList, fetcher);
+  const { data, error: responseError } = useSWR(SWRKey.SubscriptionOrderList, fetcher);
   const error = parseResponseError(responseError);
-  const data = responseData && responseData.map(translator);
+  // const data = responseData && responseData.map(translator);
   return { data, error };
 };
