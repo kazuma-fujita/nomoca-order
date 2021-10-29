@@ -11,6 +11,8 @@ import { ErrorAlert } from 'components/atoms/error-alert';
 import { useStaffList } from 'stores/use-staff-list';
 import { DeleteStaffButton } from './delete-staff-button';
 import { UpdateStaffButton } from './update-staff-button';
+import { ActivateStaffButton } from './activate-staff-button';
+import { useFormatDateHourMinute } from 'hooks/date-hooks/use-format-date-hour-minute';
 
 const header = [
   {
@@ -26,7 +28,7 @@ const header = [
     minWidth: 80,
   },
   {
-    label: '削除',
+    label: 'プルダウン表示',
     minWidth: 80,
   },
 ];
@@ -63,6 +65,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export const StaffList = () => {
   const { data, error } = useStaffList();
+  const { formatDateHourMinute } = useFormatDateHourMinute();
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <TableContainer component={Paper}>
@@ -89,12 +92,12 @@ export const StaffList = () => {
             data.map((item) => (
               <StyledTableRow key={item.id}>
                 <StyledTableCell>{item.name}</StyledTableCell>
-                <StyledTableCell>{item.updatedAt}</StyledTableCell>
+                <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                 <StyledTableCell align='center'>
-                  <UpdateStaffButton id={item.id} name={item.name} />
+                  <UpdateStaffButton id={item.id} name={item.name} disabled={item.disabled} />
                 </StyledTableCell>
                 <StyledTableCell align='center'>
-                  <DeleteStaffButton id={item.id} name={item.name} />
+                  <ActivateStaffButton id={item.id} name={item.name} disabled={item.disabled} />
                 </StyledTableCell>
               </StyledTableRow>
             ))

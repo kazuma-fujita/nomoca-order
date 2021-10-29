@@ -159,6 +159,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
       staff {
         id
         name
+        disabled
         createdAt
         updatedAt
         owner
@@ -186,6 +187,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
         staff {
           id
           name
+          disabled
           createdAt
           updatedAt
           owner
@@ -203,6 +205,7 @@ export const getStaff = /* GraphQL */ `
     getStaff(id: $id) {
       id
       name
+      disabled
       createdAt
       updatedAt
       owner
@@ -219,6 +222,7 @@ export const listStaffs = /* GraphQL */ `
       items {
         id
         name
+        disabled
         createdAt
         updatedAt
         owner

@@ -16,7 +16,7 @@ const StaffPage = (props: Props) => {
       <Head>
         <title>{props.pageTitle}</title>
       </Head>
-      <StaffListContextProvider>
+      <StaffListContextProvider filterWithActiveStaff={false}>
         <StaffTemplate />
       </StaffListContextProvider>
     </>

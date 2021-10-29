@@ -10,6 +10,7 @@ import { InputStaffDialog } from './input-staff-dialog';
 type Props = {
   id: string;
   name: string;
+  disabled: boolean;
 };
 
 export const UpdateStaffButton = (props: Props) => {
@@ -23,7 +24,7 @@ export const UpdateStaffButton = (props: Props) => {
   // }, []);
   const submitHandler = handleSubmit(
     useCallback(async (data: Staff) => {
-      await updateStaff(props.id, data.name);
+      await updateStaff({ id: props.id, name: data.name, disabled: props.disabled });
       if (!error) {
         // cancelHandler();
         clearErrors();

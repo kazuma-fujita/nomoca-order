@@ -16,7 +16,7 @@ const SubscriptionOrderPage = (props: Props) => {
       <Head>
         <title>{props.pageTitle}</title>
       </Head>
-      <StaffListContextProvider>
+      <StaffListContextProvider filterWithActiveStaff={true}>
         <SubscriptionOrderTemplate />
       </StaffListContextProvider>
     </>

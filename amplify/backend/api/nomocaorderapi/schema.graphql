@@ -30,4 +30,5 @@ type SubscriptionOrder
 type Staff @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
+  disabled: Boolean!
 }
