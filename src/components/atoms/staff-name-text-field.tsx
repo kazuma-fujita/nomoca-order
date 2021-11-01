@@ -13,7 +13,7 @@ interface Props extends UseFormReturn<Staff> {
   name?: string;
 }
 
-const MAX_LENGTH = 5;
+const MAX_LENGTH = 256;
 
 // export const StaffNameTextField: React.FC<UseFormReturn<Staff>> = (props) => {
 export const StaffNameTextField: React.FC<Props> = (props) => {
