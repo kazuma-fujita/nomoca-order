@@ -9,20 +9,17 @@ import { InputStaffDialog } from './input-staff-dialog';
 import { useStaffList } from 'stores/use-staff-list';
 
 export const CreateStaffButton = () => {
-  // const { handleSubmit, watch, register, formState } = useForm<Staff>();
   const useFormReturn = useForm<Staff>({ defaultValues: { name: '' } });
   const { handleSubmit, reset: resetForm } = useFormReturn;
   const { createStaff, isLoading, error, resetState } = useCreateStaff();
   const [on, toggle] = useToggle(false);
-  const { data: staffList, mutate } = useStaffList();
+  const { data: staffList } = useStaffList();
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Staff) => {
-        // await createStaff(staffList, mutate, data.name);
         await createStaff(data.name);
         if (!error) {
-          resetForm();
-          toggle();
+          cancelHandler();
         }
       },
       [staffList]
