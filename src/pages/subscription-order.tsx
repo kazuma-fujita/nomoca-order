@@ -5,6 +5,7 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { StaffListContextProvider } from 'stores/use-staff-list';
+import { ProductListContextProvider } from 'stores/use-product-list';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -16,9 +17,11 @@ const SubscriptionOrderPage = (props: Props) => {
       <Head>
         <title>{props.pageTitle}</title>
       </Head>
-      <StaffListContextProvider filterWithActiveStaff={true}>
-        <SubscriptionOrderTemplate />
-      </StaffListContextProvider>
+      <ProductListContextProvider filterWithActiveProduct={true}>
+        <StaffListContextProvider filterWithActiveStaff={true}>
+          <SubscriptionOrderTemplate />
+        </StaffListContextProvider>
+      </ProductListContextProvider>
     </>
   );
 };

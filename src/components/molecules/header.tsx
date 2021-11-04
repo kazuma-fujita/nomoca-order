@@ -4,6 +4,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material/SvgIcon/SvgIcon';
@@ -35,7 +36,10 @@ export const Header = () => {
           { path: Path.SingleOrder, icon: ShoppingCartIcon, label: ScreenName.SingleOrder },
           { path: Path.SubscriptionOrder, icon: WifiProtectedSetupIcon, label: ScreenName.SubscriptionOrder },
         ],
-        [{ path: Path.Term, icon: FormatAlignLeftIcon, label: ScreenName.Term }],
+        [
+          { path: Path.Product, icon: ShoppingBasketIcon, label: ScreenName.Product },
+          { path: Path.Term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
+        ],
       ]
     : [
         [
@@ -52,7 +56,7 @@ export const Header = () => {
     [{ path: Path.ChangePassword, icon: LockIcon, label: ScreenName.ChangePassword }],
     [{ path: Path.SignOut, icon: LogoutIcon, label: ScreenName.SignOut }],
   ];
-  // TODO: findItemsが無かった場合400 or 404画面へ遷移
+  // findItemsが無かった場合401画面へ遷移
   var findItems = drawerItems
     .map((items) => items.find((item) => `/${item.path}` === router.pathname))
     .filter((item) => item);

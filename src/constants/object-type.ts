@@ -9,6 +9,7 @@ export const ObjectType = {
   SingleOrder: 'SingleOrder',
   SubscriptionOrder: 'SubscriptionOrder',
   Staff: 'Staff',
+  Product: 'Product',
   Clinic: 'Clinic',
 } as const;
 

@@ -14,6 +14,7 @@ export const Path = {
   SingleOrder: 'single-order',
   SubscriptionOrder: 'subscription-order',
   Staff: 'staff',
+  Product: 'product',
   Clinic: 'clinic',
   Term: 'term',
   ChangePassword: 'change-password',
