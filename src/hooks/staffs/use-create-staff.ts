@@ -1,7 +1,7 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import { CreateStaffInput, CreateStaffMutation, CreateStaffMutationVariables, Staff } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SWRKey } from 'constants/swr-key';
+import { SWRAllStaffListKey, SWRKey } from 'constants/swr-key';
 import { createStaff as createStaffQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { KeyedMutator, useSWRConfig } from 'swr';
@@ -19,11 +19,13 @@ export const useCreateStaff = () => {
     async (data: Staff[]): Promise<Staff[]> => {
       setIsLoading(true);
       try {
+        // fetch query実行時にviewOrderでsortする為、typeには 'Staff' 文字列を設定
+        // sort対象のviewOrderは配列長 + 1を設定
         const staff: CreateStaffInput = {
           name: name,
           viewOrder: data.length + 1,
-          disabled: false,
           type: ObjectType.Staff,
+          disabled: false,
         };
         const variables: CreateStaffMutationVariables = { input: staff };
         const result = (await API.graphql(
@@ -46,10 +48,7 @@ export const useCreateStaff = () => {
     };
 
   // // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
-  const createStaff = useCallback(
-    async (name: string) => mutate([SWRKey.StaffList, false], onCreateStaff(name), false),
-    []
-  );
+  const createStaff = useCallback(async (name: string) => mutate(SWRAllStaffListKey, onCreateStaff(name), false), []);
 
   // const { data, mutate } = useStaffList();
   // const createStaff = useCallback(
