@@ -204,6 +204,39 @@ export const listSubscriptionOrders = /* GraphQL */ `
     }
   }
 `;
+export const getProduct = /* GraphQL */ `
+  query GetProduct($id: ID!) {
+    getProduct(id: $id) {
+      id
+      name
+      type
+      viewOrder
+      disabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listProducts = /* GraphQL */ `
+  query ListProducts(
+    $filter: ModelProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getStaff = /* GraphQL */ `
   query GetStaff($id: ID!) {
     getStaff(id: $id) {
@@ -234,6 +267,36 @@ export const listStaffs = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+      }
+      nextToken
+    }
+  }
+`;
+export const listProductsSortedByViewOrder = /* GraphQL */ `
+  query ListProductsSortedByViewOrder(
+    $type: String
+    $viewOrder: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listProductsSortedByViewOrder(
+      type: $type
+      viewOrder: $viewOrder
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
       }
       nextToken
     }

@@ -27,6 +27,17 @@ type SubscriptionOrder
   staff: Staff! @connection(fields: ["staffID"])
 }
 
+type Product
+  @model
+  @auth(rules: [{ allow: groups, groups: ["Operators"] }, { allow: private, operations: [read] }])
+  @key(name: "sortByViewOrder", fields: ["type", "viewOrder"], queryField: "listProductsSortedByViewOrder") {
+  id: ID!
+  name: String!
+  type: String!
+  viewOrder: Int!
+  disabled: Boolean!
+}
+
 type Staff
   @model
   @auth(rules: [{ allow: owner }])

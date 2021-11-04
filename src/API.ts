@@ -212,7 +212,7 @@ export type DeleteSubscriptionOrderInput = {
   id: string,
 };
 
-export type CreateStaffInput = {
+export type CreateProductInput = {
   id?: string | null,
   name: string,
   type: string,
@@ -220,14 +220,14 @@ export type CreateStaffInput = {
   disabled: boolean,
 };
 
-export type ModelStaffConditionInput = {
+export type ModelProductConditionInput = {
   name?: ModelStringInput | null,
   type?: ModelStringInput | null,
   viewOrder?: ModelIntInput | null,
   disabled?: ModelBooleanInput | null,
-  and?: Array< ModelStaffConditionInput | null > | null,
-  or?: Array< ModelStaffConditionInput | null > | null,
-  not?: ModelStaffConditionInput | null,
+  and?: Array< ModelProductConditionInput | null > | null,
+  or?: Array< ModelProductConditionInput | null > | null,
+  not?: ModelProductConditionInput | null,
 };
 
 export type ModelIntInput = {
@@ -247,6 +247,47 @@ export type ModelBooleanInput = {
   eq?: boolean | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
+};
+
+export type Product = {
+  __typename: "Product",
+  id: string,
+  name: string,
+  type: string,
+  viewOrder: number,
+  disabled: boolean,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateProductInput = {
+  id: string,
+  name?: string | null,
+  type?: string | null,
+  viewOrder?: number | null,
+  disabled?: boolean | null,
+};
+
+export type DeleteProductInput = {
+  id: string,
+};
+
+export type CreateStaffInput = {
+  id?: string | null,
+  name: string,
+  type: string,
+  viewOrder: number,
+  disabled: boolean,
+};
+
+export type ModelStaffConditionInput = {
+  name?: ModelStringInput | null,
+  type?: ModelStringInput | null,
+  viewOrder?: ModelIntInput | null,
+  disabled?: ModelBooleanInput | null,
+  and?: Array< ModelStaffConditionInput | null > | null,
+  or?: Array< ModelStaffConditionInput | null > | null,
+  not?: ModelStaffConditionInput | null,
 };
 
 export type UpdateStaffInput = {
@@ -304,6 +345,23 @@ export type ModelSubscriptionOrderFilterInput = {
 export type ModelSubscriptionOrderConnection = {
   __typename: "ModelSubscriptionOrderConnection",
   items?:  Array<SubscriptionOrder | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelProductFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  type?: ModelStringInput | null,
+  viewOrder?: ModelIntInput | null,
+  disabled?: ModelBooleanInput | null,
+  and?: Array< ModelProductFilterInput | null > | null,
+  or?: Array< ModelProductFilterInput | null > | null,
+  not?: ModelProductFilterInput | null,
+};
+
+export type ModelProductConnection = {
+  __typename: "ModelProductConnection",
+  items?:  Array<Product | null > | null,
   nextToken?: string | null,
 };
 
@@ -723,6 +781,60 @@ export type DeleteSubscriptionOrderMutation = {
   } | null,
 };
 
+export type CreateProductMutationVariables = {
+  input: CreateProductInput,
+  condition?: ModelProductConditionInput | null,
+};
+
+export type CreateProductMutation = {
+  createProduct?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    type: string,
+    viewOrder: number,
+    disabled: boolean,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateProductMutationVariables = {
+  input: UpdateProductInput,
+  condition?: ModelProductConditionInput | null,
+};
+
+export type UpdateProductMutation = {
+  updateProduct?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    type: string,
+    viewOrder: number,
+    disabled: boolean,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteProductMutationVariables = {
+  input: DeleteProductInput,
+  condition?: ModelProductConditionInput | null,
+};
+
+export type DeleteProductMutation = {
+  deleteProduct?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    type: string,
+    viewOrder: number,
+    disabled: boolean,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreateStaffMutationVariables = {
   input: CreateStaffInput,
   condition?: ModelStaffConditionInput | null,
@@ -1021,6 +1133,46 @@ export type ListSubscriptionOrdersQuery = {
   } | null,
 };
 
+export type GetProductQueryVariables = {
+  id: string,
+};
+
+export type GetProductQuery = {
+  getProduct?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    type: string,
+    viewOrder: number,
+    disabled: boolean,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListProductsQueryVariables = {
+  filter?: ModelProductFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListProductsQuery = {
+  listProducts?:  {
+    __typename: "ModelProductConnection",
+    items?:  Array< {
+      __typename: "Product",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetStaffQueryVariables = {
   id: string,
 };
@@ -1058,6 +1210,32 @@ export type ListStaffsQuery = {
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ListProductsSortedByViewOrderQueryVariables = {
+  type?: string | null,
+  viewOrder?: ModelIntKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelProductFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListProductsSortedByViewOrderQuery = {
+  listProductsSortedByViewOrder?:  {
+    __typename: "ModelProductConnection",
+    items?:  Array< {
+      __typename: "Product",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -1423,6 +1601,45 @@ export type OnDeleteSubscriptionOrderSubscription = {
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+  } | null,
+};
+
+export type OnCreateProductSubscription = {
+  onCreateProduct?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    type: string,
+    viewOrder: number,
+    disabled: boolean,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateProductSubscription = {
+  onUpdateProduct?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    type: string,
+    viewOrder: number,
+    disabled: boolean,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteProductSubscription = {
+  onDeleteProduct?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    type: string,
+    viewOrder: number,
+    disabled: boolean,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 

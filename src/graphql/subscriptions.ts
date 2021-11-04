@@ -296,6 +296,45 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
     }
   }
 `;
+export const onCreateProduct = /* GraphQL */ `
+  subscription OnCreateProduct {
+    onCreateProduct {
+      id
+      name
+      type
+      viewOrder
+      disabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateProduct = /* GraphQL */ `
+  subscription OnUpdateProduct {
+    onUpdateProduct {
+      id
+      name
+      type
+      viewOrder
+      disabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteProduct = /* GraphQL */ `
+  subscription OnDeleteProduct {
+    onDeleteProduct {
+      id
+      name
+      type
+      viewOrder
+      disabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateStaff = /* GraphQL */ `
   subscription OnCreateStaff($owner: String!) {
     onCreateStaff(owner: $owner) {
