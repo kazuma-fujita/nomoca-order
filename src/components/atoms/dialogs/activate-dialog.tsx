@@ -9,9 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { ErrorAlert } from 'components/atoms/error-alert';
 
 type Props = {
-  // label: string;
-  // buttonIcon: ReactElement;
-  // buttonColor: 'success' | 'error';
+  dialogTitle: string;
   name: string;
   on: boolean;
   isLoading: boolean;
@@ -21,16 +19,18 @@ type Props = {
   cancelHandler: () => void;
 };
 
-export const ActivateStaffDialog = (props: Props) => {
+export const ActivateDialog = (props: Props) => {
   const label = props.disabled ? '有効' : '無効';
   return (
     <Dialog open={props.on}>
-      <DialogTitle>担当者を{label}にする</DialogTitle>
+      <DialogTitle>
+        {props.dialogTitle}を{label}にする
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           {props.disabled
-            ? '有効にすると注文時にこちらの担当者が選択できます。'
-            : '無効にすると注文時にこちらの担当者が選択できなくなります。'}
+            ? `有効にすると注文時にこちらの${props.dialogTitle}が選択できます。`
+            : `無効にすると注文時にこちらの${props.dialogTitle}が選択できなくなります。`}
         </DialogContentText>
         {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
         <Box mt={2} mb={2}>

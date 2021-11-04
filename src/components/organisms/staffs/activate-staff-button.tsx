@@ -2,7 +2,7 @@ import { Switch } from '@mui/material';
 import { useUpdateStaff } from 'hooks/staffs/use-update-staff';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
-import { ActivateStaffDialog } from './activate-staff-dialog';
+import { ActivateDialog } from 'components/atoms/dialogs/activate-dialog';
 
 type Props = {
   id: string;
@@ -26,7 +26,8 @@ export const ActivateStaffButton = (props: Props) => {
   return (
     <>
       <Switch checked={!props.disabled} onClick={toggle} inputProps={{ 'aria-label': 'activate-switch' }} />
-      <ActivateStaffDialog
+      <ActivateDialog
+        dialogTitle='担当者'
         name={props.name}
         on={on}
         isLoading={isLoading}

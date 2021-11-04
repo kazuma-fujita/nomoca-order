@@ -2,7 +2,7 @@ import { Switch } from '@mui/material';
 import { useUpdateProduct } from 'hooks/products/use-update-product';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
-import { ActivateProductDialog } from './activate-product-dialog';
+import { ActivateDialog } from 'components/atoms/dialogs/activate-dialog';
 
 type Props = {
   id: string;
@@ -26,7 +26,8 @@ export const ActivateProductButton = (props: Props) => {
   return (
     <>
       <Switch checked={!props.disabled} onClick={toggle} inputProps={{ 'aria-label': 'activate-switch' }} />
-      <ActivateProductDialog
+      <ActivateDialog
+        dialogTitle='商品'
         name={props.name}
         on={on}
         isLoading={isLoading}

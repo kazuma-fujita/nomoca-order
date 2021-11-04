@@ -36,7 +36,7 @@ const header = [
     minWidth: 80,
   },
   {
-    label: '表示順',
+    label: 'プルダウン表示順',
     minWidth: 80,
   },
 ];
