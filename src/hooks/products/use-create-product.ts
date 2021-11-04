@@ -2,7 +2,7 @@ import { GraphQLResult } from '@aws-amplify/api';
 import { CreateProductInput, CreateProductMutation, CreateProductMutationVariables, Product } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { ObjectType } from 'constants/object-type';
-import { SWRAllProductListKey } from 'constants/swr-key';
+import { SWRMultiKey } from 'constants/swr-key';
 import { createProduct as createProductQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
@@ -48,7 +48,7 @@ export const useCreateProduct = () => {
 
   // // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const createProduct = useCallback(
-    async (name: string) => mutate(SWRAllProductListKey, onCreateProduct(name), false),
+    async (name: string) => mutate(SWRMultiKey.AllProductList, onCreateProduct(name), false),
     []
   );
 

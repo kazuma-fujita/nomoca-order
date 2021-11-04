@@ -2,12 +2,13 @@ import { GraphQLResult } from '@aws-amplify/api';
 import { ModelStaffFilterInput, Staff } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { ObjectType } from 'constants/object-type';
-import { SWRActiveStaffListKey, SWRAllStaffListKey, SWRKey } from 'constants/swr-key';
+import { SWRKey } from 'constants/swr-key';
 import { listStaffsSortedByViewOrder } from 'graphql/queries';
 import { createContext, useContext } from 'react';
 import useSWR, { KeyedMutator } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ListStaffsSortedByViewOrderQuery, ListStaffsSortedByViewOrderQueryVariables } from '../API';
+import { SWRMultiKey } from '../constants/swr-key';
 
 type ProviderProps = {
   data: Staff[] | undefined;
@@ -51,7 +52,7 @@ export const StaffListContextProvider: React.FC<Props> = ({ filterWithActiveStaf
     data,
     error: responseError,
     mutate,
-  } = useSWR(filterWithActiveStaff ? SWRActiveStaffListKey : SWRAllStaffListKey, fetcher);
+  } = useSWR(filterWithActiveStaff ? SWRMultiKey.ActiveStaffList : SWRMultiKey.AllStaffList, fetcher);
   const error = responseError && parseResponseError(responseError);
   return <StaffListContext.Provider value={{ data, error, mutate }} {...rest} />;
 };

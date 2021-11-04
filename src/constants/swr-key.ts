@@ -13,8 +13,11 @@ export const SWRKey = {
 
 export type SWRKey = typeof SWRKey[keyof typeof SWRKey];
 
-export const SWRAllStaffListKey = [SWRKey.StaffList, false];
-export const SWRActiveStaffListKey = [SWRKey.StaffList, true];
+export const SWRMultiKey = {
+  AllStaffList: [SWRKey.StaffList, false],
+  ActiveStaffList: [SWRKey.StaffList, true],
+  AllProductList: [SWRKey.ProductList, false],
+  ActiveProductList: [SWRKey.ProductList, true],
+};
 
-export const SWRAllProductListKey = [SWRKey.ProductList, false];
-export const SWRActiveProductListKey = [SWRKey.ProductList, true];
+export type SWRMultiKey = typeof SWRMultiKey[keyof typeof SWRMultiKey];

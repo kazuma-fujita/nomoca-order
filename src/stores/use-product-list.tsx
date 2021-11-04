@@ -2,12 +2,13 @@ import { GraphQLResult } from '@aws-amplify/api';
 import { ModelProductFilterInput, Product } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { ObjectType } from 'constants/object-type';
-import { SWRActiveProductListKey, SWRAllProductListKey, SWRKey } from 'constants/swr-key';
+import { SWRKey } from 'constants/swr-key';
 import { listProductsSortedByViewOrder } from 'graphql/queries';
 import { createContext, useContext } from 'react';
 import useSWR, { KeyedMutator } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ListProductsSortedByViewOrderQuery, ListProductsSortedByViewOrderQueryVariables } from '../API';
+import { SWRMultiKey } from '../constants/swr-key';
 
 type ProviderProps = {
   data: Product[] | undefined;
@@ -51,7 +52,7 @@ export const ProductListContextProvider: React.FC<Props> = ({ filterWithActivePr
     data,
     error: responseError,
     mutate,
-  } = useSWR(filterWithActiveProduct ? SWRActiveProductListKey : SWRAllProductListKey, fetcher);
+  } = useSWR(filterWithActiveProduct ? SWRMultiKey.ActiveProductList : SWRMultiKey.AllProductList, fetcher);
   const error = responseError && parseResponseError(responseError);
   return <ProductListContext.Provider value={{ data, error, mutate }} {...rest} />;
 };

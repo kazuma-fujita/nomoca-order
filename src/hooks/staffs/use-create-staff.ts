@@ -1,13 +1,12 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import { CreateStaffInput, CreateStaffMutation, CreateStaffMutationVariables, Staff } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SWRAllStaffListKey, SWRKey } from 'constants/swr-key';
+import { ObjectType } from 'constants/object-type';
+import { SWRMultiKey } from 'constants/swr-key';
 import { createStaff as createStaffQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
-import { KeyedMutator, useSWRConfig } from 'swr';
+import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { useStaffList } from 'stores/use-staff-list';
-import { ObjectType } from 'constants/object-type';
 
 export const useCreateStaff = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +47,10 @@ export const useCreateStaff = () => {
     };
 
   // // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
-  const createStaff = useCallback(async (name: string) => mutate(SWRAllStaffListKey, onCreateStaff(name), false), []);
+  const createStaff = useCallback(
+    async (name: string) => mutate(SWRMultiKey.AllStaffList, onCreateStaff(name), false),
+    []
+  );
 
   // const { data, mutate } = useStaffList();
   // const createStaff = useCallback(

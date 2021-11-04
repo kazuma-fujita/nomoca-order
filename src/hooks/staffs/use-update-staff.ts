@@ -1,7 +1,7 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import { Staff, UpdateStaffInput, UpdateStaffMutation, UpdateStaffMutationVariables } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SWRAllStaffListKey, SWRKey } from 'constants/swr-key';
+import { SWRMultiKey } from 'constants/swr-key';
 import { updateStaff as updateStaffQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
@@ -49,7 +49,7 @@ export const useUpdateStaff = () => {
   // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const updateStaff = useCallback(
     async ({ id, name, disabled = false }: Args) =>
-      mutate(SWRAllStaffListKey, onUpdateStaff({ id, name, disabled }), false),
+      mutate(SWRMultiKey.AllStaffList, onUpdateStaff({ id, name, disabled }), false),
     []
   );
   // const updateStaff = useCallback(

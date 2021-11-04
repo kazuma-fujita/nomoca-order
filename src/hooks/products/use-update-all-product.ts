@@ -1,7 +1,7 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import { Product, UpdateProductInput, UpdateProductMutation, UpdateProductMutationVariables } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SWRAllProductListKey, SWRKey } from 'constants/swr-key';
+import { SWRMultiKey } from 'constants/swr-key';
 import { updateProduct as updateProductQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
@@ -56,7 +56,7 @@ export const useUpdateAllProduct = () => {
   // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const updateAllProduct = useCallback(
     async ({ sourceIndex, destinationIndex }: Args) =>
-      mutate(SWRAllProductListKey, onUpdateAllProduct({ sourceIndex, destinationIndex }), false),
+      mutate(SWRMultiKey.AllProductList, onUpdateAllProduct({ sourceIndex, destinationIndex }), false),
     []
   );
 
