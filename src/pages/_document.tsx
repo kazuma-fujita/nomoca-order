@@ -4,6 +4,7 @@ import Document, { Html, Head, Main, NextScript, DocumentInitialProps } from 'ne
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from 'utilities/create-emotion-cache';
 import theme from 'styles/theme';
+import { resetServerContext } from 'react-beautiful-dnd';
 
 export default class MyDocument extends Document {
   render(): JSX.Element {
@@ -27,6 +28,10 @@ export default class MyDocument extends Document {
 // `getInitialProps` belongs to `_document` (instead of `_app`),
 // it's compatible with static-site generation (SSG).
 MyDocument.getInitialProps = async (ctx): Promise<DocumentInitialProps> => {
+  // react-beautiful-dnd を使用しているpageで  Prop `data-rbd-droppable-context-id` did not match エラーが発生する為、resetServerContextをcallする。
+  // また、debug buildだとnext.config.jsのreactStrictModeもfalseにしないと同様エラーが発生する。
+  resetServerContext();
+
   // Resolution order
   //
   // On the server:

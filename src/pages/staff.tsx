@@ -1,8 +1,14 @@
 import { StaffTemplate } from 'components/templates/staff-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
-import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
+import {
+  GetServerSidePropsContext,
+  GetStaticPropsContext,
+  InferGetServerSidePropsType,
+  InferGetStaticPropsType,
+} from 'next';
 import Head from 'next/head';
+import { resetServerContext } from 'react-beautiful-dnd';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { StaffListContextProvider } from 'stores/use-staff-list';
 
@@ -23,7 +29,33 @@ const StaffPage = (props: Props) => {
   );
 };
 
+// type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
+
+// const StaffPage = (props: Props) => {
+//   useVerifyAuthenticated();
+
+//   return (
+//     <>
+//       <Head>
+//         <title>{ScreenName.Staff + TitleSuffix}</title>
+//       </Head>
+//       <StaffListContextProvider filterWithActiveStaff={false}>
+//         <StaffTemplate />
+//       </StaffListContextProvider>
+//     </>
+//   );
+// };
+
 export default StaffPage;
+
+// export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+//   resetServerContext();
+//   return {
+//     props: {
+//       pageTitle: ScreenName.Staff + TitleSuffix,
+//     },
+//   };
+// };
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {

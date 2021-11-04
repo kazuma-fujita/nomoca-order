@@ -27,8 +27,13 @@ type SubscriptionOrder
   staff: Staff! @connection(fields: ["staffID"])
 }
 
-type Staff @model @auth(rules: [{ allow: owner }]) {
+type Staff
+  @model
+  @auth(rules: [{ allow: owner }])
+  @key(name: "sortByViewOrder", fields: ["type", "viewOrder"], queryField: "listStaffsSortedByViewOrder") {
   id: ID!
   name: String!
+  type: String!
+  viewOrder: Int!
   disabled: Boolean!
 }

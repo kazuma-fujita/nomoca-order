@@ -241,6 +241,8 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
       staff {
         id
         name
+        type
+        viewOrder
         disabled
         createdAt
         updatedAt
@@ -260,6 +262,8 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
       staff {
         id
         name
+        type
+        viewOrder
         disabled
         createdAt
         updatedAt
@@ -279,6 +283,8 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
       staff {
         id
         name
+        type
+        viewOrder
         disabled
         createdAt
         updatedAt
@@ -295,6 +301,8 @@ export const onCreateStaff = /* GraphQL */ `
     onCreateStaff(owner: $owner) {
       id
       name
+      type
+      viewOrder
       disabled
       createdAt
       updatedAt
@@ -307,6 +315,8 @@ export const onUpdateStaff = /* GraphQL */ `
     onUpdateStaff(owner: $owner) {
       id
       name
+      type
+      viewOrder
       disabled
       createdAt
       updatedAt
@@ -319,6 +329,8 @@ export const onDeleteStaff = /* GraphQL */ `
     onDeleteStaff(owner: $owner) {
       id
       name
+      type
+      viewOrder
       disabled
       createdAt
       updatedAt

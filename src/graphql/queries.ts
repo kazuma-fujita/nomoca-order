@@ -159,6 +159,8 @@ export const getSubscriptionOrder = /* GraphQL */ `
       staff {
         id
         name
+        type
+        viewOrder
         disabled
         createdAt
         updatedAt
@@ -187,6 +189,8 @@ export const listSubscriptionOrders = /* GraphQL */ `
         staff {
           id
           name
+          type
+          viewOrder
           disabled
           createdAt
           updatedAt
@@ -205,6 +209,8 @@ export const getStaff = /* GraphQL */ `
     getStaff(id: $id) {
       id
       name
+      type
+      viewOrder
       disabled
       createdAt
       updatedAt
@@ -222,6 +228,39 @@ export const listStaffs = /* GraphQL */ `
       items {
         id
         name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const listStaffsSortedByViewOrder = /* GraphQL */ `
+  query ListStaffsSortedByViewOrder(
+    $type: String
+    $viewOrder: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelStaffFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStaffsSortedByViewOrder(
+      type: $type
+      viewOrder: $viewOrder
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        type
+        viewOrder
         disabled
         createdAt
         updatedAt

@@ -195,6 +195,8 @@ export type Staff = {
   __typename: "Staff",
   id: string,
   name: string,
+  type: string,
+  viewOrder: number,
   disabled: boolean,
   createdAt: string,
   updatedAt: string,
@@ -213,15 +215,31 @@ export type DeleteSubscriptionOrderInput = {
 export type CreateStaffInput = {
   id?: string | null,
   name: string,
+  type: string,
+  viewOrder: number,
   disabled: boolean,
 };
 
 export type ModelStaffConditionInput = {
   name?: ModelStringInput | null,
+  type?: ModelStringInput | null,
+  viewOrder?: ModelIntInput | null,
   disabled?: ModelBooleanInput | null,
   and?: Array< ModelStaffConditionInput | null > | null,
   or?: Array< ModelStaffConditionInput | null > | null,
   not?: ModelStaffConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ModelBooleanInput = {
@@ -234,6 +252,8 @@ export type ModelBooleanInput = {
 export type UpdateStaffInput = {
   id: string,
   name?: string | null,
+  type?: string | null,
+  viewOrder?: number | null,
   disabled?: boolean | null,
 };
 
@@ -290,6 +310,8 @@ export type ModelSubscriptionOrderConnection = {
 export type ModelStaffFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
+  type?: ModelStringInput | null,
+  viewOrder?: ModelIntInput | null,
   disabled?: ModelBooleanInput | null,
   and?: Array< ModelStaffFilterInput | null > | null,
   or?: Array< ModelStaffFilterInput | null > | null,
@@ -301,6 +323,21 @@ export type ModelStaffConnection = {
   items?:  Array<Staff | null > | null,
   nextToken?: string | null,
 };
+
+export type ModelIntKeyConditionInput = {
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 
 export type CreateBlogMutationVariables = {
   input: CreateBlogInput,
@@ -619,6 +656,8 @@ export type CreateSubscriptionOrderMutation = {
       __typename: "Staff",
       id: string,
       name: string,
+      type: string,
+      viewOrder: number,
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
@@ -644,6 +683,8 @@ export type UpdateSubscriptionOrderMutation = {
       __typename: "Staff",
       id: string,
       name: string,
+      type: string,
+      viewOrder: number,
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
@@ -669,6 +710,8 @@ export type DeleteSubscriptionOrderMutation = {
       __typename: "Staff",
       id: string,
       name: string,
+      type: string,
+      viewOrder: number,
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
@@ -690,6 +733,8 @@ export type CreateStaffMutation = {
     __typename: "Staff",
     id: string,
     name: string,
+    type: string,
+    viewOrder: number,
     disabled: boolean,
     createdAt: string,
     updatedAt: string,
@@ -707,6 +752,8 @@ export type UpdateStaffMutation = {
     __typename: "Staff",
     id: string,
     name: string,
+    type: string,
+    viewOrder: number,
     disabled: boolean,
     createdAt: string,
     updatedAt: string,
@@ -724,6 +771,8 @@ export type DeleteStaffMutation = {
     __typename: "Staff",
     id: string,
     name: string,
+    type: string,
+    viewOrder: number,
     disabled: boolean,
     createdAt: string,
     updatedAt: string,
@@ -927,6 +976,8 @@ export type GetSubscriptionOrderQuery = {
       __typename: "Staff",
       id: string,
       name: string,
+      type: string,
+      viewOrder: number,
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
@@ -955,6 +1006,8 @@ export type ListSubscriptionOrdersQuery = {
         __typename: "Staff",
         id: string,
         name: string,
+        type: string,
+        viewOrder: number,
         disabled: boolean,
         createdAt: string,
         updatedAt: string,
@@ -977,6 +1030,8 @@ export type GetStaffQuery = {
     __typename: "Staff",
     id: string,
     name: string,
+    type: string,
+    viewOrder: number,
     disabled: boolean,
     createdAt: string,
     updatedAt: string,
@@ -997,6 +1052,35 @@ export type ListStaffsQuery = {
       __typename: "Staff",
       id: string,
       name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ListStaffsSortedByViewOrderQueryVariables = {
+  type?: string | null,
+  viewOrder?: ModelIntKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelStaffFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListStaffsSortedByViewOrderQuery = {
+  listStaffsSortedByViewOrder?:  {
+    __typename: "ModelStaffConnection",
+    items?:  Array< {
+      __typename: "Staff",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
@@ -1277,6 +1361,8 @@ export type OnCreateSubscriptionOrderSubscription = {
       __typename: "Staff",
       id: string,
       name: string,
+      type: string,
+      viewOrder: number,
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
@@ -1301,6 +1387,8 @@ export type OnUpdateSubscriptionOrderSubscription = {
       __typename: "Staff",
       id: string,
       name: string,
+      type: string,
+      viewOrder: number,
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
@@ -1325,6 +1413,8 @@ export type OnDeleteSubscriptionOrderSubscription = {
       __typename: "Staff",
       id: string,
       name: string,
+      type: string,
+      viewOrder: number,
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
@@ -1345,6 +1435,8 @@ export type OnCreateStaffSubscription = {
     __typename: "Staff",
     id: string,
     name: string,
+    type: string,
+    viewOrder: number,
     disabled: boolean,
     createdAt: string,
     updatedAt: string,
@@ -1361,6 +1453,8 @@ export type OnUpdateStaffSubscription = {
     __typename: "Staff",
     id: string,
     name: string,
+    type: string,
+    viewOrder: number,
     disabled: boolean,
     createdAt: string,
     updatedAt: string,
@@ -1377,6 +1471,8 @@ export type OnDeleteStaffSubscription = {
     __typename: "Staff",
     id: string,
     name: string,
+    type: string,
+    viewOrder: number,
     disabled: boolean,
     createdAt: string,
     updatedAt: string,

@@ -13,6 +13,10 @@ import { DeleteStaffButton } from './delete-staff-button';
 import { UpdateStaffButton } from './update-staff-button';
 import { ActivateStaffButton } from './activate-staff-button';
 import { useFormatDateHourMinute } from 'hooks/date-hooks/use-format-date-hour-minute';
+import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
+import FormatLineSpacingIcon from '@mui/icons-material/FormatLineSpacing';
+import { useState, useCallback, useEffect } from 'react';
+import { useUpdateAllStaff } from 'hooks/staffs/use-update-all-staff';
 
 const header = [
   {
@@ -29,6 +33,10 @@ const header = [
   },
   {
     label: 'プルダウン表示',
+    minWidth: 80,
+  },
+  {
+    label: '表示順',
     minWidth: 80,
   },
 ];
@@ -66,44 +74,70 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export const StaffList = () => {
   const { data, error } = useStaffList();
   const { formatDateHourMinute } = useFormatDateHourMinute();
+  const { updateAllStaff } = useUpdateAllStaff();
+  const handleOnDragEnd = useCallback((result: DropResult, provided: ResponderProvided) => {
+    console.log('result:', result);
+    if (result.destination) {
+      updateAllStaff({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
+    }
+  }, []);
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label='staffs table'>
-        <TableHead>
-          <TableRow>
-            {header.map((item, index) => (
-              <StyledTableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
-                <Typography variant='body2' fontWeight='bold'>
-                  {item.label}
-                </Typography>
-              </StyledTableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {!data ? (
-            <EmptyTableBody>
-              <CircularProgress />
-            </EmptyTableBody>
-          ) : data.length == 0 ? (
-            <EmptyTableBody>担当者を追加してください</EmptyTableBody>
-          ) : (
-            data.map((item) => (
-              <StyledTableRow key={item.id}>
-                <StyledTableCell>{item.name}</StyledTableCell>
-                <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
-                <StyledTableCell align='center'>
-                  <UpdateStaffButton id={item.id} name={item.name} disabled={item.disabled} />
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <TableContainer component={Paper}>
+        <Table aria-label='staffs table'>
+          <TableHead>
+            <TableRow>
+              {header.map((item, index) => (
+                <StyledTableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
+                  <Typography variant='body2' fontWeight='bold'>
+                    {item.label}
+                  </Typography>
                 </StyledTableCell>
-                <StyledTableCell align='center'>
-                  <ActivateStaffButton id={item.id} name={item.name} disabled={item.disabled} />
-                </StyledTableCell>
-              </StyledTableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+              ))}
+            </TableRow>
+          </TableHead>
+          <Droppable droppableId='staffs'>
+            {(provided) => (
+              <TableBody className='staffs' {...provided.droppableProps} ref={provided.innerRef}>
+                {!data ? (
+                  <EmptyTableBody>
+                    <CircularProgress />
+                  </EmptyTableBody>
+                ) : data.length == 0 ? (
+                  <EmptyTableBody>担当者を追加してください</EmptyTableBody>
+                ) : (
+                  data.map((item, index) => (
+                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                      {(provided) => (
+                        <StyledTableRow
+                          key={item.id}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          // {...provided.dragHandleProps}
+                        >
+                          <StyledTableCell>{item.name}</StyledTableCell>
+                          <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
+                          <StyledTableCell align='center'>
+                            <UpdateStaffButton id={item.id} name={item.name} disabled={item.disabled} />
+                          </StyledTableCell>
+                          <StyledTableCell align='center'>
+                            <ActivateStaffButton id={item.id} name={item.name} disabled={item.disabled} />
+                          </StyledTableCell>
+                          <StyledTableCell align='center' {...provided.dragHandleProps}>
+                            <FormatLineSpacingIcon />
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      )}
+                    </Draggable>
+                  ))
+                )}
+                {provided.placeholder}
+              </TableBody>
+            )}
+          </Droppable>
+        </Table>
+      </TableContainer>
+    </DragDropContext>
   );
 };
