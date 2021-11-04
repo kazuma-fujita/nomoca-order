@@ -1,12 +1,13 @@
 import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { Product } from 'API';
+import { InputDialog } from 'components/atoms/dialogs/input-dialog';
 import { useCreateProduct } from 'hooks/products/use-create-product';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
-import { InputProductDialog } from './input-product-dialog';
 import { useProductList } from 'stores/use-product-list';
+import { ProductNameTextField } from '../../atoms/text-fields/product-name-text-field';
 
 export const CreateProductButton = () => {
   const useFormReturn = useForm<Product>({ defaultValues: { name: '' } });
@@ -30,22 +31,25 @@ export const CreateProductButton = () => {
     resetState();
     toggle();
   }, []);
-  const label = '追加';
+  const submitButtonLabel = '追加する';
+  const label = `商品を${submitButtonLabel}`;
   return (
     <>
       <Button onClick={toggle} variant='outlined' startIcon={<Add />}>
-        担当者を{label}する
+        {label}
       </Button>
-      <InputProductDialog
-        label={label}
+      <InputDialog
+        dialogTitle={label}
+        submitButtonLabel={submitButtonLabel}
         startIcon={<Add />}
         on={on}
         isLoading={isLoading}
         error={error}
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
-        useFormReturn={useFormReturn}
-      />
+      >
+        <ProductNameTextField {...useFormReturn} disabled={isLoading} />
+      </InputDialog>
     </>
   );
 };

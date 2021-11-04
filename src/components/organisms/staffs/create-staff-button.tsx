@@ -1,12 +1,13 @@
 import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { Staff } from 'API';
+import { StaffNameTextField } from 'components/atoms/text-fields/staff-name-text-field';
 import { useCreateStaff } from 'hooks/staffs/use-create-staff';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
-import { InputStaffDialog } from './input-staff-dialog';
 import { useStaffList } from 'stores/use-staff-list';
+import { InputDialog } from 'components/atoms/dialogs/input-dialog';
 
 export const CreateStaffButton = () => {
   const useFormReturn = useForm<Staff>({ defaultValues: { name: '' } });
@@ -30,22 +31,25 @@ export const CreateStaffButton = () => {
     resetState();
     toggle();
   }, []);
-  const label = '追加';
+  const submitButtonLabel = '追加する';
+  const label = `担当者を${submitButtonLabel}`;
   return (
     <>
       <Button onClick={toggle} variant='outlined' startIcon={<Add />}>
-        担当者を{label}する
+        {label}
       </Button>
-      <InputStaffDialog
-        label={label}
+      <InputDialog
+        dialogTitle={label}
+        submitButtonLabel={submitButtonLabel}
         startIcon={<Add />}
         on={on}
         isLoading={isLoading}
         error={error}
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
-        useFormReturn={useFormReturn}
-      />
+      >
+        <StaffNameTextField {...useFormReturn} disabled={isLoading} />
+      </InputDialog>
     </>
   );
 };
