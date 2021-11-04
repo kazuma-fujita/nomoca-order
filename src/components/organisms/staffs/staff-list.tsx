@@ -1,22 +1,22 @@
+import FormatLineSpacingIcon from '@mui/icons-material/FormatLineSpacing';
 import { CircularProgress, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { ErrorAlert } from 'components/atoms/error-alert';
-import { useStaffList } from 'stores/use-staff-list';
-import { DeleteStaffButton } from './delete-staff-button';
-import { UpdateStaffButton } from './update-staff-button';
-import { ActivateStaffButton } from './activate-staff-button';
+import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
+import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
+import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
 import { useFormatDateHourMinute } from 'hooks/date-hooks/use-format-date-hour-minute';
-import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import FormatLineSpacingIcon from '@mui/icons-material/FormatLineSpacing';
-import { useState, useCallback, useEffect } from 'react';
 import { useUpdateAllStaff } from 'hooks/staffs/use-update-all-staff';
+import { useCallback } from 'react';
+import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
+import { useStaffList } from 'stores/use-staff-list';
+import { ActivateStaffButton } from './activate-staff-button';
+import { UpdateStaffButton } from './update-staff-button';
 
 const header = [
   {
@@ -41,46 +41,16 @@ const header = [
   },
 ];
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.text.secondary,
-  },
-  // [`&.${tableCellClasses.body}`]: {
-  //   fontSize: 14,
-  // },
-}));
-
-const EmptyTableBody: React.FC = ({ children }) => {
-  return (
-    <StyledTableRow>
-      <StyledTableCell colSpan={header.length} align='center'>
-        {children}
-      </StyledTableCell>
-    </StyledTableRow>
-  );
-};
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(even)': {
-    backgroundColor: theme.palette.grey[50],
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
 export const StaffList = () => {
   const { data, error } = useStaffList();
   const { formatDateHourMinute } = useFormatDateHourMinute();
   const { updateAllStaff } = useUpdateAllStaff();
   const handleOnDragEnd = useCallback((result: DropResult, provided: ResponderProvided) => {
-    console.log('result:', result);
     if (result.destination) {
       updateAllStaff({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
     }
   }, []);
+  const droppableId = 'staffs';
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -97,25 +67,19 @@ export const StaffList = () => {
               ))}
             </TableRow>
           </TableHead>
-          <Droppable droppableId='staffs'>
+          <Droppable droppableId={droppableId}>
             {(provided) => (
-              <TableBody className='staffs' {...provided.droppableProps} ref={provided.innerRef}>
-                {!data ? (
-                  <EmptyTableBody>
-                    <CircularProgress />
+              <TableBody className={droppableId} {...provided.droppableProps} ref={provided.innerRef}>
+                {(!data || data.length == 0) && (
+                  <EmptyTableBody headerLength={header.length}>
+                    {!data ? <CircularProgress /> : '担当者を追加してください'}
                   </EmptyTableBody>
-                ) : data.length == 0 ? (
-                  <EmptyTableBody>担当者を追加してください</EmptyTableBody>
-                ) : (
+                )}
+                {data &&
                   data.map((item, index) => (
                     <Draggable key={item.id} draggableId={item.id} index={index}>
                       {(provided) => (
-                        <StyledTableRow
-                          key={item.id}
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          // {...provided.dragHandleProps}
-                        >
+                        <StyledTableRow key={item.id} ref={provided.innerRef} {...provided.draggableProps}>
                           <StyledTableCell>{item.name}</StyledTableCell>
                           <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                           <StyledTableCell align='center'>
@@ -130,8 +94,7 @@ export const StaffList = () => {
                         </StyledTableRow>
                       )}
                     </Draggable>
-                  ))
-                )}
+                  ))}
                 {provided.placeholder}
               </TableBody>
             )}
