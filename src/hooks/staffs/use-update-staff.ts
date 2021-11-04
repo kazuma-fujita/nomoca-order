@@ -17,13 +17,11 @@ export const useUpdateStaff = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
-  // const { data, mutate } = useStaffList();
 
-  // mutateの第2引数function
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onUpdateStaff =
     ({ id, name, disabled }: Args) =>
-    async (data: Staff[]) => {
+    async (data: Staff[]): Promise<Staff[]> => {
       setIsLoading(true);
       try {
         const staff: UpdateStaffInput = name ? { id: id, name: name, disabled } : { id: id, disabled };
@@ -31,9 +29,9 @@ export const useUpdateStaff = () => {
         const result = (await API.graphql(
           graphqlOperation(updateStaffQuery, variables)
         )) as GraphQLResult<UpdateStaffMutation>;
-        setIsLoading(false);
-        setError(null);
         if (result.data && result.data.updateStaff) {
+          setIsLoading(false);
+          setError(null);
           const updatedStaff = result.data.updateStaff;
           console.log('updatedStaff:', updatedStaff);
           return data.map((item) => (item.id === id ? updatedStaff : item));
@@ -44,7 +42,7 @@ export const useUpdateStaff = () => {
         setIsLoading(false);
         setError(parseResponseError(error));
         console.error('update error:', error);
-        // throw error as Error;
+        return data;
       }
     };
 

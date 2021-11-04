@@ -17,11 +17,10 @@ export const useUpdateAllStaff = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
-  // mutateの第2引数function
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onUpdateAllStaff =
     ({ sourceIndex, destinationIndex }: Args) =>
-    async (data: Staff[]) => {
+    async (data: Staff[]): Promise<Staff[]> => {
       if (!data || data.length === 0 || !data[sourceIndex] || !data[destinationIndex]) return data;
       // スプレッド構文で配列をコピー
       const items = [...data];
@@ -36,9 +35,9 @@ export const useUpdateAllStaff = () => {
           const result = (await API.graphql(
             graphqlOperation(updateStaffQuery, variables)
           )) as GraphQLResult<UpdateStaffMutation>;
-          setIsLoading(false);
-          setError(null);
           if (result.data && result.data.updateStaff) {
+            setIsLoading(false);
+            setError(null);
             const updatedStaff = result.data.updateStaff;
             console.log('updatedAllStaff:', updatedStaff);
           } else {

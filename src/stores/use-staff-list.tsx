@@ -1,15 +1,13 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { ListStaffsQuery, ListStaffsQueryVariables, ModelStaffFilterInput, Staff } from 'API';
+import { ModelStaffFilterInput, Staff } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
+import { ObjectType } from 'constants/object-type';
 import { SWRKey } from 'constants/swr-key';
-import { format, parseISO } from 'date-fns';
-import { listStaffs } from 'graphql/queries';
-import { createContext, useContext, useMemo } from 'react';
+import { listStaffsSortedByViewOrder } from 'graphql/queries';
+import { createContext, useContext } from 'react';
 import useSWR, { KeyedMutator } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ListStaffsSortedByViewOrderQuery, ListStaffsSortedByViewOrderQueryVariables } from '../API';
-import { listStaffsSortedByViewOrder } from 'graphql/queries';
-import { ObjectType } from 'constants/object-type';
 
 type ProviderProps = {
   data: Staff[] | undefined;
@@ -48,8 +46,5 @@ type Props = {
 export const StaffListContextProvider: React.FC<Props> = ({ filterWithActiveStaff, ...rest }) => {
   const { data, error: responseError, mutate } = useSWR([SWRKey.StaffList, filterWithActiveStaff], fetcher);
   const error = responseError && parseResponseError(responseError);
-  // const data = responseData && responseData.map(translator);
-  // const value = useMemo(() => ({ data, error, mutate }), [data, error, mutate]);
-  // return <StaffListContext.Provider value={value} {...rest} />;
   return <StaffListContext.Provider value={{ data, error, mutate }} {...rest} />;
 };

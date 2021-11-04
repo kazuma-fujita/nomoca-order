@@ -17,7 +17,6 @@ export const useDeleteSubscriptionOrder = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
-  // mutateの第2引数function
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onDeleteSubscriptionOrder = (id: string) => async (data: SubscriptionOrder[]) => {
     setIsLoading(true);
@@ -27,9 +26,9 @@ export const useDeleteSubscriptionOrder = () => {
       const result = (await API.graphql(
         graphqlOperation(deleteSubscriptionOrderQuery, variables)
       )) as GraphQLResult<DeleteSubscriptionOrderMutation>;
-      setIsLoading(false);
-      setError(null);
       if (result.data && result.data.deleteSubscriptionOrder) {
+        setIsLoading(false);
+        setError(null);
         console.log('deleteSubscriptionOrder:', result.data.deleteSubscriptionOrder);
         return data.filter((item) => item.id !== id);
       } else {
@@ -39,7 +38,6 @@ export const useDeleteSubscriptionOrder = () => {
       setIsLoading(false);
       setError(parseResponseError(error));
       console.error('delete error:', error);
-      // throw error as Error;
     }
   };
 

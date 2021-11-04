@@ -17,7 +17,6 @@ export const useCreateSubscriptionOrder = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
-  // mutateの第2引数function
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onCreateSubscriptionOrder =
     (staffID: string) =>
@@ -29,9 +28,9 @@ export const useCreateSubscriptionOrder = () => {
         const result = (await API.graphql(
           graphqlOperation(createSubscriptionOrderQuery, variables)
         )) as GraphQLResult<CreateSubscriptionOrderMutation>;
-        setIsLoading(false);
-        setError(null);
         if (result.data && result.data.createSubscriptionOrder) {
+          setIsLoading(false);
+          setError(null);
           console.log('newSubscriptionOrder:', result.data.createSubscriptionOrder);
           return [...data, result.data.createSubscriptionOrder];
         } else {
@@ -41,7 +40,7 @@ export const useCreateSubscriptionOrder = () => {
         setIsLoading(false);
         setError(parseResponseError(error));
         console.error('create error:', error);
-        throw error as Error;
+        return data;
       }
     };
 

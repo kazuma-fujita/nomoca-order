@@ -1,9 +1,9 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import {
+  SubscriptionOrder,
   UpdateSubscriptionOrderInput,
   UpdateSubscriptionOrderMutation,
   UpdateSubscriptionOrderMutationVariables,
-  SubscriptionOrder,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
@@ -17,7 +17,6 @@ export const useUpdateSubscriptionOrder = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
-  // mutateの第2引数function
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onUpdateSubscriptionOrder =
     (id: string, staffID: string) =>
@@ -29,9 +28,9 @@ export const useUpdateSubscriptionOrder = () => {
         const result = (await API.graphql(
           graphqlOperation(updateSubscriptionOrderQuery, variables)
         )) as GraphQLResult<UpdateSubscriptionOrderMutation>;
-        setIsLoading(false);
-        setError(null);
         if (result.data && result.data.updateSubscriptionOrder) {
+          setIsLoading(false);
+          setError(null);
           const updatedSubscriptionOrder = result.data.updateSubscriptionOrder;
           console.log('updatedSubscriptionOrder:', updatedSubscriptionOrder);
           return data.map((item) => (item.id === id ? updatedSubscriptionOrder : item));
@@ -42,7 +41,7 @@ export const useUpdateSubscriptionOrder = () => {
         setIsLoading(false);
         setError(parseResponseError(error));
         console.error('update error:', error);
-        throw error as Error;
+        return data;
       }
     };
 
