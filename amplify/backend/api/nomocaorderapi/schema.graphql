@@ -24,7 +24,17 @@ type SubscriptionOrder
   @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read, update] }, { allow: owner }]) {
   id: ID!
   staffID: ID!
+  products: [SubscriptionOrderProduct]! @connection(keyName: "bySubscriptionOrder", fields: ["id"])
   staff: Staff! @connection(fields: ["staffID"])
+}
+
+type SubscriptionOrderProduct
+  @model(queries: null)
+  @key(name: "bySubscriptionOrder", fields: ["subscriptionOrderID", "productID"]) {
+  id: ID!
+  subscriptionOrderID: ID!
+  productID: ID!
+  product: Product! @connection(fields: ["productID"])
 }
 
 type Product

@@ -156,6 +156,16 @@ export const getSubscriptionOrder = /* GraphQL */ `
     getSubscriptionOrder(id: $id) {
       id
       staffID
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       staff {
         id
         name
@@ -186,6 +196,9 @@ export const listSubscriptionOrders = /* GraphQL */ `
       items {
         id
         staffID
+        products {
+          nextToken
+        }
         staff {
           id
           name

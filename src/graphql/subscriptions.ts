@@ -238,6 +238,16 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
     onCreateSubscriptionOrder(owner: $owner) {
       id
       staffID
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       staff {
         id
         name
@@ -259,6 +269,16 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
     onUpdateSubscriptionOrder(owner: $owner) {
       id
       staffID
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       staff {
         id
         name
@@ -280,6 +300,16 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
     onDeleteSubscriptionOrder(owner: $owner) {
       id
       staffID
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       staff {
         id
         name
@@ -293,6 +323,66 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+    }
+  }
+`;
+export const onCreateSubscriptionOrderProduct = /* GraphQL */ `
+  subscription OnCreateSubscriptionOrderProduct {
+    onCreateSubscriptionOrderProduct {
+      id
+      subscriptionOrderID
+      productID
+      product {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSubscriptionOrderProduct = /* GraphQL */ `
+  subscription OnUpdateSubscriptionOrderProduct {
+    onUpdateSubscriptionOrderProduct {
+      id
+      subscriptionOrderID
+      productID
+      product {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
+  subscription OnDeleteSubscriptionOrderProduct {
+    onDeleteSubscriptionOrderProduct {
+      id
+      subscriptionOrderID
+      productID
+      product {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
     }
   }
 `;

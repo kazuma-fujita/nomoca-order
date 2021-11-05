@@ -268,6 +268,16 @@ export const createSubscriptionOrder = /* GraphQL */ `
     createSubscriptionOrder(input: $input, condition: $condition) {
       id
       staffID
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       staff {
         id
         name
@@ -292,6 +302,16 @@ export const updateSubscriptionOrder = /* GraphQL */ `
     updateSubscriptionOrder(input: $input, condition: $condition) {
       id
       staffID
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       staff {
         id
         name
@@ -316,6 +336,16 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
     deleteSubscriptionOrder(input: $input, condition: $condition) {
       id
       staffID
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       staff {
         id
         name
@@ -329,6 +359,75 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+    }
+  }
+`;
+export const createSubscriptionOrderProduct = /* GraphQL */ `
+  mutation CreateSubscriptionOrderProduct(
+    $input: CreateSubscriptionOrderProductInput!
+    $condition: ModelSubscriptionOrderProductConditionInput
+  ) {
+    createSubscriptionOrderProduct(input: $input, condition: $condition) {
+      id
+      subscriptionOrderID
+      productID
+      product {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSubscriptionOrderProduct = /* GraphQL */ `
+  mutation UpdateSubscriptionOrderProduct(
+    $input: UpdateSubscriptionOrderProductInput!
+    $condition: ModelSubscriptionOrderProductConditionInput
+  ) {
+    updateSubscriptionOrderProduct(input: $input, condition: $condition) {
+      id
+      subscriptionOrderID
+      productID
+      product {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSubscriptionOrderProduct = /* GraphQL */ `
+  mutation DeleteSubscriptionOrderProduct(
+    $input: DeleteSubscriptionOrderProductInput!
+    $condition: ModelSubscriptionOrderProductConditionInput
+  ) {
+    deleteSubscriptionOrderProduct(input: $input, condition: $condition) {
+      id
+      subscriptionOrderID
+      productID
+      product {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
     }
   }
 `;

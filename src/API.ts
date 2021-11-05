@@ -185,10 +185,38 @@ export type SubscriptionOrder = {
   __typename: "SubscriptionOrder",
   id: string,
   staffID: string,
+  products?: ModelSubscriptionOrderProductConnection | null,
   staff: Staff,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
+};
+
+export type ModelSubscriptionOrderProductConnection = {
+  __typename: "ModelSubscriptionOrderProductConnection",
+  items?:  Array<SubscriptionOrderProduct | null > | null,
+  nextToken?: string | null,
+};
+
+export type SubscriptionOrderProduct = {
+  __typename: "SubscriptionOrderProduct",
+  id: string,
+  subscriptionOrderID: string,
+  productID: string,
+  product: Product,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Product = {
+  __typename: "Product",
+  id: string,
+  name: string,
+  type: string,
+  viewOrder: number,
+  disabled: boolean,
+  createdAt: string,
+  updatedAt: string,
 };
 
 export type Staff = {
@@ -209,6 +237,30 @@ export type UpdateSubscriptionOrderInput = {
 };
 
 export type DeleteSubscriptionOrderInput = {
+  id: string,
+};
+
+export type CreateSubscriptionOrderProductInput = {
+  id?: string | null,
+  subscriptionOrderID: string,
+  productID: string,
+};
+
+export type ModelSubscriptionOrderProductConditionInput = {
+  subscriptionOrderID?: ModelIDInput | null,
+  productID?: ModelIDInput | null,
+  and?: Array< ModelSubscriptionOrderProductConditionInput | null > | null,
+  or?: Array< ModelSubscriptionOrderProductConditionInput | null > | null,
+  not?: ModelSubscriptionOrderProductConditionInput | null,
+};
+
+export type UpdateSubscriptionOrderProductInput = {
+  id: string,
+  subscriptionOrderID?: string | null,
+  productID?: string | null,
+};
+
+export type DeleteSubscriptionOrderProductInput = {
   id: string,
 };
 
@@ -247,17 +299,6 @@ export type ModelBooleanInput = {
   eq?: boolean | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
-};
-
-export type Product = {
-  __typename: "Product",
-  id: string,
-  name: string,
-  type: string,
-  viewOrder: number,
-  disabled: boolean,
-  createdAt: string,
-  updatedAt: string,
 };
 
 export type UpdateProductInput = {
@@ -710,6 +751,18 @@ export type CreateSubscriptionOrderMutation = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderProductConnection",
+      items?:  Array< {
+        __typename: "SubscriptionOrderProduct",
+        id: string,
+        subscriptionOrderID: string,
+        productID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     staff:  {
       __typename: "Staff",
       id: string,
@@ -737,6 +790,18 @@ export type UpdateSubscriptionOrderMutation = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderProductConnection",
+      items?:  Array< {
+        __typename: "SubscriptionOrderProduct",
+        id: string,
+        subscriptionOrderID: string,
+        productID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     staff:  {
       __typename: "Staff",
       id: string,
@@ -764,6 +829,18 @@ export type DeleteSubscriptionOrderMutation = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderProductConnection",
+      items?:  Array< {
+        __typename: "SubscriptionOrderProduct",
+        id: string,
+        subscriptionOrderID: string,
+        productID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     staff:  {
       __typename: "Staff",
       id: string,
@@ -778,6 +855,84 @@ export type DeleteSubscriptionOrderMutation = {
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+  } | null,
+};
+
+export type CreateSubscriptionOrderProductMutationVariables = {
+  input: CreateSubscriptionOrderProductInput,
+  condition?: ModelSubscriptionOrderProductConditionInput | null,
+};
+
+export type CreateSubscriptionOrderProductMutation = {
+  createSubscriptionOrderProduct?:  {
+    __typename: "SubscriptionOrderProduct",
+    id: string,
+    subscriptionOrderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSubscriptionOrderProductMutationVariables = {
+  input: UpdateSubscriptionOrderProductInput,
+  condition?: ModelSubscriptionOrderProductConditionInput | null,
+};
+
+export type UpdateSubscriptionOrderProductMutation = {
+  updateSubscriptionOrderProduct?:  {
+    __typename: "SubscriptionOrderProduct",
+    id: string,
+    subscriptionOrderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSubscriptionOrderProductMutationVariables = {
+  input: DeleteSubscriptionOrderProductInput,
+  condition?: ModelSubscriptionOrderProductConditionInput | null,
+};
+
+export type DeleteSubscriptionOrderProductMutation = {
+  deleteSubscriptionOrderProduct?:  {
+    __typename: "SubscriptionOrderProduct",
+    id: string,
+    subscriptionOrderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1084,6 +1239,18 @@ export type GetSubscriptionOrderQuery = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderProductConnection",
+      items?:  Array< {
+        __typename: "SubscriptionOrderProduct",
+        id: string,
+        subscriptionOrderID: string,
+        productID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     staff:  {
       __typename: "Staff",
       id: string,
@@ -1114,6 +1281,10 @@ export type ListSubscriptionOrdersQuery = {
       __typename: "SubscriptionOrder",
       id: string,
       staffID: string,
+      products?:  {
+        __typename: "ModelSubscriptionOrderProductConnection",
+        nextToken?: string | null,
+      } | null,
       staff:  {
         __typename: "Staff",
         id: string,
@@ -1535,6 +1706,18 @@ export type OnCreateSubscriptionOrderSubscription = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderProductConnection",
+      items?:  Array< {
+        __typename: "SubscriptionOrderProduct",
+        id: string,
+        subscriptionOrderID: string,
+        productID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     staff:  {
       __typename: "Staff",
       id: string,
@@ -1561,6 +1744,18 @@ export type OnUpdateSubscriptionOrderSubscription = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderProductConnection",
+      items?:  Array< {
+        __typename: "SubscriptionOrderProduct",
+        id: string,
+        subscriptionOrderID: string,
+        productID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     staff:  {
       __typename: "Staff",
       id: string,
@@ -1587,6 +1782,18 @@ export type OnDeleteSubscriptionOrderSubscription = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderProductConnection",
+      items?:  Array< {
+        __typename: "SubscriptionOrderProduct",
+        id: string,
+        subscriptionOrderID: string,
+        productID: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
     staff:  {
       __typename: "Staff",
       id: string,
@@ -1601,6 +1808,69 @@ export type OnDeleteSubscriptionOrderSubscription = {
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+  } | null,
+};
+
+export type OnCreateSubscriptionOrderProductSubscription = {
+  onCreateSubscriptionOrderProduct?:  {
+    __typename: "SubscriptionOrderProduct",
+    id: string,
+    subscriptionOrderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSubscriptionOrderProductSubscription = {
+  onUpdateSubscriptionOrderProduct?:  {
+    __typename: "SubscriptionOrderProduct",
+    id: string,
+    subscriptionOrderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSubscriptionOrderProductSubscription = {
+  onDeleteSubscriptionOrderProduct?:  {
+    __typename: "SubscriptionOrderProduct",
+    id: string,
+    subscriptionOrderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
