@@ -61,7 +61,7 @@ export const SubscriptionOrderList = () => {
         <TableBody>
           {(!data || data.length == 0) && (
             <EmptyTableBody headerLength={header.length}>
-              {!data ? <CircularProgress /> : '在定期便はありません'}
+              {!data ? <CircularProgress /> : '現在定期便はありません'}
             </EmptyTableBody>
           )}
           {data &&
