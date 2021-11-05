@@ -3,30 +3,49 @@ import Button from '@mui/material/Button';
 import { SubscriptionOrder } from 'API';
 import { useCreateSubscriptionOrder } from 'hooks/subscription-orders/use-create-subscription-order';
 import { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { useStaffList } from 'stores/use-staff-list';
+import { useProductList } from 'stores/use-product-list';
 import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
 
+const defaultValues = {
+  // products: { items: [{ id: 'dummyId', productID: '' }] },
+  products: { items: [{ productID: '' }] },
+  staffID: '',
+};
+
 export const CreateSubscriptionOrderButton = () => {
-  const useFormReturn = useForm<SubscriptionOrder>();
-  const { handleSubmit, reset: resetForm } = useFormReturn;
+  // const useFormReturn = useForm<SubscriptionOrder>({ defaultValues });
+  const useFormReturn = useForm<SubscriptionOrder>({ defaultValues });
+  const { handleSubmit, control, reset: resetForm } = useFormReturn;
+  const useFieldArrayReturn = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: 'products.items',
+    // keyName: 'productID', // default to "id", you can change the key name
+  });
   const { createSubscriptionOrder, isLoading, error, resetState } = useCreateSubscriptionOrder();
+  const { data: productList } = useProductList();
   const { data: staffList } = useStaffList();
   const [on, toggle] = useToggle(false);
+
   const submitHandler = handleSubmit(
     useCallback(async (data: SubscriptionOrder) => {
-      await createSubscriptionOrder(data.staffID);
+      console.log('submit handler data:', data);
+      // await createSubscriptionOrder(data.staffID);
       if (!error) {
-        cancelHandler();
+        // cancelHandler();
       }
     }, [])
   );
+
   const cancelHandler = useCallback(() => {
-    resetForm({ staffID: '' });
+    // resetForm({ staffID: '' });
+    resetForm(defaultValues);
     resetState();
     toggle();
   }, []);
+
   const label = '申し込む';
   return (
     <>
@@ -42,6 +61,8 @@ export const CreateSubscriptionOrderButton = () => {
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
         useFormReturn={useFormReturn}
+        useFieldArrayReturn={useFieldArrayReturn}
+        productList={productList}
         staffList={staffList}
       />
     </>

@@ -1,26 +1,13 @@
 import LoadingButton from '@mui/lab/LoadingButton';
+import { Box, DialogActions, DialogContent, DialogTitle, MenuItem, TextField, IconButton } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import { SubscriptionOrder, Staff } from 'API';
+import { Product, Staff, SubscriptionOrder } from 'API';
 import { ErrorAlert } from 'components/atoms/error-alert';
 import Form from 'components/atoms/form';
 import { BaseSyntheticEvent, ReactElement } from 'react';
-import {
-  Box,
-  Button,
-  Checkbox,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@mui/material';
-import { Controller, UseFormReturn } from 'react-hook-form';
+import { Controller, UseFieldArrayReturn, UseFormReturn, useFieldArray } from 'react-hook-form';
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 type Props = {
   label: string;
@@ -31,23 +18,63 @@ type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
   cancelHandler: () => void;
   useFormReturn: UseFormReturn<SubscriptionOrder, object>;
+  // useFieldArrayReturn: UseFieldArrayReturn<SubscriptionOrder, 'products.items', 'id'>;
+  useFieldArrayReturn: UseFieldArrayReturn;
+  productList: Product[] | undefined;
   staffList: Staff[] | undefined;
   staffID?: string;
 };
 
 export const InputSubscriptionOrderDialog = (props: Props) => {
+  console.log('items:', props.useFieldArrayReturn.fields);
   return (
-    <Dialog open={props.on}>
+    <Dialog open={props.on} fullWidth={true}>
       <Form onSubmit={props.submitHandler}>
         <DialogTitle>定期便を{props.label}</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>担当者名を追加する</DialogContentText> */}
           {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
+          {props.useFieldArrayReturn.fields.map((item, index) => (
+            <Box mt={2} mb={2} key={item.id} sx={{ display: 'flex' }}>
+              <Controller
+                name={`products.items.${index}.productID`}
+                control={props.useFormReturn.control}
+                // defaultValue={props.staffList && props.staffList[0].id}
+                // defaultValue={item.id ?? ''}
+                defaultValue={''}
+                rules={{ required: '商品を選択してください' }}
+                render={({ field, formState: { errors } }) => (
+                  <TextField
+                    select
+                    fullWidth
+                    label='商品'
+                    // error={Boolean(errors.products.items.0.productID)}
+                    // helperText={errors.products && errors.products.items}
+                    {...field}
+                  >
+                    {props.productList &&
+                      props.productList.map((product) => (
+                        <MenuItem key={product.id} value={product.id}>
+                          {product.name}
+                        </MenuItem>
+                      ))}
+                  </TextField>
+                )}
+              />
+              {index !== 0 && (
+                <IconButton onClick={() => props.useFieldArrayReturn.remove(index)}>
+                  <DisabledByDefaultIcon />
+                </IconButton>
+              )}
+              <IconButton onClick={() => props.useFieldArrayReturn.append({ productID: '' })}>
+                <AddBoxIcon />
+              </IconButton>
+            </Box>
+          ))}
           <Box mt={2} mb={2}>
             <Controller
               name='staffID'
               control={props.useFormReturn.control}
-              // defaultValue={props.staffList && props.staffList[0].id}
               defaultValue={props.staffID ?? ''}
               rules={{ required: '担当者を選択してください' }}
               render={({ field, formState: { errors } }) => (

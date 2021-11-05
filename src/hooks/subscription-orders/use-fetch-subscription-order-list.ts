@@ -11,8 +11,8 @@ const fetcher = async () => {
     graphqlOperation(listSubscriptionOrders)
     // graphqlOperation(listSubscriptionOrders, { filter: { id: { contains: '25' } } })
   )) as GraphQLResult<ListSubscriptionOrdersQuery>;
-  console.log('order fetcher:', result);
   if (result.data && result.data.listSubscriptionOrders && result.data.listSubscriptionOrders.items) {
+    console.log('order fetcher:', result.data.listSubscriptionOrders.items);
     return result.data.listSubscriptionOrders.items as SubscriptionOrder[];
   } else {
     throw Error('The API fetched data but it returned null.');

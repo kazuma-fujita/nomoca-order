@@ -24,7 +24,7 @@ type SubscriptionOrder
   @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read, update] }, { allow: owner }]) {
   id: ID!
   staffID: ID!
-  products: [SubscriptionOrderProduct]! @connection(keyName: "bySubscriptionOrder", fields: ["id"])
+  products: [SubscriptionOrderProduct!]! @connection(keyName: "bySubscriptionOrder", fields: ["id"])
   staff: Staff! @connection(fields: ["staffID"])
 }
 
