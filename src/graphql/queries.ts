@@ -23,11 +23,7 @@ export const getBlog = /* GraphQL */ `
   }
 `;
 export const listBlogs = /* GraphQL */ `
-  query ListBlogs(
-    $filter: ModelBlogFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListBlogs($filter: ModelBlogFilterInput, $limit: Int, $nextToken: String) {
     listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -73,11 +69,7 @@ export const getPost = /* GraphQL */ `
   }
 `;
 export const listPosts = /* GraphQL */ `
-  query ListPosts(
-    $filter: ModelPostFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListPosts($filter: ModelPostFilterInput, $limit: Int, $nextToken: String) {
     listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -127,11 +119,7 @@ export const getComment = /* GraphQL */ `
   }
 `;
 export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListComments($filter: ModelCommentFilterInput, $limit: Int, $nextToken: String) {
     listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -184,20 +172,20 @@ export const getSubscriptionOrder = /* GraphQL */ `
   }
 `;
 export const listSubscriptionOrders = /* GraphQL */ `
-  query ListSubscriptionOrders(
-    $filter: ModelSubscriptionOrderFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listSubscriptionOrders(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
+  query ListSubscriptionOrders($filter: ModelSubscriptionOrderFilterInput, $limit: Int, $nextToken: String) {
+    listSubscriptionOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         staffID
         products {
+          items {
+            id
+            subscriptionOrderID
+            productID
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         staff {
@@ -232,11 +220,7 @@ export const getProduct = /* GraphQL */ `
   }
 `;
 export const listProducts = /* GraphQL */ `
-  query ListProducts(
-    $filter: ModelProductFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListProducts($filter: ModelProductFilterInput, $limit: Int, $nextToken: String) {
     listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -266,11 +250,7 @@ export const getStaff = /* GraphQL */ `
   }
 `;
 export const listStaffs = /* GraphQL */ `
-  query ListStaffs(
-    $filter: ModelStaffFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListStaffs($filter: ModelStaffFilterInput, $limit: Int, $nextToken: String) {
     listStaffs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
