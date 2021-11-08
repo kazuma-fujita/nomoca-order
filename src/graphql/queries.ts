@@ -12,6 +12,25 @@ export const getBlog = /* GraphQL */ `
           id
           title
           blogID
+          blog {
+            id
+            name
+            posts {
+              nextToken
+            }
+            createdAt
+            updatedAt
+          }
+          comments {
+            items {
+              id
+              postID
+              content
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -23,12 +42,32 @@ export const getBlog = /* GraphQL */ `
   }
 `;
 export const listBlogs = /* GraphQL */ `
-  query ListBlogs($filter: ModelBlogFilterInput, $limit: Int, $nextToken: String) {
+  query ListBlogs(
+    $filter: ModelBlogFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
         posts {
+          items {
+            id
+            title
+            blogID
+            blog {
+              id
+              name
+              createdAt
+              updatedAt
+            }
+            comments {
+              nextToken
+            }
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -48,6 +87,22 @@ export const getPost = /* GraphQL */ `
         id
         name
         posts {
+          items {
+            id
+            title
+            blogID
+            blog {
+              id
+              name
+              createdAt
+              updatedAt
+            }
+            comments {
+              nextToken
+            }
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -57,6 +112,22 @@ export const getPost = /* GraphQL */ `
         items {
           id
           postID
+          post {
+            id
+            title
+            blogID
+            blog {
+              id
+              name
+              createdAt
+              updatedAt
+            }
+            comments {
+              nextToken
+            }
+            createdAt
+            updatedAt
+          }
           content
           createdAt
           updatedAt
@@ -69,7 +140,11 @@ export const getPost = /* GraphQL */ `
   }
 `;
 export const listPosts = /* GraphQL */ `
-  query ListPosts($filter: ModelPostFilterInput, $limit: Int, $nextToken: String) {
+  query ListPosts(
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -78,10 +153,34 @@ export const listPosts = /* GraphQL */ `
         blog {
           id
           name
+          posts {
+            items {
+              id
+              title
+              blogID
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }
         comments {
+          items {
+            id
+            postID
+            post {
+              id
+              title
+              blogID
+              createdAt
+              updatedAt
+            }
+            content
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -103,10 +202,34 @@ export const getComment = /* GraphQL */ `
         blog {
           id
           name
+          posts {
+            items {
+              id
+              title
+              blogID
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }
         comments {
+          items {
+            id
+            postID
+            post {
+              id
+              title
+              blogID
+              createdAt
+              updatedAt
+            }
+            content
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -119,7 +242,11 @@ export const getComment = /* GraphQL */ `
   }
 `;
 export const listComments = /* GraphQL */ `
-  query ListComments($filter: ModelCommentFilterInput, $limit: Int, $nextToken: String) {
+  query ListComments(
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -128,6 +255,25 @@ export const listComments = /* GraphQL */ `
           id
           title
           blogID
+          blog {
+            id
+            name
+            posts {
+              nextToken
+            }
+            createdAt
+            updatedAt
+          }
+          comments {
+            items {
+              id
+              postID
+              content
+              createdAt
+              updatedAt
+            }
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -149,6 +295,15 @@ export const getSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            type
+            viewOrder
+            disabled
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
           owner
@@ -172,8 +327,16 @@ export const getSubscriptionOrder = /* GraphQL */ `
   }
 `;
 export const listSubscriptionOrders = /* GraphQL */ `
-  query ListSubscriptionOrders($filter: ModelSubscriptionOrderFilterInput, $limit: Int, $nextToken: String) {
-    listSubscriptionOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  query ListSubscriptionOrders(
+    $filter: ModelSubscriptionOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubscriptionOrders(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         staffID
@@ -182,6 +345,15 @@ export const listSubscriptionOrders = /* GraphQL */ `
             id
             subscriptionOrderID
             productID
+            product {
+              id
+              name
+              type
+              viewOrder
+              disabled
+              createdAt
+              updatedAt
+            }
             createdAt
             updatedAt
             owner
@@ -220,7 +392,11 @@ export const getProduct = /* GraphQL */ `
   }
 `;
 export const listProducts = /* GraphQL */ `
-  query ListProducts($filter: ModelProductFilterInput, $limit: Int, $nextToken: String) {
+  query ListProducts(
+    $filter: ModelProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -250,7 +426,11 @@ export const getStaff = /* GraphQL */ `
   }
 `;
 export const listStaffs = /* GraphQL */ `
-  query ListStaffs($filter: ModelStaffFilterInput, $limit: Int, $nextToken: String) {
+  query ListStaffs(
+    $filter: ModelStaffFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
     listStaffs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id

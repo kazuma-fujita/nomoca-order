@@ -8,7 +8,7 @@ import { useToggle } from 'react-use';
 import { useStaffList } from 'stores/use-staff-list';
 import { useProductList } from 'stores/use-product-list';
 import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
-import { SubscriptionOrderProduct } from '../../../API';
+import { SubscriptionOrderProduct } from 'API';
 
 const defaultValues = {
   products: { items: [{ productID: '' }] },
