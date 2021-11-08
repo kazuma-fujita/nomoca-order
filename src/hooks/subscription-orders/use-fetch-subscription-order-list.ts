@@ -13,6 +13,7 @@ const fetcher = async () => {
   )) as GraphQLResult<ListSubscriptionOrdersQuery>;
   if (result.data && result.data.listSubscriptionOrders && result.data.listSubscriptionOrders.items) {
     console.log('order fetcher:', result.data.listSubscriptionOrders.items);
+    result.data.listSubscriptionOrders.items.map((item) => console.log(item?.products));
     return result.data.listSubscriptionOrders.items as SubscriptionOrder[];
   } else {
     throw Error('The API fetched data but it returned null.');

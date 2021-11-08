@@ -206,6 +206,7 @@ export type SubscriptionOrderProduct = {
   product: Product,
   createdAt: string,
   updatedAt: string,
+  owner?: string | null,
 };
 
 export type Product = {
@@ -760,6 +761,7 @@ export type CreateSubscriptionOrderMutation = {
         productID: string,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -799,6 +801,7 @@ export type UpdateSubscriptionOrderMutation = {
         productID: string,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -838,6 +841,7 @@ export type DeleteSubscriptionOrderMutation = {
         productID: string,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -881,6 +885,7 @@ export type CreateSubscriptionOrderProductMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -907,6 +912,7 @@ export type UpdateSubscriptionOrderProductMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -933,6 +939,7 @@ export type DeleteSubscriptionOrderProductMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -1248,6 +1255,7 @@ export type GetSubscriptionOrderQuery = {
         productID: string,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -1715,6 +1723,7 @@ export type OnCreateSubscriptionOrderSubscription = {
         productID: string,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -1753,6 +1762,7 @@ export type OnUpdateSubscriptionOrderSubscription = {
         productID: string,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -1791,6 +1801,7 @@ export type OnDeleteSubscriptionOrderSubscription = {
         productID: string,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
     } | null,
@@ -1811,6 +1822,10 @@ export type OnDeleteSubscriptionOrderSubscription = {
   } | null,
 };
 
+export type OnCreateSubscriptionOrderProductSubscriptionVariables = {
+  owner?: string | null,
+};
+
 export type OnCreateSubscriptionOrderProductSubscription = {
   onCreateSubscriptionOrderProduct?:  {
     __typename: "SubscriptionOrderProduct",
@@ -1829,7 +1844,12 @@ export type OnCreateSubscriptionOrderProductSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
+};
+
+export type OnUpdateSubscriptionOrderProductSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnUpdateSubscriptionOrderProductSubscription = {
@@ -1850,7 +1870,12 @@ export type OnUpdateSubscriptionOrderProductSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
+};
+
+export type OnDeleteSubscriptionOrderProductSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnDeleteSubscriptionOrderProductSubscription = {
@@ -1871,6 +1896,7 @@ export type OnDeleteSubscriptionOrderProductSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 

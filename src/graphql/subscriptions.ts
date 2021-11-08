@@ -245,6 +245,7 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
           productID
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -276,6 +277,7 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
           productID
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -307,6 +309,7 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
           productID
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -327,8 +330,8 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
   }
 `;
 export const onCreateSubscriptionOrderProduct = /* GraphQL */ `
-  subscription OnCreateSubscriptionOrderProduct {
-    onCreateSubscriptionOrderProduct {
+  subscription OnCreateSubscriptionOrderProduct($owner: String) {
+    onCreateSubscriptionOrderProduct(owner: $owner) {
       id
       subscriptionOrderID
       productID
@@ -343,12 +346,13 @@ export const onCreateSubscriptionOrderProduct = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onUpdateSubscriptionOrderProduct = /* GraphQL */ `
-  subscription OnUpdateSubscriptionOrderProduct {
-    onUpdateSubscriptionOrderProduct {
+  subscription OnUpdateSubscriptionOrderProduct($owner: String) {
+    onUpdateSubscriptionOrderProduct(owner: $owner) {
       id
       subscriptionOrderID
       productID
@@ -363,12 +367,13 @@ export const onUpdateSubscriptionOrderProduct = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
-  subscription OnDeleteSubscriptionOrderProduct {
-    onDeleteSubscriptionOrderProduct {
+  subscription OnDeleteSubscriptionOrderProduct($owner: String) {
+    onDeleteSubscriptionOrderProduct(owner: $owner) {
       id
       subscriptionOrderID
       productID
@@ -383,6 +388,7 @@ export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;

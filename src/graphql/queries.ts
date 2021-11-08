@@ -163,6 +163,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
           productID
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }

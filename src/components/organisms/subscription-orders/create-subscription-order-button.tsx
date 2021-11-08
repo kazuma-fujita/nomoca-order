@@ -8,9 +8,9 @@ import { useToggle } from 'react-use';
 import { useStaffList } from 'stores/use-staff-list';
 import { useProductList } from 'stores/use-product-list';
 import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
+import { SubscriptionOrderProduct } from '../../../API';
 
 const defaultValues = {
-  // products: { items: [{ id: 'dummyId', productID: '' }] },
   products: { items: [{ productID: '' }] },
   staffID: '',
 };
@@ -32,9 +32,12 @@ export const CreateSubscriptionOrderButton = () => {
   const submitHandler = handleSubmit(
     useCallback(async (data: SubscriptionOrder) => {
       console.log('submit handler data:', data);
-      // await createSubscriptionOrder(data.staffID);
+      if (data.products && data.products.items) {
+        const productIDs = data.products.items as SubscriptionOrderProduct[];
+        await createSubscriptionOrder(productIDs, data.staffID);
+      }
       if (!error) {
-        // cancelHandler();
+        cancelHandler();
       }
     }, [])
   );

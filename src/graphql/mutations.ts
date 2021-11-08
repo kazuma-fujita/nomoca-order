@@ -275,6 +275,7 @@ export const createSubscriptionOrder = /* GraphQL */ `
           productID
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -309,6 +310,7 @@ export const updateSubscriptionOrder = /* GraphQL */ `
           productID
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -343,6 +345,7 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
           productID
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -382,6 +385,7 @@ export const createSubscriptionOrderProduct = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -405,6 +409,7 @@ export const updateSubscriptionOrderProduct = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -428,6 +433,7 @@ export const deleteSubscriptionOrderProduct = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
