@@ -1,5 +1,6 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import {
+  ModelSubscriptionOrderProductConnection,
   SubscriptionOrderProduct,
   UpdateSubscriptionOrderInput,
   UpdateSubscriptionOrderMutation,
@@ -44,9 +45,16 @@ export const useUpdateSubscriptionOrder = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
-  const updateSubscriptionOrder = async (id: string, productRelations: SubscriptionOrderProduct[], staffID: string) => {
+  const updateSubscriptionOrder = async (
+    id: string,
+    productRelations: ModelSubscriptionOrderProductConnection | null | undefined,
+    staffID: string
+  ) => {
     setIsLoading(true);
     try {
+      if (!productRelations || !productRelations.items) {
+        throw Error('A relation object array is null.');
+      }
       const subscriptionOrder: UpdateSubscriptionOrderInput = { id: id, staffID: staffID };
       const variables: UpdateSubscriptionOrderMutationVariables = { input: subscriptionOrder };
       const result = (await API.graphql(
@@ -57,8 +65,10 @@ export const useUpdateSubscriptionOrder = () => {
         setError(null);
         const updatedSubscriptionOrder = result.data.updateSubscriptionOrder;
         console.log('updatedSubscriptionOrder:', updatedSubscriptionOrder);
+        // 配列中のnull除去
+        const items = productRelations.items.flatMap((x) => (x === null ? [] : [x]));
         // SubscriptionOrder と Product のリレーション更新
-        await updateSubscriptionOrderProducts(productRelations);
+        await updateSubscriptionOrderProducts(items);
         // 再フェッチ実行
         mutate(SWRKey.SubscriptionOrderList);
       } else {

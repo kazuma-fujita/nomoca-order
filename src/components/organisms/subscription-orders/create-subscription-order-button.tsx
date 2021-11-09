@@ -27,10 +27,7 @@ export const CreateSubscriptionOrderButton = () => {
   const submitHandler = handleSubmit(
     useCallback(async (data: SubscriptionOrder) => {
       console.log('submit handler data:', data);
-      if (data.products && data.products.items) {
-        const productRelations = data.products.items.flatMap((x) => (x === null ? [] : [x]));
-        await createSubscriptionOrder(productRelations, data.staffID);
-      }
+      await createSubscriptionOrder(data.products, data.staffID);
       if (!error) {
         cancelHandler();
       }

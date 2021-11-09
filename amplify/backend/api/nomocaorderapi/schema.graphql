@@ -21,9 +21,11 @@ type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
 
 type SubscriptionOrder
   @model
-  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
+  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
+  @key(name: "sortByCreatedAt", fields: ["type", "createdAt"], queryField: "listSubscriptionOrdersSortedByCreatedAt") {
   id: ID!
   staffID: ID!
+  type: String!
   products: [SubscriptionOrderProduct] @connection(keyName: "bySubscriptionOrder", fields: ["id"])
   staff: Staff! @connection(fields: ["staffID"])
 }

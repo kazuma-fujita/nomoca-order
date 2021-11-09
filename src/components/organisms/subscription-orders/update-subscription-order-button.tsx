@@ -41,10 +41,7 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
   const submitHandler = handleSubmit(
     useCallback(async (data: SubscriptionOrder) => {
       console.log('data:', data);
-      if (data.products && data.products.items) {
-        const productRelations = data.products.items.flatMap((x) => (x === null ? [] : [x]));
-        await updateSubscriptionOrder(props.id, productRelations, data.staffID);
-      }
+      await updateSubscriptionOrder(props.id, data.products, data.staffID);
       if (!error) {
         cancelHandler();
         // resetForm();

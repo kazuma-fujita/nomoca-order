@@ -1,5 +1,6 @@
 import { Delete } from '@mui/icons-material';
 import Button from '@mui/material/Button';
+import { ModelSubscriptionOrderProductConnection } from 'API';
 import { useDeleteSubscriptionOrder } from 'hooks/subscription-orders/use-delete-subscription-order';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
@@ -7,13 +8,14 @@ import { DeleteSubscriptionOrderDialog } from './delete-subscription-order-dialo
 
 type Props = {
   id: string;
+  products: ModelSubscriptionOrderProductConnection;
 };
 
 export const DeleteSubscriptionOrderButton = (props: Props) => {
   const { deleteSubscriptionOrder, isLoading, error, resetState } = useDeleteSubscriptionOrder();
   const [on, toggle] = useToggle(false);
   const submitHandler = useCallback(async () => {
-    await deleteSubscriptionOrder(props.id);
+    await deleteSubscriptionOrder(props.id, props.products);
     if (!error) {
       toggle();
     }

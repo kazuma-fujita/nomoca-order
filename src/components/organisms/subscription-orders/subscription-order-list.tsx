@@ -87,14 +87,16 @@ export const SubscriptionOrderList = () => {
                   <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
                   <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                   <StyledTableCell>{item.staff.name}</StyledTableCell>
-                  <StyledTableCell align='center'>
-                    {item.products && (
-                      <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
-                    )}
-                  </StyledTableCell>
-                  <StyledTableCell align='center'>
-                    <DeleteSubscriptionOrderButton id={item.id} />
-                  </StyledTableCell>
+                  {item.products && (
+                    <>
+                      <StyledTableCell align='center'>
+                        <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
+                      </StyledTableCell>
+                      <StyledTableCell align='center'>
+                        <DeleteSubscriptionOrderButton id={item.id} products={item.products} />
+                      </StyledTableCell>
+                    </>
+                  )}
                 </StyledTableRow>
                 <StyledTableRow>
                   <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

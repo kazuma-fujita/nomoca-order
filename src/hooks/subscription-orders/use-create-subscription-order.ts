@@ -6,6 +6,7 @@ import {
   CreateSubscriptionOrderProductInput,
   CreateSubscriptionOrderProductMutation,
   CreateSubscriptionOrderProductMutationVariables,
+  ModelSubscriptionOrderProductConnection,
   SubscriptionOrderProduct,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -47,9 +48,15 @@ export const useCreateSubscriptionOrder = () => {
   const { mutate } = useSWRConfig();
 
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
-  const createSubscriptionOrder = async (productRelations: SubscriptionOrderProduct[], staffID: string) => {
+  const createSubscriptionOrder = async (
+    productRelations: ModelSubscriptionOrderProductConnection | null | undefined,
+    staffID: string
+  ) => {
     setIsLoading(true);
     try {
+      if (!productRelations || !productRelations.items) {
+        throw Error('A relation object array is null.');
+      }
       const input: CreateSubscriptionOrderInput = { staffID: staffID };
       const variables: CreateSubscriptionOrderMutationVariables = { input: input };
       const result = (await API.graphql(
@@ -57,8 +64,10 @@ export const useCreateSubscriptionOrder = () => {
       )) as GraphQLResult<CreateSubscriptionOrderMutation>;
       if (result.data && result.data.createSubscriptionOrder) {
         const newSubscriptionOrder = result.data.createSubscriptionOrder;
+        // 配列中のnull除去
+        const items = productRelations.items.flatMap((x) => (x === null ? [] : [x]));
         // SubscriptionOrder と Product のリレーション作成
-        await createSubscriptionOrderProducts(productRelations, newSubscriptionOrder.id);
+        await createSubscriptionOrderProducts(items, newSubscriptionOrder.id);
         setIsLoading(false);
         setError(null);
         // データ再取得
