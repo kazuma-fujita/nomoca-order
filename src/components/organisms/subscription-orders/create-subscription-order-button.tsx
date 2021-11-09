@@ -16,14 +16,9 @@ const defaultValues = {
 };
 
 export const CreateSubscriptionOrderButton = () => {
-  // const useFormReturn = useForm<SubscriptionOrder>({ defaultValues });
   const useFormReturn = useForm<SubscriptionOrder>({ defaultValues });
-  const { handleSubmit, control, reset: resetForm } = useFormReturn;
-  const useFieldArrayReturn = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormContext)
-    name: 'products.items',
-    // keyName: 'productID', // default to "id", you can change the key name
-  });
+  const { handleSubmit, reset: resetForm, control } = useFormReturn;
+  const useFieldArrayReturn = useFieldArray({ control, name: 'products.items' });
   const { createSubscriptionOrder, isLoading, error, resetState } = useCreateSubscriptionOrder();
   const { data: productList } = useProductList();
   const { data: staffList } = useStaffList();
@@ -33,8 +28,8 @@ export const CreateSubscriptionOrderButton = () => {
     useCallback(async (data: SubscriptionOrder) => {
       console.log('submit handler data:', data);
       if (data.products && data.products.items) {
-        const productIDs = data.products.items as SubscriptionOrderProduct[];
-        await createSubscriptionOrder(productIDs, data.staffID);
+        const productRelations = data.products.items.flatMap((x) => (x === null ? [] : [x]));
+        await createSubscriptionOrder(productRelations, data.staffID);
       }
       if (!error) {
         cancelHandler();

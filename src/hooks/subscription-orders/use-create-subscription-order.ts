@@ -19,11 +19,11 @@ import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 
 const createSubscriptionOrderProducts = async (
-  productIDs: SubscriptionOrderProduct[],
+  productRelations: SubscriptionOrderProduct[],
   newSubscriptionOrderID: string
 ) => {
   // SubscriptionOrder と Product のリレーション作成
-  for (const item of productIDs) {
+  for (const item of productRelations) {
     const input: CreateSubscriptionOrderProductInput = {
       subscriptionOrderID: newSubscriptionOrderID,
       productID: item.productID,
@@ -47,7 +47,7 @@ export const useCreateSubscriptionOrder = () => {
   const { mutate } = useSWRConfig();
 
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
-  const createSubscriptionOrder = async (productIDs: SubscriptionOrderProduct[], staffID: string) => {
+  const createSubscriptionOrder = async (productRelations: SubscriptionOrderProduct[], staffID: string) => {
     setIsLoading(true);
     try {
       const input: CreateSubscriptionOrderInput = { staffID: staffID };
@@ -58,7 +58,7 @@ export const useCreateSubscriptionOrder = () => {
       if (result.data && result.data.createSubscriptionOrder) {
         const newSubscriptionOrder = result.data.createSubscriptionOrder;
         // SubscriptionOrder と Product のリレーション作成
-        await createSubscriptionOrderProducts(productIDs, newSubscriptionOrder.id);
+        await createSubscriptionOrderProducts(productRelations, newSubscriptionOrder.id);
         setIsLoading(false);
         setError(null);
         // データ再取得

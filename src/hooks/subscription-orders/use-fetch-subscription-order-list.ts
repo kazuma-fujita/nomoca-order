@@ -11,13 +11,18 @@ const fetcher = async () => {
     graphqlOperation(listSubscriptionOrders)
     // graphqlOperation(listSubscriptionOrders, { filter: { id: { contains: '25' } } })
   )) as GraphQLResult<ListSubscriptionOrdersQuery>;
-  if (result.data && result.data.listSubscriptionOrders && result.data.listSubscriptionOrders.items) {
-    console.log('order fetcher:', result.data.listSubscriptionOrders.items);
-    result.data.listSubscriptionOrders.items.map((item) => console.log(item?.products));
-    return result.data.listSubscriptionOrders.items as SubscriptionOrder[];
-  } else {
+
+  if (!result.data || !result.data.listSubscriptionOrders || !result.data.listSubscriptionOrders.items) {
     throw Error('The API fetched data but it returned null.');
   }
+  const items = result.data.listSubscriptionOrders.items;
+  for (const item of items) {
+    if (!item || !item.products || !item.products.items) {
+      throw Error('The API fetched a data element but it returned null.');
+    }
+  }
+  console.log('order fetcher:', items);
+  return items as SubscriptionOrder[];
 };
 
 export const useFetchSubscriptionOrderList = () => {

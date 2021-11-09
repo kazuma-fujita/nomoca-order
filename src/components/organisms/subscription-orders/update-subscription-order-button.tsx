@@ -1,6 +1,6 @@
 import { Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import { SubscriptionOrder } from 'API';
+import { ModelSubscriptionOrderProductConnection, SubscriptionOrder, SubscriptionOrderProduct } from 'API';
 import { useUpdateSubscriptionOrder } from 'hooks/subscription-orders/use-update-subscription-order';
 import { useCallback, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
@@ -11,26 +11,40 @@ import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog'
 
 type Props = {
   id: string;
+  // products: Array<SubscriptionOrderProduct | null>;
+  products: ModelSubscriptionOrderProductConnection;
   staffID: string;
 };
 
 export const UpdateSubscriptionOrderButton = (props: Props) => {
-  const useFormReturn = useForm<SubscriptionOrder>();
+  // const items = props.products.map((item) => {
+  //   return { productID: item?.productID };
+  // });
+  const defaultValues = {
+    // products: { items: items },
+    products: props.products,
+    staffID: props.staffID,
+  };
+  console.log('defaultValues:', defaultValues);
+  const useFormReturn = useForm<SubscriptionOrder>({ defaultValues });
   const { handleSubmit, reset: resetForm, clearErrors, control } = useFormReturn;
-  const useFieldArrayReturn = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormContext)
-    name: 'products.items',
-  });
+  const useFieldArrayReturn = useFieldArray({ control, name: 'products.items' });
   const { data: productList } = useProductList();
   const { data: staffList } = useStaffList();
   const { updateSubscriptionOrder, isLoading, error, resetState } = useUpdateSubscriptionOrder();
   const [on, toggle] = useToggle(false);
-  useEffect(() => {
-    resetForm({ staffID: props.staffID });
-  }, []);
+
+  // useEffect(() => {
+  //   resetForm({ products: { items: items }, staffID: props.staffID });
+  // }, []);
+
   const submitHandler = handleSubmit(
     useCallback(async (data: SubscriptionOrder) => {
-      await updateSubscriptionOrder(props.id, data.staffID);
+      console.log('data:', data);
+      if (data.products && data.products.items) {
+        const productRelations = data.products.items.flatMap((x) => (x === null ? [] : [x]));
+        await updateSubscriptionOrder(props.id, productRelations, data.staffID);
+      }
       if (!error) {
         cancelHandler();
         // resetForm();
@@ -39,10 +53,12 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
       }
     }, [])
   );
+
   const cancelHandler = useCallback(() => {
     resetState();
     toggle();
   }, []);
+
   const label = '編集する';
   return (
     <>

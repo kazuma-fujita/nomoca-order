@@ -88,7 +88,9 @@ export const SubscriptionOrderList = () => {
                   <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                   <StyledTableCell>{item.staff.name}</StyledTableCell>
                   <StyledTableCell align='center'>
-                    <UpdateSubscriptionOrderButton id={item.id} staffID={item.staff.id} />
+                    {item.products && (
+                      <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
+                    )}
                   </StyledTableCell>
                   <StyledTableCell align='center'>
                     <DeleteSubscriptionOrderButton id={item.id} />
@@ -110,13 +112,18 @@ export const SubscriptionOrderList = () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {item.products!.items!.map((item) => (
-                            <StyledTableRow key={item?.product.id}>
-                              <StyledTableCell>{item?.product.name}</StyledTableCell>
-                              <StyledTableCell align='center'>{item?.product.name}</StyledTableCell>
-                              <StyledTableCell align='right'>{item?.product.name}</StyledTableCell>
-                            </StyledTableRow>
-                          ))}
+                          {item.products &&
+                            item.products.items &&
+                            item.products.items.map(
+                              (item) =>
+                                item && (
+                                  <StyledTableRow key={item.product.id}>
+                                    <StyledTableCell>{item.product.name}</StyledTableCell>
+                                    <StyledTableCell align='center'>{item.product.name}</StyledTableCell>
+                                    <StyledTableCell align='right'>{item.product.name}</StyledTableCell>
+                                  </StyledTableRow>
+                                )
+                            )}
                         </TableBody>
                       </Table>
                     </Box>
