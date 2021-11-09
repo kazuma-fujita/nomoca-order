@@ -1,4 +1,4 @@
-import { CircularProgress, Typography } from '@mui/material';
+import { CircularProgress, Typography, Box } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,12 +14,9 @@ import { useFetchSubscriptionOrderList } from 'hooks/subscription-orders/use-fet
 import { DeleteSubscriptionOrderButton } from './delete-subscription-order-button';
 import { UpdateSubscriptionOrderButton } from './update-subscription-order-button';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
+import TableCell from '@mui/material/TableCell';
 
 const header = [
-  {
-    label: '担当者',
-    minWidth: 160,
-  },
   {
     label: '定期便開始日',
     minWidth: 160,
@@ -29,12 +26,31 @@ const header = [
     minWidth: 160,
   },
   {
+    label: '担当者',
+    minWidth: 160,
+  },
+  {
     label: '編集',
     minWidth: 80,
   },
   {
     label: '定期便解約',
     minWidth: 80,
+  },
+];
+
+const productHeader = [
+  {
+    label: '商品名',
+    minWidth: 160,
+  },
+  {
+    label: '数量',
+    minWidth: 80,
+  },
+  {
+    label: '金額',
+    minWidth: 160,
   },
 ];
 
@@ -66,17 +82,47 @@ export const SubscriptionOrderList = () => {
           )}
           {data &&
             data.map((item) => (
-              <StyledTableRow key={item.id}>
-                <StyledTableCell>{item.staff.name}</StyledTableCell>
-                <StyledTableCell>{formatDate(item.createdAt)}</StyledTableCell>
-                <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
-                <StyledTableCell align='center'>
-                  <UpdateSubscriptionOrderButton id={item.id} staffID={item.staff.id} />
-                </StyledTableCell>
-                <StyledTableCell align='center'>
-                  <DeleteSubscriptionOrderButton id={item.id} />
-                </StyledTableCell>
-              </StyledTableRow>
+              <>
+                <StyledTableRow key={item.id}>
+                  <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
+                  <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
+                  <StyledTableCell>{item.staff.name}</StyledTableCell>
+                  <StyledTableCell align='center'>
+                    <UpdateSubscriptionOrderButton id={item.id} staffID={item.staff.id} />
+                  </StyledTableCell>
+                  <StyledTableCell align='center'>
+                    <DeleteSubscriptionOrderButton id={item.id} />
+                  </StyledTableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                  <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Box sx={{ margin: 2 }}>
+                      <Table size='small' aria-label='purchases'>
+                        <TableHead>
+                          <TableRow>
+                            {productHeader.map((item, index) => (
+                              <StyledTableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
+                                <Typography variant='body2' fontWeight='bold'>
+                                  {item.label}
+                                </Typography>
+                              </StyledTableCell>
+                            ))}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {item.products!.items!.map((item) => (
+                            <StyledTableRow key={item?.product.id}>
+                              <StyledTableCell>{item?.product.name}</StyledTableCell>
+                              <StyledTableCell align='center'>{item?.product.name}</StyledTableCell>
+                              <StyledTableCell align='right'>{item?.product.name}</StyledTableCell>
+                            </StyledTableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </Box>
+                  </StyledTableCell>
+                </StyledTableRow>
+              </>
             ))}
         </TableBody>
       </Table>
