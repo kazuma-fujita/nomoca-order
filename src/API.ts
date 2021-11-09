@@ -172,10 +172,14 @@ export type DeleteCommentInput = {
 export type CreateSubscriptionOrderInput = {
   id?: string | null,
   staffID: string,
+  type: string,
+  createdAt?: string | null,
 };
 
 export type ModelSubscriptionOrderConditionInput = {
   staffID?: ModelIDInput | null,
+  type?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
   and?: Array< ModelSubscriptionOrderConditionInput | null > | null,
   or?: Array< ModelSubscriptionOrderConditionInput | null > | null,
   not?: ModelSubscriptionOrderConditionInput | null,
@@ -185,6 +189,7 @@ export type SubscriptionOrder = {
   __typename: "SubscriptionOrder",
   id: string,
   staffID: string,
+  type: string,
   products?: ModelSubscriptionOrderProductConnection | null,
   staff: Staff,
   createdAt: string,
@@ -235,6 +240,8 @@ export type Staff = {
 export type UpdateSubscriptionOrderInput = {
   id: string,
   staffID?: string | null,
+  type?: string | null,
+  createdAt?: string | null,
 };
 
 export type DeleteSubscriptionOrderInput = {
@@ -379,6 +386,8 @@ export type ModelCommentFilterInput = {
 export type ModelSubscriptionOrderFilterInput = {
   id?: ModelIDInput | null,
   staffID?: ModelIDInput | null,
+  type?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
   and?: Array< ModelSubscriptionOrderFilterInput | null > | null,
   or?: Array< ModelSubscriptionOrderFilterInput | null > | null,
   not?: ModelSubscriptionOrderFilterInput | null,
@@ -424,6 +433,22 @@ export type ModelStaffConnection = {
   nextToken?: string | null,
 };
 
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelIntKeyConditionInput = {
   eq?: number | null,
   le?: number | null,
@@ -432,12 +457,6 @@ export type ModelIntKeyConditionInput = {
   gt?: number | null,
   between?: Array< number | null > | null,
 };
-
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
 
 export type CreateBlogMutationVariables = {
   input: CreateBlogInput,
@@ -1019,6 +1038,7 @@ export type CreateSubscriptionOrderMutation = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
       items?:  Array< {
@@ -1069,6 +1089,7 @@ export type UpdateSubscriptionOrderMutation = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
       items?:  Array< {
@@ -1119,6 +1140,7 @@ export type DeleteSubscriptionOrderMutation = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
       items?:  Array< {
@@ -1702,6 +1724,7 @@ export type GetSubscriptionOrderQuery = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
       items?:  Array< {
@@ -1755,6 +1778,7 @@ export type ListSubscriptionOrdersQuery = {
       __typename: "SubscriptionOrder",
       id: string,
       staffID: string,
+      type: string,
       products?:  {
         __typename: "ModelSubscriptionOrderProductConnection",
         items?:  Array< {
@@ -1871,6 +1895,65 @@ export type ListStaffsQuery = {
       type: string,
       viewOrder: number,
       disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
+  type?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelSubscriptionOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
+  listSubscriptionOrdersSortedByCreatedAt?:  {
+    __typename: "ModelSubscriptionOrderConnection",
+    items?:  Array< {
+      __typename: "SubscriptionOrder",
+      id: string,
+      staffID: string,
+      type: string,
+      products?:  {
+        __typename: "ModelSubscriptionOrderProductConnection",
+        items?:  Array< {
+          __typename: "SubscriptionOrderProduct",
+          id: string,
+          subscriptionOrderID: string,
+          productID: string,
+          product:  {
+            __typename: "Product",
+            id: string,
+            name: string,
+            type: string,
+            viewOrder: number,
+            disabled: boolean,
+            createdAt: string,
+            updatedAt: string,
+          },
+          createdAt: string,
+          updatedAt: string,
+          owner?: string | null,
+        } | null > | null,
+        nextToken?: string | null,
+      } | null,
+      staff:  {
+        __typename: "Staff",
+        id: string,
+        name: string,
+        type: string,
+        viewOrder: number,
+        disabled: boolean,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -2466,6 +2549,7 @@ export type OnCreateSubscriptionOrderSubscription = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
       items?:  Array< {
@@ -2515,6 +2599,7 @@ export type OnUpdateSubscriptionOrderSubscription = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
       items?:  Array< {
@@ -2564,6 +2649,7 @@ export type OnDeleteSubscriptionOrderSubscription = {
     __typename: "SubscriptionOrder",
     id: string,
     staffID: string,
+    type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
       items?:  Array< {
@@ -2722,7 +2808,7 @@ export type OnDeleteProductSubscription = {
 };
 
 export type OnCreateStaffSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnCreateStaffSubscription = {
@@ -2740,7 +2826,7 @@ export type OnCreateStaffSubscription = {
 };
 
 export type OnUpdateStaffSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnUpdateStaffSubscription = {
@@ -2758,7 +2844,7 @@ export type OnUpdateStaffSubscription = {
 };
 
 export type OnDeleteStaffSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnDeleteStaffSubscription = {

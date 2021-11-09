@@ -493,6 +493,7 @@ export const createSubscriptionOrder = /* GraphQL */ `
     createSubscriptionOrder(input: $input, condition: $condition) {
       id
       staffID
+      type
       products {
         items {
           id
@@ -537,6 +538,7 @@ export const updateSubscriptionOrder = /* GraphQL */ `
     updateSubscriptionOrder(input: $input, condition: $condition) {
       id
       staffID
+      type
       products {
         items {
           id
@@ -581,6 +583,7 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
     deleteSubscriptionOrder(input: $input, condition: $condition) {
       id
       staffID
+      type
       products {
         items {
           id

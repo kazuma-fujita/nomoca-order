@@ -28,6 +28,7 @@ type SubscriptionOrder
   type: String!
   products: [SubscriptionOrderProduct] @connection(keyName: "bySubscriptionOrder", fields: ["id"])
   staff: Staff! @connection(fields: ["staffID"])
+  createdAt: AWSDateTime!
 }
 
 type SubscriptionOrderProduct
@@ -53,7 +54,7 @@ type Product
 
 type Staff
   @model
-  @auth(rules: [[{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
+  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
   @key(name: "sortByViewOrder", fields: ["type", "viewOrder"], queryField: "listStaffsSortedByViewOrder") {
   id: ID!
   name: String!

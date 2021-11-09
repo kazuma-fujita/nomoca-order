@@ -290,6 +290,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
     getSubscriptionOrder(id: $id) {
       id
       staffID
+      type
       products {
         items {
           id
@@ -340,6 +341,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
       items {
         id
         staffID
+        type
         products {
           items {
             id
@@ -438,6 +440,65 @@ export const listStaffs = /* GraphQL */ `
         type
         viewOrder
         disabled
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
+  query ListSubscriptionOrdersSortedByCreatedAt(
+    $type: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSubscriptionOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubscriptionOrdersSortedByCreatedAt(
+      type: $type
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        staffID
+        type
+        products {
+          items {
+            id
+            subscriptionOrderID
+            productID
+            product {
+              id
+              name
+              type
+              viewOrder
+              disabled
+              createdAt
+              updatedAt
+            }
+            createdAt
+            updatedAt
+            owner
+          }
+          nextToken
+        }
+        staff {
+          id
+          name
+          type
+          viewOrder
+          disabled
+          createdAt
+          updatedAt
+          owner
+        }
         createdAt
         updatedAt
         owner

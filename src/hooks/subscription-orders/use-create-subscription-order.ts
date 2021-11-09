@@ -18,6 +18,7 @@ import {
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { ObjectType } from '../../constants/object-type';
 
 const createSubscriptionOrderProducts = async (
   productRelations: SubscriptionOrderProduct[],
@@ -57,7 +58,7 @@ export const useCreateSubscriptionOrder = () => {
       if (!productRelations || !productRelations.items) {
         throw Error('A relation object array is null.');
       }
-      const input: CreateSubscriptionOrderInput = { staffID: staffID };
+      const input: CreateSubscriptionOrderInput = { staffID: staffID, type: ObjectType.SubscriptionOrder };
       const variables: CreateSubscriptionOrderMutationVariables = { input: input };
       const result = (await API.graphql(
         graphqlOperation(createSubscriptionOrderQuery, variables)

@@ -15,6 +15,7 @@ import { DeleteSubscriptionOrderButton } from './delete-subscription-order-butto
 import { UpdateSubscriptionOrderButton } from './update-subscription-order-button';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
 import TableCell from '@mui/material/TableCell';
+import React from 'react';
 
 const header = [
   {
@@ -82,7 +83,7 @@ export const SubscriptionOrderList = () => {
           )}
           {data &&
             data.map((item) => (
-              <>
+              <React.Fragment key={item.id}>
                 <StyledTableRow key={item.id}>
                   <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
                   <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
@@ -131,7 +132,7 @@ export const SubscriptionOrderList = () => {
                     </Box>
                   </StyledTableCell>
                 </StyledTableRow>
-              </>
+              </React.Fragment>
             ))}
         </TableBody>
       </Table>

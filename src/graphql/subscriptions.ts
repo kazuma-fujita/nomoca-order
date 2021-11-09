@@ -463,6 +463,7 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
     onCreateSubscriptionOrder(owner: $owner) {
       id
       staffID
+      type
       products {
         items {
           id
@@ -504,6 +505,7 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
     onUpdateSubscriptionOrder(owner: $owner) {
       id
       staffID
+      type
       products {
         items {
           id
@@ -545,6 +547,7 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
     onDeleteSubscriptionOrder(owner: $owner) {
       id
       staffID
+      type
       products {
         items {
           id
@@ -684,7 +687,7 @@ export const onDeleteProduct = /* GraphQL */ `
   }
 `;
 export const onCreateStaff = /* GraphQL */ `
-  subscription OnCreateStaff($owner: String!) {
+  subscription OnCreateStaff($owner: String) {
     onCreateStaff(owner: $owner) {
       id
       name
@@ -698,7 +701,7 @@ export const onCreateStaff = /* GraphQL */ `
   }
 `;
 export const onUpdateStaff = /* GraphQL */ `
-  subscription OnUpdateStaff($owner: String!) {
+  subscription OnUpdateStaff($owner: String) {
     onUpdateStaff(owner: $owner) {
       id
       name
@@ -712,7 +715,7 @@ export const onUpdateStaff = /* GraphQL */ `
   }
 `;
 export const onDeleteStaff = /* GraphQL */ `
-  subscription OnDeleteStaff($owner: String!) {
+  subscription OnDeleteStaff($owner: String) {
     onDeleteStaff(owner: $owner) {
       id
       name
