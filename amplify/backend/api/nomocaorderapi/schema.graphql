@@ -51,7 +51,7 @@ type Product
 
 type Staff
   @model
-  @auth(rules: [{ allow: owner }])
+  @auth(rules: [[{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
   @key(name: "sortByViewOrder", fields: ["type", "viewOrder"], queryField: "listStaffsSortedByViewOrder") {
   id: ID!
   name: String!
