@@ -1,9 +1,9 @@
 import { Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import { ModelSubscriptionOrderProductConnection, SubscriptionOrder, SubscriptionOrderProduct } from 'API';
+import { ModelSubscriptionOrderProductConnection, SubscriptionOrder } from 'API';
 import { useUpdateSubscriptionOrder } from 'hooks/subscription-orders/use-update-subscription-order';
 import { useCallback, useEffect } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
@@ -17,16 +17,13 @@ type Props = {
 };
 
 export const UpdateSubscriptionOrderButton = (props: Props) => {
-  // const items = props.products.map((item) => {
-  //   return { productID: item?.productID };
-  // });
   const defaultValues = {
-    // products: { items: items },
     products: props.products,
     staffID: props.staffID,
   };
   console.log('defaultValues:', defaultValues);
-  const useFormReturn = useForm<SubscriptionOrder>({ defaultValues });
+  // const useFormReturn = useForm<SubscriptionOrder>({ defaultValues });
+  const useFormReturn = useForm<SubscriptionOrder>();
   const { handleSubmit, reset: resetForm, clearErrors, control } = useFormReturn;
   const useFieldArrayReturn = useFieldArray({ control, name: 'products.items' });
   const { data: productList } = useProductList();
@@ -34,9 +31,9 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
   const { updateSubscriptionOrder, isLoading, error, resetState } = useUpdateSubscriptionOrder();
   const [on, toggle] = useToggle(false);
 
-  // useEffect(() => {
-  //   resetForm({ products: { items: items }, staffID: props.staffID });
-  // }, []);
+  useEffect(() => {
+    resetForm(defaultValues);
+  }, []);
 
   const submitHandler = handleSubmit(
     useCallback(async (data: SubscriptionOrder) => {
@@ -53,6 +50,7 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
 
   const cancelHandler = useCallback(() => {
     resetState();
+    // resetForm();
     toggle();
   }, []);
 

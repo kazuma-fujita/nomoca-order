@@ -3,12 +3,11 @@ import Button from '@mui/material/Button';
 import { SubscriptionOrder } from 'API';
 import { useCreateSubscriptionOrder } from 'hooks/subscription-orders/use-create-subscription-order';
 import { useCallback } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm, Resolver } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { useStaffList } from 'stores/use-staff-list';
 import { useProductList } from 'stores/use-product-list';
 import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
-import { SubscriptionOrderProduct } from 'API';
 
 const defaultValues = {
   products: { items: [{ productID: '' }] },

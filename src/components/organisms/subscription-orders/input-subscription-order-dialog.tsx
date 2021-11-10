@@ -1,13 +1,13 @@
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, DialogActions, DialogContent, DialogTitle, MenuItem, TextField, IconButton } from '@mui/material';
+import { Box, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, TextField } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { Product, Staff, SubscriptionOrder } from 'API';
 import { ErrorAlert } from 'components/atoms/error-alert';
 import Form from 'components/atoms/form';
 import { BaseSyntheticEvent, ReactElement } from 'react';
-import { Controller, UseFieldArrayReturn, UseFormReturn, useFieldArray } from 'react-hook-form';
-import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 
 type Props = {
   label: string;
@@ -18,15 +18,17 @@ type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
   cancelHandler: () => void;
   useFormReturn: UseFormReturn<SubscriptionOrder, object>;
-  // useFieldArrayReturn: UseFieldArrayReturn<SubscriptionOrder, 'products.items', 'id'>;
   useFieldArrayReturn: UseFieldArrayReturn;
   productList: Product[] | undefined;
   staffList: Staff[] | undefined;
   staffID?: string;
 };
 
+type ProductErrorField = {
+  productID: { message: string };
+};
+
 export const InputSubscriptionOrderDialog = (props: Props) => {
-  console.log('items:', props.useFieldArrayReturn.fields);
   return (
     <Dialog open={props.on} fullWidth={true}>
       <Form onSubmit={props.submitHandler}>
@@ -48,8 +50,17 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
                     select
                     fullWidth
                     label='商品'
-                    // error={Boolean(errors.products.items.0.productID)}
-                    // helperText={errors.products && errors.products.items}
+                    error={Boolean(
+                      errors.products &&
+                        'items' in errors.products &&
+                        (errors.products.items as ProductErrorField[])[index]
+                    )}
+                    helperText={
+                      errors.products &&
+                      'items' in errors.products &&
+                      (errors.products.items as ProductErrorField[])[index] &&
+                      (errors.products.items as ProductErrorField[])[index].productID.message
+                    }
                     {...field}
                   >
                     {props.productList &&
@@ -76,6 +87,7 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
               name='staffID'
               control={props.useFormReturn.control}
               defaultValue={props.staffID ?? ''}
+              // defaultValue={''}
               rules={{ required: '担当者を選択してください' }}
               render={({ field, formState: { errors } }) => (
                 <TextField
