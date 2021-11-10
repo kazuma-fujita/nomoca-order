@@ -86,8 +86,8 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
             <Controller
               name='staffID'
               control={props.useFormReturn.control}
-              defaultValue={props.staffID ?? ''}
-              // defaultValue={''}
+              // defaultValue={props.staffID ?? ''}
+              defaultValue={''}
               rules={{ required: '担当者を選択してください' }}
               render={({ field, formState: { errors } }) => (
                 <TextField
