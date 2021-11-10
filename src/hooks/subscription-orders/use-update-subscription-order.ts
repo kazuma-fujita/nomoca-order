@@ -1,39 +1,61 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import {
+  CreateSubscriptionOrderProductInput,
+  CreateSubscriptionOrderProductMutation,
+  CreateSubscriptionOrderProductMutationVariables,
+  DeleteSubscriptionOrderProductInput,
+  DeleteSubscriptionOrderProductMutation,
+  DeleteSubscriptionOrderProductMutationVariables,
   ModelSubscriptionOrderProductConnection,
   SubscriptionOrderProduct,
   UpdateSubscriptionOrderInput,
   UpdateSubscriptionOrderMutation,
   UpdateSubscriptionOrderMutationVariables,
-  UpdateSubscriptionOrderProductInput,
-  UpdateSubscriptionOrderProductMutation,
-  UpdateSubscriptionOrderProductMutationVariables,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import {
+  createSubscriptionOrderProduct,
+  deleteSubscriptionOrderProduct,
   updateSubscriptionOrder as updateSubscriptionOrderQuery,
-  updateSubscriptionOrderProduct,
 } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 
-const updateSubscriptionOrderProducts = async (productRelations: SubscriptionOrderProduct[]) => {
-  // SubscriptionOrder と Product のリレーション更新
-  for (const item of productRelations) {
-    const input: UpdateSubscriptionOrderProductInput = {
-      id: item.id,
-      subscriptionOrderID: item.subscriptionOrderID,
+const updateSubscriptionOrderProducts = async (
+  updateSubscriptionOrderID: string,
+  nextProductRelations: SubscriptionOrderProduct[],
+  prevProductRelations: SubscriptionOrderProduct[]
+) => {
+  console.log('prevProductRelations:', prevProductRelations);
+  // SubscriptionOrder と Product のリレーション削除
+  for (const item of prevProductRelations) {
+    const input: DeleteSubscriptionOrderProductInput = { id: item.id };
+    const variables: DeleteSubscriptionOrderProductMutationVariables = { input: input };
+    const result = (await API.graphql(
+      graphqlOperation(deleteSubscriptionOrderProduct, variables)
+    )) as GraphQLResult<DeleteSubscriptionOrderProductMutation>;
+    if (result.data && result.data.deleteSubscriptionOrderProduct) {
+      const deleteSubscriptionOrderProduct = result.data.deleteSubscriptionOrderProduct;
+      console.log('deleteSubscriptionOrderProduct', deleteSubscriptionOrderProduct);
+    } else {
+      throw Error('The API deleted connection data but it returned null.');
+    }
+  }
+  // SubscriptionOrder と Product のリレーション作成
+  for (const item of nextProductRelations) {
+    const input: CreateSubscriptionOrderProductInput = {
+      subscriptionOrderID: updateSubscriptionOrderID,
       productID: item.productID,
     };
-    const variables: UpdateSubscriptionOrderProductMutationVariables = { input: input };
+    const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
     const result = (await API.graphql(
-      graphqlOperation(updateSubscriptionOrderProduct, variables)
-    )) as GraphQLResult<UpdateSubscriptionOrderProductMutation>;
-    if (result.data && result.data.updateSubscriptionOrderProduct) {
-      const updateSubscriptionOrderProduct = result.data.updateSubscriptionOrderProduct;
-      console.log('updateSubscriptionOrderProduct', updateSubscriptionOrderProduct);
+      graphqlOperation(createSubscriptionOrderProduct, variables)
+    )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;
+    if (result.data && result.data.createSubscriptionOrderProduct) {
+      const newSubscriptionOrderProduct = result.data.createSubscriptionOrderProduct;
+      console.log('newSubscriptionOrderProduct', newSubscriptionOrderProduct);
     } else {
       throw Error('The API created connection data but it returned null.');
     }
@@ -46,16 +68,22 @@ export const useUpdateSubscriptionOrder = () => {
   const { mutate } = useSWRConfig();
 
   const updateSubscriptionOrder = async (
-    id: string,
-    productRelations: ModelSubscriptionOrderProductConnection | null | undefined,
+    updateSubscriptionOrderID: string,
+    nextProductRelations: ModelSubscriptionOrderProductConnection | null | undefined,
+    prevProductRelations: ModelSubscriptionOrderProductConnection | null | undefined,
     staffID: string
   ) => {
     setIsLoading(true);
     try {
-      if (!productRelations || !productRelations.items) {
+      if (
+        !prevProductRelations ||
+        !prevProductRelations.items ||
+        !nextProductRelations ||
+        !nextProductRelations.items
+      ) {
         throw Error('A relation object array is null.');
       }
-      const subscriptionOrder: UpdateSubscriptionOrderInput = { id: id, staffID: staffID };
+      const subscriptionOrder: UpdateSubscriptionOrderInput = { id: updateSubscriptionOrderID, staffID: staffID };
       const variables: UpdateSubscriptionOrderMutationVariables = { input: subscriptionOrder };
       const result = (await API.graphql(
         graphqlOperation(updateSubscriptionOrderQuery, variables)
@@ -66,9 +94,14 @@ export const useUpdateSubscriptionOrder = () => {
         const updatedSubscriptionOrder = result.data.updateSubscriptionOrder;
         console.log('updatedSubscriptionOrder:', updatedSubscriptionOrder);
         // 配列中のnull除去
-        const items = productRelations.items.flatMap((x) => (x === null ? [] : [x]));
+        const nextProductNonNullRelations = nextProductRelations.items.flatMap((x) => (x === null ? [] : [x]));
+        const prevProductNonNullRelations = prevProductRelations.items.flatMap((x) => (x === null ? [] : [x]));
         // SubscriptionOrder と Product のリレーション更新
-        await updateSubscriptionOrderProducts(items);
+        await updateSubscriptionOrderProducts(
+          updateSubscriptionOrderID,
+          nextProductNonNullRelations,
+          prevProductNonNullRelations
+        );
         // 再フェッチ実行
         mutate(SWRKey.SubscriptionOrderList);
       } else {
@@ -78,6 +111,7 @@ export const useUpdateSubscriptionOrder = () => {
       setIsLoading(false);
       setError(parseResponseError(error));
       console.error('update error:', error);
+      return error;
     }
   };
 

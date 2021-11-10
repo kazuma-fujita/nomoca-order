@@ -32,7 +32,7 @@ const deleteSubscriptionOrderProducts = async (productRelations: SubscriptionOrd
       const deleteSubscriptionOrderProduct = result.data.deleteSubscriptionOrderProduct;
       console.log('deleteSubscriptionOrderProduct', deleteSubscriptionOrderProduct);
     } else {
-      throw Error('The API created connection data but it returned null.');
+      throw Error('The API deleted connection data but it returned null.');
     }
   }
 };

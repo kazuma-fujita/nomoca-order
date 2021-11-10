@@ -36,16 +36,19 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
   }, []);
 
   const submitHandler = handleSubmit(
-    useCallback(async (data: SubscriptionOrder) => {
-      console.log('data:', data);
-      await updateSubscriptionOrder(props.id, data.products, data.staffID);
-      if (!error) {
-        cancelHandler();
-        // resetForm();
-        // clearErrors();
-        // toggle();
-      }
-    }, [])
+    useCallback(
+      async (data: SubscriptionOrder) => {
+        console.log('data:', data);
+        const error = await updateSubscriptionOrder(props.id, data.products, props.products, data.staffID);
+        if (!error) {
+          cancelHandler();
+          // resetForm();
+          // clearErrors();
+          // toggle();
+        }
+      },
+      [props.products]
+    )
   );
 
   const cancelHandler = useCallback(() => {

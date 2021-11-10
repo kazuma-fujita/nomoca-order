@@ -84,7 +84,7 @@ export const SubscriptionOrderList = () => {
           {data &&
             data.map((item) => (
               <React.Fragment key={item.id}>
-                <StyledTableRow key={item.id}>
+                <StyledTableRow>
                   <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
                   <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                   <StyledTableCell>{item.staff.name}</StyledTableCell>
@@ -118,12 +118,12 @@ export const SubscriptionOrderList = () => {
                           {item.products &&
                             item.products.items &&
                             item.products.items.map(
-                              (item) =>
-                                item && (
-                                  <StyledTableRow key={item.product.id}>
-                                    <StyledTableCell>{item.product.name}</StyledTableCell>
-                                    <StyledTableCell align='center'>{item.product.name}</StyledTableCell>
-                                    <StyledTableCell align='right'>{item.product.name}</StyledTableCell>
+                              (relation, index) =>
+                                relation && (
+                                  <StyledTableRow key={`${index}-${relation.product.id}`}>
+                                    <StyledTableCell>{relation.product.name}</StyledTableCell>
+                                    <StyledTableCell align='center'>{relation.product.name}</StyledTableCell>
+                                    <StyledTableCell align='right'>{relation.product.name}</StyledTableCell>
                                   </StyledTableRow>
                                 )
                             )}
