@@ -33,6 +33,7 @@ const updateSubscriptionOrderProducts = async (
   for (const item of prevProductRelations) {
     const input: DeleteSubscriptionOrderProductInput = { id: item.id };
     const variables: DeleteSubscriptionOrderProductMutationVariables = { input: input };
+    // データ削除実行
     const result = (await API.graphql(
       graphqlOperation(deleteSubscriptionOrderProduct, variables)
     )) as GraphQLResult<DeleteSubscriptionOrderProductMutation>;
@@ -50,6 +51,7 @@ const updateSubscriptionOrderProducts = async (
       productID: item.productID,
     };
     const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
+    // データ登録実行
     const result = (await API.graphql(
       graphqlOperation(createSubscriptionOrderProduct, variables)
     )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;
@@ -67,6 +69,7 @@ export const useUpdateSubscriptionOrder = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
+  // nextProductRelationsは入力フォームsubmitの値、pervProductRelationsは一覧画面からpropsで渡された値
   const updateSubscriptionOrder = async (
     updateSubscriptionOrderID: string,
     nextProductRelations: ModelSubscriptionOrderProductConnection | null | undefined,
@@ -85,15 +88,18 @@ export const useUpdateSubscriptionOrder = () => {
       }
       const subscriptionOrder: UpdateSubscriptionOrderInput = { id: updateSubscriptionOrderID, staffID: staffID };
       const variables: UpdateSubscriptionOrderMutationVariables = { input: subscriptionOrder };
+      // データ更新実行
       const result = (await API.graphql(
         graphqlOperation(updateSubscriptionOrderQuery, variables)
       )) as GraphQLResult<UpdateSubscriptionOrderMutation>;
+
       if (result.data && result.data.updateSubscriptionOrder) {
+        // データ更新成功後処理
         setIsLoading(false);
         setError(null);
         const updatedSubscriptionOrder = result.data.updateSubscriptionOrder;
         console.log('updatedSubscriptionOrder:', updatedSubscriptionOrder);
-        // 配列中のnull除去
+        // productRelations配列中のnull除去
         const nextProductNonNullRelations = nextProductRelations.items.flatMap((x) => (x === null ? [] : [x]));
         const prevProductNonNullRelations = prevProductRelations.items.flatMap((x) => (x === null ? [] : [x]));
         // SubscriptionOrder と Product のリレーション更新

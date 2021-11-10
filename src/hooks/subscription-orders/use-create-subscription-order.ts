@@ -31,6 +31,7 @@ const createSubscriptionOrderProducts = async (
       productID: item.productID,
     };
     const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
+    // データ新規登録実行
     const result = (await API.graphql(
       graphqlOperation(createSubscriptionOrderProduct, variables)
     )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;
@@ -81,6 +82,7 @@ export const useCreateSubscriptionOrder = () => {
       setIsLoading(false);
       setError(parseResponseError(error));
       console.error('create error:', error);
+      return error;
     }
   };
 

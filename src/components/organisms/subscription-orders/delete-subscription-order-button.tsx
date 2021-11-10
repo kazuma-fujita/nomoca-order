@@ -15,7 +15,7 @@ export const DeleteSubscriptionOrderButton = (props: Props) => {
   const { deleteSubscriptionOrder, isLoading, error, resetState } = useDeleteSubscriptionOrder();
   const [on, toggle] = useToggle(false);
   const submitHandler = useCallback(async () => {
-    await deleteSubscriptionOrder(props.id, props.products);
+    const error = await deleteSubscriptionOrder(props.id, props.products);
     if (!error) {
       toggle();
     }

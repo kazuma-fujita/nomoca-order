@@ -72,6 +72,7 @@ export const useDeleteSubscriptionOrder = () => {
       setIsLoading(false);
       setError(parseResponseError(error));
       console.error('delete error:', error);
+      return error;
     }
   };
 
