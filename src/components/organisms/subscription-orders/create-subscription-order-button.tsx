@@ -26,7 +26,7 @@ export const CreateSubscriptionOrderButton = () => {
   const submitHandler = handleSubmit(
     useCallback(async (data: SubscriptionOrder) => {
       console.log('submit handler data:', data);
-      // 関数内ではerrorの値がキャプチャされる為、ダイアログを閉じるエラーハンドリングは以下関数の戻り値を使用
+      // 関数内ではerrorの値がキャプチャされる為、ダイアログを閉じるエラーハンドリングは関数の戻り値を使用
       const error = await createSubscriptionOrder(data.products, data.staffID);
       if (!error) {
         cancelHandler();
