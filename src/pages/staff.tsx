@@ -12,15 +12,17 @@ import { resetServerContext } from 'react-beautiful-dnd';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { StaffListContextProvider } from 'stores/use-staff-list';
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+// type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const StaffPage = (props: Props) => {
+// const StaffPage = (props: Props) => {
+const StaffPage = () => {
   useVerifyAuthenticated();
 
   return (
     <>
       <Head>
-        <title>{props.pageTitle}</title>
+        {/* <title>{props.pageTitle}</title> */}
+        <title>{ScreenName.Staff + TitleSuffix}</title>
       </Head>
       <StaffListContextProvider filterWithActiveStaff={false}>
         <StaffTemplate />
@@ -57,10 +59,10 @@ export default StaffPage;
 //   };
 // };
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
-  return {
-    props: {
-      pageTitle: ScreenName.Staff + TitleSuffix,
-    },
-  };
-};
+// export const getStaticProps = async (context: GetStaticPropsContext) => {
+//   return {
+//     props: {
+//       pageTitle: ScreenName.Staff + TitleSuffix,
+//     },
+//   };
+// };

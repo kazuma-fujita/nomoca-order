@@ -12,15 +12,16 @@ import { resetServerContext } from 'react-beautiful-dnd';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { ProductListContextProvider } from 'stores/use-product-list';
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+// type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const ProductPage = (props: Props) => {
+// const ProductPage = (props: Props) => {
+const ProductPage = () => {
   useVerifyAuthenticated();
 
   return (
     <>
       <Head>
-        <title>{props.pageTitle}</title>
+        <title>{ScreenName.Product + TitleSuffix}</title>
       </Head>
       <ProductListContextProvider filterWithActiveProduct={false}>
         <ProductTemplate />
@@ -31,10 +32,10 @@ const ProductPage = (props: Props) => {
 
 export default ProductPage;
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
-  return {
-    props: {
-      pageTitle: ScreenName.Product + TitleSuffix,
-    },
-  };
-};
+// export const getStaticProps = async (context: GetStaticPropsContext) => {
+//   return {
+//     props: {
+//       pageTitle: ScreenName.Product + TitleSuffix,
+//     },
+//   };
+// };

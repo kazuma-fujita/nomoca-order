@@ -7,15 +7,16 @@ import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { StaffListContextProvider } from 'stores/use-staff-list';
 import { ProductListContextProvider } from 'stores/use-product-list';
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+// type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const SubscriptionOrderPage = (props: Props) => {
+// const SubscriptionOrderPage = (props: Props) => {
+const SubscriptionOrderPage = () => {
   useVerifyAuthenticated();
 
   return (
     <>
       <Head>
-        <title>{props.pageTitle}</title>
+        <title>{ScreenName.SubscriptionOrder + TitleSuffix}</title>
       </Head>
       <ProductListContextProvider filterWithActiveProduct={true}>
         <StaffListContextProvider filterWithActiveStaff={true}>
@@ -28,10 +29,10 @@ const SubscriptionOrderPage = (props: Props) => {
 
 export default SubscriptionOrderPage;
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
-  return {
-    props: {
-      pageTitle: ScreenName.SubscriptionOrder + TitleSuffix,
-    },
-  };
-};
+// export const getStaticProps = async (context: GetStaticPropsContext) => {
+//   return {
+//     props: {
+//       pageTitle: ScreenName.SubscriptionOrder + TitleSuffix,
+//     },
+//   };
+// };

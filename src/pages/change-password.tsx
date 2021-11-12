@@ -9,14 +9,15 @@ import { useVerifyAuthenticated } from 'stores/use-current-user';
 
 // Amplify.configure(awsconfig);
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+// type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const ChangePasswordPage = (props: Props) => {
+// const ChangePasswordPage = (props: Props) => {
+const ChangePasswordPage = () => {
   useVerifyAuthenticated();
   return (
     <>
       <Head>
-        <title>{props.pageTitle}</title>
+        <title>{ScreenName.ChangePassword + TitleSuffix}</title>
       </Head>
       <StaffTemplate />
     </>
@@ -25,10 +26,10 @@ const ChangePasswordPage = (props: Props) => {
 
 export default ChangePasswordPage;
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
-  return {
-    props: {
-      pageTitle: ScreenName.ChangePassword + TitleSuffix,
-    },
-  };
-};
+// export const getStaticProps = async (context: GetStaticPropsContext) => {
+//   return {
+//     props: {
+//       pageTitle: ScreenName.ChangePassword + TitleSuffix,
+//     },
+//   };
+// };

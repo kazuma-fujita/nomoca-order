@@ -28,7 +28,7 @@ export const useCreateProduct = () => {
         };
         const variables: CreateProductMutationVariables = { input: product };
         const result = (await API.graphql(
-          graphqlOperation(createProductQuery, variables)
+          graphqlOperation(createProductQuery, variables),
         )) as GraphQLResult<CreateProductMutation>;
         if (result.data && result.data.createProduct) {
           setIsLoading(false);
@@ -49,7 +49,7 @@ export const useCreateProduct = () => {
   // // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const createProduct = useCallback(
     async (name: string) => mutate(SWRMultiKey.AllProductList, onCreateProduct(name), false),
-    []
+    [mutate],
   );
 
   const resetState = useCallback(() => {

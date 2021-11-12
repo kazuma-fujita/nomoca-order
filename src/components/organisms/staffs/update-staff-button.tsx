@@ -19,6 +19,13 @@ export const UpdateStaffButton = (props: Props) => {
   const { handleSubmit, reset: resetForm, clearErrors } = useFormReturn;
   const { updateStaff, isLoading, error, resetState } = useUpdateStaff();
   const [on, toggle] = useToggle(false);
+
+  const cancelHandler = useCallback(() => {
+    resetForm();
+    resetState();
+    toggle();
+  }, [resetForm, resetState, toggle]);
+
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Staff) => {
@@ -28,16 +35,13 @@ export const UpdateStaffButton = (props: Props) => {
           toggle();
         }
       },
-      [props.disabled]
-    )
+      [clearErrors, error, props.disabled, props.id, toggle, updateStaff],
+    ),
   );
-  const cancelHandler = useCallback(() => {
-    resetForm();
-    resetState();
-    toggle();
-  }, []);
+
   const submitButtonLabel = '編集する';
   const label = `担当者を${submitButtonLabel}`;
+
   return (
     <>
       <Button onClick={toggle} variant='outlined' startIcon={<Edit fontSize='small' />}>

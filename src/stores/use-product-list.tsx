@@ -8,7 +8,7 @@ import { createContext, useContext } from 'react';
 import useSWR, { KeyedMutator } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ListProductsSortedByViewOrderQuery, ListProductsSortedByViewOrderQueryVariables } from '../API';
-import { SWRMultiKey } from '../constants/swr-key';
+import { SWRMultiKey } from 'constants/swr-key';
 
 type ProviderProps = {
   data: Product[] | undefined;

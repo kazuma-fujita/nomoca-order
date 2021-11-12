@@ -33,7 +33,7 @@ export const useUpdateAllProduct = () => {
         const variables: UpdateProductMutationVariables = { input: product };
         try {
           const result = (await API.graphql(
-            graphqlOperation(updateProductQuery, variables)
+            graphqlOperation(updateProductQuery, variables),
           )) as GraphQLResult<UpdateProductMutation>;
           if (result.data && result.data.updateProduct) {
             setIsLoading(false);
@@ -57,7 +57,7 @@ export const useUpdateAllProduct = () => {
   const updateAllProduct = useCallback(
     async ({ sourceIndex, destinationIndex }: Args) =>
       mutate(SWRMultiKey.AllProductList, onUpdateAllProduct({ sourceIndex, destinationIndex }), false),
-    []
+    [mutate],
   );
 
   const resetState = useCallback(() => {

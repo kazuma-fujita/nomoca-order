@@ -39,7 +39,7 @@ export const CurrentUserContextProvider = ({ ...props }) => {
   console.log('CurrentUserContextProvider user:', currentUser);
   const value = useMemo(
     () => ({ currentUser, error, mutateUser, groups, email, isOperator }),
-    [currentUser, error, mutateUser, groups, email, isOperator]
+    [currentUser, error, mutateUser, groups, email, isOperator],
   );
   return <CurrentUserContext.Provider value={value} {...props} />;
   // return <CurrentUserContext.Provider value={{ currentUser, error, mutateUser, groups, isOperator }} {...props} />;

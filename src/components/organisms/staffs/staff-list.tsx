@@ -45,12 +45,18 @@ export const StaffList = () => {
   const { data, error } = useStaffList();
   const { formatDateHourMinute } = useFormatDateHourMinute();
   const { updateAllStaff } = useUpdateAllStaff();
-  const handleOnDragEnd = useCallback((result: DropResult, provided: ResponderProvided) => {
-    if (result.destination) {
-      updateAllStaff({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
-    }
-  }, []);
+
+  const handleOnDragEnd = useCallback(
+    (result: DropResult, provided: ResponderProvided) => {
+      if (result.destination) {
+        updateAllStaff({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
+      }
+    },
+    [updateAllStaff],
+  );
+
   const droppableId = 'staffs';
+
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>

@@ -2,13 +2,12 @@ import { GraphQLResult } from '@aws-amplify/api';
 import { ModelStaffFilterInput, Staff } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { ObjectType } from 'constants/object-type';
-import { SWRKey } from 'constants/swr-key';
+import { SWRMultiKey } from 'constants/swr-key';
 import { listStaffsSortedByViewOrder } from 'graphql/queries';
 import { createContext, useContext } from 'react';
 import useSWR, { KeyedMutator } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ListStaffsSortedByViewOrderQuery, ListStaffsSortedByViewOrderQueryVariables } from '../API';
-import { SWRMultiKey } from '../constants/swr-key';
 
 type ProviderProps = {
   data: Staff[] | undefined;

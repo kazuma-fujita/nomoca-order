@@ -13,18 +13,20 @@ type Props = {
 export const SignOutMenuItem: React.FC<Props> = ({ handleClose, children }) => {
   const { signOut, isLoading, error, resetState } = useSignOut();
   const [on, toggle] = useToggle(false);
-  const submitHandler = useCallback(async () => {
-    await signOut();
-    if (!error) {
-      toggle();
-      handleClose();
-    }
-  }, []);
+
   const cancelHandler = useCallback(() => {
     resetState();
     toggle();
     handleClose();
-  }, []);
+  }, [handleClose, resetState, toggle]);
+
+  const submitHandler = useCallback(async () => {
+    await signOut();
+    if (!error) {
+      cancelHandler();
+    }
+  }, [cancelHandler, error, signOut]);
+
   const label = 'ログアウト';
 
   return (

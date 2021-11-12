@@ -33,7 +33,7 @@ export const useUpdateAllStaff = () => {
         const variables: UpdateStaffMutationVariables = { input: staff };
         try {
           const result = (await API.graphql(
-            graphqlOperation(updateStaffQuery, variables)
+            graphqlOperation(updateStaffQuery, variables),
           )) as GraphQLResult<UpdateStaffMutation>;
           if (result.data && result.data.updateStaff) {
             setIsLoading(false);
@@ -57,7 +57,7 @@ export const useUpdateAllStaff = () => {
   const updateAllStaff = useCallback(
     async ({ sourceIndex, destinationIndex }: Args) =>
       mutate(SWRMultiKey.AllStaffList, onUpdateAllStaff({ sourceIndex, destinationIndex }), false),
-    []
+    [mutate],
   );
 
   const resetState = useCallback(() => {

@@ -15,6 +15,13 @@ export const CreateProductButton = () => {
   const { createProduct, isLoading, error, resetState } = useCreateProduct();
   const [on, toggle] = useToggle(false);
   const { data: productList } = useProductList();
+
+  const cancelHandler = useCallback(() => {
+    resetForm();
+    resetState();
+    toggle();
+  }, [resetForm, resetState, toggle]);
+
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Product) => {
@@ -23,14 +30,10 @@ export const CreateProductButton = () => {
           cancelHandler();
         }
       },
-      [productList]
-    )
+      [cancelHandler, createProduct, error],
+    ),
   );
-  const cancelHandler = useCallback(() => {
-    resetForm();
-    resetState();
-    toggle();
-  }, []);
+
   const submitButtonLabel = '追加する';
   const label = `商品を${submitButtonLabel}`;
   return (

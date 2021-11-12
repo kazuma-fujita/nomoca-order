@@ -13,16 +13,19 @@ type Props = {
 export const ActivateStaffButton = (props: Props) => {
   const { updateStaff, isLoading, error, resetState } = useUpdateStaff();
   const [on, toggle] = useToggle(false);
+
+  const cancelHandler = useCallback(() => {
+    resetState();
+    toggle();
+  }, [resetState, toggle]);
+
   const submitHandler = useCallback(async () => {
     await updateStaff({ id: props.id, disabled: !props.disabled });
     if (!error) {
       cancelHandler();
     }
-  }, [props.disabled]);
-  const cancelHandler = useCallback(() => {
-    resetState();
-    toggle();
-  }, []);
+  }, [cancelHandler, error, props.disabled, props.id, updateStaff]);
+
   return (
     <>
       <Switch checked={!props.disabled} onClick={toggle} inputProps={{ 'aria-label': 'activate-switch' }} />

@@ -22,7 +22,7 @@ export const useDeleteStaff = () => {
         const staff: DeleteStaffInput = { id: id };
         const variables: DeleteStaffMutationVariables = { input: staff };
         const result = (await API.graphql(
-          graphqlOperation(deleteStaffQuery, variables)
+          graphqlOperation(deleteStaffQuery, variables),
         )) as GraphQLResult<DeleteStaffMutation>;
         if (result.data && result.data.deleteStaff) {
           setIsLoading(false);
@@ -40,7 +40,10 @@ export const useDeleteStaff = () => {
     };
 
   // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
-  const deleteStaff = useCallback(async (id: string) => mutate(SWRMultiKey.AllStaffList, onDeleteStaff(id), false), []);
+  const deleteStaff = useCallback(
+    async (id: string) => mutate(SWRMultiKey.AllStaffList, onDeleteStaff(id), false),
+    [mutate],
+  );
 
   const resetState = useCallback(() => {
     setIsLoading(false);

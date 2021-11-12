@@ -14,16 +14,19 @@ type Props = {
 export const DeleteSubscriptionOrderButton = (props: Props) => {
   const { deleteSubscriptionOrder, isLoading, error, resetState } = useDeleteSubscriptionOrder();
   const [on, toggle] = useToggle(false);
+
+  const cancelHandler = useCallback(() => {
+    resetState();
+    toggle();
+  }, [resetState, toggle]);
+
   const submitHandler = useCallback(async () => {
     const error = await deleteSubscriptionOrder(props.id, props.products);
     if (!error) {
       toggle();
     }
-  }, []);
-  const cancelHandler = useCallback(() => {
-    resetState();
-    toggle();
-  }, []);
+  }, [deleteSubscriptionOrder, props.id, props.products, toggle]);
+
   const label = '解約';
 
   return (

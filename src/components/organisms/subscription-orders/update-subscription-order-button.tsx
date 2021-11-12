@@ -2,7 +2,7 @@ import { Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { ModelSubscriptionOrderProductConnection, SubscriptionOrder } from 'API';
 import { useUpdateSubscriptionOrder } from 'hooks/subscription-orders/use-update-subscription-order';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { useProductList } from 'stores/use-product-list';
@@ -17,10 +17,13 @@ type Props = {
 
 export const UpdateSubscriptionOrderButton = (props: Props) => {
   // 入力フォーム初期値
-  const defaultValues = {
-    products: props.products,
-    staffID: props.staffID,
-  };
+  const defaultValues = useMemo(
+    () => ({
+      products: props.products,
+      staffID: props.staffID,
+    }),
+    [props.products, props.staffID],
+  );
   console.log('defaultValues:', defaultValues);
   const useFormReturn = useForm<SubscriptionOrder>();
   const { handleSubmit, reset: resetForm, control } = useFormReturn;
@@ -34,7 +37,13 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
     // useForm引数のdefaultValueだとプルダウンの初期値がセットされない為、
     // useEffectで画面描写後に初期値をセット
     resetForm(defaultValues);
-  }, []);
+  }, [defaultValues, resetForm]);
+
+  const cancelHandler = useCallback(() => {
+    resetState();
+    // resetForm();
+    toggle();
+  }, [resetState, toggle]);
 
   // submit時処理handler。useCallbackの第2引数には一覧画面から渡されたpropsを指定
   const submitHandler = handleSubmit(
@@ -51,17 +60,11 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
           // toggle();
         }
       },
-      [props.products]
-    )
+      [cancelHandler, props.id, props.products, updateSubscriptionOrder],
+    ),
   );
 
-  const cancelHandler = useCallback(() => {
-    resetState();
-    // resetForm();
-    toggle();
-  }, []);
-
-  const label = '編集する';
+  const label = '変更する';
   return (
     <>
       <Button onClick={toggle} variant='outlined' startIcon={<Edit fontSize='small' />}>

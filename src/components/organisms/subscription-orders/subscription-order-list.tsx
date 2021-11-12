@@ -31,7 +31,7 @@ const header = [
     minWidth: 160,
   },
   {
-    label: '編集',
+    label: '注文内容変更',
     minWidth: 80,
   },
   {
@@ -125,7 +125,7 @@ export const SubscriptionOrderList = () => {
                                     <StyledTableCell align='center'>{relation.product.name}</StyledTableCell>
                                     <StyledTableCell align='right'>{relation.product.name}</StyledTableCell>
                                   </StyledTableRow>
-                                )
+                                ),
                             )}
                         </TableBody>
                       </Table>

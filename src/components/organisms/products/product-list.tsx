@@ -45,11 +45,16 @@ export const ProductList = () => {
   const { data, error } = useProductList();
   const { formatDateHourMinute } = useFormatDateHourMinute();
   const { updateAllProduct } = useUpdateAllProduct();
-  const handleOnDragEnd = useCallback((result: DropResult, provided: ResponderProvided) => {
-    if (result.destination) {
-      updateAllProduct({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
-    }
-  }, []);
+
+  const handleOnDragEnd = useCallback(
+    (result: DropResult, provided: ResponderProvided) => {
+      if (result.destination) {
+        updateAllProduct({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
+      }
+    },
+    [updateAllProduct],
+  );
+
   const droppableId = 'products';
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (

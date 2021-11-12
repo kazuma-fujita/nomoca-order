@@ -13,16 +13,19 @@ type Props = {
 export const DeleteStaffButton = (props: Props) => {
   const { deleteStaff, isLoading, error, resetState } = useDeleteStaff();
   const [on, toggle] = useToggle(false);
+
+  const cancelHandler = useCallback(() => {
+    resetState();
+    toggle();
+  }, [resetState, toggle]);
+
   const submitHandler = useCallback(async () => {
     await deleteStaff(props.id);
     if (!error) {
       toggle();
     }
-  }, []);
-  const cancelHandler = useCallback(() => {
-    resetState();
-    toggle();
-  }, []);
+  }, [deleteStaff, error, props.id, toggle]);
+
   const label = '削除';
 
   return (

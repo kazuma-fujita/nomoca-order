@@ -28,7 +28,7 @@ export const useCreateStaff = () => {
         };
         const variables: CreateStaffMutationVariables = { input: staff };
         const result = (await API.graphql(
-          graphqlOperation(createStaffQuery, variables)
+          graphqlOperation(createStaffQuery, variables),
         )) as GraphQLResult<CreateStaffMutation>;
         if (result.data && result.data.createStaff) {
           setIsLoading(false);
@@ -49,7 +49,7 @@ export const useCreateStaff = () => {
   // // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const createStaff = useCallback(
     async (name: string) => mutate(SWRMultiKey.AllStaffList, onCreateStaff(name), false),
-    []
+    [mutate],
   );
 
   // const { data, mutate } = useStaffList();

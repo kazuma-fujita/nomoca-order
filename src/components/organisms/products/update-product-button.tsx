@@ -19,6 +19,13 @@ export const UpdateProductButton = (props: Props) => {
   const { handleSubmit, reset: resetForm, clearErrors } = useFormReturn;
   const { updateProduct, isLoading, error, resetState } = useUpdateProduct();
   const [on, toggle] = useToggle(false);
+
+  const cancelHandler = useCallback(() => {
+    resetForm();
+    resetState();
+    toggle();
+  }, [resetForm, resetState, toggle]);
+
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Product) => {
@@ -28,16 +35,13 @@ export const UpdateProductButton = (props: Props) => {
           toggle();
         }
       },
-      [props.disabled]
-    )
+      [clearErrors, error, props.disabled, props.id, toggle, updateProduct],
+    ),
   );
-  const cancelHandler = useCallback(() => {
-    resetForm();
-    resetState();
-    toggle();
-  }, []);
+
   const submitButtonLabel = '編集する';
   const label = `商品名を${submitButtonLabel}`;
+
   return (
     <>
       <Button onClick={toggle} variant='outlined' startIcon={<Edit fontSize='small' />}>

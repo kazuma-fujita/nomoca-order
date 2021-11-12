@@ -15,6 +15,13 @@ export const CreateStaffButton = () => {
   const { createStaff, isLoading, error, resetState } = useCreateStaff();
   const [on, toggle] = useToggle(false);
   const { data: staffList } = useStaffList();
+
+  const cancelHandler = useCallback(() => {
+    resetForm();
+    resetState();
+    toggle();
+  }, [resetForm, resetState, toggle]);
+
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Staff) => {
@@ -23,16 +30,13 @@ export const CreateStaffButton = () => {
           cancelHandler();
         }
       },
-      [staffList]
-    )
+      [cancelHandler, createStaff, error],
+    ),
   );
-  const cancelHandler = useCallback(() => {
-    resetForm();
-    resetState();
-    toggle();
-  }, []);
+
   const submitButtonLabel = '追加する';
   const label = `担当者を${submitButtonLabel}`;
+
   return (
     <>
       <Button onClick={toggle} variant='outlined' startIcon={<Add />}>

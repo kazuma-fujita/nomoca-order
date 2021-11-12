@@ -1,13 +1,15 @@
+import { ProductName } from 'constants/product-name';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyBeforeAuthenticate } from 'stores/use-current-user';
-import AuthTemplate from '../components/templates/auth-template';
+import AuthTemplate from 'components/templates/auth-template';
 
 // Amplify.configure(awsconfig);
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+// type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const AuthPage = (props: Props) => {
+// const AuthPage = (props: Props) => {
+const AuthPage = () => {
   useVerifyBeforeAuthenticate();
   // const router = useRouter();
   // useEffect(() => {
@@ -31,19 +33,19 @@ const AuthPage = (props: Props) => {
   return (
     <>
       <Head>
-        <title>{props.pageTitle}</title>
+        <title>{ProductName}</title>
       </Head>
-      <AuthTemplate pageTitle={props.pageTitle} />
+      <AuthTemplate pageTitle={ProductName} />
     </>
   );
 };
 
 export default AuthPage;
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
-  return {
-    props: {
-      pageTitle: 'Nomoca Order',
-    },
-  };
-};
+// export const getStaticProps = async (context: GetStaticPropsContext) => {
+//   return {
+//     props: {
+//       pageTitle: 'Nomoca Order',
+//     },
+//   };
+// };
