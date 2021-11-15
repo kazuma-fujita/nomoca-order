@@ -38,6 +38,8 @@
     "@storybook/addon-essentials": "^6.4.0-rc.1",
     "@storybook/addon-links": "^6.4.0-rc.1",
     "@storybook/react": "^6.4.0-rc.1",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
     "@types/react": "17.0.27",
     "babel-loader": "^8.2.3",
     "eslint": "7.32.0",
