@@ -2,6 +2,9 @@ import React from 'react';
 import { Alert } from '@mui/material';
 
 type Props = {
+  /**
+   * Display message.
+   */
   children: Error | string;
 };
 
