@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { ErrorAlert } from 'components/atoms/error-alert';
+import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 
 type Props = {
   label: string;

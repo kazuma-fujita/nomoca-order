@@ -6,7 +6,7 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { ErrorAlert } from 'components/atoms/error-alert';
+import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';

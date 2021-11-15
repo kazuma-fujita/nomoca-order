@@ -4,7 +4,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, TextField } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { SubscriptionOrder } from 'API';
-import { ErrorAlert } from 'components/atoms/error-alert';
+import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import Form from 'components/atoms/form';
 import { BaseSyntheticEvent, ReactElement } from 'react';
 import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
