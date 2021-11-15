@@ -2,7 +2,7 @@ import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { SubscriptionOrder } from 'API';
 import { useCreateSubscriptionOrder } from 'hooks/subscription-orders/use-create-subscription-order';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
@@ -16,14 +16,18 @@ export const CreateSubscriptionOrderButton = () => {
   const useFormReturn = useForm<SubscriptionOrder>({ defaultValues });
   const { handleSubmit, reset: resetForm, control } = useFormReturn;
   const useFieldArrayReturn = useFieldArray({ control, name: 'products.items' });
+  const { fields, remove } = useFieldArrayReturn;
   const { createSubscriptionOrder, isLoading, error, resetState } = useCreateSubscriptionOrder();
   const [on, toggle] = useToggle(false);
 
   const cancelHandler = useCallback(() => {
+    // 商品・数量の可変TextField初期化の為、全ての要素削除
+    fields.map((_, index) => remove(index));
+    // 入力フォームのデフォルト値を設定
     resetForm(defaultValues);
     resetState();
     toggle();
-  }, [resetForm, resetState, toggle]);
+  }, [fields, resetForm, resetState, toggle, remove]);
 
   const submitHandler = handleSubmit(
     useCallback(
