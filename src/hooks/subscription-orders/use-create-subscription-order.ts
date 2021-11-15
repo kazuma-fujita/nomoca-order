@@ -18,22 +18,23 @@ import {
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { ObjectType } from '../../constants/object-type';
+import { ObjectType } from 'constants/object-type';
 
 const createSubscriptionOrderProducts = async (
   productRelations: SubscriptionOrderProduct[],
-  newSubscriptionOrderID: string
+  newSubscriptionOrderID: string,
 ) => {
   // SubscriptionOrder と Product のリレーション作成
   for (const item of productRelations) {
     const input: CreateSubscriptionOrderProductInput = {
       subscriptionOrderID: newSubscriptionOrderID,
       productID: item.productID,
+      quantity: item.quantity,
     };
     const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
     // データ新規登録実行
     const result = (await API.graphql(
-      graphqlOperation(createSubscriptionOrderProduct, variables)
+      graphqlOperation(createSubscriptionOrderProduct, variables),
     )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;
     if (result.data && result.data.createSubscriptionOrderProduct) {
       const newSubscriptionOrderProduct = result.data.createSubscriptionOrderProduct;
@@ -52,7 +53,7 @@ export const useCreateSubscriptionOrder = () => {
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const createSubscriptionOrder = async (
     productRelations: ModelSubscriptionOrderProductConnection | null | undefined,
-    staffID: string
+    staffID: string,
   ) => {
     setIsLoading(true);
     try {
@@ -62,7 +63,7 @@ export const useCreateSubscriptionOrder = () => {
       const input: CreateSubscriptionOrderInput = { staffID: staffID, type: ObjectType.SubscriptionOrder };
       const variables: CreateSubscriptionOrderMutationVariables = { input: input };
       const result = (await API.graphql(
-        graphqlOperation(createSubscriptionOrderQuery, variables)
+        graphqlOperation(createSubscriptionOrderQuery, variables),
       )) as GraphQLResult<CreateSubscriptionOrderMutation>;
       if (result.data && result.data.createSubscriptionOrder) {
         const newSubscriptionOrder = result.data.createSubscriptionOrder;

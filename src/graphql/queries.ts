@@ -305,6 +305,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
             createdAt
             updatedAt
           }
+          quantity
           createdAt
           updatedAt
           owner
@@ -356,6 +357,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
               createdAt
               updatedAt
             }
+            quantity
             createdAt
             updatedAt
             owner
@@ -483,6 +485,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
               createdAt
               updatedAt
             }
+            quantity
             createdAt
             updatedAt
             owner

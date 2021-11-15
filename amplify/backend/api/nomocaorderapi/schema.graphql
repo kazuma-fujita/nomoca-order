@@ -39,6 +39,7 @@ type SubscriptionOrderProduct
   subscriptionOrderID: ID!
   productID: ID!
   product: Product! @connection(fields: ["productID"])
+  quantity: Int!
 }
 
 type Product

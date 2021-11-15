@@ -209,6 +209,7 @@ export type SubscriptionOrderProduct = {
   subscriptionOrderID: string,
   productID: string,
   product: Product,
+  quantity: number,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -252,20 +253,35 @@ export type CreateSubscriptionOrderProductInput = {
   id?: string | null,
   subscriptionOrderID: string,
   productID: string,
+  quantity: number,
 };
 
 export type ModelSubscriptionOrderProductConditionInput = {
   subscriptionOrderID?: ModelIDInput | null,
   productID?: ModelIDInput | null,
+  quantity?: ModelIntInput | null,
   and?: Array< ModelSubscriptionOrderProductConditionInput | null > | null,
   or?: Array< ModelSubscriptionOrderProductConditionInput | null > | null,
   not?: ModelSubscriptionOrderProductConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateSubscriptionOrderProductInput = {
   id: string,
   subscriptionOrderID?: string | null,
   productID?: string | null,
+  quantity?: number | null,
 };
 
 export type DeleteSubscriptionOrderProductInput = {
@@ -288,18 +304,6 @@ export type ModelProductConditionInput = {
   and?: Array< ModelProductConditionInput | null > | null,
   or?: Array< ModelProductConditionInput | null > | null,
   not?: ModelProductConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ModelBooleanInput = {
@@ -1056,6 +1060,7 @@ export type CreateSubscriptionOrderMutation = {
           createdAt: string,
           updatedAt: string,
         },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
@@ -1107,6 +1112,7 @@ export type UpdateSubscriptionOrderMutation = {
           createdAt: string,
           updatedAt: string,
         },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
@@ -1158,6 +1164,7 @@ export type DeleteSubscriptionOrderMutation = {
           createdAt: string,
           updatedAt: string,
         },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
@@ -1202,6 +1209,7 @@ export type CreateSubscriptionOrderProductMutation = {
       createdAt: string,
       updatedAt: string,
     },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1229,6 +1237,7 @@ export type UpdateSubscriptionOrderProductMutation = {
       createdAt: string,
       updatedAt: string,
     },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1256,6 +1265,7 @@ export type DeleteSubscriptionOrderProductMutation = {
       createdAt: string,
       updatedAt: string,
     },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1742,6 +1752,7 @@ export type GetSubscriptionOrderQuery = {
           createdAt: string,
           updatedAt: string,
         },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
@@ -1796,6 +1807,7 @@ export type ListSubscriptionOrdersQuery = {
             createdAt: string,
             updatedAt: string,
           },
+          quantity: number,
           createdAt: string,
           updatedAt: string,
           owner?: string | null,
@@ -1937,6 +1949,7 @@ export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
             createdAt: string,
             updatedAt: string,
           },
+          quantity: number,
           createdAt: string,
           updatedAt: string,
           owner?: string | null,
@@ -2567,6 +2580,7 @@ export type OnCreateSubscriptionOrderSubscription = {
           createdAt: string,
           updatedAt: string,
         },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
@@ -2617,6 +2631,7 @@ export type OnUpdateSubscriptionOrderSubscription = {
           createdAt: string,
           updatedAt: string,
         },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
@@ -2667,6 +2682,7 @@ export type OnDeleteSubscriptionOrderSubscription = {
           createdAt: string,
           updatedAt: string,
         },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
@@ -2710,6 +2726,7 @@ export type OnCreateSubscriptionOrderProductSubscription = {
       createdAt: string,
       updatedAt: string,
     },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2736,6 +2753,7 @@ export type OnUpdateSubscriptionOrderProductSubscription = {
       createdAt: string,
       updatedAt: string,
     },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2762,6 +2780,7 @@ export type OnDeleteSubscriptionOrderProductSubscription = {
       createdAt: string,
       updatedAt: string,
     },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,

@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, Box } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,14 +8,13 @@ import TableRow from '@mui/material/TableRow';
 import { ErrorAlert } from 'components/atoms/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
+import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
 import { useFormatDate } from 'hooks/date-hooks/use-format-date';
 import { useFormatDateHourMinute } from 'hooks/date-hooks/use-format-date-hour-minute';
 import { useFetchSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import React from 'react';
 import { DeleteSubscriptionOrderButton } from './delete-subscription-order-button';
 import { UpdateSubscriptionOrderButton } from './update-subscription-order-button';
-import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
-import TableCell from '@mui/material/TableCell';
-import React from 'react';
 
 const header = [
   {
@@ -122,7 +121,7 @@ export const SubscriptionOrderList = () => {
                                 relation && (
                                   <StyledTableRow key={`${index}-${relation.product.id}`}>
                                     <StyledTableCell>{relation.product.name}</StyledTableCell>
-                                    <StyledTableCell align='center'>{relation.product.name}</StyledTableCell>
+                                    <StyledTableCell align='center'>{relation.quantity}</StyledTableCell>
                                     <StyledTableCell align='right'>{relation.product.name}</StyledTableCell>
                                   </StyledTableRow>
                                 ),

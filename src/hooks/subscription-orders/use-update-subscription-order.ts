@@ -26,7 +26,7 @@ import { parseResponseError } from 'utilities/parse-response-error';
 const updateSubscriptionOrderProducts = async (
   updateSubscriptionOrderID: string,
   nextProductRelations: SubscriptionOrderProduct[],
-  prevProductRelations: SubscriptionOrderProduct[]
+  prevProductRelations: SubscriptionOrderProduct[],
 ) => {
   console.log('prevProductRelations:', prevProductRelations);
   // SubscriptionOrder と Product のリレーション削除
@@ -35,7 +35,7 @@ const updateSubscriptionOrderProducts = async (
     const variables: DeleteSubscriptionOrderProductMutationVariables = { input: input };
     // データ削除実行
     const result = (await API.graphql(
-      graphqlOperation(deleteSubscriptionOrderProduct, variables)
+      graphqlOperation(deleteSubscriptionOrderProduct, variables),
     )) as GraphQLResult<DeleteSubscriptionOrderProductMutation>;
     if (result.data && result.data.deleteSubscriptionOrderProduct) {
       const deleteSubscriptionOrderProduct = result.data.deleteSubscriptionOrderProduct;
@@ -49,11 +49,12 @@ const updateSubscriptionOrderProducts = async (
     const input: CreateSubscriptionOrderProductInput = {
       subscriptionOrderID: updateSubscriptionOrderID,
       productID: item.productID,
+      quantity: item.quantity,
     };
     const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
     // データ登録実行
     const result = (await API.graphql(
-      graphqlOperation(createSubscriptionOrderProduct, variables)
+      graphqlOperation(createSubscriptionOrderProduct, variables),
     )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;
     if (result.data && result.data.createSubscriptionOrderProduct) {
       const newSubscriptionOrderProduct = result.data.createSubscriptionOrderProduct;
@@ -74,7 +75,7 @@ export const useUpdateSubscriptionOrder = () => {
     updateSubscriptionOrderID: string,
     nextProductRelations: ModelSubscriptionOrderProductConnection | null | undefined,
     prevProductRelations: ModelSubscriptionOrderProductConnection | null | undefined,
-    staffID: string
+    staffID: string,
   ) => {
     setIsLoading(true);
     try {
@@ -90,7 +91,7 @@ export const useUpdateSubscriptionOrder = () => {
       const variables: UpdateSubscriptionOrderMutationVariables = { input: subscriptionOrder };
       // データ更新実行
       const result = (await API.graphql(
-        graphqlOperation(updateSubscriptionOrderQuery, variables)
+        graphqlOperation(updateSubscriptionOrderQuery, variables),
       )) as GraphQLResult<UpdateSubscriptionOrderMutation>;
 
       if (result.data && result.data.updateSubscriptionOrder) {
@@ -106,7 +107,7 @@ export const useUpdateSubscriptionOrder = () => {
         await updateSubscriptionOrderProducts(
           updateSubscriptionOrderID,
           nextProductNonNullRelations,
-          prevProductNonNullRelations
+          prevProductNonNullRelations,
         );
         // 再フェッチ実行
         mutate(SWRKey.SubscriptionOrderList);

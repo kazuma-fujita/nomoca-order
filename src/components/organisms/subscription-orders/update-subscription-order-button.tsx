@@ -5,8 +5,6 @@ import { useUpdateSubscriptionOrder } from 'hooks/subscription-orders/use-update
 import { useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
-import { useProductList } from 'stores/use-product-list';
-import { useStaffList } from 'stores/use-staff-list';
 import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
 
 type Props = {
@@ -28,8 +26,6 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
   const useFormReturn = useForm<SubscriptionOrder>();
   const { handleSubmit, reset: resetForm, control } = useFormReturn;
   const useFieldArrayReturn = useFieldArray({ control, name: 'products.items' });
-  const { data: productList } = useProductList();
-  const { data: staffList } = useStaffList();
   const { updateSubscriptionOrder, isLoading, error, resetState } = useUpdateSubscriptionOrder();
   const [on, toggle] = useToggle(false);
 
@@ -80,8 +76,8 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
         cancelHandler={cancelHandler}
         useFormReturn={useFormReturn}
         useFieldArrayReturn={useFieldArrayReturn}
-        productList={productList}
-        staffList={staffList}
+        // productList={productList}
+        // staffList={staffList}
         staffID={props.staffID}
       />
     </>

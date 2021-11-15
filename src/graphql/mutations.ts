@@ -508,6 +508,7 @@ export const createSubscriptionOrder = /* GraphQL */ `
             createdAt
             updatedAt
           }
+          quantity
           createdAt
           updatedAt
           owner
@@ -553,6 +554,7 @@ export const updateSubscriptionOrder = /* GraphQL */ `
             createdAt
             updatedAt
           }
+          quantity
           createdAt
           updatedAt
           owner
@@ -598,6 +600,7 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
             createdAt
             updatedAt
           }
+          quantity
           createdAt
           updatedAt
           owner
@@ -638,6 +641,7 @@ export const createSubscriptionOrderProduct = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      quantity
       createdAt
       updatedAt
       owner
@@ -662,6 +666,7 @@ export const updateSubscriptionOrderProduct = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      quantity
       createdAt
       updatedAt
       owner
@@ -686,6 +691,7 @@ export const deleteSubscriptionOrderProduct = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      quantity
       createdAt
       updatedAt
       owner

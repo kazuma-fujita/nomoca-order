@@ -3,14 +3,12 @@ import Button from '@mui/material/Button';
 import { SubscriptionOrder } from 'API';
 import { useCreateSubscriptionOrder } from 'hooks/subscription-orders/use-create-subscription-order';
 import { useCallback } from 'react';
-import { useFieldArray, useForm, Resolver } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
-import { useStaffList } from 'stores/use-staff-list';
-import { useProductList } from 'stores/use-product-list';
 import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
 
 const defaultValues = {
-  products: { items: [{ productID: '' }] },
+  products: { items: [{ productID: '', quantity: 1 }] },
   staffID: '',
 };
 
@@ -19,12 +17,9 @@ export const CreateSubscriptionOrderButton = () => {
   const { handleSubmit, reset: resetForm, control } = useFormReturn;
   const useFieldArrayReturn = useFieldArray({ control, name: 'products.items' });
   const { createSubscriptionOrder, isLoading, error, resetState } = useCreateSubscriptionOrder();
-  const { data: productList } = useProductList();
-  const { data: staffList } = useStaffList();
   const [on, toggle] = useToggle(false);
 
   const cancelHandler = useCallback(() => {
-    // resetForm({ staffID: '' });
     resetForm(defaultValues);
     resetState();
     toggle();
@@ -61,8 +56,6 @@ export const CreateSubscriptionOrderButton = () => {
         cancelHandler={cancelHandler}
         useFormReturn={useFormReturn}
         useFieldArrayReturn={useFieldArrayReturn}
-        productList={productList}
-        staffList={staffList}
       />
     </>
   );
