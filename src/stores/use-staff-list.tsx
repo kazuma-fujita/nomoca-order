@@ -10,8 +10,9 @@ import { parseResponseError } from 'utilities/parse-response-error';
 import { ListStaffsSortedByViewOrderQuery, ListStaffsSortedByViewOrderQueryVariables } from '../API';
 
 type ProviderProps = {
-  data: Staff[] | undefined;
-  error: Error | undefined;
+  data: Staff[] | null;
+  error: Error | null;
+  isLoading: boolean;
   mutate: KeyedMutator<Staff[]>;
 };
 
@@ -44,13 +45,16 @@ type Props = {
 };
 
 // 担当者一覧画面の他、各画面の担当者プルダウンのマスターデータとなる為、
-// 担当者プルダウンを実装する画面はTop階層(pages)で一回のみデータfetch、useContextを利用してdataを使います
+// 担当者プルダウンを実装する画面はTop階層(pages)で一回のみデータfetch、useContextを利用してdataを使い回す
 export const StaffListContextProvider: React.FC<Props> = ({ filterWithActiveStaff, ...rest }) => {
-  const {
-    data,
-    error: responseError,
-    mutate,
-  } = useSWR(filterWithActiveStaff ? SWRMultiKey.ActiveStaffList : SWRMultiKey.AllStaffList, fetcher);
-  const error = responseError && parseResponseError(responseError);
-  return <StaffListContext.Provider value={{ data, error, mutate }} {...rest} />;
+  // SWRKeyは [SWRKeyString, boolean] の配列を指定
+  const key = filterWithActiveStaff ? SWRMultiKey.ActiveStaffList : SWRMultiKey.AllStaffList;
+  const { data, error, mutate } = useSWR(key, fetcher);
+  const props: ProviderProps = {
+    data: data ?? null,
+    error: error ? parseResponseError(error) : null,
+    isLoading: Boolean(!data && !error),
+    mutate: mutate,
+  };
+  return <StaffListContext.Provider value={props} {...rest} />;
 };

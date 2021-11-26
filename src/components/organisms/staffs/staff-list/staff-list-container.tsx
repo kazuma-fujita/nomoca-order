@@ -5,7 +5,7 @@ import { useStaffList } from 'stores/use-staff-list';
 import { StaffList } from './staff-list';
 
 export const StaffListContainer = () => {
-  const { data, error } = useStaffList();
+  const { data, error, isLoading } = useStaffList();
   const { updateAllStaff } = useUpdateAllStaff();
 
   const handleOnDragEnd = useCallback(
@@ -17,5 +17,5 @@ export const StaffListContainer = () => {
     [updateAllStaff],
   );
 
-  return <StaffList data={data} error={error} handleOnDragEnd={handleOnDragEnd} />;
+  return <StaffList data={data} error={error} isLoading={isLoading} handleOnDragEnd={handleOnDragEnd} />;
 };

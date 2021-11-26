@@ -11,10 +11,10 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
+import { ActivateStaffButton } from 'components/organisms/staffs/activate-staff-button';
+import { UpdateStaffButton } from 'components/organisms/staffs/update-staff-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import { ActivateStaffButton } from '../activate-staff-button';
-import { UpdateStaffButton } from '../update-staff-button';
 
 const header = [
   {
@@ -40,12 +40,13 @@ const header = [
 ];
 
 type Props = {
-  data: Staff[] | undefined;
-  error: Error | undefined;
+  data: Staff[] | null;
+  error: Error | null;
+  isLoading: boolean;
   handleOnDragEnd: (result: DropResult, provided: ResponderProvided) => void;
 };
 
-export const StaffList = ({ data, error, handleOnDragEnd }: Props) => {
+export const StaffList = ({ data, error, isLoading, handleOnDragEnd }: Props) => {
   const droppableId = 'staffs';
 
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
@@ -67,9 +68,9 @@ export const StaffList = ({ data, error, handleOnDragEnd }: Props) => {
           <Droppable droppableId={droppableId}>
             {(provided) => (
               <TableBody className={droppableId} {...provided.droppableProps} ref={provided.innerRef}>
-                {(!data || data.length == 0) && (
+                {(isLoading || (data && data.length == 0)) && (
                   <EmptyTableBody headerLength={header.length}>
-                    {!data ? <CircularProgress /> : '担当者を追加してください'}
+                    {isLoading ? <CircularProgress /> : '担当者を追加してください'}
                   </EmptyTableBody>
                 )}
                 {data &&

@@ -9,47 +9,39 @@ export default { component: StaffList };
 
 // const defaultTask = TaskItemStories.Default.args?.task as Task;
 
-const items: Staff[] = [
-  {
-    __typename: ObjectType.Staff,
-    id: 'dummyId1',
-    name: '山田 太郎',
-    type: ObjectType.Staff,
-    viewOrder: 1,
-    disabled: false,
-    createdAt: '2021-11-25T14:32:55Z',
-    updatedAt: '2021-11-25T14:32:55Z',
-  },
-  {
-    __typename: ObjectType.Staff,
-    id: 'dummyId2',
-    name: '佐藤 花子',
-    type: ObjectType.Staff,
-    viewOrder: 2,
-    disabled: false,
-    createdAt: '2021-11-25T14:32:55Z',
-    updatedAt: '2021-12-01T15:03:21Z',
-  },
-  {
-    __typename: ObjectType.Staff,
-    id: 'dummyId3',
-    name: '鈴木 正男',
-    type: ObjectType.Staff,
-    viewOrder: 3,
-    disabled: true,
-    createdAt: '2021-11-25T14:32:55Z',
-    updatedAt: '2021-12-09T09:02:21Z',
-  },
-];
+const item: Staff = {
+  __typename: ObjectType.Staff,
+  id: '',
+  name: '',
+  type: ObjectType.Staff,
+  viewOrder: 1,
+  disabled: false,
+  createdAt: '2021-11-25T14:32:55Z',
+  updatedAt: '2021-11-25T14:32:55Z',
+};
 
-// const defaultTasks = Array.from({ length: 6 }, (_, i) => ({
-//   ...defaultTask,
-//   id: `${i + 1}`,
-//   title: `Task ${i + 1}`,
-// }));
+const items: Staff[] = [...Array(3)].map((_, i) => ({
+  ...item,
+  id: `dummyId-${i + 1}`,
+  name: `担当者${i + 1}`,
+  viewOrder: i + 1,
+  updatedAt: new Date(2021, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),
+}));
 
 export const Default: Story = {
   args: { data: items },
+};
+
+export const Loading: Story = {
+  args: { isLoading: true },
+};
+
+export const Empty: Story = {
+  args: { data: [] },
+};
+
+export const FetchError: Story = {
+  args: { error: Error('The API fetched data but it returned null.') },
 };
 
 // export const WithPinnedTasks: Story = {
@@ -68,8 +60,4 @@ export const Default: Story = {
 
 // export const Loading: Story = {
 //   args: { tasks: [], loading: true },
-// };
-
-// export const Empty: Story = {
-//   args: { ...Loading.args, loading: false },
 // };
