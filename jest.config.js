@@ -21,4 +21,6 @@ module.exports = {
   },
   transformIgnorePatterns: ['/node_modules/', '^.+\\.module\\.(css|sass|scss)$'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  // tsconfig.json's baseUrl set src
+  moduleDirectories: ['node_modules', 'src'],
 };
