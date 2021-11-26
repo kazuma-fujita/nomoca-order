@@ -6,17 +6,15 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { Staff } from 'API';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
-import { useFormatDateHourMinute } from 'hooks/date-hooks/use-format-date-hour-minute';
-import { useUpdateAllStaff } from 'hooks/staffs/use-update-all-staff';
-import { useCallback } from 'react';
+import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import { useStaffList } from 'stores/use-staff-list';
-import { ActivateStaffButton } from './activate-staff-button';
-import { UpdateStaffButton } from './update-staff-button';
+import { ActivateStaffButton } from '../activate-staff-button';
+import { UpdateStaffButton } from '../update-staff-button';
 
 const header = [
   {
@@ -41,20 +39,13 @@ const header = [
   },
 ];
 
-export const StaffList = () => {
-  const { data, error } = useStaffList();
-  const { formatDateHourMinute } = useFormatDateHourMinute();
-  const { updateAllStaff } = useUpdateAllStaff();
+type Props = {
+  data: Staff[] | undefined;
+  error: Error | undefined;
+  handleOnDragEnd: (result: DropResult, provided: ResponderProvided) => void;
+};
 
-  const handleOnDragEnd = useCallback(
-    (result: DropResult, provided: ResponderProvided) => {
-      if (result.destination) {
-        updateAllStaff({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
-      }
-    },
-    [updateAllStaff],
-  );
-
+export const StaffList = ({ data, error, handleOnDragEnd }: Props) => {
   const droppableId = 'staffs';
 
   if (error) return <ErrorAlert>{error}</ErrorAlert>;

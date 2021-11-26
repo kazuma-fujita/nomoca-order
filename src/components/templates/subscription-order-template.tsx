@@ -1,4 +1,4 @@
-import { StaffList } from 'components/organisms/staffs/staff-list';
+import { StaffList } from 'components/organisms/staffs/staff-list/staff-list';
 import { CreateStaffButton } from 'components/organisms/staffs/create-staff-button';
 import { Main } from 'components/molecules/main';
 import { Grid, Box } from '@mui/material';

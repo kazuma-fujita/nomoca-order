@@ -46,7 +46,6 @@ type Props = {
 // 担当者一覧画面の他、各画面の担当者プルダウンのマスターデータとなる為、
 // 担当者プルダウンを実装する画面はTop階層(pages)で一回のみデータfetch、useContextを利用してdataを使います
 export const StaffListContextProvider: React.FC<Props> = ({ filterWithActiveStaff, ...rest }) => {
-  // const { data, error: responseError, mutate } = useSWR([SWRKey.StaffList, filterWithActiveStaff], fetcher);
   const {
     data,
     error: responseError,

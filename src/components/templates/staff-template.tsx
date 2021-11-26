@@ -1,7 +1,8 @@
-import { StaffList } from 'components/organisms/staffs/staff-list';
+import { StaffList } from 'components/organisms/staffs/staff-list/staff-list';
 import { CreateStaffButton } from 'components/organisms/staffs/create-staff-button';
 import { Main } from 'components/molecules/main';
-import { Grid, Box } from '@mui/material';
+import { Grid } from '@mui/material';
+import { StaffListContainer } from 'components/organisms/staffs/staff-list/staff-list-container';
 
 export const StaffTemplate = () => {
   return (
@@ -13,7 +14,7 @@ export const StaffTemplate = () => {
           </Grid>
         </Grid>
         <Grid item>
-          <StaffList />
+          <StaffListContainer />
         </Grid>
       </Grid>
     </Main>
