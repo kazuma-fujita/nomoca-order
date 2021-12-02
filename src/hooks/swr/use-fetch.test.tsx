@@ -1,8 +1,10 @@
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, RenderOptions, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { DefaultRequestBody, rest, graphql } from 'msw';
 import { setupServer } from 'msw/node';
 import fetch from 'node-fetch';
 import { useFetch } from './use-fetch';
+import { SWRConfig } from 'swr';
+import { ReactElement } from 'react';
 
 type User = {
   id: number;
@@ -19,10 +21,10 @@ const handlers = [
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const UserList = () => {
-  const { data, error, isLoading, isEmpty } = useFetch<User[]>(`https://mock.api.com/users`, fetcher);
+  const { data, error, isLoading, isListEmpty } = useFetch<User[]>(`https://mock.api.com/users`, fetcher);
   if (error) return <div role='alert'>{error.message}</div>;
   if (isLoading) return <div>Now Loading...</div>;
-  if (isEmpty) return <div>List is empty.</div>;
+  if (isListEmpty) return <div>List is empty.</div>;
   if (!data) return <div>Users data is notfound.</div>;
   return (
     <>
@@ -43,8 +45,9 @@ describe('UserList', () => {
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
+
   test('It renders the users list.', async () => {
-    render(<UserList />);
+    customRender(<UserList />);
     await waitForElementToBeRemoved(() => screen.getByText('Now Loading...'));
     expect(screen.getByRole('heading')).toHaveTextContent('Users data exists.');
     const users = screen.getAllByRole('listitem');
@@ -54,13 +57,22 @@ describe('UserList', () => {
     expect(users[2]).toHaveTextContent('user-3');
   });
 
+  test('It renders empty data.', async () => {
+    server.use(
+      rest.get<DefaultRequestBody, User[]>('https://mock.api.com/users', (req, res, ctx) => res(ctx.json([]))),
+    );
+    customRender(<UserList />);
+    await waitForElementToBeRemoved(() => screen.getByText('Now Loading...'));
+    expect(screen.getByText('List is empty.')).toBeInTheDocument();
+  });
+
   test('A network error occurred.', async () => {
     server.use(
       rest.get<DefaultRequestBody, { message: string }>('https://mock.api.com/users', (req, res, ctx) =>
         res.networkError('Failed to connect.'),
       ),
     );
-    render(<UserList />);
+    customRender(<UserList />);
     await waitForElementToBeRemoved(() => screen.getByText('Now Loading...'));
     expect(screen.getByRole('alert')).toHaveTextContent(
       'request to https://mock.api.com/users failed, reason: Failed to connect',
@@ -78,3 +90,10 @@ describe('UserList', () => {
   //   expect(screen.getByRole('alert')).toHaveTextContent('Failed to fetch user list.');
   // });
 });
+
+const AllTheProviders: React.FC = ({ children }) => (
+  <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>{children}</SWRConfig>
+  // <SWRConfig value={{ dedupingInterval: 0 }}>{children}</SWRConfig>
+);
+const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
+  render(ui, { wrapper: AllTheProviders, ...options });
