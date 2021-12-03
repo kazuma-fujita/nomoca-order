@@ -37,7 +37,7 @@ export const Loading: Story = {
 };
 
 export const Empty: Story = {
-  args: { data: [] },
+  args: { isListEmpty: true },
 };
 
 export const FetchError: Story = {

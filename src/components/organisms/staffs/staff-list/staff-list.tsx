@@ -14,6 +14,7 @@ import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
 import { ActivateStaffButton } from 'components/organisms/staffs/activate-staff-button';
 import { UpdateStaffButton } from 'components/organisms/staffs/update-staff-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
+import { FetchResponse } from 'hooks/swr/use-fetch';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 
 const header = [
@@ -39,14 +40,11 @@ const header = [
   },
 ];
 
-type Props = {
-  data: Staff[] | null;
-  error: Error | null;
-  isLoading: boolean;
+type Props = FetchResponse<Staff[]> & {
   handleOnDragEnd: (result: DropResult, provided: ResponderProvided) => void;
 };
 
-export const StaffList = ({ data, error, isLoading, handleOnDragEnd }: Props) => {
+export const StaffList = ({ data, error, isLoading, isListEmpty, handleOnDragEnd }: Props) => {
   const droppableId = 'staffs';
 
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
@@ -68,11 +66,12 @@ export const StaffList = ({ data, error, isLoading, handleOnDragEnd }: Props) =>
           <Droppable droppableId={droppableId}>
             {(provided) => (
               <TableBody className={droppableId} {...provided.droppableProps} ref={provided.innerRef}>
-                {(isLoading || (data && data.length == 0)) && (
+                {isLoading && (
                   <EmptyTableBody headerLength={header.length}>
-                    {isLoading ? <CircularProgress /> : '担当者を追加してください'}
+                    <CircularProgress aria-label='Now loading' />
                   </EmptyTableBody>
                 )}
+                {isListEmpty && <EmptyTableBody headerLength={header.length}>担当者を追加してください</EmptyTableBody>}
                 {data &&
                   data.map((item, index) => (
                     <Draggable key={item.id} draggableId={item.id} index={index}>

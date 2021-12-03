@@ -93,7 +93,6 @@ describe('UserList', () => {
 
 const AllTheProviders: React.FC = ({ children }) => (
   <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>{children}</SWRConfig>
-  // <SWRConfig value={{ dedupingInterval: 0 }}>{children}</SWRConfig>
 );
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
   render(ui, { wrapper: AllTheProviders, ...options });

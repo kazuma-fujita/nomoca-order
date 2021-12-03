@@ -1,7 +1,15 @@
-import useSWR, { Fetcher, Key } from 'swr';
+import useSWR, { Fetcher, Key, KeyedMutator } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 
-export const useFetch = <Data = any>(key: Key, fetcher: Fetcher<Data>) => {
+export type FetchResponse<Data = any> = {
+  data: Data | null;
+  error: Error | null;
+  isLoading: boolean;
+  isListEmpty: boolean;
+  mutate: KeyedMutator<Data>;
+};
+
+export const useFetch = <Data = any>(key: Key, fetcher: Fetcher<Data>): FetchResponse<Data> => {
   const { data, error, mutate } = useSWR<Data>(key, fetcher);
   return {
     data: data ?? null,
