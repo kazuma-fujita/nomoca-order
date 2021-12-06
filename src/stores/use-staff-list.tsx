@@ -8,14 +8,6 @@ import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 import { ListStaffsSortedByViewOrderQuery, ListStaffsSortedByViewOrderQueryVariables } from '../API';
 
-// type ProviderProps = {
-//   data: Staff[] | null;
-//   error: Error | null;
-//   isLoading: boolean;
-//   mutate: KeyedMutator<Staff[]>;
-// };
-
-// const StaffListContext = createContext({} as ProviderProps);
 const StaffListContext = createContext({} as FetchResponse<Staff[]>);
 
 export const useStaffList = () => useContext(StaffListContext);
@@ -34,7 +26,6 @@ const fetcher = async (key: string, filterWithActiveStaff: boolean = false) => {
   // Graphql query操作実行
   const result = (await API.graphql(operation)) as GraphQLResult<ListStaffsSortedByViewOrderQuery>;
   if (result.data && result.data.listStaffsSortedByViewOrder && result.data.listStaffsSortedByViewOrder.items) {
-    // console.log('staff fetcher:', result.data.listStaffsSortedByViewOrder.items);
     return result.data.listStaffsSortedByViewOrder.items as Staff[];
   } else {
     throw Error('The API fetched data but it returned null.');
@@ -50,15 +41,6 @@ type Props = {
 export const StaffListContextProvider: React.FC<Props> = ({ filterWithActiveStaff, ...rest }) => {
   // SWRKeyは [SWRKeyString, boolean] の配列を指定
   const key = filterWithActiveStaff ? SWRMultiKey.ActiveStaffList : SWRMultiKey.AllStaffList;
-  // const { data, error, mutate } = useSWR(key, fetcher);
-  // const { data, error, isLoading, isListEmpty, mutate } = useFetch<Staff[]>(key, fetcher);
   const response = useFetch<Staff[]>(key, fetcher);
-  // const props: FetchResponse = {
-  //   data: data,
-  //   error: error ? parseResponseError(error) : null,
-  //   isLoading: Boolean(!data && !error),
-  //   mutate: mutate,
-  // };
-  // return <StaffListContext.Provider value={props} {...rest} />;
   return <StaffListContext.Provider value={response} {...rest} />;
 };

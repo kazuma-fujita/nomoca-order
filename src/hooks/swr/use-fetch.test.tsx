@@ -1,10 +1,9 @@
-import { render, RenderOptions, screen, waitForElementToBeRemoved } from '@testing-library/react';
-import { DefaultRequestBody, rest, graphql } from 'msw';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { DefaultRequestBody, rest } from 'msw';
 import { setupServer } from 'msw/node';
 import fetch from 'node-fetch';
+import { customRender } from 'utilities/tests/custom-render';
 import { useFetch } from './use-fetch';
-import { SWRConfig } from 'swr';
-import { ReactElement } from 'react';
 
 type User = {
   id: number;
@@ -90,9 +89,3 @@ describe('UserList', () => {
   //   expect(screen.getByRole('alert')).toHaveTextContent('Failed to fetch user list.');
   // });
 });
-
-const AllTheProviders: React.FC = ({ children }) => (
-  <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>{children}</SWRConfig>
-);
-const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
-  render(ui, { wrapper: AllTheProviders, ...options });
