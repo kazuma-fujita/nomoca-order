@@ -1,5 +1,5 @@
 import { StaffList } from 'components/organisms/staffs/staff-list/staff-list';
-import { CreateStaffButton } from 'components/organisms/staffs/create-staff-button';
+import { CreateStaffButton } from 'components/organisms/staffs/create-staff/create-staff-button';
 import { Main } from 'components/molecules/main';
 import { Grid, Box } from '@mui/material';
 import { CreateSubscriptionOrderButton } from 'components/organisms/subscription-orders/create-subscription-order-button';
