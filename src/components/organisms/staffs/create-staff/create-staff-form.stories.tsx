@@ -2,10 +2,13 @@ import type { ComponentStoryObj } from '@storybook/react';
 import { Staff } from 'API';
 import { CreateStaffForm, Props } from './create-staff-form';
 import { useForm } from 'react-hook-form';
+import { userEvent, screen } from '@storybook/testing-library';
 
 const CreateStaffFormWrapper: React.FC<Props> = (props) => {
   const formReturn = useForm<Staff>({ defaultValues: { name: '' } });
-  const copy = { ...props, formReturn: formReturn };
+  const { handleSubmit } = formReturn;
+  const submitHandler = handleSubmit((data: Staff) => console.log(data));
+  const copy = { ...props, formReturn: formReturn, submitHandler: submitHandler };
   return <CreateStaffForm {...copy} />;
 };
 
@@ -17,7 +20,12 @@ export const Default: Story = {
   args: { on: true },
 };
 
-// export const EmptyError = {
-//   ...Default,
-//   play: async () => userEvent.click(screen.getByText(/ログイン/i)),
-// };
+export const Loading: Story = {
+  ...Default,
+  args: { isLoading: true },
+};
+
+export const EmptyError = {
+  ...Default,
+  play: async () => userEvent.click(screen.getByText(/追加する/i)),
+};
