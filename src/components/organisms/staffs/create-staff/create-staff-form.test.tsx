@@ -16,7 +16,7 @@ describe('CreateStaffForm', () => {
     expect(buttons[1]).toHaveTextContent('追加する');
   });
 
-  test('It valid an empty input.', async () => {
+  test('It validates an empty input.', async () => {
     render(<Default />);
     const submitButton = screen.getByRole('button', { name: '追加する' });
     await waitFor(async () => {

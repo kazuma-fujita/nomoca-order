@@ -52,35 +52,6 @@ export const useUpdateStaff = () => {
       mutate(SWRMultiKey.AllStaffList, onUpdateStaff({ id, name, disabled }), false),
     [mutate],
   );
-  // const updateStaff = useCallback(
-  //   async ({ id, name, disabled = false }: Args) => {
-  //     setIsLoading(true);
-  //     console.log('disabled:', disabled);
-  //     try {
-  //       const staff: UpdateStaffInput = name ? { id: id, name: name, disabled } : { id: id, disabled };
-  //       const variables: UpdateStaffMutationVariables = { input: staff };
-  //       const result = (await API.graphql(
-  //         graphqlOperation(updateStaffQuery, variables)
-  //       )) as GraphQLResult<UpdateStaffMutation>;
-  //       setIsLoading(false);
-  //       setError(null);
-  //       if (result.data && result.data.updateStaff) {
-  //         const updatedStaff = result.data.updateStaff;
-  //         console.log('updatedStaff:', updatedStaff);
-  //         console.log('current data:', data);
-  //         mutate(data && data.map((item) => (item.id === id ? updatedStaff : item)), false);
-  //       } else {
-  //         throw Error('The API updated data but it returned null.');
-  //       }
-  //     } catch (error) {
-  //       setIsLoading(false);
-  //       setError(parseResponseError(error));
-  //       console.error('update error:', error);
-  //       throw error as Error;
-  //     }
-  //   },
-  //   [data, mutate]
-  // );
 
   const resetState = useCallback(() => {
     setIsLoading(false);

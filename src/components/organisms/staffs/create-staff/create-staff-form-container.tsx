@@ -23,12 +23,12 @@ export const CreateStaffFormContainer = ({ on, toggle }: Props) => {
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Staff) => {
-        await createStaff(data.name);
+        const error = await createStaff(data.name);
         if (!error) {
           cancelHandler();
         }
       },
-      [cancelHandler, createStaff, error],
+      [cancelHandler, createStaff],
     ),
   );
 

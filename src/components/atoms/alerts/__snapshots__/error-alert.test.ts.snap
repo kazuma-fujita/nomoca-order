@@ -758,6 +758,7 @@ exports[`Storyshots Components/Organisms/Staffs/Staff List/Staff List Loading 1`
           colSpan={5}
         >
           <span
+            aria-label="Now loading"
             className="MuiCircularProgress-root MuiCircularProgress-indeterminate MuiCircularProgress-colorPrimary css-18lrjg1-MuiCircularProgress-root"
             role="progressbar"
             style={
