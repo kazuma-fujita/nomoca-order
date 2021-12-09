@@ -3,20 +3,23 @@ import { CreateStaffButton } from 'components/organisms/staffs/create-staff/crea
 import { Main } from 'components/molecules/main';
 import { Grid } from '@mui/material';
 import { StaffListContainer } from 'components/organisms/staffs/staff-list/staff-list-container';
+import { StaffListContextProvider } from 'stores/use-staff-list';
 
 export const StaffTemplate = () => {
   return (
-    <Main>
-      <Grid container spacing={2} direction='column'>
-        <Grid item>
-          <Grid container justifyContent='flex-end'>
-            <CreateStaffButton />
+    <StaffListContextProvider filterWithActiveStaff={false}>
+      <Main>
+        <Grid container spacing={2} direction='column'>
+          <Grid item>
+            <Grid container justifyContent='flex-end'>
+              <CreateStaffButton />
+            </Grid>
+          </Grid>
+          <Grid item>
+            <StaffListContainer />
           </Grid>
         </Grid>
-        <Grid item>
-          <StaffListContainer />
-        </Grid>
-      </Grid>
-    </Main>
+      </Main>
+    </StaffListContextProvider>
   );
 };

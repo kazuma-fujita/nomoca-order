@@ -1,4 +1,4 @@
-import { StaffTemplate } from 'components/templates/staff-template';
+import { StaffTemplate } from 'components/templates/staffs/staff-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import {
@@ -24,9 +24,9 @@ const StaffPage = () => {
         {/* <title>{props.pageTitle}</title> */}
         <title>{ScreenName.Staff + TitleSuffix}</title>
       </Head>
-      <StaffListContextProvider filterWithActiveStaff={false}>
-        <StaffTemplate />
-      </StaffListContextProvider>
+      {/* <StaffListContextProvider filterWithActiveStaff={false}> */}
+      <StaffTemplate />
+      {/* </StaffListContextProvider> */}
     </>
   );
 };
