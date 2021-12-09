@@ -11,6 +11,7 @@ import Head from 'next/head';
 import { resetServerContext } from 'react-beautiful-dnd';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { StaffListContextProvider } from 'stores/use-staff-list';
+import { Main } from 'components/molecules/main';
 
 // type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -25,7 +26,9 @@ const StaffPage = () => {
         <title>{ScreenName.Staff + TitleSuffix}</title>
       </Head>
       {/* <StaffListContextProvider filterWithActiveStaff={false}> */}
-      <StaffTemplate />
+      <Main>
+        <StaffTemplate />
+      </Main>
       {/* </StaffListContextProvider> */}
     </>
   );

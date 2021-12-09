@@ -31,7 +31,6 @@ export const useCreateStaff = () => {
       if (result.data && result.data.createStaff) {
         setIsLoading(false);
         setError(null);
-        console.log('newStaff:', result.data.createStaff);
         return [...data, result.data.createStaff];
       } else {
         throw Error('The API created data but it returned null.');
@@ -39,8 +38,6 @@ export const useCreateStaff = () => {
     } catch (error) {
       setIsLoading(false);
       setError(parseResponseError(error));
-      console.error('create error:', error);
-      return error;
     }
   };
 

@@ -8,18 +8,18 @@ import { StaffListContextProvider } from 'stores/use-staff-list';
 export const StaffTemplate = () => {
   return (
     <StaffListContextProvider filterWithActiveStaff={false}>
-      <Main>
-        <Grid container spacing={2} direction='column'>
-          <Grid item>
-            <Grid container justifyContent='flex-end'>
-              <CreateStaffButton />
-            </Grid>
-          </Grid>
-          <Grid item>
-            <StaffListContainer />
+      {/* <Main> */}
+      <Grid container spacing={2} direction='column'>
+        <Grid item>
+          <Grid container justifyContent='flex-end'>
+            <CreateStaffButton />
           </Grid>
         </Grid>
-      </Main>
+        <Grid item>
+          <StaffListContainer />
+        </Grid>
+      </Grid>
+      {/* </Main> */}
     </StaffListContextProvider>
   );
 };

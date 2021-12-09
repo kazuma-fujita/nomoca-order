@@ -21,8 +21,11 @@ export const Default: Story = {
 };
 
 export const Loading: Story = {
-  ...Default,
-  args: { isLoading: true },
+  args: { ...Default.args, isLoading: true },
+};
+
+export const ErrorAlert: Story = {
+  args: { ...Default.args, error: Error('It occurred an async error.') },
 };
 
 export const EmptyError = {
