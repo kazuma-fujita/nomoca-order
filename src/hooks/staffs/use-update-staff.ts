@@ -33,16 +33,15 @@ export const useUpdateStaff = () => {
           setIsLoading(false);
           setError(null);
           const updatedStaff = result.data.updateStaff;
-          console.log('updatedStaff:', updatedStaff);
           return data.map((item) => (item.id === id ? updatedStaff : item));
         } else {
           throw Error('The API updated data but it returned null.');
         }
       } catch (error) {
+        const errorResponse = parseResponseError(error);
         setIsLoading(false);
-        setError(parseResponseError(error));
-        console.error('update error:', error);
-        return data;
+        setError(errorResponse);
+        throw errorResponse;
       }
     };
 

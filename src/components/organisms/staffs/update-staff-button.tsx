@@ -29,13 +29,13 @@ export const UpdateStaffButton = (props: Props) => {
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Staff) => {
-        await updateStaff({ id: props.id, name: data.name, disabled: props.disabled });
-        if (!error) {
+        try {
+          await updateStaff({ id: props.id, name: data.name, disabled: props.disabled });
           clearErrors();
           toggle();
-        }
+        } catch (error) {}
       },
-      [clearErrors, error, props.disabled, props.id, toggle, updateStaff],
+      [clearErrors, props.disabled, props.id, toggle, updateStaff],
     ),
   );
 
