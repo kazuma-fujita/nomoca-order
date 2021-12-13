@@ -2,13 +2,13 @@ import { StyledTableCell } from './styled-table-cell';
 import { StyledTableRow } from './styled-table-row';
 
 type Props = {
-  headerLength: number;
+  colSpan: number;
 };
 
-export const EmptyTableBody: React.FC<Props> = ({ headerLength, children }) => {
+export const EmptyTableBody: React.FC<Props> = ({ colSpan, children }) => {
   return (
     <StyledTableRow>
-      <StyledTableCell colSpan={headerLength} align='center'>
+      <StyledTableCell colSpan={colSpan} align='center'>
         {children}
       </StyledTableCell>
     </StyledTableRow>

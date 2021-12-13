@@ -76,7 +76,7 @@ export const ProductList = () => {
             {(provided) => (
               <TableBody className={droppableId} {...provided.droppableProps} ref={provided.innerRef}>
                 {(!data || data.length == 0) && (
-                  <EmptyTableBody headerLength={header.length}>
+                  <EmptyTableBody colSpan={header.length}>
                     {!data ? <CircularProgress /> : '商品を追加してください'}
                   </EmptyTableBody>
                 )}

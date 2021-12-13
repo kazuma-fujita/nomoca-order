@@ -1,24 +1,36 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Collapse, IconButton, TableCell, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { SubscriptionOrder } from 'API';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
-import { useFormatDate } from 'hooks/date-hooks/use-format-date';
-import { useFormatDateHourMinute } from 'hooks/date-hooks/use-format-date-hour-minute';
-import { useFetchSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { formatDate } from 'functions/dates/format-date';
+import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
+import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
-import { DeleteSubscriptionOrderButton } from './delete-subscription-order-button';
-import { UpdateSubscriptionOrderButton } from './update-subscription-order-button';
+import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription-orders/delete-subscription-order-button';
+import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
+import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const header = [
   {
-    label: '定期便開始日',
+    label: '',
+    minWidth: 0,
+  },
+  {
+    label: '定期便申し込み日',
+    minWidth: 160,
+  },
+  {
+    label: '定期便開始月',
     minWidth: 160,
   },
   {
@@ -54,11 +66,12 @@ const productHeader = [
   },
 ];
 
-export const SubscriptionOrderList = () => {
-  const { error, data } = useFetchSubscriptionOrderList();
-  const { formatDate } = useFormatDate();
-  const { formatDateHourMinute } = useFormatDateHourMinute();
+type Props = FetchResponse<SubscriptionOrder[]> & {
+  on: boolean;
+  toggle: (nextValue?: any) => void;
+};
 
+export const SubscriptionOrderList = ({ data, error, isLoading, isListEmpty, on, toggle }: Props) => {
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <TableContainer component={Paper}>
@@ -75,16 +88,23 @@ export const SubscriptionOrderList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {(!data || data.length == 0) && (
-            <EmptyTableBody headerLength={header.length}>
-              {!data ? <CircularProgress /> : '現在定期便はありません'}
+          {isLoading && (
+            <EmptyTableBody colSpan={header.length}>
+              <CircularProgress aria-label='Now loading' />
             </EmptyTableBody>
           )}
+          {isListEmpty && <EmptyTableBody colSpan={header.length}>現在定期便の商品はありません</EmptyTableBody>}
           {data &&
             data.map((item) => (
               <React.Fragment key={item.id}>
-                <StyledTableRow>
+                <TableRow>
+                  <TableCell>
+                    <IconButton aria-label='expand row' onClick={toggle}>
+                      {on ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                  </TableCell>
                   <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
+                  <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}`}</StyledTableCell>
                   <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                   <StyledTableCell>{item.staff.name}</StyledTableCell>
                   {item.products && (
@@ -97,19 +117,19 @@ export const SubscriptionOrderList = () => {
                       </StyledTableCell>
                     </>
                   )}
-                </StyledTableRow>
-                <StyledTableRow>
-                  <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Box sx={{ margin: 2 }}>
+                </TableRow>
+                <StyledSecondaryTableRow>
+                  <StyledTableCell style={{ paddingBottom: 16, paddingTop: 8 }} colSpan={header.length}>
+                    <Collapse in={on} timeout='auto' unmountOnExit>
                       <Table size='small' aria-label='purchases'>
                         <TableHead>
                           <TableRow>
                             {productHeader.map((item, index) => (
-                              <StyledTableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
-                                <Typography variant='body2' fontWeight='bold'>
+                              <TableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
+                                <Typography variant='body2' fontWeight='bold' color='text.secondary'>
                                   {item.label}
                                 </Typography>
-                              </StyledTableCell>
+                              </TableCell>
                             ))}
                           </TableRow>
                         </TableHead>
@@ -119,18 +139,18 @@ export const SubscriptionOrderList = () => {
                             item.products.items.map(
                               (relation, index) =>
                                 relation && (
-                                  <StyledTableRow key={`${index}-${relation.product.id}`}>
+                                  <TableRow key={`${index}-${relation.product.id}`}>
                                     <StyledTableCell>{relation.product.name}</StyledTableCell>
                                     <StyledTableCell align='center'>{relation.quantity}</StyledTableCell>
                                     <StyledTableCell align='right'>{relation.product.name}</StyledTableCell>
-                                  </StyledTableRow>
+                                  </TableRow>
                                 ),
                             )}
                         </TableBody>
                       </Table>
-                    </Box>
+                    </Collapse>
                   </StyledTableCell>
-                </StyledTableRow>
+                </StyledSecondaryTableRow>
               </React.Fragment>
             ))}
         </TableBody>

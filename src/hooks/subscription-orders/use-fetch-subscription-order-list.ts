@@ -13,6 +13,7 @@ import { parseResponseError } from 'utilities/parse-response-error';
 import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { ListSubscriptionOrdersSortedByCreatedAtQueryVariables } from 'API';
 import { ObjectType } from 'constants/object-type';
+import { useFetch } from 'hooks/swr/use-fetch';
 
 const fetcher = async () => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
@@ -21,7 +22,7 @@ const fetcher = async () => {
     sortDirection: ModelSortDirection.DESC,
   };
   const result = (await API.graphql(
-    graphqlOperation(listSubscriptionOrdersSortedByCreatedAt, sortVariables)
+    graphqlOperation(listSubscriptionOrdersSortedByCreatedAt, sortVariables),
   )) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
 
   if (
@@ -42,7 +43,7 @@ const fetcher = async () => {
 };
 
 export const useFetchSubscriptionOrderList = () => {
-  const { data, error: responseError } = useSWR(SWRKey.SubscriptionOrderList, fetcher);
-  const error = parseResponseError(responseError);
-  return { data, error };
+  return useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
+  // const { data, error } = useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
+  // return { data, error };
 };

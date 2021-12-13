@@ -67,11 +67,11 @@ export const StaffList = ({ data, error, isLoading, isListEmpty, handleOnDragEnd
             {(provided) => (
               <TableBody className={droppableId} {...provided.droppableProps} ref={provided.innerRef}>
                 {isLoading && (
-                  <EmptyTableBody headerLength={header.length}>
+                  <EmptyTableBody colSpan={header.length}>
                     <CircularProgress aria-label='Now loading' />
                   </EmptyTableBody>
                 )}
-                {isListEmpty && <EmptyTableBody headerLength={header.length}>担当者を追加してください</EmptyTableBody>}
+                {isListEmpty && <EmptyTableBody colSpan={header.length}>担当者を追加してください</EmptyTableBody>}
                 {data &&
                   data.map((item, index) => (
                     <Draggable key={item.id} draggableId={item.id} index={index}>

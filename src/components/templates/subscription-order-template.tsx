@@ -1,9 +1,7 @@
-import { StaffList } from 'components/organisms/staffs/staff-list/staff-list';
-import { CreateStaffButton } from 'components/organisms/staffs/create-staff/create-staff-button';
+import { Grid } from '@mui/material';
 import { Main } from 'components/molecules/main';
-import { Grid, Box } from '@mui/material';
 import { CreateSubscriptionOrderButton } from 'components/organisms/subscription-orders/create-subscription-order-button';
-import { SubscriptionOrderList } from 'components/organisms/subscription-orders/subscription-order-list';
+import { SubscriptionOrderListContainer } from 'components/organisms/subscription-orders/subscription-order-list/subscription-order-list-container';
 
 export const SubscriptionOrderTemplate = () => {
   return (
@@ -15,7 +13,7 @@ export const SubscriptionOrderTemplate = () => {
           </Grid>
         </Grid>
         <Grid item>
-          <SubscriptionOrderList />
+          <SubscriptionOrderListContainer />
         </Grid>
       </Grid>
     </Main>
