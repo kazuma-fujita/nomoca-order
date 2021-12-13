@@ -28,6 +28,8 @@ type SubscriptionOrder
   type: String!
   products: [SubscriptionOrderProduct] @connection(keyName: "bySubscriptionOrder", fields: ["id"])
   staff: Staff! @connection(fields: ["staffID"])
+  deliveryStartYear: Int!
+  deliveryStartMonth: Int!
   createdAt: AWSDateTime!
 }
 

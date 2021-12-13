@@ -65,7 +65,7 @@ export type Blog = {
 
 export type ModelPostConnection = {
   __typename: "ModelPostConnection",
-  items?:  Array<Post | null > | null,
+  items:  Array<Post >,
   nextToken?: string | null,
 };
 
@@ -82,7 +82,7 @@ export type Post = {
 
 export type ModelCommentConnection = {
   __typename: "ModelCommentConnection",
-  items?:  Array<Comment | null > | null,
+  items:  Array<Comment >,
   nextToken?: string | null,
 };
 
@@ -173,16 +173,32 @@ export type CreateSubscriptionOrderInput = {
   id?: string | null,
   staffID: string,
   type: string,
+  deliveryStartYear: number,
+  deliveryStartMonth: number,
   createdAt?: string | null,
 };
 
 export type ModelSubscriptionOrderConditionInput = {
   staffID?: ModelIDInput | null,
   type?: ModelStringInput | null,
+  deliveryStartYear?: ModelIntInput | null,
+  deliveryStartMonth?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   and?: Array< ModelSubscriptionOrderConditionInput | null > | null,
   or?: Array< ModelSubscriptionOrderConditionInput | null > | null,
   not?: ModelSubscriptionOrderConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type SubscriptionOrder = {
@@ -192,6 +208,8 @@ export type SubscriptionOrder = {
   type: string,
   products?: ModelSubscriptionOrderProductConnection | null,
   staff: Staff,
+  deliveryStartYear: number,
+  deliveryStartMonth: number,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -199,7 +217,7 @@ export type SubscriptionOrder = {
 
 export type ModelSubscriptionOrderProductConnection = {
   __typename: "ModelSubscriptionOrderProductConnection",
-  items?:  Array<SubscriptionOrderProduct | null > | null,
+  items:  Array<SubscriptionOrderProduct >,
   nextToken?: string | null,
 };
 
@@ -242,6 +260,8 @@ export type UpdateSubscriptionOrderInput = {
   id: string,
   staffID?: string | null,
   type?: string | null,
+  deliveryStartYear?: number | null,
+  deliveryStartMonth?: number | null,
   createdAt?: string | null,
 };
 
@@ -263,18 +283,6 @@ export type ModelSubscriptionOrderProductConditionInput = {
   and?: Array< ModelSubscriptionOrderProductConditionInput | null > | null,
   or?: Array< ModelSubscriptionOrderProductConditionInput | null > | null,
   not?: ModelSubscriptionOrderProductConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateSubscriptionOrderProductInput = {
@@ -365,7 +373,7 @@ export type ModelBlogFilterInput = {
 
 export type ModelBlogConnection = {
   __typename: "ModelBlogConnection",
-  items?:  Array<Blog | null > | null,
+  items:  Array<Blog >,
   nextToken?: string | null,
 };
 
@@ -391,6 +399,8 @@ export type ModelSubscriptionOrderFilterInput = {
   id?: ModelIDInput | null,
   staffID?: ModelIDInput | null,
   type?: ModelStringInput | null,
+  deliveryStartYear?: ModelIntInput | null,
+  deliveryStartMonth?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   and?: Array< ModelSubscriptionOrderFilterInput | null > | null,
   or?: Array< ModelSubscriptionOrderFilterInput | null > | null,
@@ -399,7 +409,7 @@ export type ModelSubscriptionOrderFilterInput = {
 
 export type ModelSubscriptionOrderConnection = {
   __typename: "ModelSubscriptionOrderConnection",
-  items?:  Array<SubscriptionOrder | null > | null,
+  items:  Array<SubscriptionOrder >,
   nextToken?: string | null,
 };
 
@@ -416,7 +426,7 @@ export type ModelProductFilterInput = {
 
 export type ModelProductConnection = {
   __typename: "ModelProductConnection",
-  items?:  Array<Product | null > | null,
+  items:  Array<Product >,
   nextToken?: string | null,
 };
 
@@ -433,7 +443,7 @@ export type ModelStaffFilterInput = {
 
 export type ModelStaffConnection = {
   __typename: "ModelStaffConnection",
-  items?:  Array<Staff | null > | null,
+  items:  Array<Staff >,
   nextToken?: string | null,
 };
 
@@ -474,7 +484,7 @@ export type CreateBlogMutation = {
     name: string,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         title: string,
@@ -492,19 +502,19 @@ export type CreateBlogMutation = {
         } | null,
         comments?:  {
           __typename: "ModelCommentConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Comment",
             id: string,
             postID: string,
             content: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -524,7 +534,7 @@ export type UpdateBlogMutation = {
     name: string,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         title: string,
@@ -542,19 +552,19 @@ export type UpdateBlogMutation = {
         } | null,
         comments?:  {
           __typename: "ModelCommentConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Comment",
             id: string,
             postID: string,
             content: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -574,7 +584,7 @@ export type DeleteBlogMutation = {
     name: string,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         title: string,
@@ -592,19 +602,19 @@ export type DeleteBlogMutation = {
         } | null,
         comments?:  {
           __typename: "ModelCommentConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Comment",
             id: string,
             postID: string,
             content: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -629,7 +639,7 @@ export type CreatePostMutation = {
       name: string,
       posts?:  {
         __typename: "ModelPostConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Post",
           id: string,
           title: string,
@@ -647,7 +657,7 @@ export type CreatePostMutation = {
           } | null,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -655,7 +665,7 @@ export type CreatePostMutation = {
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         postID: string,
@@ -681,7 +691,7 @@ export type CreatePostMutation = {
         content: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -706,7 +716,7 @@ export type UpdatePostMutation = {
       name: string,
       posts?:  {
         __typename: "ModelPostConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Post",
           id: string,
           title: string,
@@ -724,7 +734,7 @@ export type UpdatePostMutation = {
           } | null,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -732,7 +742,7 @@ export type UpdatePostMutation = {
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         postID: string,
@@ -758,7 +768,7 @@ export type UpdatePostMutation = {
         content: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -783,7 +793,7 @@ export type DeletePostMutation = {
       name: string,
       posts?:  {
         __typename: "ModelPostConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Post",
           id: string,
           title: string,
@@ -801,7 +811,7 @@ export type DeletePostMutation = {
           } | null,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -809,7 +819,7 @@ export type DeletePostMutation = {
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         postID: string,
@@ -835,7 +845,7 @@ export type DeletePostMutation = {
         content: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -864,14 +874,14 @@ export type CreateCommentMutation = {
         name: string,
         posts?:  {
           __typename: "ModelPostConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Post",
             id: string,
             title: string,
             blogID: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
@@ -879,7 +889,7 @@ export type CreateCommentMutation = {
       } | null,
       comments?:  {
         __typename: "ModelCommentConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Comment",
           id: string,
           postID: string,
@@ -894,7 +904,7 @@ export type CreateCommentMutation = {
           content: string,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -927,14 +937,14 @@ export type UpdateCommentMutation = {
         name: string,
         posts?:  {
           __typename: "ModelPostConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Post",
             id: string,
             title: string,
             blogID: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
@@ -942,7 +952,7 @@ export type UpdateCommentMutation = {
       } | null,
       comments?:  {
         __typename: "ModelCommentConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Comment",
           id: string,
           postID: string,
@@ -957,7 +967,7 @@ export type UpdateCommentMutation = {
           content: string,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -990,14 +1000,14 @@ export type DeleteCommentMutation = {
         name: string,
         posts?:  {
           __typename: "ModelPostConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Post",
             id: string,
             title: string,
             blogID: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
@@ -1005,7 +1015,7 @@ export type DeleteCommentMutation = {
       } | null,
       comments?:  {
         __typename: "ModelCommentConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Comment",
           id: string,
           postID: string,
@@ -1020,7 +1030,7 @@ export type DeleteCommentMutation = {
           content: string,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1045,7 +1055,7 @@ export type CreateSubscriptionOrderMutation = {
     type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "SubscriptionOrderProduct",
         id: string,
         subscriptionOrderID: string,
@@ -1064,7 +1074,7 @@ export type CreateSubscriptionOrderMutation = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     staff:  {
@@ -1078,6 +1088,8 @@ export type CreateSubscriptionOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1097,7 +1109,7 @@ export type UpdateSubscriptionOrderMutation = {
     type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "SubscriptionOrderProduct",
         id: string,
         subscriptionOrderID: string,
@@ -1116,7 +1128,7 @@ export type UpdateSubscriptionOrderMutation = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     staff:  {
@@ -1130,6 +1142,8 @@ export type UpdateSubscriptionOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1149,7 +1163,7 @@ export type DeleteSubscriptionOrderMutation = {
     type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "SubscriptionOrderProduct",
         id: string,
         subscriptionOrderID: string,
@@ -1168,7 +1182,7 @@ export type DeleteSubscriptionOrderMutation = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     staff:  {
@@ -1182,6 +1196,8 @@ export type DeleteSubscriptionOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1394,7 +1410,7 @@ export type GetBlogQuery = {
     name: string,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         title: string,
@@ -1412,19 +1428,19 @@ export type GetBlogQuery = {
         } | null,
         comments?:  {
           __typename: "ModelCommentConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Comment",
             id: string,
             postID: string,
             content: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -1441,13 +1457,13 @@ export type ListBlogsQueryVariables = {
 export type ListBlogsQuery = {
   listBlogs?:  {
     __typename: "ModelBlogConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Blog",
       id: string,
       name: string,
       posts?:  {
         __typename: "ModelPostConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Post",
           id: string,
           title: string,
@@ -1465,12 +1481,12 @@ export type ListBlogsQuery = {
           } | null,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-    } | null > | null,
+    } >,
     nextToken?: string | null,
   } | null,
 };
@@ -1491,7 +1507,7 @@ export type GetPostQuery = {
       name: string,
       posts?:  {
         __typename: "ModelPostConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Post",
           id: string,
           title: string,
@@ -1509,7 +1525,7 @@ export type GetPostQuery = {
           } | null,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1517,7 +1533,7 @@ export type GetPostQuery = {
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         postID: string,
@@ -1543,7 +1559,7 @@ export type GetPostQuery = {
         content: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -1560,7 +1576,7 @@ export type ListPostsQueryVariables = {
 export type ListPostsQuery = {
   listPosts?:  {
     __typename: "ModelPostConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Post",
       id: string,
       title: string,
@@ -1571,14 +1587,14 @@ export type ListPostsQuery = {
         name: string,
         posts?:  {
           __typename: "ModelPostConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Post",
             id: string,
             title: string,
             blogID: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
@@ -1586,7 +1602,7 @@ export type ListPostsQuery = {
       } | null,
       comments?:  {
         __typename: "ModelCommentConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Comment",
           id: string,
           postID: string,
@@ -1601,12 +1617,12 @@ export type ListPostsQuery = {
           content: string,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-    } | null > | null,
+    } >,
     nextToken?: string | null,
   } | null,
 };
@@ -1631,14 +1647,14 @@ export type GetCommentQuery = {
         name: string,
         posts?:  {
           __typename: "ModelPostConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Post",
             id: string,
             title: string,
             blogID: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
@@ -1646,7 +1662,7 @@ export type GetCommentQuery = {
       } | null,
       comments?:  {
         __typename: "ModelCommentConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Comment",
           id: string,
           postID: string,
@@ -1661,7 +1677,7 @@ export type GetCommentQuery = {
           content: string,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1682,7 +1698,7 @@ export type ListCommentsQueryVariables = {
 export type ListCommentsQuery = {
   listComments?:  {
     __typename: "ModelCommentConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Comment",
       id: string,
       postID: string,
@@ -1704,14 +1720,14 @@ export type ListCommentsQuery = {
         } | null,
         comments?:  {
           __typename: "ModelCommentConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Comment",
             id: string,
             postID: string,
             content: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
@@ -1720,7 +1736,7 @@ export type ListCommentsQuery = {
       content: string,
       createdAt: string,
       updatedAt: string,
-    } | null > | null,
+    } >,
     nextToken?: string | null,
   } | null,
 };
@@ -1737,7 +1753,7 @@ export type GetSubscriptionOrderQuery = {
     type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "SubscriptionOrderProduct",
         id: string,
         subscriptionOrderID: string,
@@ -1756,7 +1772,7 @@ export type GetSubscriptionOrderQuery = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     staff:  {
@@ -1770,6 +1786,8 @@ export type GetSubscriptionOrderQuery = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1785,14 +1803,14 @@ export type ListSubscriptionOrdersQueryVariables = {
 export type ListSubscriptionOrdersQuery = {
   listSubscriptionOrders?:  {
     __typename: "ModelSubscriptionOrderConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "SubscriptionOrder",
       id: string,
       staffID: string,
       type: string,
       products?:  {
         __typename: "ModelSubscriptionOrderProductConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "SubscriptionOrderProduct",
           id: string,
           subscriptionOrderID: string,
@@ -1811,7 +1829,7 @@ export type ListSubscriptionOrdersQuery = {
           createdAt: string,
           updatedAt: string,
           owner?: string | null,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       staff:  {
@@ -1825,10 +1843,12 @@ export type ListSubscriptionOrdersQuery = {
         updatedAt: string,
         owner?: string | null,
       },
+      deliveryStartYear: number,
+      deliveryStartMonth: number,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null > | null,
+    } >,
     nextToken?: string | null,
   } | null,
 };
@@ -1859,7 +1879,7 @@ export type ListProductsQueryVariables = {
 export type ListProductsQuery = {
   listProducts?:  {
     __typename: "ModelProductConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Product",
       id: string,
       name: string,
@@ -1868,7 +1888,7 @@ export type ListProductsQuery = {
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null > | null,
+    } >,
     nextToken?: string | null,
   } | null,
 };
@@ -1900,7 +1920,7 @@ export type ListStaffsQueryVariables = {
 export type ListStaffsQuery = {
   listStaffs?:  {
     __typename: "ModelStaffConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Staff",
       id: string,
       name: string,
@@ -1910,7 +1930,7 @@ export type ListStaffsQuery = {
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null > | null,
+    } >,
     nextToken?: string | null,
   } | null,
 };
@@ -1927,14 +1947,14 @@ export type ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
 export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
   listSubscriptionOrdersSortedByCreatedAt?:  {
     __typename: "ModelSubscriptionOrderConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "SubscriptionOrder",
       id: string,
       staffID: string,
       type: string,
       products?:  {
         __typename: "ModelSubscriptionOrderProductConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "SubscriptionOrderProduct",
           id: string,
           subscriptionOrderID: string,
@@ -1953,7 +1973,7 @@ export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
           createdAt: string,
           updatedAt: string,
           owner?: string | null,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       staff:  {
@@ -1967,10 +1987,12 @@ export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
         updatedAt: string,
         owner?: string | null,
       },
+      deliveryStartYear: number,
+      deliveryStartMonth: number,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null > | null,
+    } >,
     nextToken?: string | null,
   } | null,
 };
@@ -1987,7 +2009,7 @@ export type ListProductsSortedByViewOrderQueryVariables = {
 export type ListProductsSortedByViewOrderQuery = {
   listProductsSortedByViewOrder?:  {
     __typename: "ModelProductConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Product",
       id: string,
       name: string,
@@ -1996,7 +2018,7 @@ export type ListProductsSortedByViewOrderQuery = {
       disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null > | null,
+    } >,
     nextToken?: string | null,
   } | null,
 };
@@ -2013,7 +2035,7 @@ export type ListStaffsSortedByViewOrderQueryVariables = {
 export type ListStaffsSortedByViewOrderQuery = {
   listStaffsSortedByViewOrder?:  {
     __typename: "ModelStaffConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Staff",
       id: string,
       name: string,
@@ -2023,7 +2045,7 @@ export type ListStaffsSortedByViewOrderQuery = {
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
-    } | null > | null,
+    } >,
     nextToken?: string | null,
   } | null,
 };
@@ -2035,7 +2057,7 @@ export type OnCreateBlogSubscription = {
     name: string,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         title: string,
@@ -2053,19 +2075,19 @@ export type OnCreateBlogSubscription = {
         } | null,
         comments?:  {
           __typename: "ModelCommentConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Comment",
             id: string,
             postID: string,
             content: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -2080,7 +2102,7 @@ export type OnUpdateBlogSubscription = {
     name: string,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         title: string,
@@ -2098,19 +2120,19 @@ export type OnUpdateBlogSubscription = {
         } | null,
         comments?:  {
           __typename: "ModelCommentConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Comment",
             id: string,
             postID: string,
             content: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -2125,7 +2147,7 @@ export type OnDeleteBlogSubscription = {
     name: string,
     posts?:  {
       __typename: "ModelPostConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Post",
         id: string,
         title: string,
@@ -2143,19 +2165,19 @@ export type OnDeleteBlogSubscription = {
         } | null,
         comments?:  {
           __typename: "ModelCommentConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Comment",
             id: string,
             postID: string,
             content: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -2175,7 +2197,7 @@ export type OnCreatePostSubscription = {
       name: string,
       posts?:  {
         __typename: "ModelPostConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Post",
           id: string,
           title: string,
@@ -2193,7 +2215,7 @@ export type OnCreatePostSubscription = {
           } | null,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2201,7 +2223,7 @@ export type OnCreatePostSubscription = {
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         postID: string,
@@ -2227,7 +2249,7 @@ export type OnCreatePostSubscription = {
         content: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -2247,7 +2269,7 @@ export type OnUpdatePostSubscription = {
       name: string,
       posts?:  {
         __typename: "ModelPostConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Post",
           id: string,
           title: string,
@@ -2265,7 +2287,7 @@ export type OnUpdatePostSubscription = {
           } | null,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2273,7 +2295,7 @@ export type OnUpdatePostSubscription = {
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         postID: string,
@@ -2299,7 +2321,7 @@ export type OnUpdatePostSubscription = {
         content: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -2319,7 +2341,7 @@ export type OnDeletePostSubscription = {
       name: string,
       posts?:  {
         __typename: "ModelPostConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Post",
           id: string,
           title: string,
@@ -2337,7 +2359,7 @@ export type OnDeletePostSubscription = {
           } | null,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2345,7 +2367,7 @@ export type OnDeletePostSubscription = {
     } | null,
     comments?:  {
       __typename: "ModelCommentConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Comment",
         id: string,
         postID: string,
@@ -2371,7 +2393,7 @@ export type OnDeletePostSubscription = {
         content: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -2395,14 +2417,14 @@ export type OnCreateCommentSubscription = {
         name: string,
         posts?:  {
           __typename: "ModelPostConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Post",
             id: string,
             title: string,
             blogID: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
@@ -2410,7 +2432,7 @@ export type OnCreateCommentSubscription = {
       } | null,
       comments?:  {
         __typename: "ModelCommentConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Comment",
           id: string,
           postID: string,
@@ -2425,7 +2447,7 @@ export type OnCreateCommentSubscription = {
           content: string,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2453,14 +2475,14 @@ export type OnUpdateCommentSubscription = {
         name: string,
         posts?:  {
           __typename: "ModelPostConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Post",
             id: string,
             title: string,
             blogID: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
@@ -2468,7 +2490,7 @@ export type OnUpdateCommentSubscription = {
       } | null,
       comments?:  {
         __typename: "ModelCommentConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Comment",
           id: string,
           postID: string,
@@ -2483,7 +2505,7 @@ export type OnUpdateCommentSubscription = {
           content: string,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2511,14 +2533,14 @@ export type OnDeleteCommentSubscription = {
         name: string,
         posts?:  {
           __typename: "ModelPostConnection",
-          items?:  Array< {
+          items:  Array< {
             __typename: "Post",
             id: string,
             title: string,
             blogID: string,
             createdAt: string,
             updatedAt: string,
-          } | null > | null,
+          } >,
           nextToken?: string | null,
         } | null,
         createdAt: string,
@@ -2526,7 +2548,7 @@ export type OnDeleteCommentSubscription = {
       } | null,
       comments?:  {
         __typename: "ModelCommentConnection",
-        items?:  Array< {
+        items:  Array< {
           __typename: "Comment",
           id: string,
           postID: string,
@@ -2541,7 +2563,7 @@ export type OnDeleteCommentSubscription = {
           content: string,
           createdAt: string,
           updatedAt: string,
-        } | null > | null,
+        } >,
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2565,7 +2587,7 @@ export type OnCreateSubscriptionOrderSubscription = {
     type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "SubscriptionOrderProduct",
         id: string,
         subscriptionOrderID: string,
@@ -2584,7 +2606,7 @@ export type OnCreateSubscriptionOrderSubscription = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     staff:  {
@@ -2598,6 +2620,8 @@ export type OnCreateSubscriptionOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2616,7 +2640,7 @@ export type OnUpdateSubscriptionOrderSubscription = {
     type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "SubscriptionOrderProduct",
         id: string,
         subscriptionOrderID: string,
@@ -2635,7 +2659,7 @@ export type OnUpdateSubscriptionOrderSubscription = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     staff:  {
@@ -2649,6 +2673,8 @@ export type OnUpdateSubscriptionOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2667,7 +2693,7 @@ export type OnDeleteSubscriptionOrderSubscription = {
     type: string,
     products?:  {
       __typename: "ModelSubscriptionOrderProductConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "SubscriptionOrderProduct",
         id: string,
         subscriptionOrderID: string,
@@ -2686,7 +2712,7 @@ export type OnDeleteSubscriptionOrderSubscription = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } >,
       nextToken?: string | null,
     } | null,
     staff:  {
@@ -2700,6 +2726,8 @@ export type OnDeleteSubscriptionOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
