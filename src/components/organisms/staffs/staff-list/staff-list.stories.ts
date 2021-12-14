@@ -43,21 +43,3 @@ export const Empty: Story = {
 export const FetchError: Story = {
   args: { error: Error('The API fetched data but it returned null.') },
 };
-
-// export const WithPinnedTasks: Story = {
-//   args: {
-//     tasks: [
-//       ...defaultTasks.slice(0, 5),
-//       {
-//         id: '6',
-//         title: 'Task 6 (pinned)',
-//         state: 'TASK_PINNED',
-//         updatedAt: new Date(2021, 0, 10, 10, 0),
-//       },
-//     ],
-//   },
-// };
-
-// export const Loading: Story = {
-//   args: { tasks: [], loading: true },
-// };

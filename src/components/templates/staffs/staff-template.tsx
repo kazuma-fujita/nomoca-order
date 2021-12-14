@@ -4,8 +4,13 @@ import { Main } from 'components/molecules/main';
 import { Grid } from '@mui/material';
 import { StaffListContainer } from 'components/organisms/staffs/staff-list/staff-list-container';
 import { StaffListContextProvider } from 'stores/use-staff-list';
+import { ReactElement } from 'react';
 
-export const StaffTemplate = () => {
+type Props = {
+  listComponent: ReactElement;
+};
+
+export const StaffTemplate = ({ listComponent }: Props) => {
   return (
     <StaffListContextProvider filterWithActiveStaff={false}>
       {/* <Main> */}
@@ -15,9 +20,7 @@ export const StaffTemplate = () => {
             <CreateStaffButton />
           </Grid>
         </Grid>
-        <Grid item>
-          <StaffListContainer />
-        </Grid>
+        <Grid item>{listComponent}</Grid>
       </Grid>
       {/* </Main> */}
     </StaffListContextProvider>
