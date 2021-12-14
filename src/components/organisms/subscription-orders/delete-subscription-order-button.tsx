@@ -32,7 +32,7 @@ export const DeleteSubscriptionOrderButton = (props: Props) => {
   return (
     <>
       <Button onClick={toggle} variant='outlined' color='error' startIcon={<Delete fontSize='small' />} size='small'>
-        {label}
+        解約する
       </Button>
       <DeleteSubscriptionOrderDialog
         label={label}
