@@ -21,7 +21,7 @@ type Props = FetchResponse<SubscriptionOrder[]> & {
 export const CommonTableContainer: React.FC<Props> = ({
   error,
   isLoading,
-  isListEmpty,
+  isEmptyList,
   tableHeaders,
   emptyListDescription,
   children,
@@ -47,7 +47,7 @@ export const CommonTableContainer: React.FC<Props> = ({
               <CircularProgress aria-label='Now loading' />
             </EmptyTableBody>
           )}
-          {isListEmpty && <EmptyTableBody colSpan={tableHeaders.length}>{emptyListDescription}</EmptyTableBody>}
+          {isEmptyList && <EmptyTableBody colSpan={tableHeaders.length}>{emptyListDescription}</EmptyTableBody>}
           {children}
         </TableBody>
       </Table>

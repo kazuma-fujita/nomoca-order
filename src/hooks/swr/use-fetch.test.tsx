@@ -20,10 +20,10 @@ const handlers = [
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const UserList = () => {
-  const { data, error, isLoading, isListEmpty } = useFetch<User[]>(`https://mock.api.com/users`, fetcher);
+  const { data, error, isLoading, isEmptyList } = useFetch<User[]>(`https://mock.api.com/users`, fetcher);
   if (error) return <div role='alert'>{error.message}</div>;
   if (isLoading) return <div>Now Loading...</div>;
-  if (isListEmpty) return <div>List is empty.</div>;
+  if (isEmptyList) return <div>List is empty.</div>;
   if (!data) return <div>Users data is notfound.</div>;
   return (
     <>

@@ -44,7 +44,7 @@ type Props = FetchResponse<Staff[]> & {
   handleOnDragEnd: (result: DropResult, provided: ResponderProvided) => void;
 };
 
-export const StaffList = ({ data, error, isLoading, isListEmpty, handleOnDragEnd }: Props) => {
+export const StaffList = ({ data, error, isLoading, isEmptyList, handleOnDragEnd }: Props) => {
   const droppableId = 'staffs';
 
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
@@ -71,7 +71,7 @@ export const StaffList = ({ data, error, isLoading, isListEmpty, handleOnDragEnd
                     <CircularProgress aria-label='Now loading' />
                   </EmptyTableBody>
                 )}
-                {isListEmpty && <EmptyTableBody colSpan={header.length}>担当者を追加してください</EmptyTableBody>}
+                {isEmptyList && <EmptyTableBody colSpan={header.length}>担当者を追加してください</EmptyTableBody>}
                 {data &&
                   data.map((item, index) => (
                     <Draggable key={item.id} draggableId={item.id} index={index}>

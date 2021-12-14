@@ -96,7 +96,7 @@ export const Loading: Story = {
 };
 
 export const Empty: Story = {
-  args: { isListEmpty: true },
+  args: { isEmptyList: true },
 };
 
 export const FetchError: Story = {
