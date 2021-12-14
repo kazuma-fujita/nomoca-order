@@ -13,6 +13,7 @@ import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { StaffListContextProvider } from 'stores/use-staff-list';
 import { Main } from 'components/molecules/main';
 import { StaffListContainer } from 'components/organisms/staffs/staff-list/staff-list-container';
+import { StaffTemplateContainer } from 'components/templates/staffs/staff-template-container';
 
 // type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -28,7 +29,7 @@ const StaffPage = () => {
       </Head>
       {/* <StaffListContextProvider filterWithActiveStaff={false}> */}
       <Main>
-        <StaffTemplate listComponent={<StaffListContainer />} />
+        <StaffTemplateContainer />
       </Main>
       {/* </StaffListContextProvider> */}
     </>

@@ -4,6 +4,7 @@ import { API } from 'aws-amplify';
 import { ObjectType } from 'constants/object-type';
 import { customRender } from 'utilities/tests/custom-render';
 import { StaffTemplate } from './staff-template';
+import { StaffTemplateContainer } from './staff-template-container';
 
 const item = {
   __typename: ObjectType.Staff,
@@ -16,7 +17,7 @@ const item = {
   updatedAt: '2021-12-03T09:08:07.000Z',
 };
 
-const render = () => customRender(<StaffTemplate />);
+const render = () => customRender(<StaffTemplateContainer />);
 
 const createStaff = async () => {
   // It renders a staff list.
@@ -55,7 +56,7 @@ const updateStaff = async () => {
   userEvent.click(submitButton);
 };
 
-describe('CreateStaffTemplate', () => {
+describe('StaffTemplateContainer', () => {
   const spy = jest.spyOn(API, 'graphql');
 
   afterEach(() => {
