@@ -24,6 +24,14 @@ const header: TableHeader[] = [
     minWidth: 40,
   },
   {
+    label: '施設名',
+    minWidth: 160,
+  },
+  {
+    label: '電話番号',
+    minWidth: 160,
+  },
+  {
     label: '担当者',
     minWidth: 160,
   },
@@ -38,14 +46,6 @@ const header: TableHeader[] = [
   {
     label: '更新日時',
     minWidth: 160,
-  },
-  {
-    label: '注文内容変更',
-    minWidth: 80,
-  },
-  {
-    label: '定期便解約',
-    minWidth: 80,
   },
 ];
 
@@ -80,20 +80,12 @@ const Row = ({ item }: RowProps) => {
             {on ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
+        <StyledTableCell align='center'>渋谷クリニック</StyledTableCell>
+        <StyledTableCell align='center'>09012345678</StyledTableCell>
         <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
         <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
         <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
         <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
-        {item.products && (
-          <>
-            <StyledTableCell align='center'>
-              <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
-            </StyledTableCell>
-            <StyledTableCell align='center'>
-              <DeleteSubscriptionOrderButton id={item.id} products={item.products} />
-            </StyledTableCell>
-          </>
-        )}
       </TableRow>
       <StyledSecondaryTableRow>
         <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={header.length}>
