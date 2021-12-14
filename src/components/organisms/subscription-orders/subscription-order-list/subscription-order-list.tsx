@@ -19,11 +19,16 @@ import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription
 import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useToggle } from 'react-use';
 
 const header = [
   {
     label: '',
-    minWidth: 0,
+    minWidth: 40,
+  },
+  {
+    label: '担当者',
+    minWidth: 160,
   },
   {
     label: '定期便申し込み日',
@@ -35,10 +40,6 @@ const header = [
   },
   {
     label: '更新日時',
-    minWidth: 160,
-  },
-  {
-    label: '担当者',
     minWidth: 160,
   },
   {
@@ -66,12 +67,77 @@ const productHeader = [
   },
 ];
 
-type Props = FetchResponse<SubscriptionOrder[]> & {
-  on: boolean;
-  toggle: (nextValue?: any) => void;
+type Props = FetchResponse<SubscriptionOrder[]> & {};
+
+type RowProps = {
+  item: SubscriptionOrder;
 };
 
-export const SubscriptionOrderList = ({ data, error, isLoading, isListEmpty, on, toggle }: Props) => {
+const Row = ({ item }: RowProps) => {
+  const [on, toggle] = useToggle(false);
+  return (
+    <React.Fragment key={item.id}>
+      <TableRow>
+        <TableCell align='center'>
+          <IconButton aria-label='expand row' onClick={toggle}>
+            {on ? <KeyboardArrowUpIcon fontSize='large' /> : <KeyboardArrowDownIcon fontSize='large' />}
+          </IconButton>
+        </TableCell>
+        <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
+        <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
+        <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
+        <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
+        {item.products && (
+          <>
+            <StyledTableCell align='center'>
+              <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
+            </StyledTableCell>
+            <StyledTableCell align='center'>
+              <DeleteSubscriptionOrderButton id={item.id} products={item.products} />
+            </StyledTableCell>
+          </>
+        )}
+      </TableRow>
+      <StyledSecondaryTableRow>
+        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={header.length}>
+          <Collapse in={on} timeout='auto' unmountOnExit>
+            <Box pt={2} pb={4}>
+              <Table size='small' aria-label='purchases'>
+                <TableHead>
+                  <TableRow>
+                    {productHeader.map((item, index) => (
+                      <TableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
+                        <Typography variant='body2' fontWeight='bold' color='text.secondary'>
+                          {item.label}
+                        </Typography>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {item.products &&
+                    item.products.items &&
+                    item.products.items.map(
+                      (relation, index) =>
+                        relation && (
+                          <TableRow key={`${index}-${relation.product.id}`}>
+                            <StyledTableCell>{relation.product.name}</StyledTableCell>
+                            <StyledTableCell align='center'>{relation.quantity}</StyledTableCell>
+                            <StyledTableCell align='right'>{relation.product.name}</StyledTableCell>
+                          </TableRow>
+                        ),
+                    )}
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </StyledTableCell>
+      </StyledSecondaryTableRow>
+    </React.Fragment>
+  );
+};
+
+export const SubscriptionOrderList = ({ data, error, isLoading, isListEmpty }: Props) => {
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <TableContainer component={Paper}>
@@ -94,65 +160,7 @@ export const SubscriptionOrderList = ({ data, error, isLoading, isListEmpty, on,
             </EmptyTableBody>
           )}
           {isListEmpty && <EmptyTableBody colSpan={header.length}>現在定期便の商品はありません</EmptyTableBody>}
-          {data &&
-            data.map((item) => (
-              <React.Fragment key={item.id}>
-                <TableRow>
-                  <TableCell>
-                    <IconButton aria-label='expand row' onClick={toggle}>
-                      {on ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                  </TableCell>
-                  <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
-                  <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}`}</StyledTableCell>
-                  <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
-                  <StyledTableCell>{item.staff.name}</StyledTableCell>
-                  {item.products && (
-                    <>
-                      <StyledTableCell align='center'>
-                        <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
-                      </StyledTableCell>
-                      <StyledTableCell align='center'>
-                        <DeleteSubscriptionOrderButton id={item.id} products={item.products} />
-                      </StyledTableCell>
-                    </>
-                  )}
-                </TableRow>
-                <StyledSecondaryTableRow>
-                  <StyledTableCell style={{ paddingBottom: 16, paddingTop: 8 }} colSpan={header.length}>
-                    <Collapse in={on} timeout='auto' unmountOnExit>
-                      <Table size='small' aria-label='purchases'>
-                        <TableHead>
-                          <TableRow>
-                            {productHeader.map((item, index) => (
-                              <TableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
-                                <Typography variant='body2' fontWeight='bold' color='text.secondary'>
-                                  {item.label}
-                                </Typography>
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {item.products &&
-                            item.products.items &&
-                            item.products.items.map(
-                              (relation, index) =>
-                                relation && (
-                                  <TableRow key={`${index}-${relation.product.id}`}>
-                                    <StyledTableCell>{relation.product.name}</StyledTableCell>
-                                    <StyledTableCell align='center'>{relation.quantity}</StyledTableCell>
-                                    <StyledTableCell align='right'>{relation.product.name}</StyledTableCell>
-                                  </TableRow>
-                                ),
-                            )}
-                        </TableBody>
-                      </Table>
-                    </Collapse>
-                  </StyledTableCell>
-                </StyledSecondaryTableRow>
-              </React.Fragment>
-            ))}
+          {data && data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} />)}
         </TableBody>
       </Table>
     </TableContainer>

@@ -6,8 +6,9 @@ import {
   SubscriptionOrderProduct,
   ModelSubscriptionOrderProductConnection,
 } from 'API';
-import { SubscriptionOrderList } from './subscription-order-list';
+import { SubscriptionOrderList, Props } from './subscription-order-list';
 import { ObjectType } from 'constants/object-type';
+import { useToggle } from 'react-use';
 
 type Story = ComponentStoryObj<typeof SubscriptionOrderList>;
 
@@ -87,7 +88,7 @@ const items: SubscriptionOrder[] = [...Array(3)].map((_, i) => ({
 }));
 
 export const Default: Story = {
-  args: { data: items, on: true },
+  args: { data: items },
 };
 
 export const Loading: Story = {
