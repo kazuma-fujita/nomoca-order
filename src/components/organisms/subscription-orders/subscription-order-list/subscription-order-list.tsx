@@ -1,27 +1,24 @@
-import { Box, CircularProgress, Collapse, IconButton, TableCell, Typography } from '@mui/material';
-import Paper from '@mui/material/Paper';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Box, Collapse, IconButton, TableCell, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { SubscriptionOrder } from 'API';
-import { ErrorAlert } from 'components/atoms/alerts/error-alert';
-import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
+import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
-import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
+import { CommonTableContainer } from 'components/molecules/common-table-container';
+import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription-orders/delete-subscription-order-button';
+import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
 import { formatDate } from 'functions/dates/format-date';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
-import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription-orders/delete-subscription-order-button';
-import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
-import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useToggle } from 'react-use';
+import { TableHeader } from 'types/table-header';
 
-const header = [
+const header: TableHeader[] = [
   {
     label: '',
     minWidth: 40,
@@ -52,7 +49,7 @@ const header = [
   },
 ];
 
-const productHeader = [
+const productHeader: TableHeader[] = [
   {
     label: '商品名',
     minWidth: 160,
@@ -137,32 +134,11 @@ const Row = ({ item }: RowProps) => {
   );
 };
 
-export const SubscriptionOrderList = ({ data, error, isLoading, isListEmpty }: Props) => {
-  if (error) return <ErrorAlert>{error}</ErrorAlert>;
+export const SubscriptionOrderList = (props: Props) => {
+  const { data } = props;
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label='subscription order table'>
-        <TableHead>
-          <TableRow>
-            {header.map((item, index) => (
-              <StyledTableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
-                <Typography variant='body2' fontWeight='bold'>
-                  {item.label}
-                </Typography>
-              </StyledTableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {isLoading && (
-            <EmptyTableBody colSpan={header.length}>
-              <CircularProgress aria-label='Now loading' />
-            </EmptyTableBody>
-          )}
-          {isListEmpty && <EmptyTableBody colSpan={header.length}>現在定期便の商品はありません</EmptyTableBody>}
-          {data && data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} />)}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
+      {data ? data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} />) : <div></div>}
+    </CommonTableContainer>
   );
 };
