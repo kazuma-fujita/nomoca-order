@@ -1,9 +1,8 @@
-import LoadingButton from '@mui/lab/LoadingButton';
+import { SearchButton } from 'components/atoms/buttons/search-button';
 import Form from 'components/atoms/form';
-import { BaseSyntheticEvent, ReactElement } from 'react';
+import { BaseSyntheticEvent } from 'react';
 import { Control } from 'react-hook-form';
 import { DeliveryMonthSelectBox } from './delivery-month-select-box';
-import SearchIcon from '@mui/icons-material/Search';
 
 export type FormParams = {
   deliveryMonth: number;
@@ -19,15 +18,7 @@ export const SubscriptionOrderSearchForm = ({ isLoading, submitHandler, control 
   return (
     <Form onSubmit={submitHandler}>
       <DeliveryMonthSelectBox control={control} />
-      <LoadingButton
-        type='submit'
-        variant='contained'
-        loading={isLoading}
-        loadingPosition='start'
-        startIcon={<SearchIcon />}
-      >
-        検索する
-      </LoadingButton>
+      <SearchButton isLoading={isLoading} />
     </Form>
   );
 };
