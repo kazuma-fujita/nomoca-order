@@ -1,21 +1,17 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import {
-  ListSubscriptionOrdersQuery,
   ListSubscriptionOrdersSortedByCreatedAtQuery,
+  ListSubscriptionOrdersSortedByCreatedAtQueryVariables,
   ModelSortDirection,
   SubscriptionOrder,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SWRKey } from 'constants/swr-key';
-import { listSubscriptionOrders } from 'graphql/queries';
-import useSWR from 'swr';
-import { parseResponseError } from 'utilities/parse-response-error';
-import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
-import { ListSubscriptionOrdersSortedByCreatedAtQueryVariables } from 'API';
 import { ObjectType } from 'constants/object-type';
-import { useFetch } from 'hooks/swr/use-fetch';
+import { SWRKey } from 'constants/swr-key';
+import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
+import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 
-const fetcher = async () => {
+const fetcher = async (): Promise<SubscriptionOrder[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
   const sortVariables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
     type: ObjectType.SubscriptionOrder,
@@ -39,11 +35,8 @@ const fetcher = async () => {
     }
   }
   console.log('order fetcher:', items);
-  return items as SubscriptionOrder[];
+  return items;
 };
 
-export const useFetchSubscriptionOrderList = () => {
-  return useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
-  // const { data, error } = useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
-  // return { data, error };
-};
+export const useFetchSubscriptionOrderList = (): FetchResponse<SubscriptionOrder[]> =>
+  useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
