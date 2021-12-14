@@ -31,7 +31,7 @@ export const DeleteSubscriptionOrderButton = (props: Props) => {
 
   return (
     <>
-      <Button onClick={toggle} variant='outlined' color='error' startIcon={<Delete />}>
+      <Button onClick={toggle} variant='outlined' color='error' startIcon={<Delete fontSize='small' />} size='small'>
         {label}
       </Button>
       <DeleteSubscriptionOrderDialog

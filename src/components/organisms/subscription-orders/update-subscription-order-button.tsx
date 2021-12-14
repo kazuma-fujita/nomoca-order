@@ -63,7 +63,7 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
   const label = '変更する';
   return (
     <>
-      <Button onClick={toggle} variant='outlined' startIcon={<Edit fontSize='small' />}>
+      <Button onClick={toggle} variant='outlined' startIcon={<Edit fontSize='small' />} size='small'>
         {label}
       </Button>
       <InputSubscriptionOrderDialog
