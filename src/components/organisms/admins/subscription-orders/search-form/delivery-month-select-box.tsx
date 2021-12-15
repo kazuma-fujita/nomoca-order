@@ -29,7 +29,7 @@ export const DeliveryMonthSelectBox = ({ control }: Props) => (
     render={({ field, formState: { errors } }) => (
       <TextField
         select
-        fullWidth
+        // fullWidth
         label='発送月'
         error={Boolean(errors.deliveryMonth)}
         helperText={errors.deliveryMonth && errors.deliveryMonth.message}

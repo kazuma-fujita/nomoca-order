@@ -1,10 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-export type FormParams = {
-  deliveryMonth: number;
-};
-
 type Props = {
   isLoading: boolean;
 };
