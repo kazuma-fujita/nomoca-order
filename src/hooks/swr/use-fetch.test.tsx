@@ -39,7 +39,7 @@ const UserList = () => {
   );
 };
 
-describe('UserList', () => {
+describe('UseFetch', () => {
   const server = setupServer(...handlers);
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());

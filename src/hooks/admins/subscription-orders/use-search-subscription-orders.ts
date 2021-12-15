@@ -2,28 +2,7 @@ import { SubscriptionOrder } from 'API';
 import { SWRKey } from 'constants/swr-key';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
-
-export const isFilterWithDeliveryMonth = (
-  deliveryMonth: number,
-  deliveryStartMonth: number,
-  deliveryInterval: number,
-): boolean => {
-  const maxMonth = 12;
-  let isDeliveryMonthExists = false;
-  if (maxMonth < deliveryMonth || maxMonth < deliveryStartMonth || maxMonth < deliveryInterval) {
-    return isDeliveryMonthExists;
-  }
-  const addCount = deliveryInterval / maxMonth;
-  let month = deliveryStartMonth;
-  for (let i = 0; i < addCount; i++) {
-    let val = (month += deliveryInterval);
-    if (maxMonth < month) {
-      val = month - maxMonth;
-    }
-    isDeliveryMonthExists = deliveryMonth === val;
-  }
-  return isDeliveryMonthExists;
-};
+import { isFilterWithDeliveryMonth } from './is-filter-with-delivery-month';
 
 export const useSearchSubscriptionOrders = () => {
   const [isLoading, setIsLoading] = useState(false);
