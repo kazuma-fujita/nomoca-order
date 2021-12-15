@@ -6,7 +6,7 @@ import { SWRMultiKey } from 'constants/swr-key';
 import { listStaffsSortedByViewOrder } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { ListStaffsSortedByViewOrderQuery, ListStaffsSortedByViewOrderQueryVariables } from '../API';
+import { ListStaffsSortedByViewOrderQuery, ListStaffsSortedByViewOrderQueryVariables } from 'API';
 
 const StaffListContext = createContext({} as FetchResponse<Staff[]>);
 

@@ -10,6 +10,7 @@ import { ObjectType } from 'constants/object-type';
 import { SWRKey } from 'constants/swr-key';
 import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
+import useSWR from 'swr';
 
 const fetcher = async (): Promise<SubscriptionOrder[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
@@ -41,5 +42,15 @@ const fetcher = async (): Promise<SubscriptionOrder[]> => {
 export const useFetchSubscriptionOrderList = (): FetchResponse<SubscriptionOrder[]> =>
   useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
 
-export const useFetchAdminSubscriptionOrderList = (): FetchResponse<SubscriptionOrder[]> =>
-  useFetch<SubscriptionOrder[]>(SWRKey.AdminSubscriptionOrderList, fetcher);
+export const useFetchAdminSubscriptionOrderList = (): FetchResponse<SubscriptionOrder[]> => {
+  const fetchResponse = useFetch<SubscriptionOrder[]>(SWRKey.AdminSubscriptionOrderList, fetcher);
+  const { data } = fetchResponse;
+  // On memory上に全件データ保存するstate生成
+  const { data: allData, mutate } = useSWR<SubscriptionOrder[]>(SWRKey.AdminAllSubscriptionOrderList, null);
+  // 全件データstateが存在しない(初回アクセス)、かつAPIからデータ取得成功時
+  if (!allData && data) {
+    // 全件データ保存
+    mutate(data, false);
+  }
+  return fetchResponse;
+};

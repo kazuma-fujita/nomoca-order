@@ -12,6 +12,7 @@ export const SWRKey = {
   AdminSingleOrderList: 'adminSingleOrderList',
   SubscriptionOrderList: 'subscriptionOrderList',
   AdminSubscriptionOrderList: 'adminSubscriptionOrderList',
+  AdminAllSubscriptionOrderList: 'adminAllSubscriptionOrderList',
 } as const;
 
 export type SWRKey = typeof SWRKey[keyof typeof SWRKey];
