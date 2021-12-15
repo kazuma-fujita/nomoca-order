@@ -1,7 +1,5 @@
 import { Grid } from '@mui/material';
-import { Main } from 'components/molecules/main';
 import { SubscriptionOrderSearchFormContainer } from 'components/organisms/admins/subscription-orders/search-form/subscription-order-search-form-container';
-import { SubscriptionOrderListContainer } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list-container';
 import { ReactElement } from 'react';
 
 type Props = {

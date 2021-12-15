@@ -8,7 +8,10 @@ export const SWRKey = {
   CurrentUser: 'currentUser',
   StaffList: 'staffList',
   ProductList: 'productList',
+  SingleOrderList: 'singleOrderList',
+  AdminSingleOrderList: 'adminSingleOrderList',
   SubscriptionOrderList: 'subscriptionOrderList',
+  AdminSubscriptionOrderList: 'adminSubscriptionOrderList',
 } as const;
 
 export type SWRKey = typeof SWRKey[keyof typeof SWRKey];

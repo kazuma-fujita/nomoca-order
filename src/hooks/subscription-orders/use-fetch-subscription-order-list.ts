@@ -40,3 +40,6 @@ const fetcher = async (): Promise<SubscriptionOrder[]> => {
 
 export const useFetchSubscriptionOrderList = (): FetchResponse<SubscriptionOrder[]> =>
   useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
+
+export const useFetchAdminSubscriptionOrderList = (): FetchResponse<SubscriptionOrder[]> =>
+  useFetch<SubscriptionOrder[]>(SWRKey.AdminSubscriptionOrderList, fetcher);
