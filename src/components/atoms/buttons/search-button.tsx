@@ -14,7 +14,7 @@ export const SearchButton = ({ isLoading }: Props) => {
       loadingPosition='start'
       startIcon={<SearchIcon />}
     >
-      検索する
+      {isLoading ? '検索中' : '検索する'}
     </LoadingButton>
   );
 };

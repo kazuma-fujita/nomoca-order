@@ -12,34 +12,31 @@ export const useSearchSubscriptionOrders = () => {
   // この検索ロジックでは、保存用の全件dataを取得し、加工用データとしてcopyを作成。
   // 加工後データは画面表示用stateに保存。保存用の全件dataはそのままreturnしてstateは変更しない。
   const onSearch =
-    (deliveryMonth: number, deliveryInterval: number) =>
+    (deliveryMonth: number) =>
     async (data: SubscriptionOrder[]): Promise<SubscriptionOrder[]> => {
       setIsLoading(true);
-      if (
-        deliveryMonth < minMonth ||
-        maxMonth < deliveryMonth ||
-        deliveryInterval < minMonth ||
-        maxMonth < deliveryInterval
-      ) {
+      if (deliveryMonth < minMonth || maxMonth < deliveryMonth) {
         setIsLoading(false);
         setError(Error('The input values are out of range.'));
         throw error;
       }
       // 全件dataを配達月でフィルタリング
       const filteredData = data.filter((item) =>
-        isFilterWithDeliveryMonth(deliveryMonth, item.deliveryStartMonth, deliveryInterval),
+        isFilterWithDeliveryMonth(deliveryMonth, item.deliveryStartMonth, item.deliveryInterval),
       );
       setIsLoading(false);
       setError(null);
       // 加工後データで画面表示用stateを更新。
-      mutate(SWRKey.AdminSubscriptionOrderList, filteredData, false);
+      // mutate(SWRKey.AdminSubscriptionOrderList, filteredData, false);
       // 保存用全件dataはそのままreturn
-      return data;
+      // return data;
+      return filteredData;
     };
 
   // mutateを実行し保存用全件dataを取得
   const search = async (deliveryMonth: number) =>
-    mutate(SWRKey.AdminAllSubscriptionOrderList, onSearch(deliveryMonth, 3), false);
+    // mutate(SWRKey.AdminAllSubscriptionOrderList, onSearch(deliveryMonth), false);
+    mutate(SWRKey.AdminSubscriptionOrderList, onSearch(deliveryMonth), false);
 
   const resetState = useCallback(() => {
     setIsLoading(false);

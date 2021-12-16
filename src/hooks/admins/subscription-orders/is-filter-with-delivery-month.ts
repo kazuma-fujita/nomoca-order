@@ -15,7 +15,6 @@ export const generateDeliveryMonths = (deliveryStartMonth: number, deliveryInter
     const month = i * deliveryInterval + deliveryStartMonth;
     return maxMonth < month ? month - maxMonth : month;
   });
-  console.log(months);
   return months;
 };
 

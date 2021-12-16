@@ -35,7 +35,6 @@ const fetcher = async (): Promise<SubscriptionOrder[]> => {
       throw Error('The API fetched a data element but it returned null.');
     }
   }
-  console.log('order fetcher:', items);
   return items;
 };
 

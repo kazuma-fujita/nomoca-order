@@ -130,7 +130,7 @@ export const SubscriptionOrderList = (props: Props) => {
   const { data } = props;
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
-      {data ? data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} />) : <div></div>}
+      {data && data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} />)}
     </CommonTableContainer>
   );
 };
