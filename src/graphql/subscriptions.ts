@@ -497,6 +497,7 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
       }
       deliveryStartYear
       deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
       owner
@@ -542,6 +543,7 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
       }
       deliveryStartYear
       deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
       owner
@@ -587,6 +589,7 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
       }
       deliveryStartYear
       deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
       owner
