@@ -2,25 +2,29 @@ import { SubscriptionOrder } from 'API';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { SubscriptionOrderSearchForm } from './subscription-order-search-form';
+import { useSearchSubscriptionOrders } from 'hooks/admins/subscription-orders/use-search-subscription-orders';
 
 export type FormParams = {
   deliveryMonth: number;
 };
 
 export const SubscriptionOrderSearchFormContainer = () => {
-  const { handleSubmit, reset: resetForm, control } = useForm<FormParams>();
-  // const { createSubscriptionOrder, isLoading, error, resetState } = useCreateSubscriptionOrder();
+  const { handleSubmit, control } = useForm<FormParams>();
+  const { search, isLoading, error, resetState } = useSearchSubscriptionOrders();
 
   const submitHandler = handleSubmit(
-    useCallback(async (data: SubscriptionOrder) => {
-      console.log('submit handler data:', data);
-      // // 関数内ではerrorの値がキャプチャされる為、ダイアログを閉じるエラーハンドリングは関数の戻り値を使用
-      // const error = await createSubscriptionOrder(data.products, data.staffID);
-      // if (!error) {
-      //   cancelHandler();
-      // }
-    }, []),
+    useCallback(
+      async (data: FormParams) => {
+        try {
+          await search(data.deliveryMonth);
+          resetState();
+        } catch (error) {}
+      },
+      [resetState, search],
+    ),
   );
 
-  return <SubscriptionOrderSearchForm isLoading={false} submitHandler={submitHandler} control={control} />;
+  return (
+    <SubscriptionOrderSearchForm isLoading={isLoading} error={error} submitHandler={submitHandler} control={control} />
+  );
 };

@@ -2,7 +2,7 @@ import { SubscriptionOrder } from 'API';
 import { SWRKey } from 'constants/swr-key';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
-import { isFilterWithDeliveryMonth } from './is-filter-with-delivery-month';
+import { isFilterWithDeliveryMonth, maxMonth, minMonth } from './is-filter-with-delivery-month';
 
 export const useSearchSubscriptionOrders = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,13 +15,24 @@ export const useSearchSubscriptionOrders = () => {
     (deliveryMonth: number, deliveryInterval: number) =>
     async (data: SubscriptionOrder[]): Promise<SubscriptionOrder[]> => {
       setIsLoading(true);
+      if (
+        deliveryMonth < minMonth ||
+        maxMonth < deliveryMonth ||
+        deliveryInterval < minMonth ||
+        maxMonth < deliveryInterval
+      ) {
+        setIsLoading(false);
+        setError(Error('The input values are out of range.'));
+        throw error;
+      }
       // 全件dataを配達月でフィルタリング
-      const copy = data.filter((item) =>
+      const filteredData = data.filter((item) =>
         isFilterWithDeliveryMonth(deliveryMonth, item.deliveryStartMonth, deliveryInterval),
       );
       setIsLoading(false);
+      setError(null);
       // 加工後データで画面表示用stateを更新。
-      mutate(SWRKey.AdminSubscriptionOrderList, copy, false);
+      mutate(SWRKey.AdminSubscriptionOrderList, filteredData, false);
       // 保存用全件dataはそのままreturn
       return data;
     };

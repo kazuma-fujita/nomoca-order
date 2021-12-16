@@ -1,6 +1,7 @@
+export const minMonth = 1;
+export const maxMonth = 12;
+
 export const generateDeliveryMonths = (deliveryStartMonth: number, deliveryInterval: number): number[] => {
-  const minMonth = 1;
-  const maxMonth = 12;
   if (
     deliveryStartMonth < minMonth ||
     maxMonth < deliveryStartMonth ||
@@ -23,8 +24,6 @@ export const isFilterWithDeliveryMonth = (
   deliveryStartMonth: number,
   deliveryInterval: number,
 ): boolean => {
-  const minMonth = 1;
-  const maxMonth = 12;
   if (
     deliveryMonth < minMonth ||
     maxMonth < deliveryMonth ||

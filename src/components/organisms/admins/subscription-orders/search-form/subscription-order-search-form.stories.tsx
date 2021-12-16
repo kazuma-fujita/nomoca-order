@@ -6,7 +6,14 @@ import { FormParams } from './subscription-order-search-form-container';
 const Wrapper: React.FC<Props> = (props) => {
   const { handleSubmit, control } = useForm<FormParams>();
   const submitHandler = handleSubmit((data: FormParams) => console.log(data));
-  return <SubscriptionOrderSearchForm isLoading={props.isLoading} submitHandler={submitHandler} control={control} />;
+  return (
+    <SubscriptionOrderSearchForm
+      isLoading={props.isLoading}
+      error={props.error}
+      submitHandler={submitHandler}
+      control={control}
+    />
+  );
 };
 
 type Story = ComponentStoryObj<typeof Wrapper>;
@@ -19,4 +26,8 @@ export const Default: Story = {
 
 export const Loading: Story = {
   args: { ...Default.args, isLoading: true },
+};
+
+export const ErrorAlert: Story = {
+  args: { ...Default.args, error: Error('The input values are out of range.') },
 };

@@ -1,4 +1,5 @@
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
+import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { SearchButton } from 'components/atoms/buttons/search-button';
 import Form from 'components/atoms/form';
 import { BaseSyntheticEvent } from 'react';
@@ -8,11 +9,12 @@ import { FormParams } from './subscription-order-search-form-container';
 
 export type Props = {
   isLoading: boolean;
+  error: Error | null;
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
   control: Control<FormParams, object>;
 };
 
-export const SubscriptionOrderSearchForm = ({ isLoading, submitHandler, control }: Props) => {
+export const SubscriptionOrderSearchForm = ({ isLoading, error, submitHandler, control }: Props) => {
   return (
     <Form onSubmit={submitHandler}>
       <Grid container direction='row' alignItems='center' spacing={4}>
@@ -23,6 +25,11 @@ export const SubscriptionOrderSearchForm = ({ isLoading, submitHandler, control 
           <SearchButton isLoading={isLoading} />
         </Grid>
       </Grid>
+      {error && (
+        <Box pt={4}>
+          <ErrorAlert>{error}</ErrorAlert>
+        </Box>
+      )}
     </Form>
   );
 };
