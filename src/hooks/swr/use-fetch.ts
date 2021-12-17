@@ -9,7 +9,7 @@ export type FetchResponse<Data = any> = {
   mutate: KeyedMutator<Data>;
 };
 
-export const useFetch = <Data = any>(key: Key, fetcher: Fetcher<Data>): FetchResponse<Data> => {
+export const useFetch = <Data = any>(key: Key, fetcher: Fetcher<Data> | null): FetchResponse<Data> => {
   const { data, error, mutate } = useSWR<Data>(key, fetcher);
   return {
     data: data ?? null,

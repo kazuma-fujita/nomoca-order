@@ -10,7 +10,16 @@ import { ObjectType } from 'constants/object-type';
 import { SWRKey } from 'constants/swr-key';
 import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
+import { Context, createContext, ReactElement, useContext } from 'react';
 import useSWR from 'swr';
+
+export type AdminSubscriptionOrderResponse = FetchResponse<SubscriptionOrder[]> & {
+  allData: SubscriptionOrder[] | null;
+};
+
+const AdminSubscriptionOrderListContext = createContext({} as AdminSubscriptionOrderResponse);
+
+export const useAdminSubscriptionOrderList = () => useContext(AdminSubscriptionOrderListContext);
 
 const fetcher = async (): Promise<SubscriptionOrder[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
@@ -41,15 +50,20 @@ const fetcher = async (): Promise<SubscriptionOrder[]> => {
 export const useFetchSubscriptionOrderList = (): FetchResponse<SubscriptionOrder[]> =>
   useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
 
-export const useFetchAdminSubscriptionOrderList = (): FetchResponse<SubscriptionOrder[]> => {
+export const AdminSubscriptionOrderListContextProvider: React.FC = ({ children }) => {
   const fetchResponse = useFetch<SubscriptionOrder[]>(SWRKey.AdminSubscriptionOrderList, fetcher);
   const { data } = fetchResponse;
-  // On memory上に全件データ保存するstate生成
-  const { data: allData, mutate } = useSWR<SubscriptionOrder[]>(SWRKey.AdminAllSubscriptionOrderList, null);
+  // メモリ上に全件データ保存するstate生成
+  const { data: allData, mutate } = useFetch<SubscriptionOrder[]>(SWRKey.AdminAllSubscriptionOrderList, null);
   // 全件データstateが存在しない(初回アクセス)、かつAPIからデータ取得成功時
   if (!allData && data) {
     // 全件データ保存
     mutate(data, false);
   }
-  return fetchResponse;
+  const responseData = { ...fetchResponse, allData: allData };
+  return (
+    <AdminSubscriptionOrderListContext.Provider value={responseData}>
+      {children}
+    </AdminSubscriptionOrderListContext.Provider>
+  );
 };

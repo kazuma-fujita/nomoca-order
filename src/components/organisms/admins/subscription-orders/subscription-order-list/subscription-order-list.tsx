@@ -13,6 +13,7 @@ import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription
 import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
 import { formatDate } from 'functions/dates/format-date';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
+import { AdminSubscriptionOrderResponse } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
 import { useToggle } from 'react-use';
@@ -65,6 +66,7 @@ const productHeader: TableHeader[] = [
 ];
 
 type Props = FetchResponse<SubscriptionOrder[]> & {};
+// type Props = AdminSubscriptionOrderResponse & {};
 
 type RowProps = {
   item: SubscriptionOrder;
