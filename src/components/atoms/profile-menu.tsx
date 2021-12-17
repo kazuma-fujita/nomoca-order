@@ -25,8 +25,6 @@ export const ProfileMenu = (props: Props) => {
     setAnchorEl(null);
   };
 
-  console.log('Profile menu email:', email);
-
   return (
     <>
       <IconButton
@@ -95,7 +93,7 @@ export const ProfileMenu = (props: Props) => {
                   </ListItemIcon>
                   <ListItemText primary={item.label} />
                 </MenuItem>
-              )
+              ),
             )}
             {index === 0 && <Divider />}
           </div>

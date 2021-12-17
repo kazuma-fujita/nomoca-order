@@ -29,7 +29,6 @@ interface MyAppProps extends AppProps {
 function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const { currentUser, error, groups } = useCurrentUser();
-  console.log('_app currentUser:', currentUser);
   return (
     <CurrentUserContextProvider>
       <SWRConfig value={{ use: [loggingMiddleware] }}>

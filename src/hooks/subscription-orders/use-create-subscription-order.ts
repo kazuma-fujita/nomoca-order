@@ -75,7 +75,6 @@ export const useCreateSubscriptionOrder = () => {
         setError(null);
         // データ再取得
         mutate(SWRKey.SubscriptionOrderList);
-        console.log('newSubscriptionOrder:', newSubscriptionOrder);
       } else {
         throw Error('The API created data but it returned null.');
       }
@@ -124,7 +123,6 @@ export const useCreateSubscriptionOrder = () => {
 //             )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;
 //             if (result.data && result.data.createSubscriptionOrderProduct) {
 //               const newSubscriptionOrderProduct = result.data.createSubscriptionOrderProduct;
-//               console.log('newSubscriptionOrderProduct', newSubscriptionOrderProduct);
 //               return newSubscriptionOrderProduct;
 //             } else {
 //               return null;
@@ -135,8 +133,6 @@ export const useCreateSubscriptionOrder = () => {
 //           const subscriptionOrder = { ...newSubscriptionOrder, connection };
 //           setIsLoading(false);
 //           setError(null);
-//           console.log('newSubscriptionOrder:', newSubscriptionOrder);
-//           console.log('fullSubscriptionOrder:', subscriptionOrder);
 //           return [...data, newSubscriptionOrder];
 //           // return [...data, subscriptionOrder];
 //         } else {

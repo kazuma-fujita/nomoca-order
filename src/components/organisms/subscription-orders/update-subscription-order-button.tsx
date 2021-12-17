@@ -22,7 +22,6 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
     }),
     [props.products, props.staffID],
   );
-  console.log('defaultValues:', defaultValues);
   const useFormReturn = useForm<SubscriptionOrder>();
   const { handleSubmit, reset: resetForm, control } = useFormReturn;
   const useFieldArrayReturn = useFieldArray({ control, name: 'products.items' });
@@ -45,7 +44,6 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
   const submitHandler = handleSubmit(
     useCallback(
       async (data: SubscriptionOrder) => {
-        console.log('data:', data);
         // productsデータ更新はproducts全件削除後、新規追加を行う。
         // その為、第2引数にはproductsを新規登録する為入力フォームの値、第3引数にはproductsを全件削除する為一覧画面からの渡されたpropsの値を設定
         const error = await updateSubscriptionOrder(props.id, data.products, props.products, data.staffID);

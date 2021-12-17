@@ -32,7 +32,6 @@ const fetcher = async (key: string, filterWithActiveProduct: boolean = false) =>
   const operation = graphqlOperation(listProductsSortedByViewOrder, variables);
   const result = (await API.graphql(operation)) as GraphQLResult<ListProductsSortedByViewOrderQuery>;
   if (result.data && result.data.listProductsSortedByViewOrder && result.data.listProductsSortedByViewOrder.items) {
-    console.log('product fetcher:', result.data.listProductsSortedByViewOrder.items);
     return result.data.listProductsSortedByViewOrder.items as Product[];
   } else {
     throw Error('The API fetched data but it returned null.');

@@ -23,7 +23,6 @@ const AuthPage = () => {
   //     } catch (error) {}
   //   })();
   //   return onAuthUIStateChange((nextAuthState, authData) => {
-  //     console.log('nextAuthState:', nextAuthState);
   //     if (nextAuthState === AuthState.SignedIn && authData) {
   //       router.replace(Path.Staff);
   //     }

@@ -26,7 +26,7 @@ const deleteSubscriptionOrderProducts = async (productRelations: SubscriptionOrd
     const input: DeleteSubscriptionOrderProductInput = { id: item.id };
     const variables: DeleteSubscriptionOrderProductMutationVariables = { input: input };
     const result = (await API.graphql(
-      graphqlOperation(deleteSubscriptionOrderProduct, variables)
+      graphqlOperation(deleteSubscriptionOrderProduct, variables),
     )) as GraphQLResult<DeleteSubscriptionOrderProductMutation>;
     if (result.data && result.data.deleteSubscriptionOrderProduct) {
       const deleteSubscriptionOrderProduct = result.data.deleteSubscriptionOrderProduct;
@@ -44,7 +44,7 @@ export const useDeleteSubscriptionOrder = () => {
 
   const deleteSubscriptionOrder = async (
     subscriptionOrderId: string,
-    productRelations: ModelSubscriptionOrderProductConnection
+    productRelations: ModelSubscriptionOrderProductConnection,
   ) => {
     setIsLoading(true);
     try {
@@ -54,7 +54,7 @@ export const useDeleteSubscriptionOrder = () => {
       const subscriptionOrder: DeleteSubscriptionOrderInput = { id: subscriptionOrderId };
       const variables: DeleteSubscriptionOrderMutationVariables = { input: subscriptionOrder };
       const result = (await API.graphql(
-        graphqlOperation(deleteSubscriptionOrderQuery, variables)
+        graphqlOperation(deleteSubscriptionOrderQuery, variables),
       )) as GraphQLResult<DeleteSubscriptionOrderMutation>;
       if (result.data && result.data.deleteSubscriptionOrder) {
         setIsLoading(false);
@@ -101,7 +101,6 @@ export const useDeleteSubscriptionOrder = () => {
 //       if (result.data && result.data.deleteSubscriptionOrder) {
 //         setIsLoading(false);
 //         setError(null);
-//         console.log('deleteSubscriptionOrder:', result.data.deleteSubscriptionOrder);
 //         return data.filter((item) => item.id !== id);
 //       } else {
 //         throw Error('The API deleted data but it returned null.');

@@ -33,7 +33,6 @@ export const useCreateProduct = () => {
         if (result.data && result.data.createProduct) {
           setIsLoading(false);
           setError(null);
-          console.log('newProduct:', result.data.createProduct);
           return [...data, result.data.createProduct];
         } else {
           throw Error('The API created data but it returned null.');

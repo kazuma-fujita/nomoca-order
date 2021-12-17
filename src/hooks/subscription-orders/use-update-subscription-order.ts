@@ -28,7 +28,6 @@ const updateSubscriptionOrderProducts = async (
   nextProductRelations: SubscriptionOrderProduct[],
   prevProductRelations: SubscriptionOrderProduct[],
 ) => {
-  console.log('prevProductRelations:', prevProductRelations);
   // SubscriptionOrder と Product のリレーション削除
   for (const item of prevProductRelations) {
     const input: DeleteSubscriptionOrderProductInput = { id: item.id };
@@ -150,7 +149,6 @@ export const useUpdateSubscriptionOrder = () => {
 //           setIsLoading(false);
 //           setError(null);
 //           const updatedSubscriptionOrder = result.data.updateSubscriptionOrder;
-//           console.log('updatedSubscriptionOrder:', updatedSubscriptionOrder);
 //           return data.map((item) => (item.id === id ? updatedSubscriptionOrder : item));
 //         } else {
 //           throw Error('The API updated data but it returned null.');

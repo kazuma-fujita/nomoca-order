@@ -29,7 +29,6 @@ export const Header = () => {
   const [on, toggle] = useToggle(false);
   const router = useRouter();
   const { isOperator } = useCurrentUser();
-  console.log('Header isOperator:', isOperator);
   const drawerItems: HeaderItem[][] = isOperator
     ? [
         [

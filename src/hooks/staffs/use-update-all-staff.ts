@@ -38,8 +38,6 @@ export const useUpdateAllStaff = () => {
           if (result.data && result.data.updateStaff) {
             setIsLoading(false);
             setError(null);
-            const updatedStaff = result.data.updateStaff;
-            console.log('updatedAllStaff:', updatedStaff);
           } else {
             throw Error('The API updated data but it returned null.');
           }

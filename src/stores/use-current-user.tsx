@@ -36,7 +36,6 @@ export const CurrentUserContextProvider = ({ ...props }) => {
     : undefined;
   const email: string = currentUser ? currentUser.attributes.email : null;
   const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
-  console.log('CurrentUserContextProvider user:', currentUser);
   const value = useMemo(
     () => ({ currentUser, error, mutateUser, groups, email, isOperator }),
     [currentUser, error, mutateUser, groups, email, isOperator],
@@ -76,7 +75,6 @@ export const useVerifyBeforeAuthenticate = () => {
     afterAuthTransition(router);
     // 画面ステータスをみてログイン後画面に遷移
     return onAuthUIStateChange((nextAuthState, authData) => {
-      console.log('before auth nextAuthState:', nextAuthState);
       if (nextAuthState === AuthState.SignedIn && authData) {
         afterAuthTransition(router);
       }
@@ -88,14 +86,12 @@ const afterAuthTransition = (router: NextRouter) => {
   (async () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
-      console.log('afterAuthTransition currentUser:', currentUser);
       // currentUserがUserGroupに所属していない場合undefinedが返却される
       const groups: string[] | undefined = currentUser.signInUserSession.accessToken.payload['cognito:groups'];
       const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
       // UserGroupにより遷移先の振り分け
       isOperator ? router.replace(Path.SubscriptionOrder) : router.replace(Path.Staff);
     } catch (error) {
-      console.log('afterAuthTransition error:', error);
       router.replace(Path.Index);
     }
   })();
@@ -112,7 +108,6 @@ export const useSignOut = () => {
   //   router.prefetch(Path.Index);
   //   // 画面ステータスをみてログイン画面に遷移
   //   return onAuthUIStateChange((nextAuthState, authData) => {
-  //     console.log('sign out nextAuthState:', nextAuthState);
   //     if (nextAuthState === AuthState.SignedOut) {
   //       router.replace(Path.Index);
   //     }
@@ -146,7 +141,6 @@ export const useSignOut = () => {
       // ログイン画面へ遷移
       setIsSignedOut(true);
     } catch (error) {
-      console.log('error signing out: ', error);
       setIsLoading(false);
       setError(parseResponseError(error));
     }

@@ -33,7 +33,6 @@ export const useUpdateProduct = () => {
           setIsLoading(false);
           setError(null);
           const updatedProduct = result.data.updateProduct;
-          console.log('updatedProduct:', updatedProduct);
           return data.map((item) => (item.id === id ? updatedProduct : item));
         } else {
           throw Error('The API updated data but it returned null.');

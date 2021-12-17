@@ -38,8 +38,6 @@ export const useUpdateAllProduct = () => {
           if (result.data && result.data.updateProduct) {
             setIsLoading(false);
             setError(null);
-            const updatedProduct = result.data.updateProduct;
-            console.log('updatedAllProduct:', updatedProduct);
           } else {
             throw Error('The API updated data but it returned null.');
           }
