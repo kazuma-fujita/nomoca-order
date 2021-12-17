@@ -21,7 +21,6 @@ const ProductListContext = createContext({} as ProviderProps);
 export const useProductList = () => useContext(ProductListContext);
 
 const fetcher = async (key: string, filterWithActiveProduct: boolean = false) => {
-  console.log('fetcher key:', key, 'filterWithActiveProduct:', filterWithActiveProduct);
   // activeなproductのみを抽出する条件
   const filter: ModelProductFilterInput = { disabled: { eq: false } };
   // schema.graphqlのKeyディレクティブでtypeとviewOrderのsort条件を追加。sortを実行する為にtypeを指定。defaultでviewOrderの降順でsortを実行

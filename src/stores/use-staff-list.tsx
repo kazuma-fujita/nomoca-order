@@ -13,7 +13,6 @@ const StaffListContext = createContext({} as FetchResponse<Staff[]>);
 export const useStaffList = () => useContext(StaffListContext);
 
 const fetcher = async (key: string, filterWithActiveStaff: boolean = false) => {
-  console.log('fetcher key:', key, 'filterWithActiveStaff:', filterWithActiveStaff);
   // activeなstaffのみを抽出する条件
   const filter: ModelStaffFilterInput = { disabled: { eq: false } };
   // schema.graphqlのKeyディレクティブでtypeとviewOrderのsort条件を追加。sortを実行する為にtypeを指定。defaultでviewOrderの降順でsortを実行
