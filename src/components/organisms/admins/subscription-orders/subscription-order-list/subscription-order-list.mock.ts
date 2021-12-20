@@ -80,7 +80,6 @@ export const subscriptionOrderItems: SubscriptionOrder[] = [...Array(12)].map((_
   },
   staff: { ...item.staff, id: `dummyStaffID-${i + 1}`, name: `担当者${i + 1}` },
   deliveryStartMonth: i + 1,
-  // deliveryInterval: i + 1,
-  deliveryInterval: 12,
+  deliveryInterval: i + 1,
   updatedAt: new Date(2021, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),
 }));
