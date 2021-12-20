@@ -18,6 +18,7 @@ import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
 import { useToggle } from 'react-use';
 import { TableHeader } from 'types/table-header';
+import { generateNextDeliveryMonth } from 'functions/delivery-dates/generate-next-delivery-months';
 
 const header: TableHeader[] = [
   {
@@ -37,11 +38,19 @@ const header: TableHeader[] = [
     minWidth: 160,
   },
   {
-    label: '定期便申し込み日',
+    label: '定期便開始月',
     minWidth: 160,
   },
   {
-    label: '定期便開始月',
+    label: '配送頻度',
+    minWidth: 160,
+  },
+  {
+    label: '次回配送予定月',
+    minWidth: 160,
+  },
+  {
+    label: '作成日時',
     minWidth: 160,
   },
   {
@@ -66,7 +75,6 @@ const productHeader: TableHeader[] = [
 ];
 
 type Props = FetchResponse<SubscriptionOrder[]> & {};
-// type Props = AdminSubscriptionOrderResponse & {};
 
 type RowProps = {
   item: SubscriptionOrder;
@@ -74,6 +82,7 @@ type RowProps = {
 
 const Row = ({ item }: RowProps) => {
   const [on, toggle] = useToggle(false);
+  const now = new Date();
   return (
     <React.Fragment key={item.id}>
       <TableRow>
@@ -85,8 +94,17 @@ const Row = ({ item }: RowProps) => {
         <StyledTableCell align='center'>渋谷クリニック</StyledTableCell>
         <StyledTableCell align='center'>09012345678</StyledTableCell>
         <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
-        <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
         <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
+        <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>
+        <StyledTableCell align='center'>
+          {generateNextDeliveryMonth(
+            item.deliveryStartMonth,
+            item.deliveryInterval,
+            now.getFullYear(),
+            now.getMonth() + 1,
+          )}
+        </StyledTableCell>
+        <StyledTableCell align='center'>{formatDateHourMinute(item.createdAt)}</StyledTableCell>
         <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
       </TableRow>
       <StyledSecondaryTableRow>

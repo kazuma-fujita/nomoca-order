@@ -3,7 +3,7 @@ import { SWRKey } from 'constants/swr-key';
 import { useAdminSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
-import { isFilterWithDeliveryMonth, maxMonth, minMonth } from './is-filter-with-delivery-month';
+import { isFilterWithDeliveryMonth, maxMonth, minMonth } from 'functions/delivery-dates/is-filter-with-delivery-month';
 
 export const useSearchSubscriptionOrders = () => {
   const { allData } = useAdminSubscriptionOrderList();

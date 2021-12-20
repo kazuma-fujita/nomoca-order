@@ -10,8 +10,7 @@ import { ObjectType } from 'constants/object-type';
 import { SWRKey } from 'constants/swr-key';
 import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
-import { Context, createContext, ReactElement, useContext } from 'react';
-import useSWR from 'swr';
+import { createContext, useContext } from 'react';
 
 export type AdminSubscriptionOrderResponse = FetchResponse<SubscriptionOrder[]> & {
   allData: SubscriptionOrder[] | null;

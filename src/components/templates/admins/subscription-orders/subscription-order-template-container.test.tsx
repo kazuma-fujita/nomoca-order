@@ -47,19 +47,19 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     /*
 			テストデータ構造
-			開始月=[開始月x配送間隔]
-			1月=[1,2,3,4,5,6,7,8,9,10,11,12]
-			2月=[2,4,6,8,10,12]
-			3月=[3,6,9,12]
-			4月=[4,8,12]
-			5月=[5,10,3]
-			6月=[6,12]
-			7月=[7,2]
-			8月=[8,4]
-			9月=[9,6]
-			10月=[10,8]
-			11月=[11,10]
-			12月=[12]
+			配送開始月:配送頻度=[開始月x配送頻度]
+			1月:1ヶ月=[1,2,3,4,5,6,7,8,9,10,11,12]
+			2月:2ヶ月=[2,4,6,8,10,12]
+			3月:3ヶ月=[3,6,9,12]
+			4月:4ヶ月=[4,8,12]
+			5月:5ヶ月=[5,10,3]
+			6月:6ヶ月=[6,12]
+			7月:7ヶ月=[7,2]
+			8月:8ヶ月=[8,4]
+			9月:9ヶ月=[9,6]
+			10月:10ヶ月=[10,8]
+			11月:11ヶ月=[11,10]
+			12月:12ヶ月=[12]
 		*/
 
     test('with delivery month of January.', async () => {
@@ -72,6 +72,7 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(3);
+      screen.getByRole('cell', { name: '1ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -84,6 +85,9 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(7);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '2ヶ月' });
+      screen.getByRole('cell', { name: '7ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/2月' });
       screen.getByRole('cell', { name: '2022/7月' });
@@ -98,6 +102,9 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(7);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '3ヶ月' });
+      screen.getByRole('cell', { name: '5ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/3月' });
       screen.getByRole('cell', { name: '2022/5月' });
@@ -112,6 +119,10 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(9);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '2ヶ月' });
+      screen.getByRole('cell', { name: '4ヶ月' });
+      screen.getByRole('cell', { name: '8ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/2月' });
       screen.getByRole('cell', { name: '2022/4月' });
@@ -127,6 +138,8 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(5);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '5ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/5月' });
       expect(spy).toHaveBeenCalledTimes(1);
@@ -140,6 +153,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(11);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '2ヶ月' });
+      screen.getByRole('cell', { name: '3ヶ月' });
+      screen.getByRole('cell', { name: '6ヶ月' });
+      screen.getByRole('cell', { name: '9ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/2月' });
       screen.getByRole('cell', { name: '2022/3月' });
@@ -157,6 +175,8 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(5);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '7ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/7月' });
       expect(spy).toHaveBeenCalledTimes(1);
@@ -171,6 +191,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(11);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '2ヶ月' });
+      screen.getByRole('cell', { name: '4ヶ月' });
+      screen.getByRole('cell', { name: '8ヶ月' });
+      screen.getByRole('cell', { name: '10ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/2月' });
       screen.getByRole('cell', { name: '2022/4月' });
@@ -188,6 +213,9 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(7);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '3ヶ月' });
+      screen.getByRole('cell', { name: '9ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/3月' });
       screen.getByRole('cell', { name: '2022/9月' });
@@ -203,6 +231,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(11);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '2ヶ月' });
+      screen.getByRole('cell', { name: '5ヶ月' });
+      screen.getByRole('cell', { name: '10ヶ月' });
+      screen.getByRole('cell', { name: '11ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/2月' });
       screen.getByRole('cell', { name: '2022/5月' });
@@ -220,6 +253,8 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(5);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '11ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/11月' });
       expect(spy).toHaveBeenCalledTimes(1);
@@ -233,6 +268,12 @@ describe('SubscriptionOrderTemplateContainer', () => {
         await wait();
       });
       expect(screen.getAllByRole('row')).toHaveLength(13);
+      screen.getByRole('cell', { name: '1ヶ月' });
+      screen.getByRole('cell', { name: '2ヶ月' });
+      screen.getByRole('cell', { name: '3ヶ月' });
+      screen.getByRole('cell', { name: '4ヶ月' });
+      screen.getByRole('cell', { name: '6ヶ月' });
+      screen.getByRole('cell', { name: '12ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/2月' });
       screen.getByRole('cell', { name: '2022/3月' });
