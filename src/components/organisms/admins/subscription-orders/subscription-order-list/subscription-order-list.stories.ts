@@ -7,7 +7,7 @@ type Story = ComponentStoryObj<typeof SubscriptionOrderList>;
 export default { component: SubscriptionOrderList };
 
 export const Default: Story = {
-  args: { data: subscriptionOrderItems },
+  args: { data: subscriptionOrderItems, now: new Date(2023, 0) },
 };
 
 export const Loading: Story = {
