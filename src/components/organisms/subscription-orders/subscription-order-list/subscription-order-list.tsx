@@ -13,6 +13,7 @@ import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription
 import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
 import { formatDate } from 'functions/dates/format-date';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
+import { generateNextDeliveryMonth } from 'functions/delivery-dates/generate-next-delivery-months';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
 import { useToggle } from 'react-use';
@@ -28,11 +29,19 @@ const header: TableHeader[] = [
     minWidth: 160,
   },
   {
-    label: '定期便申し込み日',
+    label: '定期便開始月',
     minWidth: 160,
   },
   {
-    label: '定期便開始月',
+    label: '配送頻度',
+    minWidth: 160,
+  },
+  {
+    label: '次回配送予定月',
+    minWidth: 160,
+  },
+  {
+    label: '作成日時',
     minWidth: 160,
   },
   {
@@ -64,13 +73,16 @@ const productHeader: TableHeader[] = [
   },
 ];
 
-type Props = FetchResponse<SubscriptionOrder[]> & {};
+type Props = FetchResponse<SubscriptionOrder[]> & {
+  now: Date;
+};
 
 type RowProps = {
   item: SubscriptionOrder;
+  now: Date;
 };
 
-const Row = ({ item }: RowProps) => {
+const Row = ({ item, now }: RowProps) => {
   const [on, toggle] = useToggle(false);
   return (
     <React.Fragment key={item.id}>
@@ -81,8 +93,17 @@ const Row = ({ item }: RowProps) => {
           </IconButton>
         </TableCell>
         <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
-        <StyledTableCell align='center'>{formatDate(item.createdAt)}</StyledTableCell>
         <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
+        <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>
+        <StyledTableCell align='center'>
+          {generateNextDeliveryMonth(
+            item.deliveryStartMonth,
+            item.deliveryInterval,
+            now.getFullYear(),
+            now.getMonth() + 1,
+          )}
+        </StyledTableCell>
+        <StyledTableCell align='center'>{formatDateHourMinute(item.createdAt)}</StyledTableCell>
         <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
         {item.products && (
           <>
@@ -135,10 +156,10 @@ const Row = ({ item }: RowProps) => {
 };
 
 export const SubscriptionOrderList = (props: Props) => {
-  const { data } = props;
+  const { data, now } = props;
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
-      {data ? data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} />) : <div></div>}
+      {data && data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} now={now} />)}
     </CommonTableContainer>
   );
 };

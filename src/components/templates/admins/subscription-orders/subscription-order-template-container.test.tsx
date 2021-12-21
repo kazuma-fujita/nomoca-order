@@ -25,6 +25,16 @@ const expectAllList = () => {
   screen.queryByRole('cell', { name: '担当者13' });
   // delivery start month
   screen.getByRole('cell', { name: '2022/1月' });
+  screen.getByRole('cell', { name: '2022/2月' });
+  screen.getByRole('cell', { name: '2022/3月' });
+  screen.getByRole('cell', { name: '2022/4月' });
+  screen.getByRole('cell', { name: '2022/5月' });
+  screen.getByRole('cell', { name: '2022/6月' });
+  screen.getByRole('cell', { name: '2022/7月' });
+  screen.getByRole('cell', { name: '2022/8月' });
+  screen.getByRole('cell', { name: '2022/9月' });
+  screen.getByRole('cell', { name: '2022/10月' });
+  screen.getByRole('cell', { name: '2022/11月' });
   screen.getByRole('cell', { name: '2022/12月' });
 };
 
@@ -63,15 +73,6 @@ describe('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/1.
       customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 0)} />);
       await expectTemplateElements();
-      // next delivery month
-      // screen.getByRole('cell', { name: '2023/1月' });
-      // expect(screen.getAllByRole('cell', { name: '2023/2月' })).toHaveLength(2);
-      // expect(screen.getAllByRole('cell', { name: '2023/3月' })).toHaveLength(2);
-      // expect(screen.getAllByRole('cell', { name: '2023/4月' })).toHaveLength(2);
-      // expect(screen.getAllByRole('cell', { name: '2023/6月' })).toHaveLength(2);
-      // screen.getByRole('cell', { name: '2023/8月' });
-      // screen.getByRole('cell', { name: '2023/10月' });
-      // screen.getByRole('cell', { name: '2023/12月' });
       // It selects a delivery month from select box, then it pushes a search button.
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '1月' }));
