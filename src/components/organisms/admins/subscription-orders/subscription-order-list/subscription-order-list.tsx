@@ -74,15 +74,17 @@ const productHeader: TableHeader[] = [
   },
 ];
 
-type Props = FetchResponse<SubscriptionOrder[]> & {};
+type Props = FetchResponse<SubscriptionOrder[]> & {
+  now: Date;
+};
 
 type RowProps = {
   item: SubscriptionOrder;
+  now: Date;
 };
 
-const Row = ({ item }: RowProps) => {
+const Row = ({ item, now }: RowProps) => {
   const [on, toggle] = useToggle(false);
-  const now = new Date();
   return (
     <React.Fragment key={item.id}>
       <TableRow>
@@ -147,10 +149,10 @@ const Row = ({ item }: RowProps) => {
 };
 
 export const SubscriptionOrderList = (props: Props) => {
-  const { data } = props;
+  const { data, now } = props;
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
-      {data && data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} />)}
+      {data && data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} now={now} />)}
     </CommonTableContainer>
   );
 };

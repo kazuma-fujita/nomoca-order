@@ -14,7 +14,7 @@ const AdminSubscriptionOrderPage = () => {
         <title>{ScreenName.AdminSubscriptionOrder + TitleSuffix}</title>
       </Head>
       <Main>
-        <SubscriptionOrderTemplateContainer />
+        <SubscriptionOrderTemplateContainer now={new Date()} />
       </Main>
     </>
   );

@@ -6,11 +6,7 @@ import { subscriptionOrderItems } from 'components/organisms/admins/subscription
 import { customRender } from 'utilities/tests/custom-render';
 import { SubscriptionOrderTemplateContainer } from './subscription-order-template-container';
 
-const render = () => customRender(<SubscriptionOrderTemplateContainer />);
-
-const renderAllList = async () => {
-  // It renders a list.
-  render();
+const expectTemplateElements = async () => {
   screen.getByRole('table');
   screen.getAllByText('発送月');
   screen.getByRole('button', { name: '全件' });
@@ -22,12 +18,14 @@ const renderAllList = async () => {
 const expectAllList = () => {
   const rows = screen.getAllByRole('row');
   expect(rows).toHaveLength(25);
+  // staff
   screen.queryByRole('cell', { name: '担当者0' });
   screen.getByRole('cell', { name: '担当者1' });
   screen.getByRole('cell', { name: '担当者12' });
+  screen.queryByRole('cell', { name: '担当者13' });
+  // delivery start month
   screen.getByRole('cell', { name: '2022/1月' });
   screen.getByRole('cell', { name: '2022/12月' });
-  screen.queryByRole('cell', { name: '担当者13' });
 };
 
 describe('SubscriptionOrderTemplateContainer', () => {
@@ -42,7 +40,6 @@ describe('SubscriptionOrderTemplateContainer', () => {
       spy.mockResolvedValueOnce({
         data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderItems } },
       });
-      await renderAllList();
     });
 
     /*
@@ -63,21 +60,48 @@ describe('SubscriptionOrderTemplateContainer', () => {
 		*/
 
     test('with delivery month of January.', async () => {
+      // Current date is 2023/1.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 0)} />);
+      await expectTemplateElements();
+      // next delivery month
+      // screen.getByRole('cell', { name: '2023/1月' });
+      // expect(screen.getAllByRole('cell', { name: '2023/2月' })).toHaveLength(2);
+      // expect(screen.getAllByRole('cell', { name: '2023/3月' })).toHaveLength(2);
+      // expect(screen.getAllByRole('cell', { name: '2023/4月' })).toHaveLength(2);
+      // expect(screen.getAllByRole('cell', { name: '2023/6月' })).toHaveLength(2);
+      // screen.getByRole('cell', { name: '2023/8月' });
+      // screen.getByRole('cell', { name: '2023/10月' });
+      // screen.getByRole('cell', { name: '2023/12月' });
       // It selects a delivery month from select box, then it pushes a search button.
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '1月' }));
       await act(async () => {
         userEvent.click(screen.getByRole('button', { name: '検索する' }));
         // It waits for appearing the order list after searching it with a delivery month.
-        await wait();
+        await wait(100);
       });
       expect(screen.getAllByRole('row')).toHaveLength(3);
       screen.getByRole('cell', { name: '1ヶ月' });
+      // delivery start month
       screen.getByRole('cell', { name: '2022/1月' });
+      // next delivery month
+      screen.getByRole('cell', { name: '2023/1月' });
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of February.', async () => {
+      // Current date is 2023/2.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 1)} />);
+      await expectTemplateElements();
+      // next delivery month
+      screen.getByRole('cell', { name: '2023/1月' });
+      expect(screen.getAllByRole('cell', { name: '2023/2月' })).toHaveLength(2);
+      expect(screen.getAllByRole('cell', { name: '2023/3月' })).toHaveLength(2);
+      expect(screen.getAllByRole('cell', { name: '2023/4月' })).toHaveLength(2);
+      expect(screen.getAllByRole('cell', { name: '2023/6月' })).toHaveLength(2);
+      screen.getByRole('cell', { name: '2023/8月' });
+      screen.getByRole('cell', { name: '2023/10月' });
+      screen.getByRole('cell', { name: '2023/12月' });
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '2月' }));
       await act(async () => {
@@ -91,10 +115,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/2月' });
       screen.getByRole('cell', { name: '2022/7月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/2月' })).toHaveLength(3);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of March.', async () => {
+      // Current date is 2023/3.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 2)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '3月' }));
       await act(async () => {
@@ -108,10 +137,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/3月' });
       screen.getByRole('cell', { name: '2022/5月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/3月' })).toHaveLength(3);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of April.', async () => {
+      // Current date is 2023/4.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 3)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '4月' }));
       await act(async () => {
@@ -127,10 +161,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '2022/2月' });
       screen.getByRole('cell', { name: '2022/4月' });
       screen.getByRole('cell', { name: '2022/8月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/4月' })).toHaveLength(4);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of May.', async () => {
+      // Current date is 2023/5.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 4)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '5月' }));
       await act(async () => {
@@ -142,10 +181,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '5ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/5月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/5月' })).toHaveLength(2);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of June.', async () => {
+      // Current date is 2023/6.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 5)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '6月' }));
       await act(async () => {
@@ -163,10 +207,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '2022/3月' });
       screen.getByRole('cell', { name: '2022/6月' });
       screen.getByRole('cell', { name: '2022/9月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/6月' })).toHaveLength(5);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of July.', async () => {
+      // Current date is 2023/7.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 6)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '7月' }));
       const searchButton = screen.getByRole('button', { name: '検索する' });
@@ -179,10 +228,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '7ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/7月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/7月' })).toHaveLength(2);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of August.', async () => {
+      // Current date is 2023/8.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 7)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '8月' }));
       const searchButton = screen.getByRole('button', { name: '検索する' });
@@ -201,10 +255,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '2022/4月' });
       screen.getByRole('cell', { name: '2022/8月' });
       screen.getByRole('cell', { name: '2022/10月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/8月' })).toHaveLength(5);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of September.', async () => {
+      // Current date is 2023/9.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 8)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '9月' }));
       const searchButton = screen.getByRole('button', { name: '検索する' });
@@ -219,10 +278,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/3月' });
       screen.getByRole('cell', { name: '2022/9月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/9月' })).toHaveLength(3);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of October.', async () => {
+      // Current date is 2023/10.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 9)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '10月' }));
       const searchButton = screen.getByRole('button', { name: '検索する' });
@@ -241,10 +305,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '2022/5月' });
       screen.getByRole('cell', { name: '2022/10月' });
       screen.getByRole('cell', { name: '2022/11月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/10月' })).toHaveLength(5);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of November.', async () => {
+      // Current date is 2023/11.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 10)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '11月' }));
       const searchButton = screen.getByRole('button', { name: '検索する' });
@@ -257,10 +326,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '11ヶ月' });
       screen.getByRole('cell', { name: '2022/1月' });
       screen.getByRole('cell', { name: '2022/11月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/11月' })).toHaveLength(2);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of December.', async () => {
+      // Current date is 2023/12.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 11)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '12月' }));
       await act(async () => {
@@ -280,10 +354,15 @@ describe('SubscriptionOrderTemplateContainer', () => {
       screen.getByRole('cell', { name: '2022/4月' });
       screen.getByRole('cell', { name: '2022/6月' });
       screen.getByRole('cell', { name: '2022/12月' });
+      // next delivery month
+      expect(screen.getAllByRole('cell', { name: '2023/12月' })).toHaveLength(6);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('with delivery month of all month.', async () => {
+      // Current date is 2023/12.
+      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 11)} />);
+      await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '全件' }));
       await act(async () => {
@@ -297,8 +376,7 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
   test('It ocurred an error when it fetches a list.', async () => {
     spy.mockRejectedValueOnce(Error('It occurred an async error.'));
-
-    render();
+    customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 11)} />);
     // It waits for viewing alert.
     await waitFor(() => {
       const alert = screen.getByRole('alert');
