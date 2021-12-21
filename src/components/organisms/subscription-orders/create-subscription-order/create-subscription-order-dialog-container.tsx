@@ -1,24 +1,26 @@
-import { Add } from '@mui/icons-material';
-import Button from '@mui/material/Button';
 import { SubscriptionOrder } from 'API';
 import { useCreateSubscriptionOrder } from 'hooks/subscription-orders/use-create-subscription-order';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
-import { InputSubscriptionOrderDialog } from './input-subscription-order-dialog';
+import { CreateSubscriptionOrderDialog } from './create-subscription-order-dialog';
 
-const defaultValues = {
+type Props = {
+  on: boolean;
+  toggle: (nextValue?: any) => void;
+};
+
+export const defaultValues = {
   products: { items: [{ productID: '', quantity: 1 }] },
   staffID: '',
 };
 
-export const CreateSubscriptionOrderButton = () => {
-  const useFormReturn = useForm<SubscriptionOrder>({ defaultValues });
-  const { handleSubmit, reset: resetForm, control } = useFormReturn;
-  const useFieldArrayReturn = useFieldArray({ control, name: 'products.items' });
-  const { fields, remove } = useFieldArrayReturn;
+export const CreateSubscriptionOrderDialogContainer = ({ on, toggle }: Props) => {
+  const formReturn = useForm<SubscriptionOrder>({ defaultValues });
+  const { handleSubmit, reset: resetForm, control } = formReturn;
+  const fieldArrayReturn = useFieldArray({ control, name: 'products.items' });
+  const { fields, remove } = fieldArrayReturn;
   const { createSubscriptionOrder, isLoading, error, resetState } = useCreateSubscriptionOrder();
-  const [on, toggle] = useToggle(false);
 
   const cancelHandler = useCallback(() => {
     // 商品・数量の可変TextField初期化の為、全ての要素削除
@@ -42,24 +44,15 @@ export const CreateSubscriptionOrderButton = () => {
     ),
   );
 
-  const label = '申し込む';
-
   return (
-    <>
-      <Button onClick={toggle} variant='outlined' startIcon={<Add />}>
-        定期便を{label}
-      </Button>
-      <InputSubscriptionOrderDialog
-        label={label}
-        startIcon={<Add />}
-        on={on}
-        isLoading={isLoading}
-        error={error}
-        submitHandler={submitHandler}
-        cancelHandler={cancelHandler}
-        useFormReturn={useFormReturn}
-        useFieldArrayReturn={useFieldArrayReturn}
-      />
-    </>
+    <CreateSubscriptionOrderDialog
+      formReturn={formReturn}
+      fieldArrayReturn={fieldArrayReturn}
+      on={on}
+      isLoading={isLoading}
+      error={error}
+      submitHandler={submitHandler}
+      cancelHandler={cancelHandler}
+    />
   );
 };

@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { CreateSubscriptionOrderButton } from 'components/organisms/subscription-orders/create-subscription-order-button';
+import { CreateSubscriptionOrderButton } from 'components/organisms/subscription-orders/create-subscription-order/create-subscription-order-button';
 import { ReactElement } from 'react';
 
 type Props = {

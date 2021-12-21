@@ -31,6 +31,8 @@ type ProductErrorField = {
 
 // 数字連番の配列を生成
 const quantities = Array.from({ length: 20 }, (_, i) => i + 1);
+const months = Array.from({ length: 12 }, (_, i) => i + 1);
+const deliveryIntervals = [1, 2, 3, 4, 6, 12];
 
 export const InputSubscriptionOrderDialog = (props: Props) => {
   const { data: productList } = useProductList();
@@ -83,7 +85,7 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
                 name={`products.items.${index}.quantity`}
                 control={props.useFormReturn.control}
                 defaultValue={1}
-                rules={{ required: '個数を選択してください' }}
+                rules={{ required: '数量を選択してください' }}
                 render={({ field, formState: { errors } }) => (
                   <TextField
                     select
@@ -144,6 +146,54 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
                         {staff.name}
                       </MenuItem>
                     ))}
+                </TextField>
+              )}
+            />
+          </Box>
+          <Box mt={2} mb={2} sx={{ display: 'flex' }}>
+            2022 /
+            <Controller
+              name='deliveryStartMonth'
+              control={props.useFormReturn.control}
+              defaultValue={0}
+              rules={{ required: '定期便開始月を選択してください' }}
+              render={({ field, formState: { errors } }) => (
+                <TextField
+                  select
+                  label='定期便開始月'
+                  error={Boolean(errors.deliveryStartMonth)}
+                  helperText={errors.deliveryStartMonth && errors.deliveryStartMonth.message}
+                  sx={{ width: 100 }}
+                  {...field}
+                >
+                  {months.map((month) => (
+                    <MenuItem key={month} value={month}>
+                      {month}月
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+            <Box mr={2} />
+            <Controller
+              name='deliveryInterval'
+              control={props.useFormReturn.control}
+              defaultValue={3}
+              rules={{ required: '配送頻度を選択してください' }}
+              render={({ field, formState: { errors } }) => (
+                <TextField
+                  select
+                  label='配送頻度'
+                  error={Boolean(errors.deliveryInterval)}
+                  helperText={errors.deliveryInterval && errors.deliveryInterval.message}
+                  sx={{ width: 100 }}
+                  {...field}
+                >
+                  {deliveryIntervals.map((interval) => (
+                    <MenuItem key={interval} value={interval}>
+                      {interval}ヶ月
+                    </MenuItem>
+                  ))}
                 </TextField>
               )}
             />
