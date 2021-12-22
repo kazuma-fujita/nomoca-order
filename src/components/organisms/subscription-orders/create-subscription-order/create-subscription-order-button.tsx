@@ -3,7 +3,11 @@ import Button from '@mui/material/Button';
 import { useToggle } from 'react-use';
 import { CreateSubscriptionOrderDialogContainer } from './create-subscription-order-dialog-container';
 
-export const CreateSubscriptionOrderButton = () => {
+type Props = {
+  now: Date;
+};
+
+export const CreateSubscriptionOrderButton = ({ now }: Props) => {
   const [on, toggle] = useToggle(false);
 
   const label = '申し込む';
@@ -13,7 +17,7 @@ export const CreateSubscriptionOrderButton = () => {
       <Button onClick={toggle} variant='outlined' startIcon={<Add />}>
         定期便を{label}
       </Button>
-      <CreateSubscriptionOrderDialogContainer on={on} toggle={toggle} />
+      <CreateSubscriptionOrderDialogContainer on={on} toggle={toggle} now={now} />
     </>
   );
 };

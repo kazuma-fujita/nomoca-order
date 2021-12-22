@@ -1,12 +1,21 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, TextField } from '@mui/material';
+import {
+  Box,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { SubscriptionOrder } from 'API';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import Form from 'components/atoms/form';
-import { BaseSyntheticEvent, ReactElement } from 'react';
+import { BaseSyntheticEvent, ReactElement, useState } from 'react';
 import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
@@ -22,6 +31,7 @@ type Props = {
   useFormReturn: UseFormReturn<SubscriptionOrder, object>;
   useFieldArrayReturn: UseFieldArrayReturn;
   staffID?: string;
+  now: Date;
 };
 
 type ProductErrorField = {
@@ -31,12 +41,31 @@ type ProductErrorField = {
 
 // 数字連番の配列を生成
 const quantities = Array.from({ length: 20 }, (_, i) => i + 1);
-const months = Array.from({ length: 12 }, (_, i) => i + 1);
 const deliveryIntervals = [1, 2, 3, 4, 6, 12];
+
+const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth: number) =>
+  selectMonth <= nowMonth ? nowYear + 1 : nowYear;
 
 export const InputSubscriptionOrderDialog = (props: Props) => {
   const { data: productList } = useProductList();
   const { data: staffList } = useStaffList();
+  const nowYear = props.now.getFullYear();
+  const nowMonth = props.now.getMonth() + 1;
+  const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
+  const deliveryStartMonths = Array.from({ length: 6 }, (_, i) => {
+    const month = i + nextMonth;
+    return 12 < month ? month - 12 : month;
+  });
+
+  const [deliveryStartYear, setDeliveryStartYear] = useState(addYearWithSelectedMonth(nowYear, nowMonth, nextMonth));
+  const [deliveryStartMonthValue, setDeliveryStartMonthValue] = useState(nextMonth);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10);
+    setDeliveryStartYear(addYearWithSelectedMonth(nowYear, nowMonth, value));
+    setDeliveryStartMonthValue(value);
+  };
+
   return (
     <Dialog open={props.on} fullWidth={true}>
       <Form onSubmit={props.submitHandler}>
@@ -150,23 +179,25 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
               )}
             />
           </Box>
-          <Box mt={2} mb={2} sx={{ display: 'flex' }}>
-            2022 /
+          <Box mt={2} mb={2} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
+            <Typography color='text.secondary'>{deliveryStartYear}&nbsp;/&nbsp;</Typography>
             <Controller
               name='deliveryStartMonth'
               control={props.useFormReturn.control}
-              defaultValue={0}
+              defaultValue={nextMonth}
               rules={{ required: '定期便開始月を選択してください' }}
-              render={({ field, formState: { errors } }) => (
+              render={({ field: { onChange, value, ...rest }, formState: { errors } }) => (
                 <TextField
                   select
+                  onChange={handleChange}
+                  value={deliveryStartMonthValue}
                   label='定期便開始月'
                   error={Boolean(errors.deliveryStartMonth)}
                   helperText={errors.deliveryStartMonth && errors.deliveryStartMonth.message}
                   sx={{ width: 100 }}
-                  {...field}
+                  {...rest}
                 >
-                  {months.map((month) => (
+                  {deliveryStartMonths.map((month) => (
                     <MenuItem key={month} value={month}>
                       {month}月
                     </MenuItem>
@@ -178,7 +209,7 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
             <Controller
               name='deliveryInterval'
               control={props.useFormReturn.control}
-              defaultValue={3}
+              defaultValue={1}
               rules={{ required: '配送頻度を選択してください' }}
               render={({ field, formState: { errors } }) => (
                 <TextField

@@ -6,5 +6,5 @@ type Props = {
 };
 
 export const SubscriptionOrderTemplateContainer = ({ now }: Props) => (
-  <SubscriptionOrderTemplate listComponent={<SubscriptionOrderListContainer now={now} />} />
+  <SubscriptionOrderTemplate listComponent={<SubscriptionOrderListContainer now={now} />} now={now} />
 );

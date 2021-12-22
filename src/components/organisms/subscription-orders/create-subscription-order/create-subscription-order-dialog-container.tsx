@@ -7,6 +7,7 @@ import { CreateSubscriptionOrderDialog } from './create-subscription-order-dialo
 type Props = {
   on: boolean;
   toggle: (nextValue?: any) => void;
+  now: Date;
 };
 
 export const defaultValues = {
@@ -14,7 +15,7 @@ export const defaultValues = {
   staffID: '',
 };
 
-export const CreateSubscriptionOrderDialogContainer = ({ on, toggle }: Props) => {
+export const CreateSubscriptionOrderDialogContainer = ({ on, toggle, now }: Props) => {
   const formReturn = useForm<SubscriptionOrder>({ defaultValues });
   const { handleSubmit, reset: resetForm, control } = formReturn;
   const fieldArrayReturn = useFieldArray({ control, name: 'products.items' });
@@ -52,6 +53,7 @@ export const CreateSubscriptionOrderDialogContainer = ({ on, toggle }: Props) =>
       error={error}
       submitHandler={submitHandler}
       cancelHandler={cancelHandler}
+      now={now}
     />
   );
 };

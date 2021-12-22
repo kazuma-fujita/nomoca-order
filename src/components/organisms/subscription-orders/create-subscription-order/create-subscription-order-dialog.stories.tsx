@@ -10,7 +10,12 @@ const Wrapper: React.FC<Props> = (props) => {
   const { handleSubmit, control } = formReturn;
   const fieldArrayReturn = useFieldArray({ control, name: 'products.items' });
   const submitHandler = handleSubmit((data: SubscriptionOrder) => console.log(data));
-  const copy = { ...props, formReturn: formReturn, fieldArrayReturn: fieldArrayReturn, submitHandler: submitHandler };
+  const copy = {
+    ...props,
+    formReturn: formReturn,
+    fieldArrayReturn: fieldArrayReturn,
+    submitHandler: submitHandler,
+  };
   return <CreateSubscriptionOrderDialog {...copy} />;
 };
 
@@ -19,7 +24,7 @@ type Story = ComponentStoryObj<typeof Wrapper>;
 export default { component: Wrapper };
 
 export const Default: Story = {
-  args: { on: true },
+  args: { on: true, now: new Date(2022, 9, 1, 9) },
 };
 
 export const Loading: Story = {

@@ -10,5 +10,5 @@ type Story = ComponentStoryObj<typeof SubscriptionOrderTemplate>;
 export default { component: SubscriptionOrderTemplate };
 
 export const Template: Story = {
-  args: { listComponent: <Default /> },
+  args: { listComponent: <Default />, now: new Date(2023, 0, 1, 9) },
 };
