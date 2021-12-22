@@ -10,13 +10,13 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
-import { useFormatDateHourMinute } from 'hooks/date-hooks/use-format-date-hour-minute';
+import { ActivateProductButton } from 'components/organisms/products/activate-product-button';
+import { UpdateProductButton } from 'components/organisms/products/update-product-button';
+import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useUpdateAllProduct } from 'hooks/products/use-update-all-product';
 import { useCallback } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { useProductList } from 'stores/use-product-list';
-import { ActivateProductButton } from 'components/organisms/products/activate-product-button';
-import { UpdateProductButton } from 'components/organisms/products/update-product-button';
 
 const header = [
   {
@@ -43,7 +43,6 @@ const header = [
 
 export const ProductList = () => {
   const { data, error } = useProductList();
-  const { formatDateHourMinute } = useFormatDateHourMinute();
   const { updateAllProduct } = useUpdateAllProduct();
 
   const handleOnDragEnd = useCallback(
