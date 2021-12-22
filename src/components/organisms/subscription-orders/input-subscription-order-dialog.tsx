@@ -185,13 +185,13 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
               name='deliveryStartMonth'
               control={props.useFormReturn.control}
               defaultValue={nextMonth}
-              rules={{ required: '定期便開始月を選択してください' }}
+              rules={{ required: '配送開始月を選択してください' }}
               render={({ field: { onChange, value, ...rest }, formState: { errors } }) => (
                 <TextField
                   select
                   onChange={handleChange}
                   value={deliveryStartMonthValue}
-                  label='定期便開始月'
+                  label='配送開始月'
                   error={Boolean(errors.deliveryStartMonth)}
                   helperText={errors.deliveryStartMonth && errors.deliveryStartMonth.message}
                   sx={{ width: 100 }}

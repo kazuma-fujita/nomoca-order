@@ -513,7 +513,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Subscription
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            
+
           </p>
         </th>
         <th
@@ -557,7 +557,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Subscription
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            定期便開始月
+            配送開始月
           </p>
         </th>
         <th
@@ -1911,7 +1911,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Subscription
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            
+
           </p>
         </th>
         <th
@@ -1955,7 +1955,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Subscription
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            定期便開始月
+            配送開始月
           </p>
         </th>
         <th
@@ -2079,7 +2079,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Subscription
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            
+
           </p>
         </th>
         <th
@@ -2123,7 +2123,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Subscription
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            定期便開始月
+            配送開始月
           </p>
         </th>
         <th
@@ -2936,7 +2936,7 @@ exports[`Storyshots Components/Organisms/Subscription Orders/Subscription Order 
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            
+
           </p>
         </th>
         <th
@@ -2969,7 +2969,7 @@ exports[`Storyshots Components/Organisms/Subscription Orders/Subscription Order 
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            定期便開始月
+            配送開始月
           </p>
         </th>
         <th
@@ -5008,7 +5008,7 @@ exports[`Storyshots Components/Organisms/Subscription Orders/Subscription Order 
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            
+
           </p>
         </th>
         <th
@@ -5030,7 +5030,7 @@ exports[`Storyshots Components/Organisms/Subscription Orders/Subscription Order 
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            定期便開始月
+            配送開始月
           </p>
         </th>
         <th
@@ -5176,7 +5176,7 @@ exports[`Storyshots Components/Organisms/Subscription Orders/Subscription Order 
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            
+
           </p>
         </th>
         <th
@@ -5198,7 +5198,7 @@ exports[`Storyshots Components/Organisms/Subscription Orders/Subscription Order 
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            定期便開始月
+            配送開始月
           </p>
         </th>
         <th
@@ -5471,7 +5471,7 @@ exports[`Storyshots Components/Templates/Admins/Subscription Orders/Subscription
               <p
                 className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
               >
-                
+
               </p>
             </th>
             <th
@@ -5515,7 +5515,7 @@ exports[`Storyshots Components/Templates/Admins/Subscription Orders/Subscription
               <p
                 className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
               >
-                定期便開始月
+                配送開始月
               </p>
             </th>
             <th

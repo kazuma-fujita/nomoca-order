@@ -38,7 +38,7 @@ const header: TableHeader[] = [
     minWidth: 160,
   },
   {
-    label: '定期便開始月',
+    label: '配送開始月',
     minWidth: 160,
   },
   {
