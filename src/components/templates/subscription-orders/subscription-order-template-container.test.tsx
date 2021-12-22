@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/user-event/dist/utils';
 import { API } from 'aws-amplify';
 import { subscriptionOrderItems } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
+import { NowDateContextProvider } from 'stores/use-now-date';
 import { customRender } from 'utilities/tests/custom-render';
 import { SubscriptionOrderTemplateContainer } from './subscription-order-template-container';
 
@@ -69,7 +70,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in January, 2023.', async () => {
       // Current date is 2023/1.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 0)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 0)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       screen.getByRole('cell', { name: '2023/1月' });
@@ -85,7 +90,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in February, 2023.', async () => {
       // Current date is 2023/2.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 1)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 1)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/2月' })).toHaveLength(3);
@@ -100,7 +109,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in March, 2023.', async () => {
       // Current date is 2023/3.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 2)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 2)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/3月' })).toHaveLength(3);
@@ -115,7 +128,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in April, 2023.', async () => {
       // Current date is 2023/4.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 3)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 3)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/4月' })).toHaveLength(4);
@@ -130,7 +147,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in May, 2023.', async () => {
       // Current date is 2023/5.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 4)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 4)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/5月' })).toHaveLength(2);
@@ -144,7 +165,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in June, 2023.', async () => {
       // Current date is 2023/6.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 5)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 5)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/6月' })).toHaveLength(5);
@@ -157,7 +182,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in July, 2023.', async () => {
       // Current date is 2023/7.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 6)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 6)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/7月' })).toHaveLength(2);
@@ -170,7 +199,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in August, 2023.', async () => {
       // Current date is 2023/8.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 7)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 7)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/8月' })).toHaveLength(5);
@@ -183,7 +216,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in September, 2023.', async () => {
       // Current date is 2023/9.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 8)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 8)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/9月' })).toHaveLength(3);
@@ -196,7 +233,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in October, 2023.', async () => {
       // Current date is 2023/10.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 9)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 9)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/10月' })).toHaveLength(5);
@@ -209,7 +250,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in November, 2023.', async () => {
       // Current date is 2023/11.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 10)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 10)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/11月' })).toHaveLength(2);
@@ -224,7 +269,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('in December, 2023.', async () => {
       // Current date is 2023/12.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 11)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 11)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       expect(screen.getAllByRole('cell', { name: '2023/12月' })).toHaveLength(6);
@@ -240,7 +289,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
   test('It ocurred an error when it fetches a list.', async () => {
     spy.mockRejectedValueOnce(Error('It occurred an async error.'));
-    customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 11)} />);
+    customRender(
+      <NowDateContextProvider now={new Date(2023, 11)}>
+        <SubscriptionOrderTemplateContainer />
+      </NowDateContextProvider>,
+    );
     // It waits for viewing alert.
     await waitFor(() => {
       const alert = screen.getByRole('alert');

@@ -3,7 +3,6 @@ import userEvent from '@testing-library/user-event';
 import { API } from 'aws-amplify';
 import { ObjectType } from 'constants/object-type';
 import { customRender } from 'utilities/tests/custom-render';
-import { StaffTemplate } from './staff-template';
 import { StaffTemplateContainer } from './staff-template-container';
 
 const item = {

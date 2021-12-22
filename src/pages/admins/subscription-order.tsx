@@ -4,6 +4,7 @@ import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
+import { NowDateContextProvider } from 'stores/use-now-date';
 
 const AdminSubscriptionOrderPage = () => {
   useVerifyAuthenticated();
@@ -13,9 +14,11 @@ const AdminSubscriptionOrderPage = () => {
       <Head>
         <title>{ScreenName.AdminSubscriptionOrder + TitleSuffix}</title>
       </Head>
-      <Main>
-        <SubscriptionOrderTemplateContainer now={new Date()} />
-      </Main>
+      <NowDateContextProvider now={new Date()}>
+        <Main>
+          <SubscriptionOrderTemplateContainer />
+        </Main>
+      </NowDateContextProvider>
     </>
   );
 };

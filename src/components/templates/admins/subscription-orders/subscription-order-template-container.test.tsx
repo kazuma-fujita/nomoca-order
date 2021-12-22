@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/user-event/dist/utils';
 import { API } from 'aws-amplify';
 import { subscriptionOrderItems } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
+import { NowDateContextProvider } from 'stores/use-now-date';
 import { customRender } from 'utilities/tests/custom-render';
 import { SubscriptionOrderTemplateContainer } from './subscription-order-template-container';
 
@@ -71,7 +72,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of January.', async () => {
       // Current date is 2023/1.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 0)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 0)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // It selects a delivery month from select box, then it pushes a search button.
       userEvent.click(screen.getByRole('button', { name: '全件' }));
@@ -92,7 +97,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of February.', async () => {
       // Current date is 2023/2.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 1)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 1)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       // next delivery month
       screen.getByRole('cell', { name: '2023/1月' });
@@ -123,7 +132,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of March.', async () => {
       // Current date is 2023/3.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 2)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 2)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '3月' }));
@@ -145,7 +158,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of April.', async () => {
       // Current date is 2023/4.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 3)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 3)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '4月' }));
@@ -169,7 +186,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of May.', async () => {
       // Current date is 2023/5.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 4)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 4)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '5月' }));
@@ -189,7 +210,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of June.', async () => {
       // Current date is 2023/6.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 5)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 5)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '6月' }));
@@ -215,7 +240,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of July.', async () => {
       // Current date is 2023/7.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 6)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 6)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '7月' }));
@@ -236,7 +265,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of August.', async () => {
       // Current date is 2023/8.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 7)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 7)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '8月' }));
@@ -263,7 +296,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of September.', async () => {
       // Current date is 2023/9.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 8)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 8)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '9月' }));
@@ -286,7 +323,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of October.', async () => {
       // Current date is 2023/10.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 9)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 9)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '10月' }));
@@ -313,7 +354,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of November.', async () => {
       // Current date is 2023/11.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 10)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 10)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '11月' }));
@@ -334,7 +379,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of December.', async () => {
       // Current date is 2023/12.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 11)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 11)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '12月' }));
@@ -362,7 +411,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
     test('with delivery month of all month.', async () => {
       // Current date is 2023/12.
-      customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 11)} />);
+      customRender(
+        <NowDateContextProvider now={new Date(2023, 11)}>
+          <SubscriptionOrderTemplateContainer />
+        </NowDateContextProvider>,
+      );
       await expectTemplateElements();
       userEvent.click(screen.getByRole('button', { name: '全件' }));
       userEvent.click(screen.getByRole('option', { name: '全件' }));
@@ -377,7 +430,11 @@ describe('SubscriptionOrderTemplateContainer', () => {
 
   test('It ocurred an error when it fetches a list.', async () => {
     spy.mockRejectedValueOnce(Error('It occurred an async error.'));
-    customRender(<SubscriptionOrderTemplateContainer now={new Date(2023, 11)} />);
+    customRender(
+      <NowDateContextProvider now={new Date(2023, 11)}>
+        <SubscriptionOrderTemplateContainer />
+      </NowDateContextProvider>,
+    );
     // It waits for viewing alert.
     await waitFor(() => {
       const alert = screen.getByRole('alert');
