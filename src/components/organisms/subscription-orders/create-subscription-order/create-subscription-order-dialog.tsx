@@ -2,6 +2,7 @@ import { Add } from '@mui/icons-material';
 import { SubscriptionOrder } from 'API';
 import { BaseSyntheticEvent } from 'react';
 import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
+import { useNowDate } from 'stores/use-now-date';
 import { InputSubscriptionOrderDialog } from '../input-subscription-order-dialog';
 
 export type Props = {
@@ -12,7 +13,6 @@ export type Props = {
   error: Error | null;
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
   cancelHandler: () => void;
-  now: Date;
 };
 
 export const CreateSubscriptionOrderDialog = ({
@@ -23,7 +23,6 @@ export const CreateSubscriptionOrderDialog = ({
   error,
   submitHandler,
   cancelHandler,
-  now,
 }: Props) => {
   const label = '申し込む';
 
@@ -38,7 +37,6 @@ export const CreateSubscriptionOrderDialog = ({
       cancelHandler={cancelHandler}
       useFormReturn={formReturn}
       useFieldArrayReturn={fieldArrayReturn}
-      now={now}
     />
   );
 };

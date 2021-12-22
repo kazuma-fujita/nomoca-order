@@ -17,6 +17,7 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import Form from 'components/atoms/form';
 import { BaseSyntheticEvent, ReactElement, useState } from 'react';
 import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
+import { useNowDate } from 'stores/use-now-date';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
 
@@ -31,7 +32,6 @@ type Props = {
   useFormReturn: UseFormReturn<SubscriptionOrder, object>;
   useFieldArrayReturn: UseFieldArrayReturn;
   staffID?: string;
-  now: Date;
 };
 
 type ProductErrorField = {
@@ -49,8 +49,9 @@ const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth
 export const InputSubscriptionOrderDialog = (props: Props) => {
   const { data: productList } = useProductList();
   const { data: staffList } = useStaffList();
-  const nowYear = props.now.getFullYear();
-  const nowMonth = props.now.getMonth() + 1;
+  const { now } = useNowDate();
+  const nowYear = now.getFullYear();
+  const nowMonth = now.getMonth() + 1;
   const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
   const deliveryStartMonths = Array.from({ length: 6 }, (_, i) => {
     const month = i + nextMonth;

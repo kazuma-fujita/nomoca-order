@@ -11,12 +11,12 @@ import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
 import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription-orders/delete-subscription-order-button';
 import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
-import { formatDate } from 'functions/dates/format-date';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { generateNextDeliveryMonth } from 'functions/delivery-dates/generate-next-delivery-months';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
 import { useToggle } from 'react-use';
+import { useNowDate } from 'stores/use-now-date';
 import { TableHeader } from 'types/table-header';
 
 const header: TableHeader[] = [
@@ -73,9 +73,7 @@ const productHeader: TableHeader[] = [
   },
 ];
 
-type Props = FetchResponse<SubscriptionOrder[]> & {
-  now: Date;
-};
+type Props = FetchResponse<SubscriptionOrder[]> & {};
 
 type RowProps = {
   item: SubscriptionOrder;
@@ -156,7 +154,8 @@ const Row = ({ item, now }: RowProps) => {
 };
 
 export const SubscriptionOrderList = (props: Props) => {
-  const { data, now } = props;
+  const { data } = props;
+  const { now } = useNowDate();
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
       {data && data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} now={now} />)}

@@ -4,14 +4,13 @@ import { ReactElement } from 'react';
 
 type Props = {
   listComponent: ReactElement;
-  now: Date;
 };
 
-export const SubscriptionOrderTemplate = ({ listComponent, now }: Props) => (
+export const SubscriptionOrderTemplate = ({ listComponent }: Props) => (
   <Grid container spacing={2} direction='column'>
     <Grid item>
       <Grid container justifyContent='flex-end'>
-        <CreateSubscriptionOrderButton now={now} />
+        <CreateSubscriptionOrderButton />
       </Grid>
     </Grid>
     <Grid item>

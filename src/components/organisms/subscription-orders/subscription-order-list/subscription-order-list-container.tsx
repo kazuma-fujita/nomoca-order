@@ -1,12 +1,8 @@
 import { useFetchSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { SubscriptionOrderList } from './subscription-order-list';
 
-type Props = {
-  now: Date;
-};
-
-export const SubscriptionOrderListContainer = ({ now }: Props) => {
+export const SubscriptionOrderListContainer = () => {
   const fetchReturn = useFetchSubscriptionOrderList();
 
-  return <SubscriptionOrderList {...fetchReturn} now={now} />;
+  return <SubscriptionOrderList {...fetchReturn} />;
 };
