@@ -7,6 +7,7 @@ import { NextRouter, useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import useSWR, { KeyedMutator, useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { SubscriptionOrderList } from '../components/organisms/subscription-orders/subscription-order-list/subscription-order-list';
 
 type ProviderProps = {
   currentUser: CognitoUserInterface | undefined;
@@ -90,7 +91,7 @@ const afterAuthTransition = (router: NextRouter) => {
       const groups: string[] | undefined = currentUser.signInUserSession.accessToken.payload['cognito:groups'];
       const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
       // UserGroupにより遷移先の振り分け
-      isOperator ? router.replace(Path.SubscriptionOrder) : router.replace(Path.Staff);
+      isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.SubscriptionOrder);
     } catch (error) {
       router.replace(Path.Index);
     }

@@ -32,8 +32,12 @@ export const Header = () => {
   const drawerItems: HeaderItem[][] = isOperator
     ? [
         [
-          { path: Path.SingleOrder, icon: ShoppingCartIcon, label: ScreenName.SingleOrder },
-          { path: Path.SubscriptionOrder, icon: WifiProtectedSetupIcon, label: ScreenName.SubscriptionOrder },
+          { path: Path.AdminsSingleOrder, icon: ShoppingCartIcon, label: ScreenName.AdminsSingleOrder },
+          {
+            path: Path.AdminsSubscriptionOrder,
+            icon: WifiProtectedSetupIcon,
+            label: ScreenName.AdminsSubscriptionOrder,
+          },
         ],
         [
           { path: Path.Product, icon: ShoppingBasketIcon, label: ScreenName.Product },

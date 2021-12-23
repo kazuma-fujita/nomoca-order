@@ -1,8 +1,8 @@
 export const ScreenName = {
   SingleOrder: '注文',
-  AdminSingleOrder: '注文管理',
+  AdminsSingleOrder: '注文管理',
   SubscriptionOrder: '定期便申し込み',
-  AdminSubscriptionOrder: '定期便管理',
+  AdminsSubscriptionOrder: '定期便管理',
   Staff: '担当者管理',
   Product: '商品管理',
   Clinic: '施設情報編集',

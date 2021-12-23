@@ -52,10 +52,6 @@ export const useCreateSubscriptionOrder = () => {
   const { mutate } = useSWRConfig();
 
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
-  // const createSubscriptionOrder = async (
-  //   productRelations: ModelSubscriptionOrderProductConnection | null | undefined,
-  //   staffID: string,
-  // ) => {
   const createSubscriptionOrder = async (data: SubscriptionOrder) => {
     setIsLoading(true);
     try {

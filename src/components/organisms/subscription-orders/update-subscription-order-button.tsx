@@ -68,8 +68,8 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
         error={error}
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
-        useFormReturn={useFormReturn}
-        useFieldArrayReturn={useFieldArrayReturn}
+        formReturn={useFormReturn}
+        fieldArrayReturn={useFieldArrayReturn}
         // productList={productList}
         // staffList={staffList}
         staffID={props.staffID}

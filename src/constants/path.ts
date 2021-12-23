@@ -12,7 +12,9 @@
 export const Path = {
   Index: '/',
   SingleOrder: 'single-order',
+  AdminsSingleOrder: 'admins/single-order',
   SubscriptionOrder: 'subscription-order',
+  AdminsSubscriptionOrder: 'admins/subscription-order',
   Staff: 'staff',
   Product: 'product',
   Clinic: 'clinic',
