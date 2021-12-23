@@ -36,7 +36,6 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
 
   const cancelHandler = useCallback(() => {
     resetState();
-    // resetForm();
     toggle();
   }, [resetState, toggle]);
 
@@ -46,13 +45,10 @@ export const UpdateSubscriptionOrderButton = (props: Props) => {
       async (data: SubscriptionOrder) => {
         // productsデータ更新はproducts全件削除後、新規追加を行う。
         // その為、第2引数にはproductsを新規登録する為入力フォームの値、第3引数にはproductsを全件削除する為一覧画面からの渡されたpropsの値を設定
-        const error = await updateSubscriptionOrder(props.id, data.products, props.products, data.staffID);
-        if (!error) {
+        try {
+          await updateSubscriptionOrder(props.id, data.products, props.products, data);
           cancelHandler();
-          // resetForm();
-          // clearErrors();
-          // toggle();
-        }
+        } catch (error) {}
       },
       [cancelHandler, props.id, props.products, updateSubscriptionOrder],
     ),

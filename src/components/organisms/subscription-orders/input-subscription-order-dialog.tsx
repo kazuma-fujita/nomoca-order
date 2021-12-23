@@ -181,6 +181,7 @@ export const InputSubscriptionOrderDialog = (props: Props) => {
             />
           </Box>
           <Box mt={2} mb={2} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
+            <input type='hidden' name='deliveryStartYear' value={deliveryStartYear} />
             <Typography color='text.secondary'>{deliveryStartYear}&nbsp;/&nbsp;</Typography>
             <Controller
               name='deliveryStartMonth'

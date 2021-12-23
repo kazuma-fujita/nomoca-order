@@ -7,6 +7,7 @@ import {
   DeleteSubscriptionOrderProductMutation,
   DeleteSubscriptionOrderProductMutationVariables,
   ModelSubscriptionOrderProductConnection,
+  SubscriptionOrder,
   SubscriptionOrderProduct,
   UpdateSubscriptionOrderInput,
   UpdateSubscriptionOrderMutation,
@@ -74,7 +75,7 @@ export const useUpdateSubscriptionOrder = () => {
     updateSubscriptionOrderID: string,
     nextProductRelations: ModelSubscriptionOrderProductConnection | null | undefined,
     prevProductRelations: ModelSubscriptionOrderProductConnection | null | undefined,
-    staffID: string,
+    data: SubscriptionOrder,
   ) => {
     setIsLoading(true);
     try {
@@ -86,7 +87,13 @@ export const useUpdateSubscriptionOrder = () => {
       ) {
         throw Error('A relation object array is null.');
       }
-      const subscriptionOrder: UpdateSubscriptionOrderInput = { id: updateSubscriptionOrderID, staffID: staffID };
+      const subscriptionOrder: UpdateSubscriptionOrderInput = {
+        id: updateSubscriptionOrderID,
+        deliveryStartYear: data.deliveryStartYear,
+        deliveryStartMonth: data.deliveryStartMonth,
+        deliveryInterval: data.deliveryInterval,
+        staffID: data.staffID,
+      };
       const variables: UpdateSubscriptionOrderMutationVariables = { input: subscriptionOrder };
       // データ更新実行
       const result = (await API.graphql(
@@ -115,9 +122,9 @@ export const useUpdateSubscriptionOrder = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      setError(parseResponseError(error));
-      console.error('update error:', error);
-      return error;
+      const parsedError = parseResponseError(error);
+      setError(parsedError);
+      return parsedError;
     }
   };
 

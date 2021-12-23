@@ -19,6 +19,7 @@ import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ObjectType } from 'constants/object-type';
+import { SubscriptionOrder } from 'API';
 
 const createSubscriptionOrderProducts = async (
   productRelations: SubscriptionOrderProduct[],
@@ -51,16 +52,24 @@ export const useCreateSubscriptionOrder = () => {
   const { mutate } = useSWRConfig();
 
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
-  const createSubscriptionOrder = async (
-    productRelations: ModelSubscriptionOrderProductConnection | null | undefined,
-    staffID: string,
-  ) => {
+  // const createSubscriptionOrder = async (
+  //   productRelations: ModelSubscriptionOrderProductConnection | null | undefined,
+  //   staffID: string,
+  // ) => {
+  const createSubscriptionOrder = async (data: SubscriptionOrder) => {
     setIsLoading(true);
     try {
+      const productRelations = data.products;
       if (!productRelations || !productRelations.items) {
         throw Error('A relation object array is null.');
       }
-      const input: CreateSubscriptionOrderInput = { staffID: staffID, type: ObjectType.SubscriptionOrder };
+      const input: CreateSubscriptionOrderInput = {
+        type: ObjectType.SubscriptionOrder,
+        deliveryStartYear: data.deliveryStartYear,
+        deliveryStartMonth: data.deliveryStartMonth,
+        deliveryInterval: data.deliveryInterval,
+        staffID: data.staffID,
+      };
       const variables: CreateSubscriptionOrderMutationVariables = { input: input };
       const result = (await API.graphql(
         graphqlOperation(createSubscriptionOrderQuery, variables),
@@ -80,9 +89,9 @@ export const useCreateSubscriptionOrder = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      setError(parseResponseError(error));
-      console.error('create error:', error);
-      return error;
+      const parsedError = parseResponseError(error);
+      setError(parsedError);
+      throw parsedError;
     }
   };
 
@@ -93,70 +102,3 @@ export const useCreateSubscriptionOrder = () => {
 
   return { createSubscriptionOrder, isLoading, error, resetState };
 };
-
-// export const useCreateSubscriptionOrder = () => {
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [error, setError] = useState<Error | null>(null);
-//   const { mutate } = useSWRConfig();
-
-//   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
-//   const onCreateSubscriptionOrder =
-//     (productIDs: SubscriptionOrderProduct[], staffID: string) =>
-//     async (data: SubscriptionOrder[]) => {
-//       setIsLoading(true);
-//       try {
-//         const input: CreateSubscriptionOrderInput = { staffID: staffID };
-//         const variables: CreateSubscriptionOrderMutationVariables = { input: input };
-//         const result = (await API.graphql(
-//           graphqlOperation(createSubscriptionOrderQuery, variables)
-//         )) as GraphQLResult<CreateSubscriptionOrderMutation>;
-//         if (result.data && result.data.createSubscriptionOrder) {
-//           const newSubscriptionOrder = result.data.createSubscriptionOrder;
-//           const newSubscriptionOrderProducts = productIDs.map(async (item) => {
-//             const input: CreateSubscriptionOrderProductInput = {
-//               subscriptionOrderID: newSubscriptionOrder.id,
-//               productID: item.productID,
-//             };
-//             const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
-//             const result = (await API.graphql(
-//               graphqlOperation(createSubscriptionOrderProduct, variables)
-//             )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;
-//             if (result.data && result.data.createSubscriptionOrderProduct) {
-//               const newSubscriptionOrderProduct = result.data.createSubscriptionOrderProduct;
-//               return newSubscriptionOrderProduct;
-//             } else {
-//               return null;
-//             }
-//           });
-
-//           const connection = { products: { items: newSubscriptionOrderProducts } };
-//           const subscriptionOrder = { ...newSubscriptionOrder, connection };
-//           setIsLoading(false);
-//           setError(null);
-//           return [...data, newSubscriptionOrder];
-//           // return [...data, subscriptionOrder];
-//         } else {
-//           throw Error('The API created data but it returned null.');
-//         }
-//       } catch (error) {
-//         setIsLoading(false);
-//         setError(parseResponseError(error));
-//         console.error('create error:', error);
-//         return data;
-//       }
-//     };
-
-//   // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
-//   const createSubscriptionOrder = useCallback(
-//     async (productIDs: SubscriptionOrderProduct[], staffID: string) =>
-//       mutate(SWRKey.SubscriptionOrderList, onCreateSubscriptionOrder(productIDs, staffID), false),
-//     []
-//   );
-
-//   const resetState = useCallback(() => {
-//     setIsLoading(false);
-//     setError(null);
-//   }, []);
-
-//   return { createSubscriptionOrder, isLoading, error, resetState };
-// };

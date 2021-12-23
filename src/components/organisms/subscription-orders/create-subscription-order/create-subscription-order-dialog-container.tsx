@@ -33,11 +33,10 @@ export const CreateSubscriptionOrderDialogContainer = ({ on, toggle }: Props) =>
   const submitHandler = handleSubmit(
     useCallback(
       async (data: SubscriptionOrder) => {
-        // 関数内ではerrorの値がキャプチャされる為、ダイアログを閉じるエラーハンドリングは関数の戻り値を使用
-        const error = await createSubscriptionOrder(data.products, data.staffID);
-        if (!error) {
+        try {
+          await createSubscriptionOrder(data);
           cancelHandler();
-        }
+        } catch (error) {}
       },
       [cancelHandler, createSubscriptionOrder],
     ),
