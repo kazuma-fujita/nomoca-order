@@ -12,9 +12,9 @@ const MaxLength = 2;
 // 数字連番の配列を生成
 const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
-export const DeliveryMonthSelectBox = ({ control }: Props) => (
+export const SearchDeliveryMonthSelectBox = ({ control }: Props) => (
   <Controller
-    name='deliveryMonth'
+    name='searchDeliveryMonth'
     control={control}
     defaultValue={0}
     rules={{
@@ -31,8 +31,8 @@ export const DeliveryMonthSelectBox = ({ control }: Props) => (
         select
         // fullWidth
         label='発送月'
-        error={Boolean(errors.deliveryMonth)}
-        helperText={errors.deliveryMonth && errors.deliveryMonth.message}
+        error={Boolean(errors.searchDeliveryMonth)}
+        helperText={errors.searchDeliveryMonth && errors.searchDeliveryMonth.message}
         {...field}
       >
         <MenuItem key={0} value={0}>

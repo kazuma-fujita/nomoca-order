@@ -12,7 +12,7 @@ export const useSearchSubscriptionOrders = () => {
   const { mutate } = useSWRConfig();
   // この検索ロジックでは保存用の全件dataをcontextから取得、データ加工し画面表示用stateを更新。
   const onSearch =
-    (deliveryMonth: number) =>
+    (searchDeliveryMonth: number) =>
     async (data: SubscriptionOrder[]): Promise<SubscriptionOrder[]> => {
       setIsLoading(true);
       if (!allData) {
@@ -20,20 +20,20 @@ export const useSearchSubscriptionOrders = () => {
         setError(Error('All list data did not find.'));
         throw error;
       }
-      // deliveryMonth=0は全件検索の為、allDataを返却
-      if (deliveryMonth === 0) {
+      // searchDeliveryMonth=0は全件検索の為、allDataを返却
+      if (searchDeliveryMonth === 0) {
         setIsLoading(false);
         setError(null);
         return allData;
       }
-      if (deliveryMonth < minMonth || maxMonth < deliveryMonth) {
+      if (searchDeliveryMonth < minMonth || maxMonth < searchDeliveryMonth) {
         setIsLoading(false);
         setError(Error('The input values are out of range.'));
         throw error;
       }
       // 全件dataを発送月でフィルタリング
       const filteredData = allData.filter((item) =>
-        isFilterWithDeliveryMonth(deliveryMonth, item.deliveryStartMonth, item.deliveryInterval),
+        isFilterWithDeliveryMonth(searchDeliveryMonth, item.deliveryStartMonth, item.deliveryInterval),
       );
       setIsLoading(false);
       setError(null);
@@ -41,8 +41,8 @@ export const useSearchSubscriptionOrders = () => {
       return filteredData;
     };
 
-  const search = async (deliveryMonth: number) =>
-    mutate(SWRKey.AdminSubscriptionOrderList, onSearch(deliveryMonth), false);
+  const search = async (searchDeliveryMonth: number) =>
+    mutate(SWRKey.AdminSubscriptionOrderList, onSearch(searchDeliveryMonth), false);
 
   const resetState = useCallback(() => {
     setIsLoading(false);

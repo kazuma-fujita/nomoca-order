@@ -1,11 +1,15 @@
 import { generateDeliveryMonths } from './generate-delivery-months';
 
 export const generateNextDeliveryMonth = (
+  deliveryStartYear: number,
   deliveryStartMonth: number,
   deliveryInterval: number,
   nowYear: number,
   nowMonth: number,
 ): string => {
+  if (new Date(nowYear, nowMonth).getTime() <= new Date(deliveryStartYear, deliveryStartMonth).getTime()) {
+    return `${deliveryStartYear}/${deliveryStartMonth}月`;
+  }
   const months = generateDeliveryMonths(deliveryStartMonth, deliveryInterval);
   if (!months.length) {
     return '----/--';

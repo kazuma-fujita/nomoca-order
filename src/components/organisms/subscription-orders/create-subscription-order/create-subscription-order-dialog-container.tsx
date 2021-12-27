@@ -20,7 +20,8 @@ export const defaultValues = {
 };
 
 export const CreateSubscriptionOrderDialogContainer = ({ on, toggle }: Props) => {
-  const { now } = useNowDate();
+  // const { now } = useNowDate();
+  const now = new Date(2021, 0, 1);
   const nowYear = now.getFullYear();
   const nowMonth = now.getMonth() + 1;
   const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;

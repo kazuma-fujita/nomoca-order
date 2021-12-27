@@ -95,6 +95,7 @@ const Row = ({ item, now }: RowProps) => {
         <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>
         <StyledTableCell align='center'>
           {generateNextDeliveryMonth(
+            item.deliveryStartYear,
             item.deliveryStartMonth,
             item.deliveryInterval,
             now.getFullYear(),

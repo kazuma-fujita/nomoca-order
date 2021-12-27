@@ -5,7 +5,8 @@ import { SubscriptionOrderSearchForm } from './subscription-order-search-form';
 import { useSearchSubscriptionOrders } from 'hooks/admins/subscription-orders/use-search-subscription-orders';
 
 export type FormParams = {
-  deliveryMonth: number;
+  searchDeliveryYear: number;
+  searchDeliveryMonth: number;
 };
 
 export const SubscriptionOrderSearchFormContainer = () => {
@@ -16,7 +17,7 @@ export const SubscriptionOrderSearchFormContainer = () => {
     useCallback(
       async (data: FormParams) => {
         try {
-          await search(data.deliveryMonth);
+          await search(data.searchDeliveryMonth);
           resetState();
         } catch (error) {}
       },

@@ -12,7 +12,7 @@ const AdminSubscriptionOrderPage = () => {
   return (
     <>
       <Head>
-        <title>{ScreenName.AdminSubscriptionOrder + TitleSuffix}</title>
+        <title>{ScreenName.AdminsSubscriptionOrder + TitleSuffix}</title>
       </Head>
       <NowDateContextProvider now={new Date()}>
         <Main>
