@@ -85,7 +85,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Search Form/
           className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary MuiFormLabel-filled css-1kty9di-MuiFormLabel-root-MuiInputLabel-root"
           data-shrink={true}
         >
-          発送月
+          配送月
         </label>
         <div
           className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiSelect-root css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
@@ -137,7 +137,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Search Form/
               className="css-186xcr5"
             >
               <span>
-                発送月
+                配送月
               </span>
             </legend>
           </fieldset>
@@ -206,7 +206,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Search Form/
           className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary MuiFormLabel-filled css-1kty9di-MuiFormLabel-root-MuiInputLabel-root"
           data-shrink={true}
         >
-          発送月
+          配送月
         </label>
         <div
           className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiSelect-root css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
@@ -258,7 +258,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Search Form/
               className="css-186xcr5"
             >
               <span>
-                発送月
+                配送月
               </span>
             </legend>
           </fieldset>
@@ -358,7 +358,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Search Form/
           className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary MuiFormLabel-filled css-1kty9di-MuiFormLabel-root-MuiInputLabel-root"
           data-shrink={true}
         >
-          発送月
+          配送月
         </label>
         <div
           className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiSelect-root css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
@@ -410,7 +410,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Search Form/
               className="css-186xcr5"
             >
               <span>
-                発送月
+                配送月
               </span>
             </legend>
           </fieldset>
@@ -513,7 +513,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Subscription
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            
+
           </p>
         </th>
         <th
@@ -1911,7 +1911,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Subscription
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            
+
           </p>
         </th>
         <th
@@ -2079,7 +2079,7 @@ exports[`Storyshots Components/Organisms/Admins/Subscription Orders/Subscription
           <p
             className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
           >
-            
+
           </p>
         </th>
         <th
@@ -5343,7 +5343,7 @@ exports[`Storyshots Components/Templates/Admins/Subscription Orders/Subscription
                 className="MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-root MuiFormLabel-colorPrimary MuiFormLabel-filled css-1kty9di-MuiFormLabel-root-MuiInputLabel-root"
                 data-shrink={true}
               >
-                発送月
+                配送月
               </label>
               <div
                 className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl MuiSelect-root css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
@@ -5395,7 +5395,7 @@ exports[`Storyshots Components/Templates/Admins/Subscription Orders/Subscription
                     className="css-186xcr5"
                   >
                     <span>
-                      発送月
+                      配送月
                     </span>
                   </legend>
                 </fieldset>
@@ -5471,7 +5471,7 @@ exports[`Storyshots Components/Templates/Admins/Subscription Orders/Subscription
               <p
                 className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
               >
-                
+
               </p>
             </th>
             <th
@@ -7452,7 +7452,7 @@ exports[`Storyshots Components/Templates/Subscription Orders/Subscription Order 
                 <p
                   className="MuiTypography-root MuiTypography-body2 css-1d3njat-MuiTypography-root"
                 >
-                  
+
                 </p>
               </th>
               <th

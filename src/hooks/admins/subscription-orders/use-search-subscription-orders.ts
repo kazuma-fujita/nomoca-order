@@ -15,6 +15,7 @@ export const useSearchSubscriptionOrders = () => {
     (searchDeliveryYear: number, searchDeliveryMonth: number, nowYear: number, nowMonth: number) =>
     async (data: SubscriptionOrder[]): Promise<SubscriptionOrder[]> => {
       setIsLoading(true);
+
       if (!allData) {
         setIsLoading(false);
         setError(Error('All list data did not find.'));
@@ -31,7 +32,7 @@ export const useSearchSubscriptionOrders = () => {
         setError(Error('The input values are out of range.'));
         throw error;
       }
-      // 全件dataを発送月でフィルタリング
+      // 全件dataを配送月でフィルタリング
       const filteredData = allData.filter((item) =>
         isFilterWithDeliveryMonth(
           searchDeliveryYear,

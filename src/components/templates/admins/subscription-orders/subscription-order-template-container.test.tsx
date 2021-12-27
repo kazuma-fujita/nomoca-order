@@ -9,7 +9,7 @@ import { SubscriptionOrderTemplateContainer } from './subscription-order-templat
 
 const expectTemplateElements = async () => {
   screen.getByRole('table');
-  screen.getAllByText('発送月');
+  screen.getAllByText('配送月');
   screen.getByRole('button', { name: '全件' });
   screen.getByRole('button', { name: '検索する' });
   await waitForElementToBeRemoved(() => screen.getByLabelText('Now loading'));

@@ -18,19 +18,19 @@ export const SearchDeliveryMonthSelectBox = ({ control }: Props) => (
     control={control}
     defaultValue={0}
     rules={{
-      required: '発送月を選択してください',
+      required: '配送月を選択してください',
       pattern: {
         value: /^[0-9]+$/i,
-        message: '発送月は半角数字で入力してください',
+        message: '配送月は半角数字で入力してください',
       },
-      minLength: { value: MinLength, message: `発送月は${MinLength}桁で入力してください` },
-      maxLength: { value: MaxLength, message: `発送月は${MaxLength}桁で入力してください` },
+      minLength: { value: MinLength, message: `配送月は${MinLength}桁で入力してください` },
+      maxLength: { value: MaxLength, message: `配送月は${MaxLength}桁で入力してください` },
     }}
     render={({ field, formState: { errors } }) => (
       <TextField
         select
         // fullWidth
-        label='発送月'
+        label='配送月'
         error={Boolean(errors.searchDeliveryMonth)}
         helperText={errors.searchDeliveryMonth && errors.searchDeliveryMonth.message}
         {...field}

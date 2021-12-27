@@ -50,7 +50,10 @@ export const useFetchSubscriptionOrderList = (): FetchResponse<SubscriptionOrder
   useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
 
 export const AdminSubscriptionOrderListContextProvider: React.FC = ({ children }) => {
-  const fetchResponse = useFetch<SubscriptionOrder[]>(SWRKey.AdminSubscriptionOrderList, fetcher);
+  // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
+  const fetchResponse = useFetch<SubscriptionOrder[]>(SWRKey.AdminSubscriptionOrderList, fetcher, {
+    revalidateOnFocus: false,
+  });
   const { data } = fetchResponse;
   // メモリ上に全件データ保存するstate生成
   const { data: allData, mutate } = useFetch<SubscriptionOrder[]>(SWRKey.AdminAllSubscriptionOrderList, null);

@@ -19,19 +19,19 @@ export const SearchDeliveryYearSelectBox = ({ control, now }: Props) => {
       control={control}
       defaultValue={nowYear}
       rules={{
-        required: '発送年を選択してください',
+        required: '配送年を選択してください',
         pattern: {
           value: /^[0-9]+$/i,
-          message: '発送年は半角数字で入力してください',
+          message: '配送年は半角数字で入力してください',
         },
-        minLength: { value: MaxLength, message: `発送年は${MaxLength}桁で入力してください` },
-        maxLength: { value: MaxLength, message: `発送年は${MaxLength}桁で入力してください` },
+        minLength: { value: MaxLength, message: `配送年は${MaxLength}桁で入力してください` },
+        maxLength: { value: MaxLength, message: `配送年は${MaxLength}桁で入力してください` },
       }}
       render={({ field, formState: { errors } }) => (
         <TextField
           select
           // fullWidth
-          label='発送年'
+          label='配送年'
           error={Boolean(errors.searchDeliveryYear)}
           helperText={errors.searchDeliveryYear && errors.searchDeliveryYear.message}
           {...field}
