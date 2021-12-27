@@ -12,7 +12,7 @@ import { CommonTableContainer } from 'components/molecules/common-table-containe
 import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription-orders/delete-subscription-order-button';
 import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
-import { generateNextDeliveryMonth } from 'functions/delivery-dates/generate-next-delivery-months';
+import { generateFormattedNextDeliveryYearMonth } from 'functions/delivery-dates/generate-next-delivery-year-month';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
 import { useToggle } from 'react-use';
@@ -94,7 +94,7 @@ const Row = ({ item, now }: RowProps) => {
         <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
         <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>
         <StyledTableCell align='center'>
-          {generateNextDeliveryMonth(
+          {generateFormattedNextDeliveryYearMonth(
             item.deliveryStartYear,
             item.deliveryStartMonth,
             item.deliveryInterval,

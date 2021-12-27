@@ -18,7 +18,10 @@ import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
 import { useToggle } from 'react-use';
 import { TableHeader } from 'types/table-header';
-import { generateNextDeliveryMonth } from 'functions/delivery-dates/generate-next-delivery-months';
+import {
+  generateFormattedNextDeliveryYearMonth,
+  generateNextDeliveryYearMonth,
+} from 'functions/delivery-dates/generate-next-delivery-year-month';
 import { useNowDate } from 'stores/use-now-date';
 
 const header: TableHeader[] = [
@@ -98,7 +101,7 @@ const Row = ({ item, now }: RowProps) => {
         <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
         <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>
         <StyledTableCell align='center'>
-          {generateNextDeliveryMonth(
+          {generateFormattedNextDeliveryYearMonth(
             item.deliveryStartYear,
             item.deliveryStartMonth,
             item.deliveryInterval,
