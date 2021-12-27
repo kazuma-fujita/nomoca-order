@@ -12,7 +12,7 @@ export const useSearchSubscriptionOrders = () => {
   const { mutate } = useSWRConfig();
   // この検索ロジックでは保存用の全件dataをcontextから取得、データ加工し画面表示用stateを更新。
   const onSearch =
-    (searchDeliveryMonth: number) =>
+    (searchDeliveryYear: number, searchDeliveryMonth: number, nowYear: number, nowMonth: number) =>
     async (data: SubscriptionOrder[]): Promise<SubscriptionOrder[]> => {
       setIsLoading(true);
       if (!allData) {
@@ -33,7 +33,15 @@ export const useSearchSubscriptionOrders = () => {
       }
       // 全件dataを発送月でフィルタリング
       const filteredData = allData.filter((item) =>
-        isFilterWithDeliveryMonth(searchDeliveryMonth, item.deliveryStartMonth, item.deliveryInterval),
+        isFilterWithDeliveryMonth(
+          searchDeliveryYear,
+          searchDeliveryMonth,
+          item.deliveryStartYear,
+          item.deliveryStartMonth,
+          item.deliveryInterval,
+          nowYear,
+          nowMonth,
+        ),
       );
       setIsLoading(false);
       setError(null);
@@ -41,8 +49,12 @@ export const useSearchSubscriptionOrders = () => {
       return filteredData;
     };
 
-  const search = async (searchDeliveryMonth: number) =>
-    mutate(SWRKey.AdminSubscriptionOrderList, onSearch(searchDeliveryMonth), false);
+  const search = async (searchDeliveryYear: number, searchDeliveryMonth: number, nowYear: number, nowMonth: number) =>
+    mutate(
+      SWRKey.AdminSubscriptionOrderList,
+      onSearch(searchDeliveryYear, searchDeliveryMonth, nowYear, nowMonth),
+      false,
+    );
 
   const resetState = useCallback(() => {
     setIsLoading(false);

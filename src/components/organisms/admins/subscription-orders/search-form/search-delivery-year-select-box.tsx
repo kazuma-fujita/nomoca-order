@@ -17,7 +17,7 @@ export const SearchDeliveryYearSelectBox = ({ control, now }: Props) => {
     <Controller
       name='searchDeliveryYear'
       control={control}
-      defaultValue={0}
+      defaultValue={nowYear}
       rules={{
         required: '発送年を選択してください',
         pattern: {
