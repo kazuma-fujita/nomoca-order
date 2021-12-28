@@ -84,7 +84,7 @@ describe('SubscriptionOrderTemplateContainer', () => {
       await act(async () => {
         userEvent.click(screen.getByRole('button', { name: '検索する' }));
         // It waits for appearing the order list after searching it with a delivery month.
-        await wait(100);
+        // await wait(100);
       });
       expect(screen.getAllByRole('row')).toHaveLength(3);
       screen.getByRole('cell', { name: '1ヶ月' });

@@ -5,7 +5,7 @@ import Form from 'components/atoms/form';
 import { BaseSyntheticEvent } from 'react';
 import { Control } from 'react-hook-form';
 import { SearchDeliveryMonthSelectBox } from './search-delivery-month-select-box';
-import { FormParams } from './subscription-order-search-form-container';
+import { SubscriptionOrderSearchParams } from './subscription-order-search-form-container';
 import { SearchDeliveryYearSelectBox } from './search-delivery-year-select-box';
 import { useNowDate } from 'stores/use-now-date';
 
@@ -13,7 +13,7 @@ export type Props = {
   isLoading: boolean;
   error: Error | null;
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
-  control: Control<FormParams, object>;
+  control: Control<SubscriptionOrderSearchParams, object>;
 };
 
 export const SubscriptionOrderSearchForm = ({ isLoading, error, submitHandler, control }: Props) => {

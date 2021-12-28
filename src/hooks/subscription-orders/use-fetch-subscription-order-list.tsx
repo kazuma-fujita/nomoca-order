@@ -12,14 +12,6 @@ import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 
-export type AdminSubscriptionOrderResponse = FetchResponse<SubscriptionOrder[]> & {
-  allData: SubscriptionOrder[] | null;
-};
-
-const AdminSubscriptionOrderListContext = createContext({} as AdminSubscriptionOrderResponse);
-
-export const useAdminSubscriptionOrderList = () => useContext(AdminSubscriptionOrderListContext);
-
 const fetcher = async (): Promise<SubscriptionOrder[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
   const sortVariables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
@@ -48,6 +40,14 @@ const fetcher = async (): Promise<SubscriptionOrder[]> => {
 
 export const useFetchSubscriptionOrderList = (): FetchResponse<SubscriptionOrder[]> =>
   useFetch<SubscriptionOrder[]>(SWRKey.SubscriptionOrderList, fetcher);
+
+export type AdminSubscriptionOrderResponse = FetchResponse<SubscriptionOrder[]> & {
+  allData: SubscriptionOrder[] | null;
+};
+
+const AdminSubscriptionOrderListContext = createContext({} as AdminSubscriptionOrderResponse);
+
+export const useAdminSubscriptionOrderList = () => useContext(AdminSubscriptionOrderListContext);
 
 export const AdminSubscriptionOrderListContextProvider: React.FC = ({ children }) => {
   // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する

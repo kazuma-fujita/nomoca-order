@@ -1,9 +1,9 @@
 import { MenuItem, TextField } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
-import { FormParams } from './subscription-order-search-form-container';
+import { SubscriptionOrderSearchParams } from './subscription-order-search-form-container';
 
 type Props = {
-  control: Control<FormParams, object>;
+  control: Control<SubscriptionOrderSearchParams, object>;
   now: Date;
 };
 

@@ -1,11 +1,11 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { useForm } from 'react-hook-form';
 import { Props, SubscriptionOrderSearchForm } from './subscription-order-search-form';
-import { FormParams } from './subscription-order-search-form-container';
+import { SubscriptionOrderSearchParams } from './subscription-order-search-form-container';
 
 const Wrapper: React.FC<Props> = (props) => {
-  const { handleSubmit, control } = useForm<FormParams>();
-  const submitHandler = handleSubmit((data: FormParams) => console.log(data));
+  const { handleSubmit, control } = useForm<SubscriptionOrderSearchParams>();
+  const submitHandler = handleSubmit((data: SubscriptionOrderSearchParams) => console.log(data));
   return (
     <SubscriptionOrderSearchForm
       isLoading={props.isLoading}
