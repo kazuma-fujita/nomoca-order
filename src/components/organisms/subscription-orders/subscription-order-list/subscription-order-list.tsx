@@ -18,6 +18,7 @@ import React from 'react';
 import { useToggle } from 'react-use';
 import { useNowDate } from 'stores/use-now-date';
 import { TableHeader } from 'types/table-header';
+import { useCallback } from 'react';
 
 const header: TableHeader[] = [
   {
@@ -82,6 +83,17 @@ type RowProps = {
 
 const Row = ({ item, now }: RowProps) => {
   const [on, toggle] = useToggle(false);
+  const formattedNextDeliveryDate = useCallback(
+    () =>
+      generateFormattedNextDeliveryYearMonth(
+        item.deliveryStartYear,
+        item.deliveryStartMonth,
+        item.deliveryInterval,
+        now.getFullYear(),
+        now.getMonth() + 1,
+      ),
+    [item.deliveryInterval, item.deliveryStartMonth, item.deliveryStartYear, now],
+  );
   return (
     <React.Fragment key={item.id}>
       <TableRow>
@@ -93,15 +105,7 @@ const Row = ({ item, now }: RowProps) => {
         <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
         <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
         <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>
-        <StyledTableCell align='center'>
-          {generateFormattedNextDeliveryYearMonth(
-            item.deliveryStartYear,
-            item.deliveryStartMonth,
-            item.deliveryInterval,
-            now.getFullYear(),
-            now.getMonth() + 1,
-          )}
-        </StyledTableCell>
+        <StyledTableCell align='center'>{formattedNextDeliveryDate}</StyledTableCell>
         <StyledTableCell align='center'>{formatDateHourMinute(item.createdAt)}</StyledTableCell>
         <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
         {item.products && (
