@@ -1,68 +1,111 @@
 import { isFilterWithDeliveryMonth } from './is-filter-with-delivery-month';
 
 describe('isFilterWithDeliveryMonth', () => {
-  test('deliveryMonth = 1, deliveryStartMonth = 1, deliveryInterval = 1', () => {
-    const result = isFilterWithDeliveryMonth(1, 1, 1);
-    expect(result).toBeTruthy();
+  describe('A delivery date is same a current date.', () => {
+    test('searchStartYear = 2023, searchStartMonth = 1, deliveryStartYear = 2023, deliveryStartMonth = 1, deliveryInterval = 1, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 1, 2023, 1, 1, 2023, 1);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 6, deliveryStartYear = 2023, deliveryStartMonth = 6, deliveryInterval = 6, nowYear = 2023, nowMonth = 6', () => {
+      const result = isFilterWithDeliveryMonth(2023, 6, 2023, 6, 6, 2023, 6);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 12, deliveryStartYear = 2023, deliveryStartMonth = 12, deliveryInterval = 12, nowYear = 2023, nowMonth = 12', () => {
+      const result = isFilterWithDeliveryMonth(2023, 12, 2023, 12, 12, 2023, 12);
+      expect(result).toBeTruthy();
+    });
   });
 
-  test('deliveryMonth = 12, deliveryStartMonth = 12, deliveryInterval = 12', () => {
-    const result = isFilterWithDeliveryMonth(12, 12, 12);
-    expect(result).toBeTruthy();
+  describe('A delivery date is bigger than a current date.', () => {
+    test('searchStartYear = 2023, searchStartMonth = 1, deliveryStartYear = 2023, deliveryStartMonth = 1, deliveryInterval = 1, nowYear = 2022, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 1, 2023, 1, 1, 2022, 1);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 3, deliveryStartYear = 2023, deliveryStartMonth = 3, deliveryInterval = 3, nowYear = 2022, nowMonth = 12', () => {
+      const result = isFilterWithDeliveryMonth(2023, 3, 2023, 3, 3, 2022, 12);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 6, deliveryStartYear = 2023, deliveryStartMonth = 6, deliveryInterval = 6, nowYear = 2023, nowMonth = 5', () => {
+      const result = isFilterWithDeliveryMonth(2023, 6, 2023, 6, 6, 2023, 5);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 12, deliveryStartYear = 2023, deliveryStartMonth = 12, deliveryInterval = 12, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 12, 2023, 12, 12, 2023, 1);
+      expect(result).toBeTruthy();
+    });
   });
 
-  test('deliveryMonth = 6, deliveryStartMonth = 6, deliveryInterval = 6', () => {
-    const result = isFilterWithDeliveryMonth(6, 6, 6);
-    expect(result).toBeTruthy();
+  describe('A current date is bigger than a delivery start date.', () => {
+    test('searchStartYear = 2023, searchStartMonth = 1, deliveryStartYear = 2022, deliveryStartMonth = 1, deliveryInterval = 1, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 1, 2022, 1, 1, 2023, 1);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 12, deliveryStartYear = 2022, deliveryStartMonth = 12, deliveryInterval = 12, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 12, 2022, 12, 12, 2023, 1);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 6, deliveryStartYear = 2022, deliveryStartMonth = 6, deliveryInterval = 6, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 6, 2022, 6, 6, 2023, 1);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 6, deliveryStartYear = 2022, deliveryStartMonth = 3, deliveryInterval = 3, nowYear = 2023, nowMonth = 4', () => {
+      const result = isFilterWithDeliveryMonth(2023, 6, 2022, 3, 3, 2023, 4);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 1, deliveryStartYear = 2022, deliveryStartMonth = 12, deliveryInterval = 1, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 1, 2022, 12, 1, 2023, 1);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 2, deliveryStartYear = 2022, deliveryStartMonth = 12, deliveryInterval = 2, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 2, 2022, 12, 2, 2023, 1);
+      expect(result).toBeTruthy();
+    });
+
+    test('searchStartYear = 2023, searchStartMonth = 3, deliveryStartYear = 2022, deliveryStartMonth = 12, deliveryInterval = 3, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 3, 2022, 12, 3, 2023, 1);
+      expect(result).toBeTruthy();
+    });
   });
 
-  test('deliveryMonth = 6, deliveryStartMonth = 3, deliveryInterval = 3', () => {
-    const result = isFilterWithDeliveryMonth(6, 3, 3);
-    expect(result).toBeTruthy();
-  });
+  describe('It inputs an out of range date.', () => {
+    test('searchStartYear = 2023, searchStartMonth = 13, deliveryStartYear = 2022, deliveryStartMonth = 12, deliveryInterval = 3, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 13, 2022, 12, 3, 2023, 1);
+      expect(result).toBeFalsy();
+    });
 
-  test('deliveryMonth = 1, deliveryStartMonth = 12, deliveryInterval = 1', () => {
-    const result = isFilterWithDeliveryMonth(1, 12, 1);
-    expect(result).toBeTruthy();
-  });
+    test('searchStartYear = 2023, searchStartMonth = 3, deliveryStartYear = 2022, deliveryStartMonth = 13, deliveryInterval = 3, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 3, 2022, 13, 3, 2023, 1);
+      expect(result).toBeFalsy();
+    });
 
-  test('deliveryMonth = 2, deliveryStartMonth = 12, deliveryInterval = 2', () => {
-    const result = isFilterWithDeliveryMonth(2, 12, 2);
-    expect(result).toBeTruthy();
-  });
+    test('searchStartYear = 2023, searchStartMonth = 3, deliveryStartYear = 2022, deliveryStartMonth = 12, deliveryInterval = 13, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 3, 2022, 12, 13, 2023, 1);
+      expect(result).toBeFalsy();
+    });
 
-  test('deliveryMonth = 3, deliveryStartMonth = 12, deliveryInterval = 3', () => {
-    const result = isFilterWithDeliveryMonth(3, 12, 3);
-    expect(result).toBeTruthy();
-  });
+    test('searchStartYear = 2023, searchStartMonth = 0, deliveryStartYear = 2022, deliveryStartMonth = 12, deliveryInterval = 3, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 0, 2022, 12, 3, 2023, 1);
+      expect(result).toBeFalsy();
+    });
 
-  test('deliveryMonth = 13, deliveryStartMonth = 1, deliveryInterval = 1', () => {
-    const result = isFilterWithDeliveryMonth(13, 1, 1);
-    expect(result).toBeFalsy();
-  });
+    test('searchStartYear = 2023, searchStartMonth = 3, deliveryStartYear = 2022, deliveryStartMonth = 0, deliveryInterval = 3, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 3, 2022, 0, 3, 2023, 1);
+      expect(result).toBeFalsy();
+    });
 
-  test('deliveryMonth = 1, deliveryStartMonth = 13, deliveryInterval = 1', () => {
-    const result = isFilterWithDeliveryMonth(1, 13, 1);
-    expect(result).toBeFalsy();
-  });
-
-  test('deliveryMonth = 1, deliveryStartMonth = 1, deliveryInterval = 13', () => {
-    const result = isFilterWithDeliveryMonth(1, 1, 13);
-    expect(result).toBeFalsy();
-  });
-
-  test('deliveryMonth = 0, deliveryStartMonth = 1, deliveryInterval = 1', () => {
-    const result = isFilterWithDeliveryMonth(0, 1, 1);
-    expect(result).toBeFalsy();
-  });
-
-  test('deliveryMonth = 1, deliveryStartMonth = 0, deliveryInterval = 1', () => {
-    const result = isFilterWithDeliveryMonth(1, 0, 1);
-    expect(result).toBeFalsy();
-  });
-
-  test('deliveryMonth = 1, deliveryStartMonth = 1, deliveryInterval = 0', () => {
-    const result = isFilterWithDeliveryMonth(1, 1, 0);
-    expect(result).toBeFalsy();
+    test('searchStartYear = 2023, searchStartMonth = 3, deliveryStartYear = 2022, deliveryStartMonth = 12, deliveryInterval = 0, nowYear = 2023, nowMonth = 1', () => {
+      const result = isFilterWithDeliveryMonth(2023, 3, 2022, 12, 0, 2023, 1);
+      expect(result).toBeFalsy();
+    });
   });
 });

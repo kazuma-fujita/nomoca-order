@@ -59,16 +59,16 @@ describe('generateFormattedNextDeliveryYearMonth', () => {
   });
 
   describe('A current date is bigger than a delivery start date.', () => {
-    test('startYear = 2021, startMonth = 1, interval = 1, nowYear = 2021, nowMonth = 1', () => {
-      const startYear = 2021;
-      const startMonth = 1;
-      const interval = 1;
-      const nowYear = 2021;
-      const nowMonth = 1;
-      // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      const results = generateFormattedNextDeliveryYearMonth(startYear, startMonth, interval, nowYear, nowMonth);
-      expect(results).toEqual('2021/1月');
-    });
+    // test('startYear = 2021, startMonth = 1, interval = 1, nowYear = 2021, nowMonth = 1', () => {
+    //   const startYear = 2021;
+    //   const startMonth = 1;
+    //   const interval = 1;
+    //   const nowYear = 2021;
+    //   const nowMonth = 1;
+    //   // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    //   const results = generateFormattedNextDeliveryYearMonth(startYear, startMonth, interval, nowYear, nowMonth);
+    //   expect(results).toEqual('2021/1月');
+    // });
 
     test('startYear = 2021, startMonth = 1, interval = 1, nowYear = 2021, nowMonth = 6', () => {
       const startYear = 2021;
