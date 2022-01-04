@@ -23,7 +23,7 @@ import {
   generateNextDeliveryYearMonth,
 } from 'functions/delivery-dates/generate-next-delivery-year-month';
 import { useNowDate } from 'stores/use-now-date';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 const header: TableHeader[] = [
   {
@@ -88,7 +88,7 @@ type RowProps = {
 
 const Row = ({ item, now }: RowProps) => {
   const [on, toggle] = useToggle(false);
-  const formattedNextDeliveryDate = useCallback(
+  const formattedNextDeliveryDate = useMemo(
     () =>
       generateFormattedNextDeliveryYearMonth(
         item.deliveryStartYear,

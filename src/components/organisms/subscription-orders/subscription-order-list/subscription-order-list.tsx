@@ -18,7 +18,7 @@ import React from 'react';
 import { useToggle } from 'react-use';
 import { useNowDate } from 'stores/use-now-date';
 import { TableHeader } from 'types/table-header';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 const header: TableHeader[] = [
   {
@@ -83,7 +83,7 @@ type RowProps = {
 
 const Row = ({ item, now }: RowProps) => {
   const [on, toggle] = useToggle(false);
-  const formattedNextDeliveryDate = useCallback(
+  const formattedNextDeliveryDate = useMemo(
     () =>
       generateFormattedNextDeliveryYearMonth(
         item.deliveryStartYear,
