@@ -39,7 +39,7 @@ const expectAllList = () => {
   screen.getByRole('cell', { name: '2022/12月' });
 };
 
-describe('SubscriptionOrderTemplateContainer', () => {
+describe.skip('SubscriptionOrderTemplateContainer', () => {
   const spy = jest.spyOn(API, 'graphql');
 
   afterEach(() => {
