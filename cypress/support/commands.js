@@ -23,3 +23,19 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', (username, password) => {
+  cy.visit('/');
+  cy.get(selectors.usernameInput).type(username);
+  cy.get(selectors.signInPasswordInput).type(password, { force: true });
+  cy.get(selectors.signInSignInButton).contains('ログイン').click();
+  // cy.wait(1000);
+  return cy;
+});
+
+const selectors = {
+  usernameInput: '[data-test="sign-in-username-input"]',
+  signInPasswordInput: '[data-test="sign-in-password-input"]',
+  signInSignInButton: '[data-test="sign-in-sign-in-button"]',
+  root: '#root',
+};
