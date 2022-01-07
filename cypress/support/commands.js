@@ -29,7 +29,6 @@ Cypress.Commands.add('login', (username, password) => {
   cy.get(selectors.usernameInput).type(username);
   cy.get(selectors.signInPasswordInput).type(password, { force: true });
   cy.get(selectors.signInSignInButton).contains('ログイン').click();
-  // cy.wait(1000);
   return cy;
 });
 
@@ -37,5 +36,11 @@ const selectors = {
   usernameInput: '[data-test="sign-in-username-input"]',
   signInPasswordInput: '[data-test="sign-in-password-input"]',
   signInSignInButton: '[data-test="sign-in-sign-in-button"]',
-  root: '#root',
 };
+
+Cypress.Commands.add('mockQuery', (operationName, fixture) => {
+  cy.intercept('POST', 'http://192.168.1.15:20002/graphql', (req) => {
+    req.alias = operationName;
+    req.reply(fixture);
+  });
+});
