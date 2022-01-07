@@ -33,7 +33,7 @@ yarn-error.log*
 # vercel
 .vercel
 
-#amplify-do-not-edit-begin
+# amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
 amplify/logs
@@ -53,4 +53,26 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 **.sample
-#amplify-do-not-edit-end
+# amplify-do-not-edit-end
+
+# Cypress
+node_modules
+.tmp
+.sass-cache
+.DS_Store
+npm-debug.log
+tmp
+.projects
+*.orig
+
+screenshots
+videos
+out.js
+examples/*/cypress/logs
+examples/*/cypress/downloads
+snapshots.js
+.nyc_output
+coverage
+dist
+test-data.json
+examples/stubbing-spying__intercept/users5.json
