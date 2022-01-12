@@ -1,36 +1,17 @@
-import { mount, unmount } from '@cypress/react';
-import Amplify from 'aws-amplify';
-import awsconfig from 'aws-exports';
 import { subscriptionOrderItems } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
-import { SubscriptionOrderTemplateContainer } from 'components/templates/admins/subscription-orders/subscription-order-template-container';
-import { NowDateContextProvider } from 'stores/use-now-date';
-import AdminSubscriptionOrderPage from '../../../src/pages/admins/subscription-order';
 
-context.skip('SubscriptionOrderTemplateContainer', () => {
+context('SubscriptionOrder', () => {
   before(() => {
-    // cy.fixture('operation-user.json').then((loginInfo) => {
-    //   cy.login(loginInfo.username, loginInfo.password);
-    // });
-
-    // Cognito認証でAppSyncを実行するとNo current user errorが発生する為、API_KEY認証に切り替え
-    Amplify.configure({ ...awsconfig, aws_appsync_authenticationType: 'API_KEY' });
-    const data = {
-      data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderItems } },
-    };
-    cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
-    mount(<AdminSubscriptionOrderPage />);
-    // mount(
-    //   <NowDateContextProvider now={new Date()}>
-    //     <SubscriptionOrderTemplateContainer />
-    //   </NowDateContextProvider>,
-    // );
+    cy.fixture('operation-user.json').then((loginInfo) => {
+      cy.login(loginInfo.username, loginInfo.password);
+    });
   });
 
-  const expectTemplateElements = async (now: Date) => {
-    cy.url().should('include', '/admins/subscription-order');
+  const expectTemplateElements = async () => {
     cy.findByRole('button', { name: '検索する' }).should('be.visible');
     cy.findByRole('button', { name: '全件' }).should('be.visible');
     cy.findByRole('button', { name: '2023年' }).should('be.visible');
+    cy.url().should('include', '/admins/subscription-order');
     expectAllRows();
   };
 
@@ -56,26 +37,20 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
 
   const reRenderAllRows = (selectedMonth: string) => {
     // post-processing
-    cy.findByRole('button', { name: selectedMonth }).click();
+    cy.findByRole('button', { name: selectedMonth }).click({ force: true });
     cy.findByRole('option', { name: '全件' }).click();
-    cy.findByRole('button', { name: '検索する' }).click();
+    cy.findByRole('button', { name: '検索する' }).click({ force: true });
     expectAllRows();
   };
 
-  // const mockQuery = () => {
-  //   const data = {
-  //     data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderItems } },
-  //   };
-  //   cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
-  // };
-
   describe('It searches a subscription order item', () => {
-    // beforeEach(() => {
-    //   const data = {
-    //     data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderItems } },
-    //   };
-    //   cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
-    // });
+    before(() => {
+      const data = {
+        data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderItems } },
+      };
+      cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
+    });
+
     /*
 			テストデータ構造
 			配送開始月:配送頻度=[開始月x配送頻度]
@@ -93,13 +68,13 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
 			12月:12ヶ月=[12]
 		*/
     it('with delivery month of January.', () => {
-      // mockQuery();
-      // Current date is 2023/1.
       cy.clock(new Date(2023, 0));
-      expectTemplateElements(new Date(2023, 0));
+      cy.get('header').contains('定期便管理').should('be.visible');
+      expectTemplateElements();
       cy.findByRole('button', { name: '全件' }).click();
       cy.findByRole('option', { name: '1月' }).click();
-      cy.findByRole('button', { name: '検索する' }).click();
+      cy.findByRole('button', { name: '検索する' }).click({ force: true });
+      // cy.get('button').contains('検索する').click({ force: true });
       cy.findAllByRole('row').should('have.length', 3);
       cy.findByRole('cell', { name: '1ヶ月' });
       // delivery start month
@@ -111,16 +86,17 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
     });
 
     it('with delivery month of February.', async () => {
-      // mockQuery();
       // Current date is 2023/2.
-      expectTemplateElements(new Date(2023, 1));
-      cy.findByRole('button', { name: '全件' }).click();
+      cy.clock(new Date(2023, 1));
+      expectTemplateElements();
+      cy.findByRole('button', { name: '全件' }).click({ force: true });
       cy.findByRole('option', { name: '2月' }).click();
-      cy.findByRole('button', { name: '検索する' }).click();
+      cy.findByRole('button', { name: '検索する' }).click({ force: true });
       cy.findAllByRole('row').should('have.length', 7);
       cy.findByRole('cell', { name: '1ヶ月' });
       cy.findByRole('cell', { name: '2ヶ月' });
       cy.findByRole('cell', { name: '7ヶ月' });
+      // delivery start month
       cy.findByRole('cell', { name: '2022/1月' });
       cy.findByRole('cell', { name: '2022/2月' });
       cy.findByRole('cell', { name: '2022/7月' });
