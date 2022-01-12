@@ -13,7 +13,11 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:run:chrome": "cypress run --browser chrome",
-    "cy:run:firefox": "cypress run --browser firefox"
+    "cy:run:firefox": "cypress run --browser firefox",
+    "cy:open:ct": "cypress open-ct",
+    "cy:run:ct": "cypress run-ct",
+    "cy:run:ct:chrome": "cypress run-ct --browser chrome",
+    "cy:run:ct:firefox": "cypress run-ct --browser firefox"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.20",
@@ -48,6 +52,7 @@
     "@storybook/react": "^6.4.8",
     "@storybook/testing-library": "^0.0.7",
     "@storybook/testing-react": "^1.2.0",
+    "@testing-library/cypress": "^8.0.2",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
