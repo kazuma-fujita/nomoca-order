@@ -472,7 +472,9 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            unitPrice
             type
+            productType
             viewOrder
             disabled
             createdAt
@@ -518,7 +520,9 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            unitPrice
             type
+            productType
             viewOrder
             disabled
             createdAt
@@ -564,7 +568,9 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            unitPrice
             type
+            productType
             viewOrder
             disabled
             createdAt
@@ -605,7 +611,9 @@ export const onCreateSubscriptionOrderProduct = /* GraphQL */ `
       product {
         id
         name
+        unitPrice
         type
+        productType
         viewOrder
         disabled
         createdAt
@@ -627,7 +635,9 @@ export const onUpdateSubscriptionOrderProduct = /* GraphQL */ `
       product {
         id
         name
+        unitPrice
         type
+        productType
         viewOrder
         disabled
         createdAt
@@ -649,7 +659,9 @@ export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
       product {
         id
         name
+        unitPrice
         type
+        productType
         viewOrder
         disabled
         createdAt
@@ -667,7 +679,9 @@ export const onCreateProduct = /* GraphQL */ `
     onCreateProduct {
       id
       name
+      unitPrice
       type
+      productType
       viewOrder
       disabled
       createdAt
@@ -680,7 +694,9 @@ export const onUpdateProduct = /* GraphQL */ `
     onUpdateProduct {
       id
       name
+      unitPrice
       type
+      productType
       viewOrder
       disabled
       createdAt
@@ -693,7 +709,9 @@ export const onDeleteProduct = /* GraphQL */ `
     onDeleteProduct {
       id
       name
+      unitPrice
       type
+      productType
       viewOrder
       disabled
       createdAt

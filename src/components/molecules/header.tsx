@@ -5,6 +5,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import CategoryIcon from '@mui/icons-material/Category';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material/SvgIcon/SvgIcon';
@@ -40,7 +41,8 @@ export const Header = () => {
           },
         ],
         [
-          { path: Path.Product, icon: ShoppingBasketIcon, label: ScreenName.Product },
+          { path: Path.SingleOrderProduct, icon: CategoryIcon, label: ScreenName.SingleOrderProduct },
+          { path: Path.SubscriptionOrderProduct, icon: CategoryIcon, label: ScreenName.SubscriptionOrderProduct },
           { path: Path.Term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
         ],
       ]
@@ -61,11 +63,14 @@ export const Header = () => {
   ];
   // findItemsが無かった場合401画面へ遷移
   var findItems = drawerItems
-    .map((items) => items.find((item) => `/${item.path}` === router.pathname))
+    // .map((items) => items.find((item) => `/${item.path}` === router.pathname))
+    .map((items) => items.find((item) => item.path === router.pathname))
     .filter((item) => item);
+
   if (findItems.length === 0) {
     findItems = menuItems
-      .map((items) => items.find((item) => `/${item.path}` === router.pathname))
+      .map((items) => items.find((item) => item.path === router.pathname))
+      // .map((items) => items.find((item) => `/${item.path}` === router.pathname))
       .filter((item) => item);
   }
   if (findItems.length === 0) {

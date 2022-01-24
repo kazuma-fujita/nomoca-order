@@ -9,6 +9,7 @@ import { ProductListContextProvider } from 'stores/use-product-list';
 import { SubscriptionOrderTemplateContainer } from 'components/templates/subscription-orders/subscription-order-template-container';
 import { Main } from 'components/molecules/main';
 import { NowDateContextProvider } from 'stores/use-now-date';
+import { ProductType } from 'API';
 
 // type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -21,7 +22,7 @@ const SubscriptionOrderPage = () => {
       <Head>
         <title>{ScreenName.SubscriptionOrder + TitleSuffix}</title>
       </Head>
-      <ProductListContextProvider filterWithActiveProduct={true}>
+      <ProductListContextProvider productType={ProductType.subscriptionOrder} filterWithActiveProduct={true}>
         <StaffListContextProvider filterWithActiveStaff={true}>
           <NowDateContextProvider now={new Date()}>
             <Main>

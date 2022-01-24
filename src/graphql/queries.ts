@@ -299,7 +299,9 @@ export const getSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            unitPrice
             type
+            productType
             viewOrder
             disabled
             createdAt
@@ -354,7 +356,9 @@ export const listSubscriptionOrders = /* GraphQL */ `
             product {
               id
               name
+              unitPrice
               type
+              productType
               viewOrder
               disabled
               createdAt
@@ -393,7 +397,9 @@ export const getProduct = /* GraphQL */ `
     getProduct(id: $id) {
       id
       name
+      unitPrice
       type
+      productType
       viewOrder
       disabled
       createdAt
@@ -411,7 +417,9 @@ export const listProducts = /* GraphQL */ `
       items {
         id
         name
+        unitPrice
         type
+        productType
         viewOrder
         disabled
         createdAt
@@ -485,7 +493,9 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
             product {
               id
               name
+              unitPrice
               type
+              productType
               viewOrder
               disabled
               createdAt
@@ -539,7 +549,9 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
       items {
         id
         name
+        unitPrice
         type
+        productType
         viewOrder
         disabled
         createdAt

@@ -14,7 +14,6 @@ export const CreateProductButton = () => {
   const { handleSubmit, reset: resetForm } = useFormReturn;
   const { createProduct, isLoading, error, resetState } = useCreateProduct();
   const [on, toggle] = useToggle(false);
-  const { data: productList } = useProductList();
 
   const cancelHandler = useCallback(() => {
     resetForm();

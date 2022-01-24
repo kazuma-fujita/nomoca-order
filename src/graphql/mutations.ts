@@ -502,7 +502,9 @@ export const createSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            unitPrice
             type
+            productType
             viewOrder
             disabled
             createdAt
@@ -551,7 +553,9 @@ export const updateSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            unitPrice
             type
+            productType
             viewOrder
             disabled
             createdAt
@@ -600,7 +604,9 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            unitPrice
             type
+            productType
             viewOrder
             disabled
             createdAt
@@ -644,7 +650,9 @@ export const createSubscriptionOrderProduct = /* GraphQL */ `
       product {
         id
         name
+        unitPrice
         type
+        productType
         viewOrder
         disabled
         createdAt
@@ -669,7 +677,9 @@ export const updateSubscriptionOrderProduct = /* GraphQL */ `
       product {
         id
         name
+        unitPrice
         type
+        productType
         viewOrder
         disabled
         createdAt
@@ -694,7 +704,9 @@ export const deleteSubscriptionOrderProduct = /* GraphQL */ `
       product {
         id
         name
+        unitPrice
         type
+        productType
         viewOrder
         disabled
         createdAt
@@ -715,7 +727,9 @@ export const createProduct = /* GraphQL */ `
     createProduct(input: $input, condition: $condition) {
       id
       name
+      unitPrice
       type
+      productType
       viewOrder
       disabled
       createdAt
@@ -731,7 +745,9 @@ export const updateProduct = /* GraphQL */ `
     updateProduct(input: $input, condition: $condition) {
       id
       name
+      unitPrice
       type
+      productType
       viewOrder
       disabled
       createdAt
@@ -747,7 +763,9 @@ export const deleteProduct = /* GraphQL */ `
     deleteProduct(input: $input, condition: $condition) {
       id
       name
+      unitPrice
       type
+      productType
       viewOrder
       disabled
       createdAt

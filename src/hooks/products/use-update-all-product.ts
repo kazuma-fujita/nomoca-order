@@ -6,6 +6,8 @@ import { updateProduct as updateProductQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { ProductType } from '../../API';
+import { useProductList } from '../../stores/use-product-list';
 
 type Args = {
   sourceIndex: number;
@@ -13,6 +15,7 @@ type Args = {
 };
 
 export const useUpdateAllProduct = () => {
+  const { swrKey } = useProductList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
@@ -35,6 +38,7 @@ export const useUpdateAllProduct = () => {
           const result = (await API.graphql(
             graphqlOperation(updateProductQuery, variables),
           )) as GraphQLResult<UpdateProductMutation>;
+
           if (result.data && result.data.updateProduct) {
             setIsLoading(false);
             setError(null);
@@ -54,8 +58,8 @@ export const useUpdateAllProduct = () => {
   // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const updateAllProduct = useCallback(
     async ({ sourceIndex, destinationIndex }: Args) =>
-      mutate(SWRMultiKey.AllProductList, onUpdateAllProduct({ sourceIndex, destinationIndex }), false),
-    [mutate],
+      mutate(swrKey, onUpdateAllProduct({ sourceIndex, destinationIndex }), false),
+    [mutate, swrKey],
   );
 
   const resetState = useCallback(() => {

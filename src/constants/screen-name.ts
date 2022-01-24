@@ -5,7 +5,7 @@ export const ScreenName = {
   AdminsSubscriptionOrder: '定期便管理',
   Staff: '担当者管理',
   Product: '商品管理',
-  SingleOrderProduct: '通常注文商品管理',
+  SingleOrderProduct: '注文商品管理',
   SubscriptionOrderProduct: '定期便商品管理',
   Clinic: '施設情報編集',
   Term: '利用規約',
