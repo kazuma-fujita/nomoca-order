@@ -16,7 +16,6 @@ export const Path = {
   SubscriptionOrder: '/subscription-order',
   AdminsSubscriptionOrder: '/admins/subscription-order',
   Staff: '/staff',
-  Product: '/product',
   SingleOrderProduct: '/admins/single-order-product',
   SubscriptionOrderProduct: '/admins/subscription-order-product',
   Clinic: '/clinic',
