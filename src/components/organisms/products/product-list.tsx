@@ -17,7 +17,6 @@ import { useUpdateAllProduct } from 'hooks/products/use-update-all-product';
 import { useCallback } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { useProductList } from 'stores/use-product-list';
-import { parseResponseError } from 'utilities/parse-response-error';
 
 const header = [
   {

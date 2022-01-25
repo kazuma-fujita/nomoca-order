@@ -21,11 +21,15 @@ const item = {
 
 const render = () => customRender(<SubscriptionOrderProductTemplate />);
 
-const create = async () => {
-  // It renders a staff list.
+const renderList = async () => {
+  // It renders a list.
   render();
   screen.getByRole('table', { name: 'products table' });
   await waitForElementToBeRemoved(() => screen.getByLabelText('Now loading'));
+};
+
+const create = async () => {
+  await renderList();
   screen.getByText('商品を追加してください');
   // It views a dialog.
   userEvent.click(screen.getByRole('button', { name: '商品を追加する' }));
@@ -36,12 +40,9 @@ const create = async () => {
 };
 
 const update = async () => {
+  await renderList();
   // It renders a staff list.
-  render();
-  screen.getByRole('table', { name: 'products table' });
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Now loading'));
-  const rows = screen.getAllByRole('row');
-  expect(rows).toHaveLength(2);
+  expect(screen.getAllByRole('row')).toHaveLength(2);
   screen.getByRole('cell', { name: '商品A' });
   // It views a dialog.
   userEvent.click(screen.getByRole('button', { name: '商品を編集する' }));
@@ -58,19 +59,29 @@ describe('SubscriptionOrderProductTemplate', () => {
     spy.mockClear();
   });
 
+  test('It ocurred an error when it renders a product list.', async () => {
+    spy.mockRejectedValueOnce(Error('It occurred an async error.'));
+    await renderList();
+    // It waits for viewing alert.
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toHaveTextContent('It occurred an async error.');
+    });
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
   test('It renders a product list after it creates a product.', async () => {
     spy
       .mockResolvedValueOnce({ data: { listProductsSortedByViewOrder: { items: [] } } })
-      .mockResolvedValueOnce({ data: { create: item } });
+      .mockResolvedValueOnce({ data: { createProduct: item } });
     await create();
     // It waits for it to disappear dialog.
-    await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '担当者を追加する' }));
+    await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '商品を追加する' }));
     const rows = screen.getAllByRole('row');
     // Below rows include a 'th' header row.
     expect(rows).toHaveLength(2);
-    screen.getByRole('cell', { name: '担当者A' });
+    screen.getByRole('cell', { name: '商品A' });
     screen.getByRole('cell', { name: '2021/12/03 18:08' });
-    screen.getByRole('button', { name: '担当者を編集する' });
+    screen.getByRole('button', { name: '商品を編集する' });
     screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(2);
   });
@@ -79,12 +90,10 @@ describe('SubscriptionOrderProductTemplate', () => {
     spy
       .mockResolvedValueOnce({ data: { listProductsSortedByViewOrder: { items: [] } } })
       .mockRejectedValueOnce(Error('It occurred an async error.'));
-
     await create();
     // It waits for viewing alert.
     await waitFor(() => {
-      const alert = screen.getByRole('alert');
-      expect(alert).toHaveTextContent('It occurred an async error.');
+      expect(screen.getByRole('alert')).toHaveTextContent('It occurred an async error.');
     });
     expect(spy).toHaveBeenCalledTimes(2);
   });
@@ -92,16 +101,16 @@ describe('SubscriptionOrderProductTemplate', () => {
   test('It renders a staff list after it updates a product.', async () => {
     spy
       .mockResolvedValueOnce({ data: { listProductsSortedByViewOrder: { items: [item] } } })
-      .mockResolvedValueOnce({ data: { update: { ...item, name: '商品B' } } });
+      .mockResolvedValueOnce({ data: { updateProduct: { ...item, name: '商品B' } } });
     await update();
     // It waits for it to disappear dialog.
-    await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '担当者を編集する' }));
+    await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '商品を編集する' }));
     const rows = screen.getAllByRole('row');
     // Below rows include a 'th' header row.
     expect(rows).toHaveLength(2);
     screen.getByRole('cell', { name: '商品B' });
     screen.getByRole('cell', { name: '2021/12/03 18:08' });
-    screen.getByRole('button', { name: '担当者を編集する' });
+    screen.getByRole('button', { name: '商品を編集する' });
     screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(2);
   });
@@ -110,12 +119,10 @@ describe('SubscriptionOrderProductTemplate', () => {
     spy
       .mockResolvedValueOnce({ data: { listProductsSortedByViewOrder: { items: [item] } } })
       .mockRejectedValueOnce(Error('It occurred an async error.'));
-
     await update();
     // It waits for viewing alert.
     await waitFor(() => {
-      const alert = screen.getByRole('alert');
-      expect(alert).toHaveTextContent('It occurred an async error.');
+      expect(screen.getByRole('alert')).toHaveTextContent('It occurred an async error.');
     });
     expect(spy).toHaveBeenCalledTimes(2);
   });

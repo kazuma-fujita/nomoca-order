@@ -40,7 +40,7 @@ export const UpdateProductButton = (props: Props) => {
   );
 
   const submitButtonLabel = '編集する';
-  const label = `商品名を${submitButtonLabel}`;
+  const label = `商品を${submitButtonLabel}`;
 
   return (
     <>
