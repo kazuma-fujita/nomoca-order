@@ -4,6 +4,7 @@ import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
+import { Main } from 'components/molecules/main';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -15,7 +16,9 @@ const SubscriptionOrderProductPage = (props: Props) => {
       <Head>
         <title>{props.pageTitle}</title>
       </Head>
-      <SubscriptionOrderProductTemplate />
+      <Main>
+        <SubscriptionOrderProductTemplate />
+      </Main>
     </>
   );
 };

@@ -9,11 +9,13 @@ import useSWR, { KeyedMutator } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ListProductsSortedByViewOrderQuery, ListProductsSortedByViewOrderQueryVariables, ProductType } from '../API';
 import { SWRMultiKey } from 'constants/swr-key';
+import { FetchResponse } from '../hooks/swr/use-fetch';
+import { useFetch } from 'hooks/swr/use-fetch';
 
-type ProviderProps = {
-  data: Product[] | undefined;
-  error: Error | undefined;
-  mutate: KeyedMutator<Product[]>;
+type ProviderProps = FetchResponse<Product[]> & {
+  // data: Product[] | undefined;
+  // error: Error | undefined;
+  // mutate: KeyedMutator<Product[]>;
   swrKey: (string | ProductType | boolean)[];
   productType: ProductType;
 };
@@ -23,7 +25,6 @@ const ProductListContext = createContext({} as ProviderProps);
 export const useProductList = () => useContext(ProductListContext);
 
 const fetcher = async (key: string, productType: ProductType, filterWithActiveProduct: boolean) => {
-  // activeなproductのみを抽出する条件
   const productTypeFilter: ModelProductFilterInput = { productType: { eq: productType } };
   // activeなproductのみ抽出する場合filter条件追加
   const filter = filterWithActiveProduct ? { ...productTypeFilter, disabled: { eq: false } } : productTypeFilter;
@@ -43,11 +44,8 @@ type Props = {
   filterWithActiveProduct: boolean;
 };
 
-// 担当者一覧画面の他、各画面の担当者プルダウンのマスターデータとなる為、
-// 担当者プルダウンを実装する画面はTop階層(pages)で一回のみデータfetch、useContextを利用してdataを使います
 export const ProductListContextProvider: React.FC<Props> = ({ productType, filterWithActiveProduct, ...rest }) => {
   const swrKey = [SWRKey.ProductList, productType, filterWithActiveProduct];
-  const { data, error: responseError, mutate } = useSWR(swrKey, fetcher);
-  const error = responseError && parseResponseError(responseError);
-  return <ProductListContext.Provider value={{ data, error, mutate, swrKey, productType }} {...rest} />;
+  const response = useFetch<Product[]>(swrKey, fetcher);
+  return <ProductListContext.Provider value={{ ...response, swrKey, productType }} {...rest} />;
 };

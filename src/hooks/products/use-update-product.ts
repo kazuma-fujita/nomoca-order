@@ -41,10 +41,10 @@ export const useUpdateProduct = () => {
           throw Error('The API updated data but it returned null.');
         }
       } catch (error) {
+        const errorResponse = parseResponseError(error);
         setIsLoading(false);
-        setError(parseResponseError(error));
-        console.error('update error:', error);
-        return data;
+        setError(errorResponse);
+        throw errorResponse;
       }
     };
 

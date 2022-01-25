@@ -24,12 +24,12 @@ export const CreateProductButton = () => {
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Product) => {
-        await createProduct(data.name);
-        if (!error) {
+        try {
+          await createProduct(data.name);
           cancelHandler();
-        }
+        } catch (error) {}
       },
-      [cancelHandler, createProduct, error],
+      [cancelHandler, createProduct],
     ),
   );
 

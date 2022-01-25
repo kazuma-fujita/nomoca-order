@@ -1,9 +1,3 @@
-// export enum SWRKey {
-//   CurrentUser = 'currentUser',
-//   StaffList = 'staffList',
-//   SubscriptionOrderList = 'subscriptionOrderList',
-// }
-
 export const SWRKey = {
   CurrentUser: 'currentUser',
   StaffList: 'staffList',

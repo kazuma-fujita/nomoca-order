@@ -1,3 +1,4 @@
+import { Main } from 'components/molecules/main';
 import { SingleOrderProductTemplate } from 'components/templates/admins/products/single-order-product-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
@@ -15,7 +16,9 @@ const SingleOrderProductPage = (props: Props) => {
       <Head>
         <title>{props.pageTitle}</title>
       </Head>
-      <SingleOrderProductTemplate />
+      <Main>
+        <SingleOrderProductTemplate />
+      </Main>
     </>
   );
 };

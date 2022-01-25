@@ -2,12 +2,11 @@ import { GraphQLResult } from '@aws-amplify/api';
 import { CreateProductInput, CreateProductMutation, CreateProductMutationVariables, Product, ProductType } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { ObjectType } from 'constants/object-type';
-import { SWRMultiKey } from 'constants/swr-key';
 import { createProduct as createProductQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
+import { useProductList } from 'stores/use-product-list';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { useProductList } from 'stores/use-product-list';
 
 export const useCreateProduct = () => {
   const { swrKey, productType } = useProductList();
@@ -42,10 +41,10 @@ export const useCreateProduct = () => {
           throw Error('The API created data but it returned null.');
         }
       } catch (error) {
+        const errorResponse = parseResponseError(error);
         setIsLoading(false);
-        setError(parseResponseError(error));
-        console.error('create error:', error);
-        return data;
+        setError(errorResponse);
+        throw errorResponse;
       }
     };
 

@@ -27,26 +27,30 @@ export const useUpdateAllStaff = () => {
       // 分割代入で要素を入れ替え
       [items[destinationIndex], items[sourceIndex]] = [items[sourceIndex], items[destinationIndex]];
       // 配列要素をupdate
-      items.map(async (item, index) => {
-        setIsLoading(true);
-        const staff: UpdateStaffInput = { id: item.id, viewOrder: index + 1 };
-        const variables: UpdateStaffMutationVariables = { input: staff };
-        try {
-          const result = (await API.graphql(
-            graphqlOperation(updateStaffQuery, variables),
-          )) as GraphQLResult<UpdateStaffMutation>;
-          if (result.data && result.data.updateStaff) {
-            setIsLoading(false);
-            setError(null);
-          } else {
-            throw Error('The API updated data but it returned null.');
+      setIsLoading(true);
+      try {
+        items.forEach(async (item, index) => {
+          const staff: UpdateStaffInput = { id: item.id, viewOrder: index + 1 };
+          const variables: UpdateStaffMutationVariables = { input: staff };
+          try {
+            const result = (await API.graphql(
+              graphqlOperation(updateStaffQuery, variables),
+            )) as GraphQLResult<UpdateStaffMutation>;
+            if (!result.data || !result.data.updateStaff) {
+              throw Error('The API updated data but it returned null.');
+            }
+          } catch (error) {
+            throw error;
           }
-        } catch (error) {
-          setIsLoading(false);
-          setError(parseResponseError(error));
-          console.error('update error:', error);
-        }
-      });
+        });
+      } catch (error) {
+        const errorResponse = parseResponseError(error);
+        setIsLoading(false);
+        setError(errorResponse);
+        throw errorResponse;
+      }
+      setIsLoading(false);
+      setError(null);
       // 要素入れ替え後の配列を返却
       return items;
     };

@@ -17,6 +17,7 @@ import { useUpdateAllProduct } from 'hooks/products/use-update-all-product';
 import { useCallback } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { useProductList } from 'stores/use-product-list';
+import { parseResponseError } from 'utilities/parse-response-error';
 
 const header = [
   {
@@ -42,8 +43,8 @@ const header = [
 ];
 
 export const ProductList = () => {
-  const { data, error } = useProductList();
-  const { updateAllProduct } = useUpdateAllProduct();
+  const { data, error, isLoading, isEmptyList } = useProductList();
+  const { updateAllProduct, error: updateError } = useUpdateAllProduct();
 
   const handleOnDragEnd = useCallback(
     (result: DropResult, provided: ResponderProvided) => {
@@ -56,6 +57,7 @@ export const ProductList = () => {
 
   const droppableId = 'products';
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
+  if (updateError) return <ErrorAlert>{updateError}</ErrorAlert>;
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <TableContainer component={Paper}>
@@ -74,11 +76,12 @@ export const ProductList = () => {
           <Droppable droppableId={droppableId}>
             {(provided) => (
               <TableBody className={droppableId} {...provided.droppableProps} ref={provided.innerRef}>
-                {(!data || data.length == 0) && (
+                {isLoading && (
                   <EmptyTableBody colSpan={header.length}>
-                    {!data ? <CircularProgress /> : '商品を追加してください'}
+                    <CircularProgress aria-label='Now loading' />
                   </EmptyTableBody>
                 )}
+                {isEmptyList && <EmptyTableBody colSpan={header.length}>商品を追加してください</EmptyTableBody>}
                 {data &&
                   data.map((item, index) => (
                     <Draggable key={item.id} draggableId={item.id} index={index}>

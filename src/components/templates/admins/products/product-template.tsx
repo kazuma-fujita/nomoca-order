@@ -5,17 +5,15 @@ import { ProductList } from 'components/organisms/products/product-list';
 
 export const ProductTemplate = () => {
   return (
-    <Main>
-      <Grid container spacing={2} direction='column'>
-        <Grid item>
-          <Grid container justifyContent='flex-end'>
-            <CreateProductButton />
-          </Grid>
-        </Grid>
-        <Grid item>
-          <ProductList />
+    <Grid container spacing={2} direction='column'>
+      <Grid item>
+        <Grid container justifyContent='flex-end'>
+          <CreateProductButton />
         </Grid>
       </Grid>
-    </Main>
+      <Grid item>
+        <ProductList />
+      </Grid>
+    </Grid>
   );
 };

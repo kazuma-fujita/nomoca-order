@@ -29,13 +29,13 @@ export const UpdateProductButton = (props: Props) => {
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Product) => {
-        await updateProduct({ id: props.id, name: data.name, disabled: props.disabled });
-        if (!error) {
+        try {
+          await updateProduct({ id: props.id, name: data.name, disabled: props.disabled });
           clearErrors();
           toggle();
-        }
+        } catch (error) {}
       },
-      [clearErrors, error, props.disabled, props.id, toggle, updateProduct],
+      [clearErrors, props.disabled, props.id, toggle, updateProduct],
     ),
   );
 
