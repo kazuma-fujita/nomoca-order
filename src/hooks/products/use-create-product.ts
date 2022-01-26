@@ -15,7 +15,7 @@ export const useCreateProduct = () => {
   const { mutate } = useSWRConfig();
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onCreateProduct =
-    (name: string, productType: ProductType) =>
+    (name: string, unitPrice: number, productType: ProductType) =>
     async (data: Product[]): Promise<Product[]> => {
       setIsLoading(true);
       try {
@@ -23,7 +23,7 @@ export const useCreateProduct = () => {
         // sort対象のviewOrderは配列長 + 1を設定
         const product: CreateProductInput = {
           name: name,
-          unitPrice: 1000,
+          unitPrice: unitPrice,
           viewOrder: data.length + 1,
           type: ObjectType.Product,
           productType: productType,
@@ -50,7 +50,7 @@ export const useCreateProduct = () => {
 
   // // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const createProduct = useCallback(
-    async (name: string) => mutate(swrKey, onCreateProduct(name, productType), false),
+    async (name: string, unitPrice: number) => mutate(swrKey, onCreateProduct(name, unitPrice, productType), false),
     [mutate, swrKey, productType],
   );
 

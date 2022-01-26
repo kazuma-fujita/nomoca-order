@@ -36,6 +36,7 @@ const create = async () => {
   screen.getByRole('dialog', { name: '商品を追加する' });
   // It submits form input values.
   userEvent.type(screen.getByRole('textbox', { name: '商品名' }), '商品A');
+  userEvent.type(screen.getByRole('spinbutton', { name: '単価' }), '1000');
   userEvent.click(screen.getByRole('button', { name: '追加する' }));
 };
 
@@ -49,6 +50,7 @@ const update = async () => {
   screen.getByRole('dialog', { name: '商品を編集する' });
   // It submits form input values.
   userEvent.type(screen.getByRole('textbox', { name: '商品名' }), '商品B');
+  userEvent.type(screen.getByRole('spinbutton', { name: '単価' }), '1000000');
   userEvent.click(screen.getByRole('button', { name: '編集する' }));
 };
 
@@ -77,9 +79,10 @@ describe('SubscriptionOrderProductTemplate', () => {
     // It waits for it to disappear dialog.
     await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '商品を追加する' }));
     const rows = screen.getAllByRole('row');
-    // Below rows include a 'th' header row.
+    // Rows below include a 'th' header row.
     expect(rows).toHaveLength(2);
     screen.getByRole('cell', { name: '商品A' });
+    screen.getByRole('cell', { name: '1,000' });
     screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '商品を編集する' });
     screen.getByRole('checkbox', { name: 'activate-switch' });
@@ -101,7 +104,7 @@ describe('SubscriptionOrderProductTemplate', () => {
   test('It renders a staff list after it updates a product.', async () => {
     spy
       .mockResolvedValueOnce({ data: { listProductsSortedByViewOrder: { items: [item] } } })
-      .mockResolvedValueOnce({ data: { updateProduct: { ...item, name: '商品B' } } });
+      .mockResolvedValueOnce({ data: { updateProduct: { ...item, name: '商品B', unitPrice: 1000000 } } });
     await update();
     // It waits for it to disappear dialog.
     await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '商品を編集する' }));
@@ -109,6 +112,7 @@ describe('SubscriptionOrderProductTemplate', () => {
     // Below rows include a 'th' header row.
     expect(rows).toHaveLength(2);
     screen.getByRole('cell', { name: '商品B' });
+    screen.getByRole('cell', { name: '1,000,000' });
     screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '商品を編集する' });
     screen.getByRole('checkbox', { name: 'activate-switch' });

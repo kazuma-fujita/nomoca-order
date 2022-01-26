@@ -7,10 +7,12 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { ProductNameTextField } from 'components/atoms/text-fields/product-name-text-field';
+import { ProductUnitPriceTextField } from 'components/atoms/text-fields/product-unit-price-text-field';
 
 type Props = {
   id: string;
   name: string;
+  unitPrice: number;
   disabled: boolean;
 };
 
@@ -30,7 +32,7 @@ export const UpdateProductButton = (props: Props) => {
     useCallback(
       async (data: Product) => {
         try {
-          await updateProduct({ id: props.id, name: data.name, disabled: props.disabled });
+          await updateProduct({ id: props.id, name: data.name, unitPrice: data.unitPrice, disabled: props.disabled });
           clearErrors();
           toggle();
         } catch (error) {}
@@ -57,7 +59,10 @@ export const UpdateProductButton = (props: Props) => {
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
       >
-        <ProductNameTextField {...useFormReturn} disabled={isLoading} name={props.name} />
+        <>
+          <ProductNameTextField {...useFormReturn} disabled={isLoading} name={props.name} />
+          <ProductUnitPriceTextField {...useFormReturn} disabled={isLoading} unitPrice={props.unitPrice} />
+        </>
       </InputDialog>
     </>
   );

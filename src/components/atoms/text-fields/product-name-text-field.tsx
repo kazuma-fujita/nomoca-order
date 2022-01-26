@@ -1,16 +1,16 @@
-import { TextField, OutlinedTextFieldProps } from '@mui/material';
-import React from 'react';
-import { FieldElement, FieldErrors, FieldValues, UseFormReturn, UseFormRegister } from 'react-hook-form';
+import { TextField } from '@mui/material';
 import { Product } from 'API';
+import React from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
 interface Props extends UseFormReturn<Product> {
   disabled: boolean;
   name?: string;
 }
 
-const MAX_LENGTH = 256;
+const maxLength = 256;
 
-export const ProductNameTextField: React.FC<Props> = (props) => {
+export const ProductNameTextField: React.FC<Props> = ({ formState, register, disabled, name }) => {
   return (
     <TextField
       required
@@ -21,22 +21,16 @@ export const ProductNameTextField: React.FC<Props> = (props) => {
       margin='dense'
       fullWidth
       autoFocus
-      disabled={props.disabled}
-      defaultValue={props.name ?? ''}
+      disabled={disabled}
+      defaultValue={name ?? ''}
       inputProps={{
-        maxLength: MAX_LENGTH,
+        maxLength: maxLength,
       }}
-      error={Boolean(props.formState.errors.name)}
-      helperText={props.formState.errors.name && props.formState.errors.name.message}
-      // {...inputProps}
-      {...props.register('name', {
+      error={Boolean(formState.errors.name)}
+      helperText={formState.errors.name && formState.errors.name.message}
+      {...register('name', {
         required: '商品名を入力してください',
-        // pattern: {
-        //   value: /^[0-9]+$/i,
-        //   message: '確認コードは半角数字で入力してください',
-        // },
-        // minLength: { value: MAX_LENGTH, message: '担当者名は' +  MAX_LENGTH  + '桁で入力してください' },
-        maxLength: { value: MAX_LENGTH, message: '商品名は' + MAX_LENGTH + '桁で入力してください' },
+        maxLength: { value: maxLength, message: `商品名は${maxLength}桁で入力してください` },
       })}
     />
   );

@@ -24,6 +24,10 @@ const header = [
     minWidth: 160,
   },
   {
+    label: '単価',
+    minWidth: 160,
+  },
+  {
     label: '更新日時',
     minWidth: 160,
   },
@@ -87,9 +91,15 @@ export const ProductList = () => {
                       {(provided) => (
                         <StyledTableRow key={item.id} ref={provided.innerRef} {...provided.draggableProps}>
                           <StyledTableCell>{item.name}</StyledTableCell>
+                          <StyledTableCell>{item.unitPrice.toLocaleString()}</StyledTableCell>
                           <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                           <StyledTableCell align='center'>
-                            <UpdateProductButton id={item.id} name={item.name} disabled={item.disabled} />
+                            <UpdateProductButton
+                              id={item.id}
+                              name={item.name}
+                              unitPrice={item.unitPrice}
+                              disabled={item.disabled}
+                            />
                           </StyledTableCell>
                           <StyledTableCell align='center'>
                             <ActivateProductButton id={item.id} name={item.name} disabled={item.disabled} />

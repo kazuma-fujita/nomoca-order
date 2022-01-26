@@ -2,6 +2,7 @@ import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { Product } from 'API';
 import { InputDialog } from 'components/atoms/dialogs/input-dialog';
+import { ProductUnitPriceTextField } from 'components/atoms/text-fields/product-unit-price-text-field';
 import { useCreateProduct } from 'hooks/products/use-create-product';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,7 +26,7 @@ export const CreateProductButton = () => {
     useCallback(
       async (data: Product) => {
         try {
-          await createProduct(data.name);
+          await createProduct(data.name, data.unitPrice);
           cancelHandler();
         } catch (error) {}
       },
@@ -50,7 +51,10 @@ export const CreateProductButton = () => {
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
       >
-        <ProductNameTextField {...useFormReturn} disabled={isLoading} />
+        <>
+          <ProductNameTextField {...useFormReturn} disabled={isLoading} />
+          <ProductUnitPriceTextField {...useFormReturn} disabled={isLoading} />
+        </>
       </InputDialog>
     </>
   );
