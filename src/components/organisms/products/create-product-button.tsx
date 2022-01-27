@@ -2,13 +2,12 @@ import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { Product } from 'API';
 import { InputDialog } from 'components/atoms/dialogs/input-dialog';
+import { ProductNameTextField } from 'components/atoms/text-fields/product-name-text-field';
 import { ProductUnitPriceTextField } from 'components/atoms/text-fields/product-unit-price-text-field';
 import { useCreateProduct } from 'hooks/products/use-create-product';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
-import { useProductList } from 'stores/use-product-list';
-import { ProductNameTextField } from '../../atoms/text-fields/product-name-text-field';
 
 export const CreateProductButton = () => {
   const useFormReturn = useForm<Product>({ defaultValues: { name: '' } });

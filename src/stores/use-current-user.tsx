@@ -91,7 +91,8 @@ const afterAuthTransition = (router: NextRouter) => {
       const groups: string[] | undefined = currentUser.signInUserSession.accessToken.payload['cognito:groups'];
       const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
       // UserGroupにより遷移先の振り分け
-      isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.SubscriptionOrder);
+      // isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.SubscriptionOrder);
+      isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.SingleOrder);
     } catch (error) {
       router.replace(Path.Index);
     }

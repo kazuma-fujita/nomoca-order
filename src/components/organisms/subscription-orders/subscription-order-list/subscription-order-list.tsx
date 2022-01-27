@@ -144,7 +144,9 @@ const Row = ({ item, now }: RowProps) => {
                           <TableRow key={`${index}-${relation.product.id}`}>
                             <StyledTableCell>{relation.product.name}</StyledTableCell>
                             <StyledTableCell align='center'>{relation.quantity}</StyledTableCell>
-                            <StyledTableCell align='right'>{relation.product.name}</StyledTableCell>
+                            <StyledTableCell align='right'>
+                              {relation.product.unitPrice.toLocaleString()}
+                            </StyledTableCell>
                           </TableRow>
                         ),
                     )}
