@@ -12,7 +12,7 @@ import { NowDateContextProvider } from 'stores/use-now-date';
 import Link from 'components/atoms/link';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { StaffListContextProvider } from 'stores/use-staff-list';
-import { ProductType } from 'API';
+import { OrderType } from 'API';
 
 const List = () => {
   return (
@@ -96,7 +96,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <ProductListContextProvider productType={ProductType.singleOrder} filterWithActiveProduct={true}>
+      <ProductListContextProvider orderType={OrderType.singleOrder} filterWithActiveProduct={true}>
         <StaffListContextProvider filterWithActiveStaff={true}>
           <NowDateContextProvider now={new Date()}>
             <Main>

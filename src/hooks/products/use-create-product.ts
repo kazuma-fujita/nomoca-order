@@ -4,7 +4,7 @@ import {
   CreateProductMutation,
   CreateProductMutationVariables,
   Product,
-  ProductType,
+  OrderType,
   Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -15,13 +15,13 @@ import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useCreateProduct = () => {
-  const { swrKey, productType } = useProductList();
+  const { swrKey, orderType } = useProductList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onCreateProduct =
-    (name: string, unitPrice: number, productType: ProductType) =>
+    (name: string, unitPrice: number, orderType: OrderType) =>
     async (data: Product[]): Promise<Product[]> => {
       setIsLoading(true);
       try {
@@ -32,7 +32,7 @@ export const useCreateProduct = () => {
           unitPrice: unitPrice,
           viewOrder: data.length + 1,
           type: Type.product,
-          productType: productType,
+          orderType: orderType,
           disabled: false,
         };
         const variables: CreateProductMutationVariables = { input: product };
@@ -56,8 +56,8 @@ export const useCreateProduct = () => {
 
   // // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
   const createProduct = useCallback(
-    async (name: string, unitPrice: number) => mutate(swrKey, onCreateProduct(name, unitPrice, productType), false),
-    [mutate, swrKey, productType],
+    async (name: string, unitPrice: number) => mutate(swrKey, onCreateProduct(name, unitPrice, orderType), false),
+    [mutate, swrKey, orderType],
   );
 
   const resetState = useCallback(() => {

@@ -6,7 +6,7 @@ import { updateProduct as updateProductQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { ProductType } from '../../API';
+import { OrderType } from '../../API';
 import { useProductList } from '../../stores/use-product-list';
 
 type Args = {

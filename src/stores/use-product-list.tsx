@@ -4,7 +4,7 @@ import {
   ListProductsSortedByViewOrderQueryVariables,
   ModelProductFilterInput,
   Product,
-  ProductType,
+  OrderType,
   Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -18,18 +18,18 @@ type ProviderProps = FetchResponse<Product[]> & {
   // data: Product[] | undefined;
   // error: Error | undefined;
   // mutate: KeyedMutator<Product[]>;
-  swrKey: (string | ProductType | boolean)[];
-  productType: ProductType;
+  swrKey: (string | OrderType | boolean)[];
+  orderType: OrderType;
 };
 
 const ProductListContext = createContext({} as ProviderProps);
 
 export const useProductList = () => useContext(ProductListContext);
 
-const fetcher = async (key: string, productType: ProductType, filterWithActiveProduct: boolean) => {
-  const productTypeFilter: ModelProductFilterInput = { productType: { eq: productType } };
+const fetcher = async (key: string, orderType: OrderType, filterWithActiveProduct: boolean) => {
+  const orderTypeFilter: ModelProductFilterInput = { orderType: { eq: orderType } };
   // activeなproductのみ抽出する場合filter条件追加
-  const filter = filterWithActiveProduct ? { ...productTypeFilter, disabled: { eq: false } } : productTypeFilter;
+  const filter = filterWithActiveProduct ? { ...orderTypeFilter, disabled: { eq: false } } : orderTypeFilter;
   // schema.graphqlのKeyディレクティブでtypeとviewOrderのsort条件を追加。sortを実行する為にtypeを指定。defaultでviewOrderの降順でsortを実行
   const sortVariables: ListProductsSortedByViewOrderQueryVariables = { type: Type.product, filter: filter };
   const operation = graphqlOperation(listProductsSortedByViewOrder, sortVariables);
@@ -42,12 +42,12 @@ const fetcher = async (key: string, productType: ProductType, filterWithActivePr
 };
 
 type Props = {
-  productType: ProductType;
+  orderType: OrderType;
   filterWithActiveProduct: boolean;
 };
 
-export const ProductListContextProvider: React.FC<Props> = ({ productType, filterWithActiveProduct, ...rest }) => {
-  const swrKey = [SWRKey.ProductList, productType, filterWithActiveProduct];
+export const ProductListContextProvider: React.FC<Props> = ({ orderType, filterWithActiveProduct, ...rest }) => {
+  const swrKey = [SWRKey.ProductList, orderType, filterWithActiveProduct];
   const response = useFetch<Product[]>(swrKey, fetcher);
-  return <ProductListContext.Provider value={{ ...response, swrKey, productType }} {...rest} />;
+  return <ProductListContext.Provider value={{ ...response, swrKey, orderType }} {...rest} />;
 };

@@ -22,7 +22,7 @@ export const createOrder = /* GraphQL */ `
             name
             unitPrice
             type
-            productType
+            orderType
             viewOrder
             disabled
             createdAt
@@ -75,7 +75,7 @@ export const updateOrder = /* GraphQL */ `
             name
             unitPrice
             type
-            productType
+            orderType
             viewOrder
             disabled
             createdAt
@@ -128,7 +128,7 @@ export const deleteOrder = /* GraphQL */ `
             name
             unitPrice
             type
-            productType
+            orderType
             viewOrder
             disabled
             createdAt
@@ -175,7 +175,7 @@ export const createOrderProduct = /* GraphQL */ `
         name
         unitPrice
         type
-        productType
+        orderType
         viewOrder
         disabled
         createdAt
@@ -202,7 +202,7 @@ export const updateOrderProduct = /* GraphQL */ `
         name
         unitPrice
         type
-        productType
+        orderType
         viewOrder
         disabled
         createdAt
@@ -229,7 +229,7 @@ export const deleteOrderProduct = /* GraphQL */ `
         name
         unitPrice
         type
-        productType
+        orderType
         viewOrder
         disabled
         createdAt
@@ -261,7 +261,7 @@ export const createSubscriptionOrder = /* GraphQL */ `
             name
             unitPrice
             type
-            productType
+            orderType
             viewOrder
             disabled
             createdAt
@@ -312,7 +312,7 @@ export const updateSubscriptionOrder = /* GraphQL */ `
             name
             unitPrice
             type
-            productType
+            orderType
             viewOrder
             disabled
             createdAt
@@ -363,7 +363,7 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
             name
             unitPrice
             type
-            productType
+            orderType
             viewOrder
             disabled
             createdAt
@@ -409,7 +409,7 @@ export const createSubscriptionOrderProduct = /* GraphQL */ `
         name
         unitPrice
         type
-        productType
+        orderType
         viewOrder
         disabled
         createdAt
@@ -436,7 +436,7 @@ export const updateSubscriptionOrderProduct = /* GraphQL */ `
         name
         unitPrice
         type
-        productType
+        orderType
         viewOrder
         disabled
         createdAt
@@ -463,7 +463,7 @@ export const deleteSubscriptionOrderProduct = /* GraphQL */ `
         name
         unitPrice
         type
-        productType
+        orderType
         viewOrder
         disabled
         createdAt
@@ -486,7 +486,7 @@ export const createProduct = /* GraphQL */ `
       name
       unitPrice
       type
-      productType
+      orderType
       viewOrder
       disabled
       createdAt
@@ -504,7 +504,7 @@ export const updateProduct = /* GraphQL */ `
       name
       unitPrice
       type
-      productType
+      orderType
       viewOrder
       disabled
       createdAt
@@ -522,7 +522,7 @@ export const deleteProduct = /* GraphQL */ `
       name
       unitPrice
       type
-      productType
+      orderType
       viewOrder
       disabled
       createdAt

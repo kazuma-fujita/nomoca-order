@@ -2,6 +2,7 @@ enum Type {
   order
   product
   staff
+  clinic
 }
 
 enum OrderType {
@@ -72,11 +73,6 @@ type SubscriptionOrderProduct
   quantity: Int!
 }
 
-enum ProductType {
-  singleOrder
-  subscriptionOrder
-}
-
 type Product
   @model
   @auth(rules: [{ allow: groups, groups: ["Operators"] }, { allow: private, operations: [read] }])
@@ -84,8 +80,8 @@ type Product
   id: ID!
   name: String!
   unitPrice: Int!
-  type: String!
-  productType: ProductType!
+  type: Type!
+  orderType: OrderType!
   viewOrder: Int!
   disabled: Boolean!
 }
@@ -96,7 +92,7 @@ type Staff
   @key(name: "sortByViewOrder", fields: ["type", "viewOrder"], queryField: "listStaffsSortedByViewOrder") {
   id: ID!
   name: String!
-  type: String!
+  type: Type!
   viewOrder: Int!
   disabled: Boolean!
 }

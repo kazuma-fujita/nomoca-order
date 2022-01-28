@@ -1,7 +1,7 @@
 import {
   ModelSubscriptionOrderProductConnection,
   Product,
-  ProductType,
+  OrderType,
   Staff,
   SubscriptionOrder,
   SubscriptionOrderProduct,
@@ -15,7 +15,7 @@ const product: Product = {
   name: '商品',
   unitPrice: 1000,
   type: Type.product,
-  productType: ProductType.subscriptionOrder,
+  orderType: OrderType.subscriptionOrder,
   viewOrder: 1,
   disabled: false,
   createdAt: '2021-11-25T14:32:55Z',

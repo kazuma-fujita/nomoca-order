@@ -19,7 +19,7 @@ export const getOrder = /* GraphQL */ `
             name
             unitPrice
             type
-            productType
+            orderType
             viewOrder
             disabled
             createdAt
@@ -74,7 +74,7 @@ export const listOrders = /* GraphQL */ `
               name
               unitPrice
               type
-              productType
+              orderType
               viewOrder
               disabled
               createdAt
@@ -125,7 +125,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
             name
             unitPrice
             type
-            productType
+            orderType
             viewOrder
             disabled
             createdAt
@@ -182,7 +182,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
               name
               unitPrice
               type
-              productType
+              orderType
               viewOrder
               disabled
               createdAt
@@ -223,7 +223,7 @@ export const getProduct = /* GraphQL */ `
       name
       unitPrice
       type
-      productType
+      orderType
       viewOrder
       disabled
       createdAt
@@ -243,7 +243,7 @@ export const listProducts = /* GraphQL */ `
         name
         unitPrice
         type
-        productType
+        orderType
         viewOrder
         disabled
         createdAt
@@ -320,7 +320,7 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
               name
               unitPrice
               type
-              productType
+              orderType
               viewOrder
               disabled
               createdAt
@@ -386,7 +386,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
               name
               unitPrice
               type
-              productType
+              orderType
               viewOrder
               disabled
               createdAt
@@ -422,7 +422,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
 `;
 export const listProductsSortedByViewOrder = /* GraphQL */ `
   query ListProductsSortedByViewOrder(
-    $type: String
+    $type: Type
     $viewOrder: ModelIntKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelProductFilterInput
@@ -442,7 +442,7 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
         name
         unitPrice
         type
-        productType
+        orderType
         viewOrder
         disabled
         createdAt
@@ -454,7 +454,7 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
 `;
 export const listStaffsSortedByViewOrder = /* GraphQL */ `
   query ListStaffsSortedByViewOrder(
-    $type: String
+    $type: Type
     $viewOrder: ModelIntKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelStaffFilterInput
