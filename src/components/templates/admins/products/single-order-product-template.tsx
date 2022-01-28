@@ -4,7 +4,7 @@ import { ProductTemplate } from './product-template';
 
 export const SingleOrderProductTemplate = () => {
   return (
-    <ProductListContextProvider orderType={OrderType.singleOrder} filterWithActiveProduct={false}>
+    <ProductListContextProvider orderType={OrderType.singleOrder} isFilterByActiveProduct={false}>
       <ProductTemplate />
     </ProductListContextProvider>
   );

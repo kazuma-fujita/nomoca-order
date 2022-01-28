@@ -27,7 +27,7 @@ const handlers = [
 
 const staffListContainerRender = () =>
   customRender(
-    <StaffListContextProvider filterWithActiveStaff={false}>
+    <StaffListContextProvider isFilterByActiveStaff={false}>
       <StaffListContainer />
     </StaffListContextProvider>,
   );

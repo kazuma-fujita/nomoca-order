@@ -22,8 +22,8 @@ const SubscriptionOrderPage = () => {
       <Head>
         <title>{ScreenName.SubscriptionOrder + TitleSuffix}</title>
       </Head>
-      <ProductListContextProvider orderType={OrderType.subscriptionOrder} filterWithActiveProduct={true}>
-        <StaffListContextProvider filterWithActiveStaff={true}>
+      <ProductListContextProvider orderType={OrderType.subscriptionOrder} isFilterByActiveProduct={true}>
+        <StaffListContextProvider isFilterByActiveStaff={true}>
           <NowDateContextProvider now={new Date()}>
             <Main>
               <SubscriptionOrderTemplateContainer />

@@ -27,7 +27,7 @@ const StaffPage = () => {
         {/* <title>{props.pageTitle}</title> */}
         <title>{ScreenName.Staff + TitleSuffix}</title>
       </Head>
-      {/* <StaffListContextProvider filterWithActiveStaff={false}> */}
+      {/* <StaffListContextProvider isFilterByActiveStaff={false}> */}
       <Main>
         <StaffTemplateContainer />
       </Main>
@@ -46,7 +46,7 @@ const StaffPage = () => {
 //       <Head>
 //         <title>{ScreenName.Staff + TitleSuffix}</title>
 //       </Head>
-//       <StaffListContextProvider filterWithActiveStaff={false}>
+//       <StaffListContextProvider isFilterByActiveStaff={false}>
 //         <StaffTemplate />
 //       </StaffListContextProvider>
 //     </>

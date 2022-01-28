@@ -9,7 +9,7 @@ type Props = {
 
 export const StaffTemplate = ({ listComponent }: Props) => {
   return (
-    <StaffListContextProvider filterWithActiveStaff={false}>
+    <StaffListContextProvider isFilterByActiveStaff={false}>
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Grid container justifyContent='flex-end'>

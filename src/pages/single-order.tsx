@@ -96,8 +96,8 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <ProductListContextProvider orderType={OrderType.singleOrder} filterWithActiveProduct={true}>
-        <StaffListContextProvider filterWithActiveStaff={true}>
+      <ProductListContextProvider orderType={OrderType.singleOrder} isFilterByActiveProduct={true}>
+        <StaffListContextProvider isFilterByActiveStaff={true}>
           <NowDateContextProvider now={new Date()}>
             <Main>
               <Component currentScreen={router.query.screen} />

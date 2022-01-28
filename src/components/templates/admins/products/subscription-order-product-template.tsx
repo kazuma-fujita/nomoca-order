@@ -4,7 +4,7 @@ import { ProductTemplate } from './product-template';
 
 export const SubscriptionOrderProductTemplate = () => {
   return (
-    <ProductListContextProvider orderType={OrderType.subscriptionOrder} filterWithActiveProduct={false}>
+    <ProductListContextProvider orderType={OrderType.subscriptionOrder} isFilterByActiveProduct={false}>
       <ProductTemplate />
     </ProductListContextProvider>
   );
