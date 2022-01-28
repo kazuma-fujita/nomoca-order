@@ -1,17 +1,16 @@
 import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ProductType, Type } from 'API';
 import { API } from 'aws-amplify';
-import { ObjectType } from 'constants/object-type';
 import { customRender } from 'utilities/tests/custom-render';
 import { SubscriptionOrderProductTemplate } from './subscription-order-product-template';
-import { ProductType } from 'API';
 
 const item = {
-  __typename: ObjectType.Product,
+  __typename: 'Product',
   id: 'dummyID-1',
   name: '商品A',
   unitPrice: 1000,
-  type: ObjectType.Product,
+  type: Type.product,
   productType: ProductType.subscriptionOrder,
   viewOrder: 1,
   disabled: false,

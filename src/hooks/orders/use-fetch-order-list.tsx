@@ -7,7 +7,6 @@ import {
   Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { ObjectType } from 'constants/object-type';
 import { SWRKey } from 'constants/swr-key';
 import { listOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';

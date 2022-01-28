@@ -1,19 +1,21 @@
-import type { ComponentStoryObj } from '@storybook/react';
 import {
   ModelSubscriptionOrderProductConnection,
   Product,
+  ProductType,
   Staff,
   SubscriptionOrder,
   SubscriptionOrderProduct,
+  Type,
 } from 'API';
 import { ObjectType } from 'constants/object-type';
-import { SubscriptionOrderList } from './subscription-order-list';
 
 const product: Product = {
-  __typename: ObjectType.Product,
+  __typename: 'Product',
   id: 'dummyProductID',
   name: '商品',
-  type: ObjectType.Product,
+  unitPrice: 1000,
+  type: Type.product,
+  productType: ProductType.subscriptionOrder,
   viewOrder: 1,
   disabled: false,
   createdAt: '2021-11-25T14:32:55Z',
@@ -37,10 +39,10 @@ const products: ModelSubscriptionOrderProductConnection = {
 };
 
 const staff: Staff = {
-  __typename: ObjectType.Staff,
+  __typename: 'Staff',
   id: 'DummyStaffID',
   name: '',
-  type: ObjectType.Staff,
+  type: Type.staff,
   viewOrder: 1,
   disabled: false,
   createdAt: '2021-11-25T14:32:55Z',

@@ -1,15 +1,15 @@
 import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Type } from 'API';
 import { API } from 'aws-amplify';
-import { ObjectType } from 'constants/object-type';
 import { customRender } from 'utilities/tests/custom-render';
 import { StaffTemplateContainer } from './staff-template-container';
 
 const item = {
-  __typename: ObjectType.Staff,
+  __typename: 'Staff',
   id: 'dummyID-1',
   name: '担当者A',
-  type: ObjectType.Staff,
+  type: Type.staff,
   viewOrder: 1,
   disabled: false,
   createdAt: '2021-11-25T14:32:55.000Z',

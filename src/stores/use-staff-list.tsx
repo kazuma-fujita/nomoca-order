@@ -1,7 +1,6 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { ModelStaffFilterInput, Staff } from 'API';
+import { ModelStaffFilterInput, Staff, Type } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { ObjectType } from 'constants/object-type';
 import { SWRMultiKey } from 'constants/swr-key';
 import { listStaffsSortedByViewOrder } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
@@ -16,7 +15,7 @@ const fetcher = async (key: string, filterWithActiveStaff: boolean = false) => {
   // activeなstaffのみを抽出する条件
   const filter: ModelStaffFilterInput = { disabled: { eq: false } };
   // schema.graphqlのKeyディレクティブでtypeとviewOrderのsort条件を追加。sortを実行する為にtypeを指定。defaultでviewOrderの降順でsortを実行
-  const sortVariables: ListStaffsSortedByViewOrderQueryVariables = { type: ObjectType.Staff };
+  const sortVariables: ListStaffsSortedByViewOrderQueryVariables = { type: Type.staff };
   // activeなstaffのみ抽出する場合filter条件追加
   const variables: ListStaffsSortedByViewOrderQueryVariables = filterWithActiveStaff
     ? { ...sortVariables, filter: filter }

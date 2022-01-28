@@ -1,7 +1,13 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { CreateProductInput, CreateProductMutation, CreateProductMutationVariables, Product, ProductType } from 'API';
+import {
+  CreateProductInput,
+  CreateProductMutation,
+  CreateProductMutationVariables,
+  Product,
+  ProductType,
+  Type,
+} from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { ObjectType } from 'constants/object-type';
 import { createProduct as createProductQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useProductList } from 'stores/use-product-list';
@@ -25,7 +31,7 @@ export const useCreateProduct = () => {
           name: name,
           unitPrice: unitPrice,
           viewOrder: data.length + 1,
-          type: ObjectType.Product,
+          type: Type.product,
           productType: productType,
           disabled: false,
         };

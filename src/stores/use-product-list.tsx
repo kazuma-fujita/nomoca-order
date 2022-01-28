@@ -1,16 +1,18 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { ModelProductFilterInput, Product } from 'API';
+import {
+  ListProductsSortedByViewOrderQuery,
+  ListProductsSortedByViewOrderQueryVariables,
+  ModelProductFilterInput,
+  Product,
+  ProductType,
+  Type,
+} from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { ObjectType } from 'constants/object-type';
 import { SWRKey } from 'constants/swr-key';
 import { listProductsSortedByViewOrder } from 'graphql/queries';
-import { createContext, useContext } from 'react';
-import useSWR, { KeyedMutator } from 'swr';
-import { parseResponseError } from 'utilities/parse-response-error';
-import { ListProductsSortedByViewOrderQuery, ListProductsSortedByViewOrderQueryVariables, ProductType } from '../API';
-import { SWRMultiKey } from 'constants/swr-key';
-import { FetchResponse } from '../hooks/swr/use-fetch';
 import { useFetch } from 'hooks/swr/use-fetch';
+import { createContext, useContext } from 'react';
+import { FetchResponse } from '../hooks/swr/use-fetch';
 
 type ProviderProps = FetchResponse<Product[]> & {
   // data: Product[] | undefined;
@@ -29,7 +31,7 @@ const fetcher = async (key: string, productType: ProductType, filterWithActivePr
   // activeなproductのみ抽出する場合filter条件追加
   const filter = filterWithActiveProduct ? { ...productTypeFilter, disabled: { eq: false } } : productTypeFilter;
   // schema.graphqlのKeyディレクティブでtypeとviewOrderのsort条件を追加。sortを実行する為にtypeを指定。defaultでviewOrderの降順でsortを実行
-  const sortVariables: ListProductsSortedByViewOrderQueryVariables = { type: ObjectType.Product, filter: filter };
+  const sortVariables: ListProductsSortedByViewOrderQueryVariables = { type: Type.product, filter: filter };
   const operation = graphqlOperation(listProductsSortedByViewOrder, sortVariables);
   const result = (await API.graphql(operation)) as GraphQLResult<ListProductsSortedByViewOrderQuery>;
   if (result.data && result.data.listProductsSortedByViewOrder && result.data.listProductsSortedByViewOrder.items) {

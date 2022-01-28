@@ -6,11 +6,7 @@
 // }
 
 export const ObjectType = {
-  SingleOrder: 'SingleOrder',
   SubscriptionOrder: 'SubscriptionOrder',
-  Staff: 'Staff',
-  Product: 'Product',
-  Clinic: 'Clinic',
 } as const;
 
 export type ObjectType = typeof ObjectType[keyof typeof ObjectType];

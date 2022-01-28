@@ -1,7 +1,6 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { Staff } from 'API';
+import { Staff, Type } from 'API';
 import { StaffList } from './staff-list';
-import { ObjectType } from 'constants/object-type';
 
 type Story = ComponentStoryObj<typeof StaffList>;
 
@@ -10,10 +9,10 @@ export default { component: StaffList };
 // const defaultTask = TaskItemStories.Default.args?.task as Task;
 
 const item: Staff = {
-  __typename: ObjectType.Staff,
+  __typename: 'Staff',
   id: '',
   name: '',
-  type: ObjectType.Staff,
+  type: Type.staff,
   viewOrder: 1,
   disabled: false,
   createdAt: '2021-11-25T14:32:55Z',
