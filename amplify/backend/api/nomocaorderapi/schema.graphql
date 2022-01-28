@@ -1,28 +1,55 @@
-type Blog @model {
-  id: ID!
-  name: String!
-  posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
+enum Type {
+  order
+  product
+  staff
 }
 
-type Post @model @key(name: "byBlog", fields: ["blogID"]) {
-  id: ID!
-  title: String!
-  blogID: ID!
-  blog: Blog @connection(fields: ["blogID"])
-  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+enum OrderType {
+  singleOrder
+  subscriptionOrder
 }
 
-type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
+enum DeliveryType {
+  regular
+  express
+}
+
+type Order
+  @model
+  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
+  @key(name: "sortByCreatedAt", fields: ["type", "createdAt"], queryField: "listOrdersSortedByCreatedAt") {
   id: ID!
-  postID: ID!
-  post: Post @connection(fields: ["postID"])
-  content: String!
+  type: Type!
+  orderType: OrderType!
+  staffID: ID!
+  products: [OrderProduct] @connection(keyName: "byOrder", fields: ["id"])
+  staff: Staff! @connection(fields: ["staffID"])
+  deliveryType: DeliveryType
+  deliveryStartYear: Int
+  deliveryStartMonth: Int
+  deliveryInterval: Int
+  createdAt: AWSDateTime!
+}
+
+type OrderProduct
+  @model(queries: null)
+  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
+  @key(name: "byOrder", fields: ["orderID", "productID"]) {
+  id: ID!
+  orderID: ID!
+  productID: ID!
+  product: Product! @connection(fields: ["productID"])
+  quantity: Int!
 }
 
 type SubscriptionOrder
   @model
   @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
-  @key(name: "sortByCreatedAt", fields: ["type", "createdAt"], queryField: "listSubscriptionOrdersSortedByCreatedAt") {
+  @key(
+    name: "sortedByCreatedAt"
+    fields: ["type", "createdAt"]
+    queryField: "listSubscriptionOrdersSortedByCreatedAt"
+  ) {
   id: ID!
   staffID: ID!
   type: String!

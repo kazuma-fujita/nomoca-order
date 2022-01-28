@@ -2,486 +2,243 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createBlog = /* GraphQL */ `
-  mutation CreateBlog(
-    $input: CreateBlogInput!
-    $condition: ModelBlogConditionInput
+export const createOrder = /* GraphQL */ `
+  mutation CreateOrder(
+    $input: CreateOrderInput!
+    $condition: ModelOrderConditionInput
   ) {
-    createBlog(input: $input, condition: $condition) {
+    createOrder(input: $input, condition: $condition) {
       id
-      name
-      posts {
+      type
+      orderType
+      staffID
+      products {
         items {
           id
-          title
-          blogID
-          blog {
+          orderID
+          productID
+          product {
             id
             name
-            posts {
-              nextToken
-            }
+            unitPrice
+            type
+            productType
+            viewOrder
+            disabled
             createdAt
             updatedAt
           }
-          comments {
-            items {
-              id
-              postID
-              content
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
+          quantity
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
+      staff {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryType
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const updateBlog = /* GraphQL */ `
-  mutation UpdateBlog(
-    $input: UpdateBlogInput!
-    $condition: ModelBlogConditionInput
+export const updateOrder = /* GraphQL */ `
+  mutation UpdateOrder(
+    $input: UpdateOrderInput!
+    $condition: ModelOrderConditionInput
   ) {
-    updateBlog(input: $input, condition: $condition) {
+    updateOrder(input: $input, condition: $condition) {
       id
-      name
-      posts {
+      type
+      orderType
+      staffID
+      products {
         items {
           id
-          title
-          blogID
-          blog {
+          orderID
+          productID
+          product {
             id
             name
-            posts {
-              nextToken
-            }
+            unitPrice
+            type
+            productType
+            viewOrder
+            disabled
             createdAt
             updatedAt
           }
-          comments {
-            items {
-              id
-              postID
-              content
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
+          quantity
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
+      staff {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryType
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const deleteBlog = /* GraphQL */ `
-  mutation DeleteBlog(
-    $input: DeleteBlogInput!
-    $condition: ModelBlogConditionInput
+export const deleteOrder = /* GraphQL */ `
+  mutation DeleteOrder(
+    $input: DeleteOrderInput!
+    $condition: ModelOrderConditionInput
   ) {
-    deleteBlog(input: $input, condition: $condition) {
+    deleteOrder(input: $input, condition: $condition) {
       id
-      name
-      posts {
+      type
+      orderType
+      staffID
+      products {
         items {
           id
-          title
-          blogID
-          blog {
+          orderID
+          productID
+          product {
             id
             name
-            posts {
-              nextToken
-            }
+            unitPrice
+            type
+            productType
+            viewOrder
+            disabled
             createdAt
             updatedAt
           }
-          comments {
-            items {
-              id
-              postID
-              content
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
+          quantity
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createPost = /* GraphQL */ `
-  mutation CreatePost(
-    $input: CreatePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    createPost(input: $input, condition: $condition) {
-      id
-      title
-      blogID
-      blog {
+      staff {
         id
         name
-        posts {
-          items {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        type
+        viewOrder
+        disabled
         createdAt
         updatedAt
+        owner
       }
-      comments {
-        items {
-          id
-          postID
-          post {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      deliveryType
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const updatePost = /* GraphQL */ `
-  mutation UpdatePost(
-    $input: UpdatePostInput!
-    $condition: ModelPostConditionInput
+export const createOrderProduct = /* GraphQL */ `
+  mutation CreateOrderProduct(
+    $input: CreateOrderProductInput!
+    $condition: ModelOrderProductConditionInput
   ) {
-    updatePost(input: $input, condition: $condition) {
+    createOrderProduct(input: $input, condition: $condition) {
       id
-      title
-      blogID
-      blog {
+      orderID
+      productID
+      product {
         id
         name
-        posts {
-          items {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        unitPrice
+        type
+        productType
+        viewOrder
+        disabled
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          post {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      quantity
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const deletePost = /* GraphQL */ `
-  mutation DeletePost(
-    $input: DeletePostInput!
-    $condition: ModelPostConditionInput
+export const updateOrderProduct = /* GraphQL */ `
+  mutation UpdateOrderProduct(
+    $input: UpdateOrderProductInput!
+    $condition: ModelOrderProductConditionInput
   ) {
-    deletePost(input: $input, condition: $condition) {
+    updateOrderProduct(input: $input, condition: $condition) {
       id
-      title
-      blogID
-      blog {
+      orderID
+      productID
+      product {
         id
         name
-        posts {
-          items {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        unitPrice
+        type
+        productType
+        viewOrder
+        disabled
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          post {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      quantity
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const createComment = /* GraphQL */ `
-  mutation CreateComment(
-    $input: CreateCommentInput!
-    $condition: ModelCommentConditionInput
+export const deleteOrderProduct = /* GraphQL */ `
+  mutation DeleteOrderProduct(
+    $input: DeleteOrderProductInput!
+    $condition: ModelOrderProductConditionInput
   ) {
-    createComment(input: $input, condition: $condition) {
+    deleteOrderProduct(input: $input, condition: $condition) {
       id
-      postID
-      post {
+      orderID
+      productID
+      product {
         id
-        title
-        blogID
-        blog {
-          id
-          name
-          posts {
-            items {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
-        comments {
-          items {
-            id
-            postID
-            post {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            content
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        name
+        unitPrice
+        type
+        productType
+        viewOrder
+        disabled
         createdAt
         updatedAt
       }
-      content
+      quantity
       createdAt
       updatedAt
-    }
-  }
-`;
-export const updateComment = /* GraphQL */ `
-  mutation UpdateComment(
-    $input: UpdateCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    updateComment(input: $input, condition: $condition) {
-      id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          posts {
-            items {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
-        comments {
-          items {
-            id
-            postID
-            post {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            content
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteComment = /* GraphQL */ `
-  mutation DeleteComment(
-    $input: DeleteCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    deleteComment(input: $input, condition: $condition) {
-      id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          posts {
-            items {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
-        comments {
-          items {
-            id
-            postID
-            post {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            content
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
-      createdAt
-      updatedAt
+      owner
     }
   }
 `;

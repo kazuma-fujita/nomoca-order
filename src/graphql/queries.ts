@@ -2,284 +2,108 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getBlog = /* GraphQL */ `
-  query GetBlog($id: ID!) {
-    getBlog(id: $id) {
+export const getOrder = /* GraphQL */ `
+  query GetOrder($id: ID!) {
+    getOrder(id: $id) {
       id
-      name
-      posts {
+      type
+      orderType
+      staffID
+      products {
         items {
           id
-          title
-          blogID
-          blog {
+          orderID
+          productID
+          product {
             id
             name
-            posts {
-              nextToken
-            }
+            unitPrice
+            type
+            productType
+            viewOrder
+            disabled
             createdAt
             updatedAt
           }
-          comments {
-            items {
-              id
-              postID
-              content
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
+          quantity
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listBlogs = /* GraphQL */ `
-  query ListBlogs(
-    $filter: ModelBlogFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
+      staff {
         id
         name
-        posts {
-          items {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        type
+        viewOrder
+        disabled
         createdAt
         updatedAt
+        owner
       }
-      nextToken
-    }
-  }
-`;
-export const getPost = /* GraphQL */ `
-  query GetPost($id: ID!) {
-    getPost(id: $id) {
-      id
-      title
-      blogID
-      blog {
-        id
-        name
-        posts {
-          items {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      comments {
-        items {
-          id
-          postID
-          post {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      deliveryType
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const listPosts = /* GraphQL */ `
-  query ListPosts(
-    $filter: ModelPostFilterInput
+export const listOrders = /* GraphQL */ `
+  query ListOrders(
+    $filter: ModelOrderFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        blogID
-        blog {
-          id
-          name
-          posts {
-            items {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
-        comments {
+        type
+        orderType
+        staffID
+        products {
           items {
             id
-            postID
-            post {
+            orderID
+            productID
+            product {
               id
-              title
-              blogID
+              name
+              unitPrice
+              type
+              productType
+              viewOrder
+              disabled
               createdAt
               updatedAt
             }
-            content
+            quantity
             createdAt
             updatedAt
+            owner
           }
           nextToken
         }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
-      id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
+        staff {
           id
           name
-          posts {
-            items {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
+          type
+          viewOrder
+          disabled
           createdAt
           updatedAt
+          owner
         }
-        comments {
-          items {
-            id
-            postID
-            post {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            content
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        deliveryType
+        deliveryStartYear
+        deliveryStartMonth
+        deliveryInterval
         createdAt
         updatedAt
-      }
-      content
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        postID
-        post {
-          id
-          title
-          blogID
-          blog {
-            id
-            name
-            posts {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          comments {
-            items {
-              id
-              postID
-              content
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
-        content
-        createdAt
-        updatedAt
+        owner
       }
       nextToken
     }
@@ -456,6 +280,73 @@ export const listStaffs = /* GraphQL */ `
         type
         viewOrder
         disabled
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const listOrdersSortedByCreatedAt = /* GraphQL */ `
+  query ListOrdersSortedByCreatedAt(
+    $type: Type
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrdersSortedByCreatedAt(
+      type: $type
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        orderType
+        staffID
+        products {
+          items {
+            id
+            orderID
+            productID
+            product {
+              id
+              name
+              unitPrice
+              type
+              productType
+              viewOrder
+              disabled
+              createdAt
+              updatedAt
+            }
+            quantity
+            createdAt
+            updatedAt
+            owner
+          }
+          nextToken
+        }
+        staff {
+          id
+          name
+          type
+          viewOrder
+          disabled
+          createdAt
+          updatedAt
+          owner
+        }
+        deliveryType
+        deliveryStartYear
+        deliveryStartMonth
+        deliveryInterval
         createdAt
         updatedAt
         owner

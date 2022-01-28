@@ -5,20 +5,19 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { SubscriptionOrder } from 'API';
+import { Order } from 'API';
 import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
-import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription-orders/delete-subscription-order-button';
-import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
+import { DeleteSingleOrderButton } from 'components/organisms/single-orders/delete-single-order-button';
+import { UpdateSingleOrderButton } from 'components/organisms/single-orders/update-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { generateFormattedNextDeliveryYearMonth } from 'functions/delivery-dates/generate-next-delivery-year-month';
 import { FetchResponse } from 'hooks/swr/use-fetch';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useToggle } from 'react-use';
 import { useNowDate } from 'stores/use-now-date';
 import { TableHeader } from 'types/table-header';
-import { useCallback, useMemo } from 'react';
 
 const header: TableHeader[] = [
   {
@@ -74,29 +73,29 @@ const productHeader: TableHeader[] = [
   },
 ];
 
-export const SubscriptionOrderList = (props: FetchResponse<SubscriptionOrder[]>) => {
+export const SingleOrderList = (props: FetchResponse<Order[]>) => {
   const { data } = props;
   const { now } = useNowDate();
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
-      {data && data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} now={now} />)}
+      {data && data.map((item: Order) => <Row key={item.id} item={item} now={now} />)}
     </CommonTableContainer>
   );
 };
 
-type RowProps = {
-  item: SubscriptionOrder;
+type Props = {
+  item: Order;
   now: Date;
 };
 
-const Row = ({ item, now }: RowProps) => {
+const Row = ({ item, now }: Props) => {
   const [on, toggle] = useToggle(false);
   const formattedNextDeliveryDate = useMemo(
     () =>
       generateFormattedNextDeliveryYearMonth(
-        item.deliveryStartYear,
-        item.deliveryStartMonth,
-        item.deliveryInterval,
+        item.deliveryStartYear!,
+        item.deliveryStartMonth!,
+        item.deliveryInterval!,
         now.getFullYear(),
         now.getMonth() + 1,
       ),
@@ -119,10 +118,10 @@ const Row = ({ item, now }: RowProps) => {
         {item.products && (
           <>
             <StyledTableCell align='center'>
-              <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
+              <UpdateSingleOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
             </StyledTableCell>
             <StyledTableCell align='center'>
-              <DeleteSubscriptionOrderButton id={item.id} products={item.products} />
+              <DeleteSingleOrderButton id={item.id} products={item.products} />
             </StyledTableCell>
           </>
         )}

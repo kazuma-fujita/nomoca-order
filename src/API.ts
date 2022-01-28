@@ -2,19 +2,62 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateBlogInput = {
+export type CreateOrderInput = {
   id?: string | null,
-  name: string,
+  type: Type,
+  orderType: OrderType,
+  staffID: string,
+  deliveryType?: DeliveryType | null,
+  deliveryStartYear?: number | null,
+  deliveryStartMonth?: number | null,
+  deliveryInterval?: number | null,
+  createdAt?: string | null,
 };
 
-export type ModelBlogConditionInput = {
-  name?: ModelStringInput | null,
-  and?: Array< ModelBlogConditionInput | null > | null,
-  or?: Array< ModelBlogConditionInput | null > | null,
-  not?: ModelBlogConditionInput | null,
+export enum Type {
+  order = "order",
+  product = "product",
+  staff = "staff",
+}
+
+
+export enum OrderType {
+  singleOrder = "singleOrder",
+  subscriptionOrder = "subscriptionOrder",
+}
+
+
+export enum DeliveryType {
+  regular = "regular",
+  express = "express",
+}
+
+
+export type ModelOrderConditionInput = {
+  type?: ModelTypeInput | null,
+  orderType?: ModelOrderTypeInput | null,
+  staffID?: ModelIDInput | null,
+  deliveryType?: ModelDeliveryTypeInput | null,
+  deliveryStartYear?: ModelIntInput | null,
+  deliveryStartMonth?: ModelIntInput | null,
+  deliveryInterval?: ModelIntInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelOrderConditionInput | null > | null,
+  or?: Array< ModelOrderConditionInput | null > | null,
+  not?: ModelOrderConditionInput | null,
 };
 
-export type ModelStringInput = {
+export type ModelTypeInput = {
+  eq?: Type | null,
+  ne?: Type | null,
+};
+
+export type ModelOrderTypeInput = {
+  eq?: OrderType | null,
+  ne?: OrderType | null,
+};
+
+export type ModelIDInput = {
   ne?: string | null,
   eq?: string | null,
   le?: string | null,
@@ -54,72 +97,24 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type Blog = {
-  __typename: "Blog",
-  id: string,
-  name: string,
-  posts?: ModelPostConnection | null,
-  createdAt: string,
-  updatedAt: string,
+export type ModelDeliveryTypeInput = {
+  eq?: DeliveryType | null,
+  ne?: DeliveryType | null,
 };
 
-export type ModelPostConnection = {
-  __typename: "ModelPostConnection",
-  items:  Array<Post | null >,
-  nextToken?: string | null,
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
-export type Post = {
-  __typename: "Post",
-  id: string,
-  title: string,
-  blogID: string,
-  blog?: Blog | null,
-  comments?: ModelCommentConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelCommentConnection = {
-  __typename: "ModelCommentConnection",
-  items:  Array<Comment | null >,
-  nextToken?: string | null,
-};
-
-export type Comment = {
-  __typename: "Comment",
-  id: string,
-  postID: string,
-  post?: Post | null,
-  content: string,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type UpdateBlogInput = {
-  id: string,
-  name?: string | null,
-};
-
-export type DeleteBlogInput = {
-  id: string,
-};
-
-export type CreatePostInput = {
-  id?: string | null,
-  title: string,
-  blogID: string,
-};
-
-export type ModelPostConditionInput = {
-  title?: ModelStringInput | null,
-  blogID?: ModelIDInput | null,
-  and?: Array< ModelPostConditionInput | null > | null,
-  or?: Array< ModelPostConditionInput | null > | null,
-  not?: ModelPostConditionInput | null,
-};
-
-export type ModelIDInput = {
+export type ModelStringInput = {
   ne?: string | null,
   eq?: string | null,
   le?: string | null,
@@ -135,99 +130,33 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type UpdatePostInput = {
+export type Order = {
+  __typename: "Order",
   id: string,
-  title?: string | null,
-  blogID?: string | null,
-};
-
-export type DeletePostInput = {
-  id: string,
-};
-
-export type CreateCommentInput = {
-  id?: string | null,
-  postID: string,
-  content: string,
-};
-
-export type ModelCommentConditionInput = {
-  postID?: ModelIDInput | null,
-  content?: ModelStringInput | null,
-  and?: Array< ModelCommentConditionInput | null > | null,
-  or?: Array< ModelCommentConditionInput | null > | null,
-  not?: ModelCommentConditionInput | null,
-};
-
-export type UpdateCommentInput = {
-  id: string,
-  postID?: string | null,
-  content?: string | null,
-};
-
-export type DeleteCommentInput = {
-  id: string,
-};
-
-export type CreateSubscriptionOrderInput = {
-  id?: string | null,
+  type: Type,
+  orderType: OrderType,
   staffID: string,
-  type: string,
-  deliveryStartYear: number,
-  deliveryStartMonth: number,
-  deliveryInterval: number,
-  createdAt?: string | null,
-};
-
-export type ModelSubscriptionOrderConditionInput = {
-  staffID?: ModelIDInput | null,
-  type?: ModelStringInput | null,
-  deliveryStartYear?: ModelIntInput | null,
-  deliveryStartMonth?: ModelIntInput | null,
-  deliveryInterval?: ModelIntInput | null,
-  createdAt?: ModelStringInput | null,
-  and?: Array< ModelSubscriptionOrderConditionInput | null > | null,
-  or?: Array< ModelSubscriptionOrderConditionInput | null > | null,
-  not?: ModelSubscriptionOrderConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export type SubscriptionOrder = {
-  __typename: "SubscriptionOrder",
-  id: string,
-  staffID: string,
-  type: string,
-  products?: ModelSubscriptionOrderProductConnection | null,
+  products?: ModelOrderProductConnection | null,
   staff: Staff,
-  deliveryStartYear: number,
-  deliveryStartMonth: number,
-  deliveryInterval: number,
+  deliveryType?: DeliveryType | null,
+  deliveryStartYear?: number | null,
+  deliveryStartMonth?: number | null,
+  deliveryInterval?: number | null,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
 };
 
-export type ModelSubscriptionOrderProductConnection = {
-  __typename: "ModelSubscriptionOrderProductConnection",
-  items:  Array<SubscriptionOrderProduct | null >,
+export type ModelOrderProductConnection = {
+  __typename: "ModelOrderProductConnection",
+  items:  Array<OrderProduct | null >,
   nextToken?: string | null,
 };
 
-export type SubscriptionOrderProduct = {
-  __typename: "SubscriptionOrderProduct",
+export type OrderProduct = {
+  __typename: "OrderProduct",
   id: string,
-  subscriptionOrderID: string,
+  orderID: string,
   productID: string,
   product: Product,
   quantity: number,
@@ -262,6 +191,104 @@ export type Staff = {
   type: string,
   viewOrder: number,
   disabled: boolean,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type UpdateOrderInput = {
+  id: string,
+  type?: Type | null,
+  orderType?: OrderType | null,
+  staffID?: string | null,
+  deliveryType?: DeliveryType | null,
+  deliveryStartYear?: number | null,
+  deliveryStartMonth?: number | null,
+  deliveryInterval?: number | null,
+  createdAt?: string | null,
+};
+
+export type DeleteOrderInput = {
+  id: string,
+};
+
+export type CreateOrderProductInput = {
+  id?: string | null,
+  orderID: string,
+  productID: string,
+  quantity: number,
+};
+
+export type ModelOrderProductConditionInput = {
+  orderID?: ModelIDInput | null,
+  productID?: ModelIDInput | null,
+  quantity?: ModelIntInput | null,
+  and?: Array< ModelOrderProductConditionInput | null > | null,
+  or?: Array< ModelOrderProductConditionInput | null > | null,
+  not?: ModelOrderProductConditionInput | null,
+};
+
+export type UpdateOrderProductInput = {
+  id: string,
+  orderID?: string | null,
+  productID?: string | null,
+  quantity?: number | null,
+};
+
+export type DeleteOrderProductInput = {
+  id: string,
+};
+
+export type CreateSubscriptionOrderInput = {
+  id?: string | null,
+  staffID: string,
+  type: string,
+  deliveryStartYear: number,
+  deliveryStartMonth: number,
+  deliveryInterval: number,
+  createdAt?: string | null,
+};
+
+export type ModelSubscriptionOrderConditionInput = {
+  staffID?: ModelIDInput | null,
+  type?: ModelStringInput | null,
+  deliveryStartYear?: ModelIntInput | null,
+  deliveryStartMonth?: ModelIntInput | null,
+  deliveryInterval?: ModelIntInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelSubscriptionOrderConditionInput | null > | null,
+  or?: Array< ModelSubscriptionOrderConditionInput | null > | null,
+  not?: ModelSubscriptionOrderConditionInput | null,
+};
+
+export type SubscriptionOrder = {
+  __typename: "SubscriptionOrder",
+  id: string,
+  staffID: string,
+  type: string,
+  products?: ModelSubscriptionOrderProductConnection | null,
+  staff: Staff,
+  deliveryStartYear: number,
+  deliveryStartMonth: number,
+  deliveryInterval: number,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type ModelSubscriptionOrderProductConnection = {
+  __typename: "ModelSubscriptionOrderProductConnection",
+  items:  Array<SubscriptionOrderProduct | null >,
+  nextToken?: string | null,
+};
+
+export type SubscriptionOrderProduct = {
+  __typename: "SubscriptionOrderProduct",
+  id: string,
+  subscriptionOrderID: string,
+  productID: string,
+  product: Product,
+  quantity: number,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -386,36 +413,25 @@ export type DeleteStaffInput = {
   id: string,
 };
 
-export type ModelBlogFilterInput = {
+export type ModelOrderFilterInput = {
   id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  and?: Array< ModelBlogFilterInput | null > | null,
-  or?: Array< ModelBlogFilterInput | null > | null,
-  not?: ModelBlogFilterInput | null,
+  type?: ModelTypeInput | null,
+  orderType?: ModelOrderTypeInput | null,
+  staffID?: ModelIDInput | null,
+  deliveryType?: ModelDeliveryTypeInput | null,
+  deliveryStartYear?: ModelIntInput | null,
+  deliveryStartMonth?: ModelIntInput | null,
+  deliveryInterval?: ModelIntInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelOrderFilterInput | null > | null,
+  or?: Array< ModelOrderFilterInput | null > | null,
+  not?: ModelOrderFilterInput | null,
 };
 
-export type ModelBlogConnection = {
-  __typename: "ModelBlogConnection",
-  items:  Array<Blog | null >,
+export type ModelOrderConnection = {
+  __typename: "ModelOrderConnection",
+  items:  Array<Order | null >,
   nextToken?: string | null,
-};
-
-export type ModelPostFilterInput = {
-  id?: ModelIDInput | null,
-  title?: ModelStringInput | null,
-  blogID?: ModelIDInput | null,
-  and?: Array< ModelPostFilterInput | null > | null,
-  or?: Array< ModelPostFilterInput | null > | null,
-  not?: ModelPostFilterInput | null,
-};
-
-export type ModelCommentFilterInput = {
-  id?: ModelIDInput | null,
-  postID?: ModelIDInput | null,
-  content?: ModelStringInput | null,
-  and?: Array< ModelCommentFilterInput | null > | null,
-  or?: Array< ModelCommentFilterInput | null > | null,
-  not?: ModelCommentFilterInput | null,
 };
 
 export type ModelSubscriptionOrderFilterInput = {
@@ -498,573 +514,270 @@ export type ModelIntKeyConditionInput = {
   between?: Array< number | null > | null,
 };
 
-export type CreateBlogMutationVariables = {
-  input: CreateBlogInput,
-  condition?: ModelBlogConditionInput | null,
+export type CreateOrderMutationVariables = {
+  input: CreateOrderInput,
+  condition?: ModelOrderConditionInput | null,
 };
 
-export type CreateBlogMutation = {
-  createBlog?:  {
-    __typename: "Blog",
+export type CreateOrderMutation = {
+  createOrder?:  {
+    __typename: "Order",
     id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    type: Type,
+    orderType: OrderType,
+    staffID: string,
+    products?:  {
+      __typename: "ModelOrderProductConnection",
       items:  Array< {
-        __typename: "Post",
+        __typename: "OrderProduct",
         id: string,
-        title: string,
-        blogID: string,
-        blog?:  {
-          __typename: "Blog",
+        orderID: string,
+        productID: string,
+        product:  {
+          __typename: "Product",
           id: string,
           name: string,
-          posts?:  {
-            __typename: "ModelPostConnection",
-            nextToken?: string | null,
-          } | null,
+          unitPrice: number,
+          type: string,
+          productType: ProductType,
+          viewOrder: number,
+          disabled: boolean,
           createdAt: string,
           updatedAt: string,
-        } | null,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items:  Array< {
-            __typename: "Comment",
-            id: string,
-            postID: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
+        },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryType?: DeliveryType | null,
+    deliveryStartYear?: number | null,
+    deliveryStartMonth?: number | null,
+    deliveryInterval?: number | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type UpdateBlogMutationVariables = {
-  input: UpdateBlogInput,
-  condition?: ModelBlogConditionInput | null,
+export type UpdateOrderMutationVariables = {
+  input: UpdateOrderInput,
+  condition?: ModelOrderConditionInput | null,
 };
 
-export type UpdateBlogMutation = {
-  updateBlog?:  {
-    __typename: "Blog",
+export type UpdateOrderMutation = {
+  updateOrder?:  {
+    __typename: "Order",
     id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    type: Type,
+    orderType: OrderType,
+    staffID: string,
+    products?:  {
+      __typename: "ModelOrderProductConnection",
       items:  Array< {
-        __typename: "Post",
+        __typename: "OrderProduct",
         id: string,
-        title: string,
-        blogID: string,
-        blog?:  {
-          __typename: "Blog",
+        orderID: string,
+        productID: string,
+        product:  {
+          __typename: "Product",
           id: string,
           name: string,
-          posts?:  {
-            __typename: "ModelPostConnection",
-            nextToken?: string | null,
-          } | null,
+          unitPrice: number,
+          type: string,
+          productType: ProductType,
+          viewOrder: number,
+          disabled: boolean,
           createdAt: string,
           updatedAt: string,
-        } | null,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items:  Array< {
-            __typename: "Comment",
-            id: string,
-            postID: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
+        },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryType?: DeliveryType | null,
+    deliveryStartYear?: number | null,
+    deliveryStartMonth?: number | null,
+    deliveryInterval?: number | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type DeleteBlogMutationVariables = {
-  input: DeleteBlogInput,
-  condition?: ModelBlogConditionInput | null,
+export type DeleteOrderMutationVariables = {
+  input: DeleteOrderInput,
+  condition?: ModelOrderConditionInput | null,
 };
 
-export type DeleteBlogMutation = {
-  deleteBlog?:  {
-    __typename: "Blog",
+export type DeleteOrderMutation = {
+  deleteOrder?:  {
+    __typename: "Order",
     id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    type: Type,
+    orderType: OrderType,
+    staffID: string,
+    products?:  {
+      __typename: "ModelOrderProductConnection",
       items:  Array< {
-        __typename: "Post",
+        __typename: "OrderProduct",
         id: string,
-        title: string,
-        blogID: string,
-        blog?:  {
-          __typename: "Blog",
+        orderID: string,
+        productID: string,
+        product:  {
+          __typename: "Product",
           id: string,
           name: string,
-          posts?:  {
-            __typename: "ModelPostConnection",
-            nextToken?: string | null,
-          } | null,
+          unitPrice: number,
+          type: string,
+          productType: ProductType,
+          viewOrder: number,
+          disabled: boolean,
           createdAt: string,
           updatedAt: string,
-        } | null,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items:  Array< {
-            __typename: "Comment",
-            id: string,
-            postID: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
+        },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreatePostMutationVariables = {
-  input: CreatePostInput,
-  condition?: ModelPostConditionInput | null,
-};
-
-export type CreatePostMutation = {
-  createPost?:  {
-    __typename: "Post",
-    id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    staff:  {
+      __typename: "Staff",
       id: string,
       name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        items:  Array< {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        postID: string,
-        post?:  {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+      owner?: string | null,
+    },
+    deliveryType?: DeliveryType | null,
+    deliveryStartYear?: number | null,
+    deliveryStartMonth?: number | null,
+    deliveryInterval?: number | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type UpdatePostMutationVariables = {
-  input: UpdatePostInput,
-  condition?: ModelPostConditionInput | null,
+export type CreateOrderProductMutationVariables = {
+  input: CreateOrderProductInput,
+  condition?: ModelOrderProductConditionInput | null,
 };
 
-export type UpdatePostMutation = {
-  updatePost?:  {
-    __typename: "Post",
+export type CreateOrderProductMutation = {
+  createOrderProduct?:  {
+    __typename: "OrderProduct",
     id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    orderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
       id: string,
       name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        items:  Array< {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      unitPrice: number,
+      type: string,
+      productType: ProductType,
+      viewOrder: number,
+      disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        postID: string,
-        post?:  {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type DeletePostMutationVariables = {
-  input: DeletePostInput,
-  condition?: ModelPostConditionInput | null,
+export type UpdateOrderProductMutationVariables = {
+  input: UpdateOrderProductInput,
+  condition?: ModelOrderProductConditionInput | null,
 };
 
-export type DeletePostMutation = {
-  deletePost?:  {
-    __typename: "Post",
+export type UpdateOrderProductMutation = {
+  updateOrderProduct?:  {
+    __typename: "OrderProduct",
     id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    orderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
       id: string,
       name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        items:  Array< {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      unitPrice: number,
+      type: string,
+      productType: ProductType,
+      viewOrder: number,
+      disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        postID: string,
-        post?:  {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type CreateCommentMutationVariables = {
-  input: CreateCommentInput,
-  condition?: ModelCommentConditionInput | null,
+export type DeleteOrderProductMutationVariables = {
+  input: DeleteOrderProductInput,
+  condition?: ModelOrderProductConditionInput | null,
 };
 
-export type CreateCommentMutation = {
-  createComment?:  {
-    __typename: "Comment",
+export type DeleteOrderProductMutation = {
+  deleteOrderProduct?:  {
+    __typename: "OrderProduct",
     id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
+    orderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
-        id: string,
-        name: string,
-        posts?:  {
-          __typename: "ModelPostConnection",
-          items:  Array< {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        items:  Array< {
-          __typename: "Comment",
-          id: string,
-          postID: string,
-          post?:  {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          content: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      name: string,
+      unitPrice: number,
+      type: string,
+      productType: ProductType,
+      viewOrder: number,
+      disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    content: string,
+    },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type UpdateCommentMutationVariables = {
-  input: UpdateCommentInput,
-  condition?: ModelCommentConditionInput | null,
-};
-
-export type UpdateCommentMutation = {
-  updateComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
-      id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
-        id: string,
-        name: string,
-        posts?:  {
-          __typename: "ModelPostConnection",
-          items:  Array< {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        items:  Array< {
-          __typename: "Comment",
-          id: string,
-          postID: string,
-          post?:  {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          content: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteCommentMutationVariables = {
-  input: DeleteCommentInput,
-  condition?: ModelCommentConditionInput | null,
-};
-
-export type DeleteCommentMutation = {
-  deleteComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
-      id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
-        id: string,
-        name: string,
-        posts?:  {
-          __typename: "ModelPostConnection",
-          items:  Array< {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        items:  Array< {
-          __typename: "Comment",
-          id: string,
-          postID: string,
-          post?:  {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          content: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -1446,343 +1159,123 @@ export type DeleteStaffMutation = {
   } | null,
 };
 
-export type GetBlogQueryVariables = {
+export type GetOrderQueryVariables = {
   id: string,
 };
 
-export type GetBlogQuery = {
-  getBlog?:  {
-    __typename: "Blog",
+export type GetOrderQuery = {
+  getOrder?:  {
+    __typename: "Order",
     id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    type: Type,
+    orderType: OrderType,
+    staffID: string,
+    products?:  {
+      __typename: "ModelOrderProductConnection",
       items:  Array< {
-        __typename: "Post",
+        __typename: "OrderProduct",
         id: string,
-        title: string,
-        blogID: string,
-        blog?:  {
-          __typename: "Blog",
+        orderID: string,
+        productID: string,
+        product:  {
+          __typename: "Product",
           id: string,
           name: string,
-          posts?:  {
-            __typename: "ModelPostConnection",
-            nextToken?: string | null,
-          } | null,
+          unitPrice: number,
+          type: string,
+          productType: ProductType,
+          viewOrder: number,
+          disabled: boolean,
           createdAt: string,
           updatedAt: string,
-        } | null,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items:  Array< {
-            __typename: "Comment",
-            id: string,
-            postID: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
+        },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListBlogsQueryVariables = {
-  filter?: ModelBlogFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListBlogsQuery = {
-  listBlogs?:  {
-    __typename: "ModelBlogConnection",
-    items:  Array< {
-      __typename: "Blog",
+    staff:  {
+      __typename: "Staff",
       id: string,
       name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        items:  Array< {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetPostQueryVariables = {
-  id: string,
-};
-
-export type GetPostQuery = {
-  getPost?:  {
-    __typename: "Post",
-    id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
-      id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        items:  Array< {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        postID: string,
-        post?:  {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+      owner?: string | null,
+    },
+    deliveryType?: DeliveryType | null,
+    deliveryStartYear?: number | null,
+    deliveryStartMonth?: number | null,
+    deliveryInterval?: number | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type ListPostsQueryVariables = {
-  filter?: ModelPostFilterInput | null,
+export type ListOrdersQueryVariables = {
+  filter?: ModelOrderFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListPostsQuery = {
-  listPosts?:  {
-    __typename: "ModelPostConnection",
+export type ListOrdersQuery = {
+  listOrders?:  {
+    __typename: "ModelOrderConnection",
     items:  Array< {
-      __typename: "Post",
+      __typename: "Order",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
-        id: string,
-        name: string,
-        posts?:  {
-          __typename: "ModelPostConnection",
-          items:  Array< {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
+      type: Type,
+      orderType: OrderType,
+      staffID: string,
+      products?:  {
+        __typename: "ModelOrderProductConnection",
         items:  Array< {
-          __typename: "Comment",
+          __typename: "OrderProduct",
           id: string,
-          postID: string,
-          post?:  {
-            __typename: "Post",
+          orderID: string,
+          productID: string,
+          product:  {
+            __typename: "Product",
             id: string,
-            title: string,
-            blogID: string,
+            name: string,
+            unitPrice: number,
+            type: string,
+            productType: ProductType,
+            viewOrder: number,
+            disabled: boolean,
             createdAt: string,
             updatedAt: string,
-          } | null,
-          content: string,
+          },
+          quantity: number,
           createdAt: string,
           updatedAt: string,
+          owner?: string | null,
         } | null >,
         nextToken?: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetCommentQueryVariables = {
-  id: string,
-};
-
-export type GetCommentQuery = {
-  getComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
-      id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
+      staff:  {
+        __typename: "Staff",
         id: string,
         name: string,
-        posts?:  {
-          __typename: "ModelPostConnection",
-          items:  Array< {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
+        type: string,
+        viewOrder: number,
+        disabled: boolean,
         createdAt: string,
         updatedAt: string,
-      } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        items:  Array< {
-          __typename: "Comment",
-          id: string,
-          postID: string,
-          post?:  {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          content: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+        owner?: string | null,
+      },
+      deliveryType?: DeliveryType | null,
+      deliveryStartYear?: number | null,
+      deliveryStartMonth?: number | null,
+      deliveryInterval?: number | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListCommentsQueryVariables = {
-  filter?: ModelCommentFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListCommentsQuery = {
-  listComments?:  {
-    __typename: "ModelCommentConnection",
-    items:  Array< {
-      __typename: "Comment",
-      id: string,
-      postID: string,
-      post?:  {
-        __typename: "Post",
-        id: string,
-        title: string,
-        blogID: string,
-        blog?:  {
-          __typename: "Blog",
-          id: string,
-          name: string,
-          posts?:  {
-            __typename: "ModelPostConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items:  Array< {
-            __typename: "Comment",
-            id: string,
-            postID: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      content: string,
-      createdAt: string,
-      updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1992,6 +1485,73 @@ export type ListStaffsQuery = {
   } | null,
 };
 
+export type ListOrdersSortedByCreatedAtQueryVariables = {
+  type?: Type | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOrdersSortedByCreatedAtQuery = {
+  listOrdersSortedByCreatedAt?:  {
+    __typename: "ModelOrderConnection",
+    items:  Array< {
+      __typename: "Order",
+      id: string,
+      type: Type,
+      orderType: OrderType,
+      staffID: string,
+      products?:  {
+        __typename: "ModelOrderProductConnection",
+        items:  Array< {
+          __typename: "OrderProduct",
+          id: string,
+          orderID: string,
+          productID: string,
+          product:  {
+            __typename: "Product",
+            id: string,
+            name: string,
+            unitPrice: number,
+            type: string,
+            productType: ProductType,
+            viewOrder: number,
+            disabled: boolean,
+            createdAt: string,
+            updatedAt: string,
+          },
+          quantity: number,
+          createdAt: string,
+          updatedAt: string,
+          owner?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
+      staff:  {
+        __typename: "Staff",
+        id: string,
+        name: string,
+        type: string,
+        viewOrder: number,
+        disabled: boolean,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      deliveryType?: DeliveryType | null,
+      deliveryStartYear?: number | null,
+      deliveryStartMonth?: number | null,
+      deliveryInterval?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
   type?: string | null,
   createdAt?: ModelStringKeyConditionInput | null,
@@ -2112,528 +1672,264 @@ export type ListStaffsSortedByViewOrderQuery = {
   } | null,
 };
 
-export type OnCreateBlogSubscription = {
-  onCreateBlog?:  {
-    __typename: "Blog",
+export type OnCreateOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateOrderSubscription = {
+  onCreateOrder?:  {
+    __typename: "Order",
     id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    type: Type,
+    orderType: OrderType,
+    staffID: string,
+    products?:  {
+      __typename: "ModelOrderProductConnection",
       items:  Array< {
-        __typename: "Post",
+        __typename: "OrderProduct",
         id: string,
-        title: string,
-        blogID: string,
-        blog?:  {
-          __typename: "Blog",
+        orderID: string,
+        productID: string,
+        product:  {
+          __typename: "Product",
           id: string,
           name: string,
-          posts?:  {
-            __typename: "ModelPostConnection",
-            nextToken?: string | null,
-          } | null,
+          unitPrice: number,
+          type: string,
+          productType: ProductType,
+          viewOrder: number,
+          disabled: boolean,
           createdAt: string,
           updatedAt: string,
-        } | null,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items:  Array< {
-            __typename: "Comment",
-            id: string,
-            postID: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
+        },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryType?: DeliveryType | null,
+    deliveryStartYear?: number | null,
+    deliveryStartMonth?: number | null,
+    deliveryInterval?: number | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type OnUpdateBlogSubscription = {
-  onUpdateBlog?:  {
-    __typename: "Blog",
+export type OnUpdateOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateOrderSubscription = {
+  onUpdateOrder?:  {
+    __typename: "Order",
     id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    type: Type,
+    orderType: OrderType,
+    staffID: string,
+    products?:  {
+      __typename: "ModelOrderProductConnection",
       items:  Array< {
-        __typename: "Post",
+        __typename: "OrderProduct",
         id: string,
-        title: string,
-        blogID: string,
-        blog?:  {
-          __typename: "Blog",
+        orderID: string,
+        productID: string,
+        product:  {
+          __typename: "Product",
           id: string,
           name: string,
-          posts?:  {
-            __typename: "ModelPostConnection",
-            nextToken?: string | null,
-          } | null,
+          unitPrice: number,
+          type: string,
+          productType: ProductType,
+          viewOrder: number,
+          disabled: boolean,
           createdAt: string,
           updatedAt: string,
-        } | null,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items:  Array< {
-            __typename: "Comment",
-            id: string,
-            postID: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
+        },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      name: string,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryType?: DeliveryType | null,
+    deliveryStartYear?: number | null,
+    deliveryStartMonth?: number | null,
+    deliveryInterval?: number | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type OnDeleteBlogSubscription = {
-  onDeleteBlog?:  {
-    __typename: "Blog",
+export type OnDeleteOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteOrderSubscription = {
+  onDeleteOrder?:  {
+    __typename: "Order",
     id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    type: Type,
+    orderType: OrderType,
+    staffID: string,
+    products?:  {
+      __typename: "ModelOrderProductConnection",
       items:  Array< {
-        __typename: "Post",
+        __typename: "OrderProduct",
         id: string,
-        title: string,
-        blogID: string,
-        blog?:  {
-          __typename: "Blog",
+        orderID: string,
+        productID: string,
+        product:  {
+          __typename: "Product",
           id: string,
           name: string,
-          posts?:  {
-            __typename: "ModelPostConnection",
-            nextToken?: string | null,
-          } | null,
+          unitPrice: number,
+          type: string,
+          productType: ProductType,
+          viewOrder: number,
+          disabled: boolean,
           createdAt: string,
           updatedAt: string,
-        } | null,
-        comments?:  {
-          __typename: "ModelCommentConnection",
-          items:  Array< {
-            __typename: "Comment",
-            id: string,
-            postID: string,
-            content: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
+        },
+        quantity: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreatePostSubscription = {
-  onCreatePost?:  {
-    __typename: "Post",
-    id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    staff:  {
+      __typename: "Staff",
       id: string,
       name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        items:  Array< {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      type: string,
+      viewOrder: number,
+      disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        postID: string,
-        post?:  {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+      owner?: string | null,
+    },
+    deliveryType?: DeliveryType | null,
+    deliveryStartYear?: number | null,
+    deliveryStartMonth?: number | null,
+    deliveryInterval?: number | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type OnUpdatePostSubscription = {
-  onUpdatePost?:  {
-    __typename: "Post",
+export type OnCreateOrderProductSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateOrderProductSubscription = {
+  onCreateOrderProduct?:  {
+    __typename: "OrderProduct",
     id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    orderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
       id: string,
       name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        items:  Array< {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      unitPrice: number,
+      type: string,
+      productType: ProductType,
+      viewOrder: number,
+      disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        postID: string,
-        post?:  {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type OnDeletePostSubscription = {
-  onDeletePost?:  {
-    __typename: "Post",
+export type OnUpdateOrderProductSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateOrderProductSubscription = {
+  onUpdateOrderProduct?:  {
+    __typename: "OrderProduct",
     id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    orderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
       id: string,
       name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        items:  Array< {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      unitPrice: number,
+      type: string,
+      productType: ProductType,
+      viewOrder: number,
+      disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        postID: string,
-        post?:  {
-          __typename: "Post",
-          id: string,
-          title: string,
-          blogID: string,
-          blog?:  {
-            __typename: "Blog",
-            id: string,
-            name: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          comments?:  {
-            __typename: "ModelCommentConnection",
-            nextToken?: string | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type OnCreateCommentSubscription = {
-  onCreateComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
-      id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
-        id: string,
-        name: string,
-        posts?:  {
-          __typename: "ModelPostConnection",
-          items:  Array< {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        items:  Array< {
-          __typename: "Comment",
-          id: string,
-          postID: string,
-          post?:  {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          content: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
+export type OnDeleteOrderProductSubscriptionVariables = {
+  owner?: string | null,
 };
 
-export type OnUpdateCommentSubscription = {
-  onUpdateComment?:  {
-    __typename: "Comment",
+export type OnDeleteOrderProductSubscription = {
+  onDeleteOrderProduct?:  {
+    __typename: "OrderProduct",
     id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
+    orderID: string,
+    productID: string,
+    product:  {
+      __typename: "Product",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
-        id: string,
-        name: string,
-        posts?:  {
-          __typename: "ModelPostConnection",
-          items:  Array< {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        items:  Array< {
-          __typename: "Comment",
-          id: string,
-          postID: string,
-          post?:  {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          content: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      name: string,
+      unitPrice: number,
+      type: string,
+      productType: ProductType,
+      viewOrder: number,
+      disabled: boolean,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    content: string,
+    },
+    quantity: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteCommentSubscription = {
-  onDeleteComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
-      id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
-        id: string,
-        name: string,
-        posts?:  {
-          __typename: "ModelPostConnection",
-          items:  Array< {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null >,
-          nextToken?: string | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        items:  Array< {
-          __typename: "Comment",
-          id: string,
-          postID: string,
-          post?:  {
-            __typename: "Post",
-            id: string,
-            title: string,
-            blogID: string,
-            createdAt: string,
-            updatedAt: string,
-          } | null,
-          content: string,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    content: string,
-    createdAt: string,
-    updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 

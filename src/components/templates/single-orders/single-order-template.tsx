@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { CreateSubscriptionOrderButton } from 'components/organisms/subscription-orders/create-subscription-order/create-subscription-order-button';
+import { CreateSingleOrderButton } from 'components/organisms/single-orders/create-single-order/create-single-order-button';
 import { ReactElement } from 'react';
 
 type Props = {
@@ -10,7 +10,7 @@ export const SingleOrderTemplate = ({ listComponent }: Props) => (
   <Grid container spacing={2} direction='column'>
     <Grid item>
       <Grid container justifyContent='flex-end'>
-        <CreateSubscriptionOrderButton />
+        <CreateSingleOrderButton />
       </Grid>
     </Grid>
     <Grid item>

@@ -5,7 +5,7 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { SubscriptionOrder } from 'API';
+import { SubscriptionOrder, Order } from 'API';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
@@ -13,7 +13,15 @@ import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
 import { TableHeader } from 'types/table-header';
 
-type Props = FetchResponse<SubscriptionOrder[]> & {
+// type Props = FetchResponse<SubscriptionOrder[]> & {
+//   tableHeaders: TableHeader[];
+//   emptyListDescription: string;
+// };
+
+type Props = {
+  error: Error | null;
+  isLoading: boolean;
+  isEmptyList: boolean;
   tableHeaders: TableHeader[];
   emptyListDescription: string;
 };

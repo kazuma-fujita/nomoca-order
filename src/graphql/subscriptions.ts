@@ -2,459 +2,225 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateBlog = /* GraphQL */ `
-  subscription OnCreateBlog {
-    onCreateBlog {
+export const onCreateOrder = /* GraphQL */ `
+  subscription OnCreateOrder($owner: String) {
+    onCreateOrder(owner: $owner) {
       id
-      name
-      posts {
+      type
+      orderType
+      staffID
+      products {
         items {
           id
-          title
-          blogID
-          blog {
+          orderID
+          productID
+          product {
             id
             name
-            posts {
-              nextToken
-            }
+            unitPrice
+            type
+            productType
+            viewOrder
+            disabled
             createdAt
             updatedAt
           }
-          comments {
-            items {
-              id
-              postID
-              content
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
+          quantity
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
+      staff {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryType
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const onUpdateBlog = /* GraphQL */ `
-  subscription OnUpdateBlog {
-    onUpdateBlog {
+export const onUpdateOrder = /* GraphQL */ `
+  subscription OnUpdateOrder($owner: String) {
+    onUpdateOrder(owner: $owner) {
       id
-      name
-      posts {
+      type
+      orderType
+      staffID
+      products {
         items {
           id
-          title
-          blogID
-          blog {
+          orderID
+          productID
+          product {
             id
             name
-            posts {
-              nextToken
-            }
+            unitPrice
+            type
+            productType
+            viewOrder
+            disabled
             createdAt
             updatedAt
           }
-          comments {
-            items {
-              id
-              postID
-              content
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
+          quantity
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
+      staff {
+        id
+        name
+        type
+        viewOrder
+        disabled
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryType
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const onDeleteBlog = /* GraphQL */ `
-  subscription OnDeleteBlog {
-    onDeleteBlog {
+export const onDeleteOrder = /* GraphQL */ `
+  subscription OnDeleteOrder($owner: String) {
+    onDeleteOrder(owner: $owner) {
       id
-      name
-      posts {
+      type
+      orderType
+      staffID
+      products {
         items {
           id
-          title
-          blogID
-          blog {
+          orderID
+          productID
+          product {
             id
             name
-            posts {
-              nextToken
-            }
+            unitPrice
+            type
+            productType
+            viewOrder
+            disabled
             createdAt
             updatedAt
           }
-          comments {
-            items {
-              id
-              postID
-              content
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
+          quantity
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost {
-    onCreatePost {
-      id
-      title
-      blogID
-      blog {
+      staff {
         id
         name
-        posts {
-          items {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        type
+        viewOrder
+        disabled
         createdAt
         updatedAt
+        owner
       }
-      comments {
-        items {
-          id
-          postID
-          post {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      deliveryType
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost {
-    onUpdatePost {
+export const onCreateOrderProduct = /* GraphQL */ `
+  subscription OnCreateOrderProduct($owner: String) {
+    onCreateOrderProduct(owner: $owner) {
       id
-      title
-      blogID
-      blog {
+      orderID
+      productID
+      product {
         id
         name
-        posts {
-          items {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        unitPrice
+        type
+        productType
+        viewOrder
+        disabled
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          post {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      quantity
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost {
-    onDeletePost {
+export const onUpdateOrderProduct = /* GraphQL */ `
+  subscription OnUpdateOrderProduct($owner: String) {
+    onUpdateOrderProduct(owner: $owner) {
       id
-      title
-      blogID
-      blog {
+      orderID
+      productID
+      product {
         id
         name
-        posts {
-          items {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        unitPrice
+        type
+        productType
+        viewOrder
+        disabled
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          post {
-            id
-            title
-            blogID
-            blog {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            comments {
-              nextToken
-            }
-            createdAt
-            updatedAt
-          }
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      quantity
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment {
-    onCreateComment {
+export const onDeleteOrderProduct = /* GraphQL */ `
+  subscription OnDeleteOrderProduct($owner: String) {
+    onDeleteOrderProduct(owner: $owner) {
       id
-      postID
-      post {
+      orderID
+      productID
+      product {
         id
-        title
-        blogID
-        blog {
-          id
-          name
-          posts {
-            items {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
-        comments {
-          items {
-            id
-            postID
-            post {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            content
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
+        name
+        unitPrice
+        type
+        productType
+        viewOrder
+        disabled
         createdAt
         updatedAt
       }
-      content
+      quantity
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment {
-    onUpdateComment {
-      id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          posts {
-            items {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
-        comments {
-          items {
-            id
-            postID
-            post {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            content
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment {
-    onDeleteComment {
-      id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          posts {
-            items {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
-        comments {
-          items {
-            id
-            postID
-            post {
-              id
-              title
-              blogID
-              createdAt
-              updatedAt
-            }
-            content
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
-      createdAt
-      updatedAt
+      owner
     }
   }
 `;
