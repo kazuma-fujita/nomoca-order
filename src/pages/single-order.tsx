@@ -13,6 +13,10 @@ import Link from 'components/atoms/link';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { StaffListContextProvider } from 'stores/use-staff-list';
 import { OrderType } from 'API';
+import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
+import { InputSingleOrderContainer } from 'components/organisms/single-orders/input-single-order/input-single-order-container';
+import { SingleOrderListContainer } from 'components/organisms/single-orders/single-order-list/single-order-list-container';
+import { SingleOrderTemplateContainer } from 'components/templates/single-orders/single-order-template-container';
 
 const List = () => {
   return (
@@ -71,9 +75,9 @@ type Props = {
 const Component = ({ currentScreen }: Props) => {
   switch (currentScreen) {
     case undefined:
-      return <List />;
+      return <SingleOrderTemplateContainer />;
     case 'input':
-      return <Input />;
+      return <InputSingleOrderContainer />;
     case 'confirm':
       return <Confirm />;
     case 'complete':
@@ -99,9 +103,11 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       <ProductListContextProvider orderType={OrderType.singleOrder} isFilterByActiveProduct={true}>
         <StaffListContextProvider isFilterByActiveStaff={true}>
           <NowDateContextProvider now={new Date()}>
-            <Main>
-              <Component currentScreen={router.query.screen} />
-            </Main>
+            <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
+              <Main>
+                <Component currentScreen={router.query.screen} />
+              </Main>
+            </OrderFormParamContextProvider>
           </NowDateContextProvider>
         </StaffListContextProvider>
       </ProductListContextProvider>

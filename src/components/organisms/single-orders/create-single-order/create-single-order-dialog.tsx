@@ -2,7 +2,6 @@ import { Add } from '@mui/icons-material';
 import { Order } from 'API';
 import { BaseSyntheticEvent } from 'react';
 import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
-import { InputSingleOrderDialog } from '../input-single-order-dialog';
 
 export type Props = {
   formReturn: UseFormReturn<Order, object>;
@@ -26,16 +25,17 @@ export const CreateSingleOrderDialog = ({
   const label = '申し込む';
 
   return (
-    <InputSingleOrderDialog
-      label={label}
-      startIcon={<Add />}
-      on={on}
-      isLoading={isLoading}
-      error={error}
-      submitHandler={submitHandler}
-      cancelHandler={cancelHandler}
-      formReturn={formReturn}
-      fieldArrayReturn={fieldArrayReturn}
-    />
+    <></>
+    // <InputSingleOrderDialog
+    //   label={label}
+    //   startIcon={<Add />}
+    //   on={on}
+    //   isLoading={isLoading}
+    //   error={error}
+    //   submitHandler={submitHandler}
+    //   cancelHandler={cancelHandler}
+    //   formReturn={formReturn}
+    //   fieldArrayReturn={fieldArrayReturn}
+    // />
   );
 };

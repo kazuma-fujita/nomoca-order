@@ -21,7 +21,7 @@ export const ProductUnitPriceTextField: React.FC<Props> = ({ formState, register
       autoComplete='off'
       margin='dense'
       fullWidth
-      autoFocus
+      // autoFocus
       disabled={disabled}
       defaultValue={unitPrice ?? 0}
       inputProps={{

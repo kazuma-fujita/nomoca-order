@@ -29,7 +29,7 @@ export const useCreateProduct = () => {
         // sort対象のviewOrderは配列長 + 1を設定
         const product: CreateProductInput = {
           name: name,
-          unitPrice: unitPrice,
+          unitPrice: Number(unitPrice),
           viewOrder: data.length + 1,
           type: Type.product,
           orderType: orderType,

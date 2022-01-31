@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useNowDate } from 'stores/use-now-date';
 import { CreateSingleOrderDialog } from './create-single-order-dialog';
-import { addYearWithSelectedMonth } from '../input-single-order-dialog';
+import { addYearWithSelectedMonth } from '../input-single-order/input-single-order';
 
 type Props = {
   on: boolean;

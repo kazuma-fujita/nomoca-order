@@ -35,7 +35,7 @@ const fetcher = async (): Promise<Order[]> => {
   return items;
 };
 
-export const useFetchOrderList = (): FetchResponse<Order[]> => useFetch<Order[]>(SWRKey.SingleOrderList, fetcher);
+export const useFetchOrderList = (): FetchResponse<Order[]> => useFetch<Order[]>(SWRKey.orderList, fetcher);
 
 export type AdminOrderResponse = FetchResponse<Order[]> & {
   allData: Order[] | null;

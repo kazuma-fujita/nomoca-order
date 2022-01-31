@@ -26,7 +26,7 @@ import { parseResponseError } from 'utilities/parse-response-error';
 
 const updateSubscriptionOrderProducts = async (
   updateSubscriptionOrderID: string,
-  nextProductRelations: SubscriptionOrderProduct[],
+  productRelations: SubscriptionOrderProduct[],
   prevProductRelations: SubscriptionOrderProduct[],
 ) => {
   // SubscriptionOrder と Product のリレーション削除
@@ -45,7 +45,7 @@ const updateSubscriptionOrderProducts = async (
     }
   }
   // SubscriptionOrder と Product のリレーション作成
-  for (const item of nextProductRelations) {
+  for (const item of productRelations) {
     const input: CreateSubscriptionOrderProductInput = {
       subscriptionOrderID: updateSubscriptionOrderID,
       productID: item.productID,
@@ -70,21 +70,16 @@ export const useUpdateSubscriptionOrder = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
-  // nextProductRelationsは入力フォームsubmitの値、pervProductRelationsは一覧画面からpropsで渡された値
+  // productRelationsは入力フォームsubmitの値、pervProductRelationsは一覧画面からpropsで渡された値
   const updateSubscriptionOrder = async (
     updateSubscriptionOrderID: string,
-    nextProductRelations: ModelSubscriptionOrderProductConnection | null | undefined,
+    productRelations: ModelSubscriptionOrderProductConnection | null | undefined,
     prevProductRelations: ModelSubscriptionOrderProductConnection | null | undefined,
     data: SubscriptionOrder,
   ) => {
     setIsLoading(true);
     try {
-      if (
-        !prevProductRelations ||
-        !prevProductRelations.items ||
-        !nextProductRelations ||
-        !nextProductRelations.items
-      ) {
+      if (!prevProductRelations || !prevProductRelations.items || !productRelations || !productRelations.items) {
         throw Error('A relation object array is null.');
       }
       const subscriptionOrder: UpdateSubscriptionOrderInput = {
@@ -107,7 +102,7 @@ export const useUpdateSubscriptionOrder = () => {
         const updatedSubscriptionOrder = result.data.updateSubscriptionOrder;
         console.log('updatedSubscriptionOrder:', updatedSubscriptionOrder);
         // productRelations配列中のnull除去
-        const nextProductNonNullRelations = nextProductRelations.items.flatMap((x) => (x === null ? [] : [x]));
+        const nextProductNonNullRelations = productRelations.items.flatMap((x) => (x === null ? [] : [x]));
         const prevProductNonNullRelations = prevProductRelations.items.flatMap((x) => (x === null ? [] : [x]));
         // SubscriptionOrder と Product のリレーション更新
         await updateSubscriptionOrderProducts(

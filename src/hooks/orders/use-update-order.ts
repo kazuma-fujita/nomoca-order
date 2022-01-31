@@ -17,12 +17,13 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import { createOrderProduct, deleteOrderProduct, updateOrder as updateOrderQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
+import { OrderFormParam, ProductRelation } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 
 const updateOrderProducts = async (
   updateOrderID: string,
-  nextProductRelations: OrderProduct[],
+  productRelations: ProductRelation[],
   prevProductRelations: OrderProduct[],
 ) => {
   // Order と Product のリレーション削除
@@ -41,11 +42,11 @@ const updateOrderProducts = async (
     }
   }
   // Order と Product のリレーション作成
-  for (const item of nextProductRelations) {
+  for (const item of productRelations) {
     const input: CreateOrderProductInput = {
       orderID: updateOrderID,
-      productID: item.productID,
-      quantity: item.quantity,
+      productID: item.productID!,
+      quantity: item.quantity!,
     };
     const variables: CreateOrderProductMutationVariables = { input: input };
     // データ登録実行
@@ -66,21 +67,16 @@ export const useUpdateOrder = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
-  // nextProductRelationsは入力フォームsubmitの値、pervProductRelationsは一覧画面からpropsで渡された値
+  // productRelationsは入力フォームsubmitの値、pervProductRelationsは一覧画面からpropsで渡された値
   const updateOrder = async (
     updateOrderID: string,
-    nextProductRelations: ModelOrderProductConnection | null | undefined,
+    productRelations: ProductRelation[] | null,
     prevProductRelations: ModelOrderProductConnection | null | undefined,
-    data: Order,
+    data: OrderFormParam,
   ) => {
     setIsLoading(true);
     try {
-      if (
-        !prevProductRelations ||
-        !prevProductRelations.items ||
-        !nextProductRelations ||
-        !nextProductRelations.items
-      ) {
+      if (!prevProductRelations || !prevProductRelations.items || !productRelations) {
         throw Error('A relation object array is null.');
       }
       const subscriptionOrder: UpdateOrderInput = {
@@ -103,7 +99,7 @@ export const useUpdateOrder = () => {
         const updatedOrder = result.data.updateOrder;
         console.log('updatedOrder:', updatedOrder);
         // productRelations配列中のnull除去
-        const nextProductNonNullRelations = nextProductRelations.items.flatMap((x) => (x === null ? [] : [x]));
+        const nextProductNonNullRelations = productRelations.flatMap((x) => (x === null ? [] : [x]));
         const prevProductNonNullRelations = prevProductRelations.items.flatMap((x) => (x === null ? [] : [x]));
         // Order と Product のリレーション更新
         await updateOrderProducts(updateOrderID, nextProductNonNullRelations, prevProductNonNullRelations);

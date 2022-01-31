@@ -1,7 +1,6 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { CreateStaffInput, CreateStaffMutation, CreateStaffMutationVariables, Staff } from 'API';
+import { CreateStaffInput, CreateStaffMutation, CreateStaffMutationVariables, Staff, Type } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { ObjectType } from 'constants/object-type';
 import { SWRMultiKey } from 'constants/swr-key';
 import { createStaff as createStaffQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
@@ -23,7 +22,7 @@ export const useCreateStaff = () => {
         const staff: CreateStaffInput = {
           name: name,
           viewOrder: data.length + 1,
-          type: ObjectType.Staff,
+          type: Type.staff,
           disabled: false,
         };
         const variables: CreateStaffMutationVariables = { input: staff };

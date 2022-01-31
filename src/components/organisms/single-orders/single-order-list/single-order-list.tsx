@@ -77,18 +77,18 @@ export const SingleOrderList = (props: FetchResponse<Order[]>) => {
   const { data } = props;
   const { now } = useNowDate();
   return (
-    <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
+    <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在注文の商品はありません'>
       {data && data.map((item: Order) => <Row key={item.id} item={item} now={now} />)}
     </CommonTableContainer>
   );
 };
 
-type Props = {
+type RowProps = {
   item: Order;
   now: Date;
 };
 
-const Row = ({ item, now }: Props) => {
+const Row = ({ item, now }: RowProps) => {
   const [on, toggle] = useToggle(false);
   const formattedNextDeliveryDate = useMemo(
     () =>
