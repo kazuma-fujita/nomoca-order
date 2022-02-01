@@ -1,34 +1,20 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {
-  Box,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  MenuItem,
-  TextField,
-  Typography,
-} from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import { Order } from 'API';
+import { Box, Button, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import Form from 'components/atoms/form';
 import { BaseSyntheticEvent, ReactElement, useState } from 'react';
 import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
+import { OrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
-import { OrderFormParam } from 'stores/use-order-form-param';
 
 type Props = {
   startIcon: ReactElement;
-  isLoading: boolean;
-  error: Error | null;
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
   cancelHandler: () => void;
   formReturn: UseFormReturn<OrderFormParam, object>;
-  // fieldArrayReturn: UseFieldArrayReturn<OrderFormParam, 'products' | 'deleteProducts', 'id'>;
   fieldArrayReturn: UseFieldArrayReturn;
   staffID?: string;
 };
@@ -47,8 +33,6 @@ export const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, sele
 
 export const InputSingleOrder = ({
   startIcon,
-  isLoading,
-  error,
   submitHandler,
   cancelHandler,
   formReturn,
@@ -78,8 +62,6 @@ export const InputSingleOrder = ({
   return (
     <Form onSubmit={submitHandler}>
       <h2>注文を入力する</h2>
-      {/* <DialogContentText>説明を追加</DialogContentText> */}
-      {error && <ErrorAlert>{error}</ErrorAlert>}
       {fieldArrayReturn.fields.map((item, index) => (
         <Box mt={2} mb={2} key={item.id} sx={{ display: 'flex' }}>
           <Controller
@@ -248,18 +230,10 @@ export const InputSingleOrder = ({
           )}
         />
       </Box>
-      <LoadingButton onClick={cancelHandler} loadingIndicator='Loading...' loading={isLoading}>
-        キャンセル
-      </LoadingButton>
-      <LoadingButton
-        type='submit'
-        variant='contained'
-        loading={isLoading}
-        loadingPosition='start'
-        startIcon={startIcon}
-      >
+      <Button onClick={cancelHandler}>キャンセル</Button>
+      <Button type='submit' variant='contained' startIcon={startIcon}>
         確認する
-      </LoadingButton>
+      </Button>
     </Form>
   );
 };

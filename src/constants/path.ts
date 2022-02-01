@@ -11,7 +11,7 @@
 
 export const Path = {
   Index: '/',
-  SingleOrder: '/single-order',
+  singleOrder: '/single-order',
   AdminsSingleOrder: '/admins/single-order',
   SubscriptionOrder: '/subscription-order',
   AdminsSubscriptionOrder: '/admins/subscription-order',

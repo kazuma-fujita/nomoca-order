@@ -41,14 +41,14 @@ export const Header = () => {
           },
         ],
         [
-          { path: Path.SingleOrderProduct, icon: CategoryIcon, label: ScreenName.SingleOrderProduct },
+          { path: Path.singleOrderProduct, icon: CategoryIcon, label: ScreenName.SingleOrderProduct },
           { path: Path.SubscriptionOrderProduct, icon: CategoryIcon, label: ScreenName.SubscriptionOrderProduct },
           { path: Path.Term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
         ],
       ]
     : [
         [
-          { path: Path.SingleOrder, icon: ShoppingCartIcon, label: ScreenName.SingleOrder },
+          { path: Path.singleOrder, icon: ShoppingCartIcon, label: ScreenName.SingleOrder },
           { path: Path.SubscriptionOrder, icon: WifiProtectedSetupIcon, label: ScreenName.SubscriptionOrder },
         ],
         [

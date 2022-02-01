@@ -17,56 +17,9 @@ import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { InputSingleOrderContainer } from 'components/organisms/single-orders/input-single-order/input-single-order-container';
 import { SingleOrderListContainer } from 'components/organisms/single-orders/single-order-list/single-order-list-container';
 import { SingleOrderTemplateContainer } from 'components/templates/single-orders/single-order-template-container';
-
-const List = () => {
-  return (
-    <>
-      <h1>List</h1>
-      <Button component={Link} href='/single-order?screen=input' shallow>
-        追加する
-      </Button>
-    </>
-  );
-};
-
-const Input = () => {
-  return (
-    <>
-      <h1>Input</h1>
-      <Button component={Link} href='/single-order' shallow>
-        戻る
-      </Button>
-      <Button component={Link} href='/single-order?screen=confirm' shallow>
-        確認する
-      </Button>
-    </>
-  );
-};
-
-const Confirm = () => {
-  return (
-    <>
-      <h1>Confirm</h1>
-      <Button component={Link} href='/single-order?screen=input' shallow>
-        修正する
-      </Button>
-      <Button component={Link} href='/single-order?screen=complete' shallow>
-        追加する
-      </Button>
-    </>
-  );
-};
-
-const Complete = () => {
-  return (
-    <>
-      <h1>Complete</h1>
-      <Button component={Link} href='/single-order' shallow>
-        戻る
-      </Button>
-    </>
-  );
-};
+import { ConfirmSingleOrder } from 'components/organisms/single-orders/confirm-single-order/confirm-single-order';
+import { CompleteSingleOrder } from 'components/organisms/single-orders/complete-single-order/complete-single-order';
+import { FormScreenType } from '../constants/form-screen-query';
 
 type Props = {
   currentScreen: string | string[] | undefined;
@@ -76,12 +29,12 @@ const Component = ({ currentScreen }: Props) => {
   switch (currentScreen) {
     case undefined:
       return <SingleOrderTemplateContainer />;
-    case 'input':
+    case FormScreenType.input:
       return <InputSingleOrderContainer />;
-    case 'confirm':
-      return <Confirm />;
-    case 'complete':
-      return <Complete />;
+    case FormScreenType.confirm:
+      return <ConfirmSingleOrder />;
+    case FormScreenType.complete:
+      return <CompleteSingleOrder />;
     default:
       return <Error statusCode={404} />;
   }

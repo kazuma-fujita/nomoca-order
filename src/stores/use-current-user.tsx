@@ -92,7 +92,7 @@ const afterAuthTransition = (router: NextRouter) => {
       const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
       // UserGroupにより遷移先の振り分け
       // isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.SubscriptionOrder);
-      isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.SingleOrder);
+      isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.singleOrder);
     } catch (error) {
       router.replace(Path.Index);
     }
