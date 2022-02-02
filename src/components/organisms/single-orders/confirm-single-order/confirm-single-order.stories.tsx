@@ -23,6 +23,14 @@ export default { component: ConfirmSingleOrder };
 
 export const Default: Story = {
   args: { products: products, staffName: '担当者1', isLoading: false, error: null, submitHandler: async () => {} },
+  parameters: {
+    nextRouter: {
+      path: '/single-order',
+      query: {
+        screen: 'input',
+      },
+    },
+  },
 };
 
 export const Loading: Story = {
