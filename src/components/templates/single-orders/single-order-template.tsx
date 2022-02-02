@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { CreateSingleOrderButton } from 'components/organisms/single-orders/create-single-order/create-single-order-button';
+import { CreateSingleOrderButton } from 'components/organisms/single-orders/create-single-order-button';
 import { ReactElement } from 'react';
 
 type Props = {
