@@ -3,10 +3,10 @@ import { LoadingButton } from '@mui/lab';
 import { Chip, Divider } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import Link from 'components/atoms/link';
+import { DisplayProduct, ReceiptTable } from 'components/molecules/receipt-table';
 import { FormScreenQuery } from 'constants/form-screen-query';
 import { Path } from 'constants/path';
 import { BaseSyntheticEvent } from 'react';
-import { DisplayProduct } from './confirm-single-order-container';
 
 type Props = {
   products: DisplayProduct[];
@@ -23,14 +23,7 @@ export const ConfirmSingleOrder = ({ products, staffName, isLoading, error, subm
       <Divider textAlign='left'>
         <Chip label='商品' />
       </Divider>
-      {products.map((product) => (
-        <div key={product.relationID}>
-          <div>{product.name}</div>
-          <div>{product.unitPrice}</div>
-          <div>{product.quantity}</div>
-          <div>{product.unitPrice * product.quantity!}</div>
-        </div>
-      ))}
+      <ReceiptTable products={products} />
       <Divider textAlign='left'>
         <Chip label='担当者' />
       </Divider>

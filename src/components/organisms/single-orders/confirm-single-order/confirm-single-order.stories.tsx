@@ -1,9 +1,9 @@
 import type { ComponentStoryObj } from '@storybook/react';
+import { DisplayProduct } from 'components/molecules/receipt-table';
 import { ConfirmSingleOrder } from './confirm-single-order';
-import { DisplayProduct } from './confirm-single-order-container';
 
 const product: DisplayProduct = {
-  relationID: 'dummyID',
+  key: 'dummyID',
   name: '商品',
   unitPrice: 1000,
   quantity: 1,
@@ -11,7 +11,7 @@ const product: DisplayProduct = {
 
 const products: DisplayProduct[] = [...Array(3)].map((_, i) => ({
   ...product,
-  relationID: `dummyID-${i + 1}`,
+  key: `dummyID-${i + 1}`,
   name: `商品${i + 1}`,
   unitPrice: 1000 * (i + 1),
   quantity: i + 1,

@@ -3,15 +3,10 @@ import { Path } from 'constants/path';
 import { useCreateOrder } from 'hooks/orders/use-create-order';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { ProductRelation, useOrderFormParam } from 'stores/use-order-form-param';
+import { useOrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
 import { ConfirmSingleOrder } from './confirm-single-order';
-
-export type DisplayProduct = ProductRelation & {
-  name: string;
-  unitPrice: number;
-};
 
 export const ConfirmSingleOrderContainer = () => {
   const router = useRouter();
@@ -42,9 +37,10 @@ export const ConfirmSingleOrderContainer = () => {
     return <></>;
   }
   const displayProducts = orderFormParam.products.map((item, index) => ({
-    ...item,
+    key: item.relationID!,
     name: products[index].name,
     unitPrice: products[index].unitPrice,
+    quantity: item.quantity!,
   }));
 
   return (
