@@ -18,9 +18,8 @@ type Props = {
   products: DisplayProduct[];
 };
 
-const taxRate = 0.1;
-
 export const ReceiptTable = ({ products }: Props) => {
+  const taxRate = 0.1;
   const subtotals = products.map((product) => product.unitPrice * product.quantity!);
   const invoiceSubtotal = subtotals.reduce((sum, i) => sum + i, 0);
   const invoiceTaxes = taxRate * invoiceSubtotal;

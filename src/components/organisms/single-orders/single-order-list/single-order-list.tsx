@@ -18,6 +18,7 @@ import React, { useMemo } from 'react';
 import { useToggle } from 'react-use';
 import { useNowDate } from 'stores/use-now-date';
 import { TableHeader } from 'types/table-header';
+import { OrderProduct } from '../../../../API';
 
 const header: TableHeader[] = [
   {
