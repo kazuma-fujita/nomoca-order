@@ -18,7 +18,6 @@ export const ReceiptTable = ({ products }: Props) => {
   const invoiceTaxes = taxRate * invoiceSubtotal;
   const invoiceTotal = invoiceTaxes + invoiceSubtotal;
   return (
-    // <TableContainer component={Paper}>
     <TableContainer>
       <Table sx={{ minWidth: 700 }} aria-label='spanning table'>
         <TableHead>
