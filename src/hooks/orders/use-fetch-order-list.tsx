@@ -12,7 +12,7 @@ import { listOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 
-const fetcher = async (): Promise<Order[]> => {
+const fetcher = async (): Promise<ExtendedOrder[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
   const sortVariables: ListOrdersSortedByCreatedAtQueryVariables = {
     type: Type.order,
@@ -23,19 +23,52 @@ const fetcher = async (): Promise<Order[]> => {
   )) as GraphQLResult<ListOrdersSortedByCreatedAtQuery>;
 
   if (!result.data || !result.data.listOrdersSortedByCreatedAt || !result.data.listOrdersSortedByCreatedAt.items) {
-    throw Error('The API fetched data but it returned null.');
+    throw Error('An API returned null.');
   }
   const items = result.data.listOrdersSortedByCreatedAt.items as Order[];
 
   for (const item of items) {
     if (!item || !item.products || !item.products.items) {
-      throw Error('The API fetched a data element but it returned null.');
+      throw Error('The API fetched product data but it returned null.');
+    }
+    for (const orderProduct of item.products.items) {
+      if (!orderProduct) {
+        throw Error('The API fetched order product data but it returned null.');
+      }
     }
   }
-  return items;
+
+  const extendedItems: ExtendedOrder[] = items.map((item) => ({
+    ...item,
+    normalizedProducts: item.products?.items.map(
+      (orderProduct) =>
+        ({
+          relationID: orderProduct?.id,
+          productID: orderProduct?.productID,
+          name: orderProduct?.product.name,
+          unitPrice: orderProduct?.product.unitPrice,
+          quantity: orderProduct?.quantity,
+        } as NormalizedProduct),
+    ) as NormalizedProduct[],
+  }));
+
+  return extendedItems;
 };
 
-export const useFetchOrderList = (): FetchResponse<Order[]> => useFetch<Order[]>(SWRKey.orderList, fetcher);
+export type NormalizedProduct = {
+  relationID: string;
+  productID: string;
+  name: string;
+  unitPrice: number;
+  quantity: number;
+};
+
+export type ExtendedOrder = Order & {
+  normalizedProducts: NormalizedProduct[];
+};
+
+export const useFetchOrderList = (): FetchResponse<ExtendedOrder[]> =>
+  useFetch<ExtendedOrder[]>(SWRKey.orderList, fetcher);
 
 export type AdminOrderResponse = FetchResponse<Order[]> & {
   allData: Order[] | null;

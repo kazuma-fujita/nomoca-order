@@ -3,13 +3,14 @@ import { LoadingButton } from '@mui/lab';
 import { Chip, Divider } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import Link from 'components/atoms/link';
-import { DisplayProduct, ReceiptTable } from 'components/molecules/receipt-table';
+import { ReceiptTable } from 'components/molecules/receipt-table';
 import { FormScreenQuery } from 'constants/form-screen-query';
 import { Path } from 'constants/path';
 import { BaseSyntheticEvent } from 'react';
+import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 
 type Props = {
-  products: DisplayProduct[];
+  products: NormalizedProduct[];
   staffName: string;
   isLoading: boolean;
   error: Error | null;

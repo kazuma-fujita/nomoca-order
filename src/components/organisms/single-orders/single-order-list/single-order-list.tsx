@@ -1,18 +1,16 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, Collapse, IconButton, TableCell, Typography } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableHead from '@mui/material/TableHead';
+import { Box, Collapse, IconButton, TableCell } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
-import { Order } from 'API';
 import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
+import { ReceiptTable } from 'components/molecules/receipt-table';
 import { DeleteSingleOrderButton } from 'components/organisms/single-orders/delete-single-order-button';
 import { UpdateSingleOrderButton } from 'components/organisms/single-orders/update-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { generateFormattedNextDeliveryYearMonth } from 'functions/delivery-dates/generate-next-delivery-year-month';
+import { ExtendedOrder } from 'hooks/orders/use-fetch-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import React, { useMemo } from 'react';
 import { useToggle } from 'react-use';
@@ -73,18 +71,18 @@ const productHeader: TableHeader[] = [
   },
 ];
 
-export const SingleOrderList = (props: FetchResponse<Order[]>) => {
+export const SingleOrderList = (props: FetchResponse<ExtendedOrder[]>) => {
   const { data } = props;
   const { now } = useNowDate();
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在注文の商品はありません'>
-      {data && data.map((item: Order) => <Row key={item.id} item={item} now={now} />)}
+      {data && data.map((item: ExtendedOrder) => <Row key={item.id} item={item} now={now} />)}
     </CommonTableContainer>
   );
 };
 
 type RowProps = {
-  item: Order;
+  item: ExtendedOrder;
   now: Date;
 };
 
@@ -118,7 +116,7 @@ const Row = ({ item, now }: RowProps) => {
         {item.products && (
           <>
             <StyledTableCell align='center'>
-              <UpdateSingleOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
+              <UpdateSingleOrderButton id={item.id} products={item.normalizedProducts} staffID={item.staff.id} />
             </StyledTableCell>
             <StyledTableCell align='center'>
               <DeleteSingleOrderButton id={item.id} products={item.products} />
@@ -129,36 +127,8 @@ const Row = ({ item, now }: RowProps) => {
       <StyledSecondaryTableRow>
         <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={header.length}>
           <Collapse in={on} timeout='auto' unmountOnExit>
-            <Box pt={2} pb={4}>
-              <Table size='small' aria-label='purchases'>
-                <TableHead>
-                  <TableRow>
-                    {productHeader.map((item, index) => (
-                      <TableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
-                        <Typography variant='body2' fontWeight='bold' color='text.secondary'>
-                          {item.label}
-                        </Typography>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {item.products &&
-                    item.products.items &&
-                    item.products.items.map(
-                      (relation, index) =>
-                        relation && (
-                          <TableRow key={`${index}-${relation.product.id}`}>
-                            <StyledTableCell>{relation.product.name}</StyledTableCell>
-                            <StyledTableCell align='center'>{relation.quantity}</StyledTableCell>
-                            <StyledTableCell align='right'>
-                              {relation.product.unitPrice.toLocaleString()}
-                            </StyledTableCell>
-                          </TableRow>
-                        ),
-                    )}
-                </TableBody>
-              </Table>
+            <Box pb={4}>
+              <ReceiptTable products={item.normalizedProducts} />
             </Box>
           </Collapse>
         </StyledTableCell>

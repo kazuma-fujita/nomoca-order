@@ -1,26 +1,19 @@
-import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
-export type DisplayProduct = {
-  key: string;
-  name: string;
-  unitPrice: number;
-  quantity: number;
-};
+import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import * as React from 'react';
 
 type Props = {
-  products: DisplayProduct[];
+  products: NormalizedProduct[];
 };
 
 export const ReceiptTable = ({ products }: Props) => {
   const taxRate = 0.1;
-  const subtotals = products.map((product) => product.unitPrice * product.quantity!);
+  const subtotals = products.map((product) => product.unitPrice * product.quantity);
   const invoiceSubtotal = subtotals.reduce((sum, i) => sum + i, 0);
   const invoiceTaxes = taxRate * invoiceSubtotal;
   const invoiceTotal = invoiceTaxes + invoiceSubtotal;
@@ -38,11 +31,11 @@ export const ReceiptTable = ({ products }: Props) => {
         </TableHead>
         <TableBody>
           {products.map((product) => (
-            <TableRow key={product.key}>
+            <TableRow key={product.relationID}>
               <TableCell>{product.name}</TableCell>
               <TableCell align='right'>{product.quantity}</TableCell>
               <TableCell align='right'>{product.unitPrice.toLocaleString()}</TableCell>
-              <TableCell align='right'>{(product.quantity! * product.unitPrice).toLocaleString()}</TableCell>
+              <TableCell align='right'>{(product.quantity * product.unitPrice).toLocaleString()}</TableCell>
             </TableRow>
           ))}
           <TableRow>

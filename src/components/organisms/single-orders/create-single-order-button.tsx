@@ -1,14 +1,14 @@
 import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import Link from 'components/atoms/link';
+import { FormScreenQuery } from 'constants/form-screen-query';
+import { Path } from 'constants/path';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
-import { useOrderFormParam } from 'stores/use-order-form-param';
+import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { addYearWithSelectedMonth } from './input-single-order/input-single-order';
-import { OrderFormParam } from 'stores/use-order-form-param';
 
 export const defaultValues = {
-  products: [{ productID: '', quantity: 1 }],
+  products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
   staffID: '',
   deliveryStartMonth: 0,
   deliveryStartYear: 0,
@@ -22,6 +22,7 @@ export const CreateSingleOrderButton = () => {
   const nowYear = now.getFullYear();
   const nowMonth = now.getMonth() + 1;
   const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
+
   const defaults: OrderFormParam = useMemo(
     () => ({
       ...defaultValues,
@@ -30,10 +31,13 @@ export const CreateSingleOrderButton = () => {
     }),
     [nextMonth, nowMonth, nowYear],
   );
+
   const onButtonClick = useCallback(() => {
+    // It clears all global cache data.
     mutate(defaults, false);
-    router.push('/single-order?screen=input', undefined, { shallow: true });
+    router.push(`${Path.singleOrder}?${FormScreenQuery.input}`, undefined, { shallow: true });
   }, [defaults, mutate, router]);
+
   return (
     <Button onClick={onButtonClick} variant='outlined' startIcon={<Add />}>
       商品を注文する

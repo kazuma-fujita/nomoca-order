@@ -7,6 +7,7 @@ import { useOrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
 import { ConfirmSingleOrder } from './confirm-single-order';
+import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 
 export const ConfirmSingleOrderContainer = () => {
   const router = useRouter();
@@ -36,8 +37,9 @@ export const ConfirmSingleOrderContainer = () => {
     router.push(Path.singleOrder);
     return <></>;
   }
-  const displayProducts = orderFormParam.products.map((item, index) => ({
-    key: item.relationID!,
+  const normalizedProducts: NormalizedProduct[] = orderFormParam.products.map((item, index) => ({
+    relationID: item.relationID!,
+    productID: products[index].id,
     name: products[index].name,
     unitPrice: products[index].unitPrice,
     quantity: item.quantity!,
@@ -45,7 +47,7 @@ export const ConfirmSingleOrderContainer = () => {
 
   return (
     <ConfirmSingleOrder
-      products={displayProducts}
+      products={normalizedProducts}
       staffName={staffs[0].name}
       isLoading={isLoading}
       error={error}

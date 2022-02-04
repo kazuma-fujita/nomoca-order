@@ -1,5 +1,9 @@
-import Button from '@mui/material/Button';
+import { OrderType } from 'API';
 import { Main } from 'components/molecules/main';
+import { CompleteSingleOrder } from 'components/organisms/single-orders/complete-single-order/complete-single-order';
+import { ConfirmSingleOrderContainer } from 'components/organisms/single-orders/confirm-single-order/confirm-single-order-container';
+import { InputSingleOrderContainer } from 'components/organisms/single-orders/input-single-order/input-single-order-container';
+import { SingleOrderTemplateContainer } from 'components/templates/single-orders/single-order-template-container';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
@@ -9,17 +13,10 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { NowDateContextProvider } from 'stores/use-now-date';
-import Link from 'components/atoms/link';
+import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { StaffListContextProvider } from 'stores/use-staff-list';
-import { OrderType } from 'API';
-import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
-import { InputSingleOrderContainer } from 'components/organisms/single-orders/input-single-order/input-single-order-container';
-import { SingleOrderListContainer } from 'components/organisms/single-orders/single-order-list/single-order-list-container';
-import { SingleOrderTemplateContainer } from 'components/templates/single-orders/single-order-template-container';
-import { ConfirmSingleOrder } from 'components/organisms/single-orders/confirm-single-order/confirm-single-order';
-import { CompleteSingleOrder } from 'components/organisms/single-orders/complete-single-order/complete-single-order';
-import { FormScreenType } from '../constants/form-screen-query';
+import { FormScreenType } from 'constants/form-screen-query';
 
 type Props = {
   currentScreen: string | string[] | undefined;
@@ -32,7 +29,7 @@ const Component = ({ currentScreen }: Props) => {
     case FormScreenType.input:
       return <InputSingleOrderContainer />;
     case FormScreenType.confirm:
-      return <ConfirmSingleOrder />;
+      return <ConfirmSingleOrderContainer />;
     case FormScreenType.complete:
       return <CompleteSingleOrder />;
     default:
@@ -43,10 +40,6 @@ const Component = ({ currentScreen }: Props) => {
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();
   const router = useRouter();
-
-  useEffect(() => {
-    console.log('screen', router.query.screen);
-  }, [router.query.screen]);
 
   return (
     <>

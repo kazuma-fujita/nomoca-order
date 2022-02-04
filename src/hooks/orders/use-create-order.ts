@@ -23,17 +23,18 @@ import {
   updateOrder as updateOrderQuery,
 } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
-import { OrderFormParam, ProductRelation, useOrderFormParam } from 'stores/use-order-form-param';
+import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 
 const updateOrderProducts = async (
   updateOrderID: string,
-  productRelations: ProductRelation[],
-  deleteProductRelations: ProductRelation[],
+  productRelations: NormalizedProduct[],
+  deleteNormalizedProducts: NormalizedProduct[],
 ) => {
   // Order と Product のリレーション削除
-  for (const item of deleteProductRelations) {
+  for (const item of deleteNormalizedProducts) {
     if (!item.relationID) {
       throw Error('It is null that an id which relations an order and a product.');
     }
@@ -52,7 +53,7 @@ const updateOrderProducts = async (
   await createOrderProducts(updateOrderID, productRelations);
 };
 
-const createOrderProducts = async (newOrderID: string, productRelations: ProductRelation[]) => {
+const createOrderProducts = async (newOrderID: string, productRelations: NormalizedProduct[]) => {
   // Order と Product のリレーション作成
   for (const item of productRelations) {
     const input: CreateOrderProductInput = {
@@ -108,8 +109,8 @@ export const useCreateOrder = () => {
         await createOrderProducts(newOrder.id, productRelations);
       } else {
         // It executes to update order data.
-        const deleteProductRelations = data.deleteProducts;
-        if (!deleteProductRelations) {
+        const deleteNormalizedProducts = data.deleteProducts;
+        if (!deleteNormalizedProducts) {
           throw Error('It is null that a required field which use to delete order data.');
         }
         const input: UpdateOrderInput = {
@@ -131,7 +132,7 @@ export const useCreateOrder = () => {
         // データ更新成功後処理
         const updatedOrder = result.data.updateOrder;
         // Order と Product のリレーション更新
-        await updateOrderProducts(data.id, productRelations, deleteProductRelations);
+        await updateOrderProducts(data.id, productRelations, deleteNormalizedProducts);
       }
       setIsLoading(false);
       setError(null);

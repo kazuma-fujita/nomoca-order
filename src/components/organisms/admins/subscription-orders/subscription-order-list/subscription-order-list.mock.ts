@@ -11,6 +11,7 @@ import {
   ModelOrderProductConnection,
 } from 'API';
 import { ObjectType } from 'constants/object-type';
+import { ExtendedOrder, NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 
 const product: Product = {
   __typename: 'Product',
@@ -131,13 +132,23 @@ const createProductConnections = (row: number): OrderProduct[] =>
     },
   }));
 
-export const orderItems: Order[] = [...Array(12)].map((_, i) => ({
+const createNormalizedProducts = (row: number): NormalizedProduct[] =>
+  [...Array(row)].map((_, i) => ({
+    relationID: `dummyOrderProductID-${i + 1}`,
+    productID: `dummyProductID-${i + 1}`,
+    name: `商品${row}-${i + 1}`,
+    unitPrice: 1000,
+    quantity: i + 1,
+  }));
+
+export const orderItems: ExtendedOrder[] = [...Array(12)].map((_, i) => ({
   ...orderItem,
   id: `dummyID-${i + 1}`,
   products: {
     ...orderProductConnection,
     items: createProductConnections(i + 1),
   },
+  normalizedProducts: createNormalizedProducts(i + 1),
   staff: { ...item.staff, id: `dummyStaffID-${i + 1}`, name: `担当者${i + 1}` },
   deliveryStartMonth: i + 1,
   deliveryInterval: i + 1,
