@@ -9,12 +9,13 @@ import {
   DeleteOrderProductInput,
   DeleteOrderProductMutation,
   DeleteOrderProductMutationVariables,
+  DeliveryType,
   Type,
   UpdateOrderInput,
   UpdateOrderMutation,
   UpdateOrderMutationVariables,
 } from 'API';
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation, input } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import {
   createOrder as createOrderQuery,
@@ -87,15 +88,20 @@ export const useCreateOrder = () => {
         throw Error('It is null that a required field which use to create or update order data.');
       }
 
+      const inputParam = {
+        deliveryType: data.deliveryType,
+        deliveryStartYear: data.deliveryStartYear,
+        deliveryStartMonth: data.deliveryStartMonth,
+        deliveryInterval: data.deliveryInterval,
+        staffID: data.staffID,
+      };
+
       if (!data.id) {
         // It executes to create order data.
         const input: CreateOrderInput = {
           type: Type.order,
           orderType: orderType,
-          deliveryStartYear: data.deliveryStartYear,
-          deliveryStartMonth: data.deliveryStartMonth,
-          deliveryInterval: data.deliveryInterval,
-          staffID: data.staffID,
+          ...inputParam,
         };
         const variables: CreateOrderMutationVariables = { input: input };
         const result = (await API.graphql(
@@ -115,10 +121,7 @@ export const useCreateOrder = () => {
         }
         const input: UpdateOrderInput = {
           id: data.id,
-          deliveryStartYear: data.deliveryStartYear,
-          deliveryStartMonth: data.deliveryStartMonth,
-          deliveryInterval: data.deliveryInterval,
-          staffID: data.staffID,
+          ...inputParam,
         };
         const variables: UpdateOrderMutationVariables = { input: input };
         // データ更新実行
