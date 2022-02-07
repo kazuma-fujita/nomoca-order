@@ -15,7 +15,14 @@ type Story = ComponentStoryObj<typeof ConfirmSingleOrder>;
 export default { component: ConfirmSingleOrder };
 
 export const Default: Story = {
-  args: { products: products, staffName: '担当者1', isLoading: false, error: null, submitHandler: async () => {} },
+  args: {
+    products: products,
+    deliveryTypeLabel: '通常配送',
+    staffName: '担当者1',
+    isLoading: false,
+    error: null,
+    submitHandler: async () => {},
+  },
   parameters: {
     nextRouter: {
       path: '/single-order',

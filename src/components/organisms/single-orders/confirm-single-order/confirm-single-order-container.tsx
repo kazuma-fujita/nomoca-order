@@ -8,6 +8,7 @@ import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
 import { ConfirmSingleOrder } from './confirm-single-order';
 import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { DeliveryType } from 'API';
 
 export const ConfirmSingleOrderContainer = () => {
   const router = useRouter();
@@ -23,7 +24,14 @@ export const ConfirmSingleOrderContainer = () => {
     } catch (error) {}
   }, [createOrder, orderFormParam, router]);
 
-  if (!orderFormParam || !orderFormParam.products || !orderFormParam.staffID || !productList || !staffList) {
+  if (
+    !orderFormParam ||
+    !orderFormParam.products ||
+    !orderFormParam.deliveryType ||
+    !orderFormParam.staffID ||
+    !productList ||
+    !staffList
+  ) {
     router.push(Path.singleOrder);
     return <></>;
   }
@@ -31,12 +39,16 @@ export const ConfirmSingleOrderContainer = () => {
   const products = productList.filter((product) =>
     orderFormParam.products!.some((item) => product.id === item.productID),
   );
+
   const staffs = staffList.filter((product) => product.id === orderFormParam.staffID);
 
   if (products.length !== productList.length || staffs.length !== 1) {
     router.push(Path.singleOrder);
     return <></>;
   }
+
+  const deliveryTypeLabel = orderFormParam.deliveryType === DeliveryType.regular ? '通常配送' : '速達配送';
+
   const normalizedProducts: NormalizedProduct[] = orderFormParam.products.map((item, index) => ({
     relationID: item.relationID!,
     productID: products[index].id,
@@ -45,9 +57,18 @@ export const ConfirmSingleOrderContainer = () => {
     quantity: item.quantity!,
   }));
 
+  const displayProducts =
+    orderFormParam.deliveryType === DeliveryType.express
+      ? [
+          ...normalizedProducts,
+          { relationID: 'express', productID: 'express', name: '速達配送料', unitPrice: 1000, quantity: 1 },
+        ]
+      : normalizedProducts;
+
   return (
     <ConfirmSingleOrder
-      products={normalizedProducts}
+      products={displayProducts}
+      deliveryTypeLabel={deliveryTypeLabel}
       staffName={staffs[0].name}
       isLoading={isLoading}
       error={error}

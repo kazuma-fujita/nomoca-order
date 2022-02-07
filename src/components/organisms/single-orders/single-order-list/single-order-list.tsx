@@ -23,27 +23,19 @@ const header: TableHeader[] = [
     minWidth: 40,
   },
   {
+    label: '注文日時',
+    minWidth: 160,
+  },
+  {
+    label: '配送方法',
+    minWidth: 160,
+  },
+  {
+    label: '注文状況',
+    minWidth: 160,
+  },
+  {
     label: '担当者',
-    minWidth: 160,
-  },
-  {
-    label: '配送開始月',
-    minWidth: 160,
-  },
-  {
-    label: '配送頻度',
-    minWidth: 160,
-  },
-  {
-    label: '次回配送予定月',
-    minWidth: 160,
-  },
-  {
-    label: '作成日時',
-    minWidth: 160,
-  },
-  {
-    label: '更新日時',
     minWidth: 160,
   },
   {
@@ -51,7 +43,7 @@ const header: TableHeader[] = [
     minWidth: 80,
   },
   {
-    label: '定期便解約',
+    label: '注文キャンセル',
     minWidth: 80,
   },
 ];
@@ -88,17 +80,6 @@ type RowProps = {
 
 const Row = ({ item, now }: RowProps) => {
   const [on, toggle] = useToggle(false);
-  const formattedNextDeliveryDate = useMemo(
-    () =>
-      generateFormattedNextDeliveryYearMonth(
-        item.deliveryStartYear!,
-        item.deliveryStartMonth!,
-        item.deliveryInterval!,
-        now.getFullYear(),
-        now.getMonth() + 1,
-      ),
-    [item.deliveryInterval, item.deliveryStartMonth, item.deliveryStartYear, now],
-  );
   return (
     <React.Fragment key={item.id}>
       <TableRow>
@@ -107,12 +88,10 @@ const Row = ({ item, now }: RowProps) => {
             {on ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
-        <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
-        <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>
-        <StyledTableCell align='center'>{formattedNextDeliveryDate}</StyledTableCell>
         <StyledTableCell align='center'>{formatDateHourMinute(item.createdAt)}</StyledTableCell>
-        <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
+        <StyledTableCell align='center'>{item.deliveryType}</StyledTableCell>
+        <StyledTableCell align='center'>{`発送前`}</StyledTableCell>
+        <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
         {item.products && (
           <>
             <StyledTableCell align='center'>

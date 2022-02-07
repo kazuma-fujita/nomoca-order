@@ -1,10 +1,21 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Button, IconButton, MenuItem, TextField, Typography } from '@mui/material';
-import { ErrorAlert } from 'components/atoms/alerts/error-alert';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  IconButton,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  TextField,
+} from '@mui/material';
+import { DeliveryType } from 'API';
 import Form from 'components/atoms/form';
-import { BaseSyntheticEvent, ReactElement, useState } from 'react';
+import { BaseSyntheticEvent, ReactElement } from 'react';
 import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
@@ -16,7 +27,6 @@ type Props = {
   cancelHandler: () => void;
   formReturn: UseFormReturn<OrderFormParam, object>;
   fieldArrayReturn: UseFieldArrayReturn;
-  staffID?: string;
 };
 
 type ProductErrorField = {
@@ -26,39 +36,10 @@ type ProductErrorField = {
 
 // 数字連番の配列を生成
 const quantities = Array.from({ length: 20 }, (_, i) => i + 1);
-const deliveryIntervals = [1, 2, 3, 4, 6];
 
-export const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth: number) =>
-  selectMonth <= nowMonth ? nowYear + 1 : nowYear;
-
-export const InputSingleOrder = ({
-  startIcon,
-  submitHandler,
-  cancelHandler,
-  formReturn,
-  fieldArrayReturn,
-  staffID,
-}: Props) => {
+export const InputSingleOrder = ({ startIcon, submitHandler, cancelHandler, formReturn, fieldArrayReturn }: Props) => {
   const { data: productList } = useProductList();
   const { data: staffList } = useStaffList();
-  // const { now } = useNowDate();
-  const now = new Date(2021, 0, 1);
-  const nowYear = now.getFullYear();
-  const nowMonth = now.getMonth() + 1;
-  const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
-  const deliveryStartMonths = Array.from({ length: 6 }, (_, i) => {
-    const month = i + nextMonth;
-    return 12 < month ? month - 12 : month;
-  });
-
-  const [deliveryStartYear, setDeliveryStartYear] = useState(addYearWithSelectedMonth(nowYear, nowMonth, nextMonth));
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value, 10);
-    setDeliveryStartYear(addYearWithSelectedMonth(nowYear, nowMonth, value));
-    formReturn.setValue('deliveryStartMonth', value);
-  };
-
   return (
     <Form onSubmit={submitHandler}>
       <h2>注文を入力する</h2>
@@ -133,75 +114,28 @@ export const InputSingleOrder = ({
               <DisabledByDefaultIcon />
             </IconButton>
           )}
-          {/* <IconButton onClick={() => fieldArrayReturn.append([])}> */}
           <IconButton onClick={() => fieldArrayReturn.append({ productID: '' })}>
             <AddBoxIcon />
           </IconButton>
         </Box>
       ))}
       <Box mt={2} mb={2} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
-        {/* <input
-              type='text'
-              value={deliveryStartYear}
-              {...formReturn.register('deliveryStartYear', { valueAsNumber: true })}
-            /> */}
-        <TextField
-          id='deliveryStartYear'
-          variant='standard'
-          disabled
-          label=''
-          value={deliveryStartYear}
-          sx={{ width: 40 }}
-          {...formReturn.register('deliveryStartYear', { valueAsNumber: true })}
-        />
-        <Typography color='text.secondary'>&nbsp;/&nbsp;</Typography>
-        {/* <Typography color='text.secondary'>{deliveryStartYear}&nbsp;/&nbsp;</Typography> */}
-        <Controller
-          name='deliveryStartMonth'
-          control={formReturn.control}
-          defaultValue={nextMonth}
-          rules={{ required: '配送開始月を選択してください' }}
-          render={({ field: { onChange, ...rest }, formState: { errors } }) => (
-            // render={({ field, formState: { errors } }) => (
-            <TextField
-              select
-              onChange={handleChange}
-              label='配送開始月'
-              error={Boolean(errors.deliveryStartMonth)}
-              helperText={errors.deliveryStartMonth && errors.deliveryStartMonth.message}
-              sx={{ width: 100 }}
-              {...rest}
-              // {...field}
-            >
-              {deliveryStartMonths.map((month) => (
-                <MenuItem key={month} value={month}>
-                  {month}月
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
-        />
         <Box mr={2} />
         <Controller
-          name='deliveryInterval'
+          name='deliveryType'
           control={formReturn.control}
-          defaultValue={1}
-          rules={{ required: '配送頻度を選択してください' }}
+          defaultValue={DeliveryType.regular}
+          rules={{ required: '配送方法を選択してください' }}
           render={({ field, formState: { errors } }) => (
-            <TextField
-              select
-              label='配送頻度'
-              error={Boolean(errors.deliveryInterval)}
-              helperText={errors.deliveryInterval && errors.deliveryInterval.message}
-              sx={{ width: 100 }}
-              {...field}
-            >
-              {deliveryIntervals.map((interval) => (
-                <MenuItem key={interval} value={interval}>
-                  {interval}ヶ月
-                </MenuItem>
-              ))}
-            </TextField>
+            <FormControl error={Boolean(errors.deliveryType)}>
+              <FormLabel id='delivery-type-group-label'>配送方法</FormLabel>
+              <RadioGroup row aria-labelledby='delivery-type-group-label' name='deliveryType'>
+                <FormControlLabel value={DeliveryType.regular} control={<Radio />} label='通常配送' />
+                <FormControlLabel value={DeliveryType.express} control={<Radio />} label='速達配送 +1,000円(税抜)' />
+              </RadioGroup>
+              <FormHelperText>到着までの目安は通常発送 7営業日、速達発送 2営業日となります。</FormHelperText>
+              <FormHelperText>{errors.deliveryType && errors.deliveryType.message}</FormHelperText>
+            </FormControl>
           )}
         />
       </Box>
