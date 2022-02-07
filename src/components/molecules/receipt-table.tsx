@@ -4,8 +4,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { calcSubtotalFromProductList } from 'functions/orders/calc-subtotal-from-product-list';
 import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
-import * as React from 'react';
 
 type Props = {
   products: NormalizedProduct[];
@@ -13,8 +13,9 @@ type Props = {
 
 export const ReceiptTable = ({ products }: Props) => {
   const taxRate = 0.1;
-  const subtotals = products.map((product) => product.unitPrice * product.quantity);
-  const invoiceSubtotal = subtotals.reduce((sum, i) => sum + i, 0);
+  // const subtotals = products.map((product) => product.unitPrice * product.quantity);
+  // const invoiceSubtotal = subtotals.reduce((sum, i) => sum + i, 0);
+  const invoiceSubtotal = calcSubtotalFromProductList(products);
   const invoiceTaxes = taxRate * invoiceSubtotal;
   const invoiceTotal = invoiceTaxes + invoiceSubtotal;
   return (
