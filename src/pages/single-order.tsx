@@ -17,6 +17,7 @@ import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { StaffListContextProvider } from 'stores/use-staff-list';
 import { FormScreenType } from 'constants/form-screen-query';
+import { CompleteSingleOrderContainer } from 'components/organisms/single-orders/complete-single-order/complete-single-order-container';
 
 type Props = {
   currentScreen: string | string[] | undefined;
@@ -31,7 +32,7 @@ const Component = ({ currentScreen }: Props) => {
     case FormScreenType.confirm:
       return <ConfirmSingleOrderContainer />;
     case FormScreenType.complete:
-      return <CompleteSingleOrder />;
+      return <CompleteSingleOrderContainer />;
     default:
       return <Error statusCode={404} />;
   }

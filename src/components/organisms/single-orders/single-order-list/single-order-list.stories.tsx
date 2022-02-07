@@ -1,5 +1,5 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { orderItems } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
+import { singleOrderItems } from 'mocks/order-list.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import { SingleOrderList } from './single-order-list';
 
@@ -8,7 +8,7 @@ type Story = ComponentStoryObj<typeof SingleOrderList>;
 export default { component: SingleOrderList };
 
 export const Default: Story = {
-  args: { data: orderItems },
+  args: { data: singleOrderItems },
   decorators: [
     (StoryComponent) => (
       <NowDateContextProvider now={new Date(2023, 0, 1, 9)}>

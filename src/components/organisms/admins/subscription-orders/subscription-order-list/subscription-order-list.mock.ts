@@ -1,17 +1,13 @@
 import {
   ModelSubscriptionOrderProductConnection,
-  Product,
   OrderType,
+  Product,
   Staff,
   SubscriptionOrder,
   SubscriptionOrderProduct,
   Type,
-  Order,
-  OrderProduct,
-  ModelOrderProductConnection,
 } from 'API';
 import { ObjectType } from 'constants/object-type';
-import { ExtendedOrder, NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 
 const product: Product = {
   __typename: 'Product',
@@ -84,71 +80,6 @@ export const subscriptionOrderItems: SubscriptionOrder[] = [...Array(12)].map((_
     ...products,
     items: createProductRelations(i + 1),
   },
-  staff: { ...item.staff, id: `dummyStaffID-${i + 1}`, name: `担当者${i + 1}` },
-  deliveryStartMonth: i + 1,
-  deliveryInterval: i + 1,
-  updatedAt: new Date(2021, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),
-}));
-
-///////////////////////////////////////////////////////////////
-const orderProduct: OrderProduct = {
-  __typename: 'OrderProduct',
-  id: '',
-  orderID: '',
-  productID: '',
-  product: product,
-  quantity: 1,
-  createdAt: '2021-11-25T14:32:55Z',
-  updatedAt: '2021-11-25T14:32:55Z',
-};
-
-const orderProductConnection: ModelOrderProductConnection = {
-  __typename: 'ModelOrderProductConnection',
-  items: [orderProduct],
-};
-
-const orderItem: Order = {
-  __typename: 'Order',
-  id: 'dummyID',
-  staffID: '',
-  type: Type.order,
-  orderType: OrderType.singleOrder,
-  products: orderProductConnection,
-  staff: staff,
-  deliveryStartYear: 2022,
-  deliveryStartMonth: 1,
-  deliveryInterval: 1,
-  createdAt: '2021-11-25T14:32:55Z',
-  updatedAt: '2021-11-25T14:32:55Z',
-};
-
-const createProductConnections = (row: number): OrderProduct[] =>
-  [...Array(row)].map((_, i) => ({
-    ...orderProduct,
-    product: {
-      ...product,
-      id: `dummyProductID-${i + 1}`,
-      name: `商品${row}-${i + 1}`,
-    },
-  }));
-
-const createNormalizedProducts = (row: number): NormalizedProduct[] =>
-  [...Array(row)].map((_, i) => ({
-    relationID: `dummyOrderProductID-${i + 1}`,
-    productID: `dummyProductID-${i + 1}`,
-    name: `商品${row}-${i + 1}`,
-    unitPrice: 1000,
-    quantity: i + 1,
-  }));
-
-export const orderItems: ExtendedOrder[] = [...Array(12)].map((_, i) => ({
-  ...orderItem,
-  id: `dummyID-${i + 1}`,
-  products: {
-    ...orderProductConnection,
-    items: createProductConnections(i + 1),
-  },
-  normalizedProducts: createNormalizedProducts(i + 1),
   staff: { ...item.staff, id: `dummyStaffID-${i + 1}`, name: `担当者${i + 1}` },
   deliveryStartMonth: i + 1,
   deliveryInterval: i + 1,

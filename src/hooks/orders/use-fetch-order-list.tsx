@@ -11,6 +11,26 @@ import { SWRKey } from 'constants/swr-key';
 import { listOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
+import { OrderProduct, OrderType } from 'API';
+import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
+
+const createNormalizedProduct = (orderProduct: OrderProduct): NormalizedProduct =>
+  ({
+    relationID: orderProduct?.id,
+    productID: orderProduct?.productID,
+    name: orderProduct?.product.name,
+    unitPrice: orderProduct?.product.unitPrice,
+    quantity: orderProduct?.quantity,
+  } as NormalizedProduct);
+
+const createNormalizedProducts = (order: Order): NormalizedProduct[] => {
+  const normalizedProducts = order.products?.items.map((orderProduct) =>
+    createNormalizedProduct(orderProduct!),
+  ) as NormalizedProduct[];
+  return order.orderType === OrderType.singleOrder
+    ? addDeliveryFeeAndExpressObjectToProductList(normalizedProducts, order.deliveryType!)
+    : normalizedProducts;
+};
 
 const fetcher = async (): Promise<ExtendedOrder[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
@@ -40,16 +60,7 @@ const fetcher = async (): Promise<ExtendedOrder[]> => {
 
   const extendedItems: ExtendedOrder[] = items.map((item) => ({
     ...item,
-    normalizedProducts: item.products?.items.map(
-      (orderProduct) =>
-        ({
-          relationID: orderProduct?.id,
-          productID: orderProduct?.productID,
-          name: orderProduct?.product.name,
-          unitPrice: orderProduct?.product.unitPrice,
-          quantity: orderProduct?.quantity,
-        } as NormalizedProduct),
-    ) as NormalizedProduct[],
+    normalizedProducts: createNormalizedProducts(item),
   }));
 
   return extendedItems;

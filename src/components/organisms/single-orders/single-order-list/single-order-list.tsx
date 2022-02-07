@@ -9,12 +9,11 @@ import { ReceiptTable } from 'components/molecules/receipt-table';
 import { DeleteSingleOrderButton } from 'components/organisms/single-orders/delete-single-order-button';
 import { UpdateSingleOrderButton } from 'components/organisms/single-orders/update-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
-import { generateFormattedNextDeliveryYearMonth } from 'functions/delivery-dates/generate-next-delivery-year-month';
+import { getDeliveryTypeLabel } from 'functions/orders/get-delivery-type-label';
 import { ExtendedOrder } from 'hooks/orders/use-fetch-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useToggle } from 'react-use';
-import { useNowDate } from 'stores/use-now-date';
 import { TableHeader } from 'types/table-header';
 
 const header: TableHeader[] = [
@@ -48,37 +47,20 @@ const header: TableHeader[] = [
   },
 ];
 
-const productHeader: TableHeader[] = [
-  {
-    label: '商品名',
-    minWidth: 160,
-  },
-  {
-    label: '数量',
-    minWidth: 80,
-  },
-  {
-    label: '金額',
-    minWidth: 160,
-  },
-];
-
 export const SingleOrderList = (props: FetchResponse<ExtendedOrder[]>) => {
   const { data } = props;
-  const { now } = useNowDate();
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在注文の商品はありません'>
-      {data && data.map((item: ExtendedOrder) => <Row key={item.id} item={item} now={now} />)}
+      {data && data.map((item: ExtendedOrder) => <Row key={item.id} item={item} />)}
     </CommonTableContainer>
   );
 };
 
 type RowProps = {
   item: ExtendedOrder;
-  now: Date;
 };
 
-const Row = ({ item, now }: RowProps) => {
+const Row = ({ item }: RowProps) => {
   const [on, toggle] = useToggle(false);
   return (
     <React.Fragment key={item.id}>
@@ -89,7 +71,7 @@ const Row = ({ item, now }: RowProps) => {
           </IconButton>
         </TableCell>
         <StyledTableCell align='center'>{formatDateHourMinute(item.createdAt)}</StyledTableCell>
-        <StyledTableCell align='center'>{item.deliveryType}</StyledTableCell>
+        <StyledTableCell align='center'>{getDeliveryTypeLabel(item.deliveryType!)}</StyledTableCell>
         <StyledTableCell align='center'>{`発送前`}</StyledTableCell>
         <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
         {item.products && (
