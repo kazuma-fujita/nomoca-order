@@ -9,6 +9,7 @@ import { ReceiptTable } from 'components/molecules/receipt-table';
 import { DeleteSingleOrderButton } from 'components/organisms/single-orders/delete-single-order-button';
 import { UpdateSingleOrderButton } from 'components/organisms/single-orders/update-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
+import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
 import { getDeliveryTypeLabel } from 'functions/orders/get-delivery-type-label';
 import { ExtendedOrder } from 'hooks/orders/use-fetch-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
@@ -77,7 +78,12 @@ const Row = ({ item }: RowProps) => {
         {item.products && (
           <>
             <StyledTableCell align='center'>
-              <UpdateSingleOrderButton id={item.id} products={item.normalizedProducts} staffID={item.staff.id} />
+              <UpdateSingleOrderButton
+                id={item.id}
+                products={item.normalizedProducts}
+                deliveryType={item.deliveryType!}
+                staffID={item.staff.id}
+              />
             </StyledTableCell>
             <StyledTableCell align='center'>
               <DeleteSingleOrderButton id={item.id} products={item.products} />
@@ -89,7 +95,9 @@ const Row = ({ item }: RowProps) => {
         <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={header.length}>
           <Collapse in={on} timeout='auto' unmountOnExit>
             <Box pb={4}>
-              <ReceiptTable products={item.normalizedProducts} />
+              <ReceiptTable
+                products={addDeliveryFeeAndExpressObjectToProductList(item.normalizedProducts, item.deliveryType!)}
+              />
             </Box>
           </Collapse>
         </StyledTableCell>

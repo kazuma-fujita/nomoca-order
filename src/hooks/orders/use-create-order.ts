@@ -133,7 +133,6 @@ export const useCreateOrder = () => {
           throw Error('It returned null that an API witch executed to update order data.');
         }
         // データ更新成功後処理
-        const updatedOrder = result.data.updateOrder;
         // Order と Product のリレーション更新
         await updateOrderProducts(data.id, productRelations, deleteNormalizedProducts);
       }

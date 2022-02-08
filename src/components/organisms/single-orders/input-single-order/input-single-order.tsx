@@ -42,7 +42,6 @@ export const InputSingleOrder = ({ startIcon, submitHandler, cancelHandler, form
   const { data: staffList } = useStaffList();
   return (
     <Form onSubmit={submitHandler}>
-      <h2>注文を入力する</h2>
       {fieldArrayReturn.fields.map((item, index) => (
         <Box mt={2} mb={2} key={item.id} sx={{ display: 'flex' }}>
           <Controller
@@ -119,7 +118,7 @@ export const InputSingleOrder = ({ startIcon, submitHandler, cancelHandler, form
           </IconButton>
         </Box>
       ))}
-      <Box mt={2} mb={2} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
+      <Box mt={8} mb={8} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
         <Box mr={2} />
         <Controller
           name='deliveryType'
@@ -129,17 +128,25 @@ export const InputSingleOrder = ({ startIcon, submitHandler, cancelHandler, form
           render={({ field, formState: { errors } }) => (
             <FormControl error={Boolean(errors.deliveryType)}>
               <FormLabel id='delivery-type-group-label'>配送方法</FormLabel>
-              <RadioGroup row aria-labelledby='delivery-type-group-label' name='deliveryType'>
+              <RadioGroup
+                row
+                aria-labelledby='delivery-type-group-label'
+                name={field.name}
+                onChange={(e) => field.onChange(e.target.value)}
+                value={field.value === undefined ? DeliveryType.regular : field.value}
+              >
                 <FormControlLabel value={DeliveryType.regular} control={<Radio />} label='通常配送' />
                 <FormControlLabel value={DeliveryType.express} control={<Radio />} label='速達配送 +1,000円(税抜)' />
               </RadioGroup>
-              <FormHelperText>到着までの目安は通常発送 7営業日、速達発送 2営業日となります。</FormHelperText>
               <FormHelperText>{errors.deliveryType && errors.deliveryType.message}</FormHelperText>
+              <FormHelperText error={false}>
+                到着までの目安は通常配送 7営業日、速達配送 2営業日となります。
+              </FormHelperText>
             </FormControl>
           )}
         />
       </Box>
-      <Box mt={2} mb={2}>
+      <Box mt={8} mb={8}>
         <Controller
           name='staffID'
           control={formReturn.control}
@@ -164,10 +171,13 @@ export const InputSingleOrder = ({ startIcon, submitHandler, cancelHandler, form
           )}
         />
       </Box>
-      <Button onClick={cancelHandler}>キャンセル</Button>
-      <Button type='submit' variant='contained' startIcon={startIcon}>
-        確認する
-      </Button>
+      <Box mt={8} mb={8} width='auto' display='flex' justifyContent='center'>
+        <Button onClick={cancelHandler}>キャンセル</Button>
+        <Box mr={18} />
+        <Button type='submit' variant='contained' startIcon={startIcon}>
+          確認する
+        </Button>
+      </Box>
     </Form>
   );
 };

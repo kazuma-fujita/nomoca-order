@@ -23,14 +23,17 @@ const createNormalizedProduct = (orderProduct: OrderProduct): NormalizedProduct 
     quantity: orderProduct?.quantity,
   } as NormalizedProduct);
 
-const createNormalizedProducts = (order: Order): NormalizedProduct[] => {
-  const normalizedProducts = order.products?.items.map((orderProduct) =>
-    createNormalizedProduct(orderProduct!),
-  ) as NormalizedProduct[];
-  return order.orderType === OrderType.singleOrder
-    ? addDeliveryFeeAndExpressObjectToProductList(normalizedProducts, order.deliveryType!)
-    : normalizedProducts;
-};
+// const createNormalizedProducts = (order: Order): NormalizedProduct[] => {
+//   const normalizedProducts = order.products?.items.map((orderProduct) =>
+//     createNormalizedProduct(orderProduct!),
+//   ) as NormalizedProduct[];
+//   return order.orderType === OrderType.singleOrder
+//     ? addDeliveryFeeAndExpressObjectToProductList(normalizedProducts, order.deliveryType!)
+//     : normalizedProducts;
+// };
+
+const createNormalizedProducts = (order: Order): NormalizedProduct[] =>
+  order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct!)) as NormalizedProduct[];
 
 const fetcher = async (): Promise<ExtendedOrder[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。

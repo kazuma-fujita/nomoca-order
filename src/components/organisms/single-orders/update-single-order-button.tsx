@@ -4,23 +4,26 @@ import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
+import { DeliveryType } from 'API';
 
 type Props = {
   id: string;
   products: NormalizedProduct[];
+  deliveryType: DeliveryType;
   staffID: string;
 };
 
-export const UpdateSingleOrderButton = ({ id, products, staffID }: Props) => {
+export const UpdateSingleOrderButton = ({ id, products, deliveryType, staffID }: Props) => {
   // 入力フォーム初期値
   const defaultValues: OrderFormParam = useMemo(
     () => ({
       id: id,
       products: products,
+      deliveryType: deliveryType,
       deleteProducts: products,
       staffID: staffID,
     }),
-    [id, products, staffID],
+    [id, products, deliveryType, staffID],
   );
 
   const router = useRouter();
