@@ -25,8 +25,8 @@ export const ReceiptTable = ({ products }: Props) => {
           <TableRow>
             <TableCell>商品</TableCell>
             <TableCell align='right'>数量</TableCell>
-            <TableCell align='right'>単価</TableCell>
-            <TableCell align='right'>金額</TableCell>
+            <TableCell align='right'>単価(円)</TableCell>
+            <TableCell align='right'>金額(円)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

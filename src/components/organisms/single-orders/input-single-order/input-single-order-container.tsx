@@ -6,11 +6,14 @@ import { useCallback } from 'react';
 import { useFieldArray, UseFieldArrayReturn, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { InputSingleOrder } from './input-single-order';
+import { useProductList } from 'stores/use-product-list';
+import { mergeOrderFormProductList } from 'functions/orders/merge-order-form-product-list';
 
 export const InputSingleOrderContainer = () => {
   const router = useRouter();
   const { data, mutate } = useOrderFormParam();
-  if (!data) {
+  const { data: productList } = useProductList();
+  if (!data || !productList) {
     router.push(Path.singleOrder);
   }
   const formReturn = useForm<OrderFormParam>({ defaultValues: data! });
@@ -25,10 +28,11 @@ export const InputSingleOrderContainer = () => {
   const submitHandler = handleSubmit(
     useCallback(
       (data: OrderFormParam) => {
-        mutate(data, false);
+        const mergedProducts = mergeOrderFormProductList(data.products!, productList!);
+        mutate({ ...data, products: mergedProducts }, false);
         router.push(`${Path.singleOrder}?${FormScreenQuery.confirm}`, undefined, { shallow: true });
       },
-      [router, mutate],
+      [productList, mutate, router],
     ),
   );
 
@@ -39,6 +43,7 @@ export const InputSingleOrderContainer = () => {
       submitHandler={submitHandler}
       cancelHandler={cancelHandler}
       startIcon={<ArrowForwardIosIcon />}
+      initialReceiptProducts={data!.products}
     />
   );
 };

@@ -1,15 +1,8 @@
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { DeliveryType, ModelOrderProductConnection, OrderType } from 'API';
-import { SWRKey } from '../constants/swr-key';
-import { NormalizedProduct } from '../hooks/orders/use-fetch-order-list';
-
-// TODO: will change non-null field
-// export type ProductRelation = {
-//   relationID?: string | null;
-//   productID?: string | null;
-//   quantity?: number | null;
-// };
+import { DeliveryType, OrderType } from 'API';
+import { SWRKey } from 'constants/swr-key';
+import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 
 // TODO: will change non-null field
 export type OrderFormParam = {

@@ -75,6 +75,7 @@ export type NormalizedProduct = {
   name: string;
   unitPrice: number;
   quantity: number;
+  viewOrder?: number | null;
 };
 
 export type ExtendedOrder = Order & {

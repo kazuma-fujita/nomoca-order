@@ -37,20 +37,20 @@ export const ConfirmSingleOrder = ({
       <Divider textAlign='left'>
         <Chip label='商品' />
       </Divider>
-      <Box mb={4}>
+      <Box mb={8}>
         <ReceiptTable products={products} />
       </Box>
       <Divider textAlign='left'>
         <Chip label='配送方法' />
       </Divider>
-      <Box mt={2} mb={4} ml={4}>
-        <Typography>{deliveryTypeLabel}</Typography>
+      <Box mt={2} mb={8} ml={4}>
+        <Typography variant='body1'>{deliveryTypeLabel}</Typography>
       </Box>
       <Divider textAlign='left'>
         <Chip label='担当者' />
       </Divider>
       <Box mt={2} mb={4} ml={4}>
-        <Typography>{staffName}</Typography>
+        <Typography variant='body1'>{staffName}</Typography>
       </Box>
       <Box mt={8} mb={8} width='auto' display='flex' justifyContent='center'>
         <LoadingButton
