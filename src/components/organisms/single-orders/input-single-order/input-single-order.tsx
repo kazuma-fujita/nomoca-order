@@ -23,9 +23,9 @@ import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { Typography } from '@mui/material';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 type Props = {
-  startIcon: ReactElement;
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
   cancelHandler: () => void;
   formReturn: UseFormReturn<OrderFormParam, object>;
@@ -42,7 +42,6 @@ type ProductErrorField = {
 const quantities = Array.from({ length: 25 }, (_, i) => i + 1);
 
 export const InputSingleOrder = ({
-  startIcon,
   submitHandler,
   cancelHandler,
   formReturn,
@@ -263,7 +262,7 @@ export const InputSingleOrder = ({
       <Box mt={8} mb={8} width='auto' display='flex' justifyContent='center'>
         <Button onClick={cancelHandler}>キャンセル</Button>
         <Box mr={18} />
-        <Button type='submit' variant='contained' startIcon={startIcon}>
+        <Button type='submit' variant='contained' startIcon={<ArrowForwardIosIcon />}>
           確認する
         </Button>
       </Box>

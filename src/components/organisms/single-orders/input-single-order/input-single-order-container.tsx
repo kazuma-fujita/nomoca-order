@@ -1,4 +1,3 @@
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Path } from 'constants/path';
 import { FormScreenQuery } from 'constants/form-screen-query';
 import { useRouter } from 'next/router';
@@ -42,7 +41,6 @@ export const InputSingleOrderContainer = () => {
       fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
       submitHandler={submitHandler}
       cancelHandler={cancelHandler}
-      startIcon={<ArrowForwardIosIcon />}
       initialReceiptProducts={data!.products}
     />
   );

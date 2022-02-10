@@ -7,7 +7,7 @@ import { useCallback, useMemo } from 'react';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { DeliveryType } from 'API';
 
-export const defaultValues = {
+const defaultValues = {
   products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
   staffID: '',
   DeliveryType: DeliveryType.regular,
