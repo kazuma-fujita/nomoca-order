@@ -7,6 +7,7 @@ export type CreateOrderInput = {
   type: Type,
   orderType: OrderType,
   staffID: string,
+  deliveryStatus?: DeliveryStatus | null,
   deliveryType?: DeliveryType | null,
   deliveryStartYear?: number | null,
   deliveryStartMonth?: number | null,
@@ -28,6 +29,13 @@ export enum OrderType {
 }
 
 
+export enum DeliveryStatus {
+  ordered = "ordered",
+  delivered = "delivered",
+  canceled = "canceled",
+}
+
+
 export enum DeliveryType {
   regular = "regular",
   express = "express",
@@ -38,6 +46,7 @@ export type ModelOrderConditionInput = {
   type?: ModelTypeInput | null,
   orderType?: ModelOrderTypeInput | null,
   staffID?: ModelIDInput | null,
+  deliveryStatus?: ModelDeliveryStatusInput | null,
   deliveryType?: ModelDeliveryTypeInput | null,
   deliveryStartYear?: ModelIntInput | null,
   deliveryStartMonth?: ModelIntInput | null,
@@ -98,6 +107,11 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelDeliveryStatusInput = {
+  eq?: DeliveryStatus | null,
+  ne?: DeliveryStatus | null,
+};
+
 export type ModelDeliveryTypeInput = {
   eq?: DeliveryType | null,
   ne?: DeliveryType | null,
@@ -139,6 +153,7 @@ export type Order = {
   staffID: string,
   products?: ModelOrderProductConnection | null,
   staff: Staff,
+  deliveryStatus?: DeliveryStatus | null,
   deliveryType?: DeliveryType | null,
   deliveryStartYear?: number | null,
   deliveryStartMonth?: number | null,
@@ -196,6 +211,7 @@ export type UpdateOrderInput = {
   type?: Type | null,
   orderType?: OrderType | null,
   staffID?: string | null,
+  deliveryStatus?: DeliveryStatus | null,
   deliveryType?: DeliveryType | null,
   deliveryStartYear?: number | null,
   deliveryStartMonth?: number | null,
@@ -408,6 +424,7 @@ export type ModelOrderFilterInput = {
   type?: ModelTypeInput | null,
   orderType?: ModelOrderTypeInput | null,
   staffID?: ModelIDInput | null,
+  deliveryStatus?: ModelDeliveryStatusInput | null,
   deliveryType?: ModelDeliveryTypeInput | null,
   deliveryStartYear?: ModelIntInput | null,
   deliveryStartMonth?: ModelIntInput | null,
@@ -553,6 +570,7 @@ export type CreateOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStatus?: DeliveryStatus | null,
     deliveryType?: DeliveryType | null,
     deliveryStartYear?: number | null,
     deliveryStartMonth?: number | null,
@@ -612,6 +630,7 @@ export type UpdateOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStatus?: DeliveryStatus | null,
     deliveryType?: DeliveryType | null,
     deliveryStartYear?: number | null,
     deliveryStartMonth?: number | null,
@@ -671,6 +690,7 @@ export type DeleteOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStatus?: DeliveryStatus | null,
     deliveryType?: DeliveryType | null,
     deliveryStartYear?: number | null,
     deliveryStartMonth?: number | null,
@@ -1197,6 +1217,7 @@ export type GetOrderQuery = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStatus?: DeliveryStatus | null,
     deliveryType?: DeliveryType | null,
     deliveryStartYear?: number | null,
     deliveryStartMonth?: number | null,
@@ -1259,6 +1280,7 @@ export type ListOrdersQuery = {
         updatedAt: string,
         owner?: string | null,
       },
+      deliveryStatus?: DeliveryStatus | null,
       deliveryType?: DeliveryType | null,
       deliveryStartYear?: number | null,
       deliveryStartMonth?: number | null,
@@ -1530,6 +1552,7 @@ export type ListOrdersSortedByCreatedAtQuery = {
         updatedAt: string,
         owner?: string | null,
       },
+      deliveryStatus?: DeliveryStatus | null,
       deliveryType?: DeliveryType | null,
       deliveryStartYear?: number | null,
       deliveryStartMonth?: number | null,
@@ -1710,6 +1733,7 @@ export type OnCreateOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStatus?: DeliveryStatus | null,
     deliveryType?: DeliveryType | null,
     deliveryStartYear?: number | null,
     deliveryStartMonth?: number | null,
@@ -1768,6 +1792,7 @@ export type OnUpdateOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStatus?: DeliveryStatus | null,
     deliveryType?: DeliveryType | null,
     deliveryStartYear?: number | null,
     deliveryStartMonth?: number | null,
@@ -1826,6 +1851,7 @@ export type OnDeleteOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
+    deliveryStatus?: DeliveryStatus | null,
     deliveryType?: DeliveryType | null,
     deliveryStartYear?: number | null,
     deliveryStartMonth?: number | null,

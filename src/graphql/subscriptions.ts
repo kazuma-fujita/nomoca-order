@@ -42,6 +42,7 @@ export const onCreateOrder = /* GraphQL */ `
         updatedAt
         owner
       }
+      deliveryStatus
       deliveryType
       deliveryStartYear
       deliveryStartMonth
@@ -92,6 +93,7 @@ export const onUpdateOrder = /* GraphQL */ `
         updatedAt
         owner
       }
+      deliveryStatus
       deliveryType
       deliveryStartYear
       deliveryStartMonth
@@ -142,6 +144,7 @@ export const onDeleteOrder = /* GraphQL */ `
         updatedAt
         owner
       }
+      deliveryStatus
       deliveryType
       deliveryStartYear
       deliveryStartMonth

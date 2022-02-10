@@ -42,6 +42,7 @@ export const getOrder = /* GraphQL */ `
         updatedAt
         owner
       }
+      deliveryStatus
       deliveryType
       deliveryStartYear
       deliveryStartMonth
@@ -97,6 +98,7 @@ export const listOrders = /* GraphQL */ `
           updatedAt
           owner
         }
+        deliveryStatus
         deliveryType
         deliveryStartYear
         deliveryStartMonth
@@ -343,6 +345,7 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
           updatedAt
           owner
         }
+        deliveryStatus
         deliveryType
         deliveryStartYear
         deliveryStartMonth

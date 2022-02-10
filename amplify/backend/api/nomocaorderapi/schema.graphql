@@ -10,6 +10,12 @@ enum OrderType {
   subscriptionOrder
 }
 
+enum DeliveryStatus {
+  ordered
+  delivered
+  canceled
+}
+
 enum DeliveryType {
   regular
   express
@@ -25,6 +31,7 @@ type Order
   staffID: ID!
   products: [OrderProduct] @connection(keyName: "byOrder", fields: ["id"])
   staff: Staff! @connection(fields: ["staffID"])
+  deliveryStatus: DeliveryStatus
   deliveryType: DeliveryType
   deliveryStartYear: Int
   deliveryStartMonth: Int
