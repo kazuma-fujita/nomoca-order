@@ -1,4 +1,14 @@
-import { DeliveryType, ModelOrderProductConnection, Order, OrderProduct, OrderType, Product, Staff, Type } from 'API';
+import {
+  DeliveryStatus,
+  DeliveryType,
+  ModelOrderProductConnection,
+  Order,
+  OrderProduct,
+  OrderType,
+  Product,
+  Staff,
+  Type,
+} from 'API';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 
 const product: Product = {
@@ -85,6 +95,8 @@ export const singleOrderItems: ExtendedOrder[] = [...Array(12)].map((_, i) => ({
   },
   normalizedProducts: createNormalizedProducts(i + 1),
   staff: { ...staff, id: `dummyStaffID-${i + 1}`, name: `担当者${i + 1}` },
+  deliveryStatus:
+    (i + 1) % 3 === 0 ? DeliveryStatus.ordered : (i + 1) % 3 === 1 ? DeliveryStatus.delivered : DeliveryStatus.canceled,
   deliveryType: (i + 1) % 2 === 0 ? DeliveryType.regular : DeliveryType.express,
   updatedAt: new Date(2021, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),
 }));

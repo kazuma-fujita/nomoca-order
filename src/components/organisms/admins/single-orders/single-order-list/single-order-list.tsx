@@ -2,13 +2,14 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Checkbox, Collapse, IconButton, TableCell } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
+import { DeliveryStatusChip } from 'components/atoms/delivery-status-chip';
+import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
 import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
-import { getDeliveryTypeLabel } from 'functions/orders/get-delivery-type-label';
 import { ExtendedOrder } from 'hooks/orders/use-fetch-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
@@ -66,14 +67,18 @@ const Row = ({ item }: RowProps) => {
             // checked={isItemSelected}
           />
         </TableCell>
-        <TableCell align='center'>{`未発送`}</TableCell>
+        <TableCell align='center'>
+          <DeliveryStatusChip status={item.deliveryStatus!} />
+        </TableCell>
         <TableCell align='center'>
           <IconButton aria-label='expand row' onClick={toggle}>
             {on ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
         <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
-        <TableCell align='center'>{getDeliveryTypeLabel(item.deliveryType!)}</TableCell>
+        <TableCell align='center'>
+          <DeliveryTypeChip type={item.deliveryType!} />
+        </TableCell>
         <TableCell align='center'>{item.staff.name}</TableCell>
       </TableRow>
       <StyledSecondaryTableRow>

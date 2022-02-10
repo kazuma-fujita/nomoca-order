@@ -2,6 +2,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Collapse, IconButton, TableCell } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
+import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
 import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
@@ -16,10 +17,15 @@ import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
 import { useToggle } from 'react-use';
 import { TableHeader } from 'types/table-header';
+import { DeliveryStatusChip } from '../../../atoms/delivery-status-chip';
 
 const header: TableHeader[] = [
   {
-    label: '',
+    label: '発送状況',
+    minWidth: 160,
+  },
+  {
+    label: '商品',
     minWidth: 40,
   },
   {
@@ -32,10 +38,6 @@ const header: TableHeader[] = [
   },
   {
     label: '担当者',
-    minWidth: 160,
-  },
-  {
-    label: '注文状況',
     minWidth: 160,
   },
   {
@@ -67,28 +69,32 @@ const Row = ({ item }: RowProps) => {
     <React.Fragment key={item.id}>
       <TableRow>
         <TableCell align='center'>
+          <DeliveryStatusChip status={item.deliveryStatus!} />
+        </TableCell>
+        <TableCell align='center'>
           <IconButton aria-label='expand row' onClick={toggle}>
             {on ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <StyledTableCell align='center'>{formatDateHourMinute(item.createdAt)}</StyledTableCell>
-        <StyledTableCell align='center'>{getDeliveryTypeLabel(item.deliveryType!)}</StyledTableCell>
-        <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
-        <StyledTableCell align='center'>{`未発送`}</StyledTableCell>
+        <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+        <TableCell align='center'>
+          <DeliveryTypeChip type={item.deliveryType!} />
+        </TableCell>
+        <TableCell align='center'>{item.staff.name}</TableCell>
         {item.products && (
-          <StyledTableCell align='center'>
+          <TableCell align='center'>
             <CancelSingleOrderButton id={item.id} products={item.products} />
-          </StyledTableCell>
+          </TableCell>
         )}
         {item.products && (
-          <StyledTableCell align='center'>
+          <TableCell align='center'>
             <UpdateSingleOrderButton
               id={item.id}
               products={item.normalizedProducts}
               deliveryType={item.deliveryType!}
               staffID={item.staff.id}
             />
-          </StyledTableCell>
+          </TableCell>
         )}
       </TableRow>
       <StyledSecondaryTableRow>
