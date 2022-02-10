@@ -29,6 +29,16 @@ export const ConfirmSingleOrder = ({
 }: Props) => {
   return (
     <>
+      <Typography variant='h5' textAlign='center'>
+        注文内容を確認する
+      </Typography>
+      <Box mt={4} mb={4}>
+        <Typography variant='body2' textAlign='center'>
+          まだ注文は確定していません。 <br />
+          <br />
+          注文内容をご確認の上、注文するボタンをクリックしてください。
+        </Typography>
+      </Box>
       {error && (
         <Box mb={4}>
           <ErrorAlert>{error}</ErrorAlert>
