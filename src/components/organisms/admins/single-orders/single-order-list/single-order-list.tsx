@@ -1,13 +1,11 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, Collapse, IconButton, TableCell } from '@mui/material';
+import { Box, Checkbox, Collapse, IconButton, TableCell } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
 import { ReceiptTable } from 'components/molecules/receipt-table';
-import { CancelSingleOrderButton } from 'components/organisms/single-orders/cancel-single-order-button';
-import { UpdateSingleOrderButton } from 'components/organisms/single-orders/update-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
 import { getDeliveryTypeLabel } from 'functions/orders/get-delivery-type-label';
@@ -23,6 +21,14 @@ const header: TableHeader[] = [
     minWidth: 40,
   },
   {
+    label: '発送状況',
+    minWidth: 160,
+  },
+  {
+    label: '商品',
+    minWidth: 40,
+  },
+  {
     label: '注文日時',
     minWidth: 160,
   },
@@ -33,18 +39,6 @@ const header: TableHeader[] = [
   {
     label: '担当者',
     minWidth: 160,
-  },
-  {
-    label: '注文状況',
-    minWidth: 160,
-  },
-  {
-    label: '注文キャンセル',
-    minWidth: 80,
-  },
-  {
-    label: '注文内容変更',
-    minWidth: 80,
   },
 ];
 
@@ -66,30 +60,21 @@ const Row = ({ item }: RowProps) => {
   return (
     <React.Fragment key={item.id}>
       <TableRow>
+        <TableCell padding='checkbox' align='center'>
+          <Checkbox
+            color='primary'
+            // checked={isItemSelected}
+          />
+        </TableCell>
+        <TableCell align='center'>{`未発送`}</TableCell>
         <TableCell align='center'>
           <IconButton aria-label='expand row' onClick={toggle}>
             {on ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <StyledTableCell align='center'>{formatDateHourMinute(item.createdAt)}</StyledTableCell>
-        <StyledTableCell align='center'>{getDeliveryTypeLabel(item.deliveryType!)}</StyledTableCell>
-        <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
-        <StyledTableCell align='center'>{`未発送`}</StyledTableCell>
-        {item.products && (
-          <StyledTableCell align='center'>
-            <CancelSingleOrderButton id={item.id} products={item.products} />
-          </StyledTableCell>
-        )}
-        {item.products && (
-          <StyledTableCell align='center'>
-            <UpdateSingleOrderButton
-              id={item.id}
-              products={item.normalizedProducts}
-              deliveryType={item.deliveryType!}
-              staffID={item.staff.id}
-            />
-          </StyledTableCell>
-        )}
+        <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+        <TableCell align='center'>{getDeliveryTypeLabel(item.deliveryType!)}</TableCell>
+        <TableCell align='center'>{item.staff.name}</TableCell>
       </TableRow>
       <StyledSecondaryTableRow>
         <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={header.length}>
