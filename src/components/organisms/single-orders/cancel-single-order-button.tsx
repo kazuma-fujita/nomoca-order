@@ -4,14 +4,14 @@ import { ModelOrderProductConnection } from 'API';
 import { useDeleteOrder } from 'hooks/orders/use-delete-order';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
-import { DeleteSingleOrderDialog } from './delete-single-order-dialog';
+import { CancelSingleOrderDialog } from './cancel-single-order-dialog';
 
 type Props = {
   id: string;
   products: ModelOrderProductConnection;
 };
 
-export const DeleteSingleOrderButton = (props: Props) => {
+export const CancelSingleOrderButton = (props: Props) => {
   const { deleteOrder, isLoading, error, resetState } = useDeleteOrder();
   const [on, toggle] = useToggle(false);
 
@@ -27,14 +27,14 @@ export const DeleteSingleOrderButton = (props: Props) => {
     }
   }, [deleteOrder, props.id, props.products, toggle]);
 
-  const label = '解約';
+  const label = 'キャンセル';
 
   return (
     <>
       <Button onClick={toggle} variant='outlined' color='error' startIcon={<Delete fontSize='small' />} size='small'>
-        解約する
+        キャンセルする
       </Button>
-      <DeleteSingleOrderDialog
+      <CancelSingleOrderDialog
         label={label}
         on={on}
         isLoading={isLoading}

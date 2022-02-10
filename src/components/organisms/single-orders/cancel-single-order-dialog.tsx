@@ -17,12 +17,12 @@ type Props = {
   cancelHandler: () => void;
 };
 
-export const DeleteSingleOrderDialog = (props: Props) => {
+export const CancelSingleOrderDialog = (props: Props) => {
   return (
     <Dialog open={props.on}>
-      <DialogTitle>定期便を{props.label}する</DialogTitle>
+      <DialogTitle>注文を{props.label}する</DialogTitle>
       <DialogContent>
-        <DialogContentText>こちらの定期便を{props.label}します。よろしいですか？</DialogContentText>
+        <DialogContentText>こちらの注文を{props.label}します。よろしいですか？</DialogContentText>
         {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
         {/* <Box mt={2} mb={2}>
           <Typography>{props.name}</Typography>
@@ -30,7 +30,7 @@ export const DeleteSingleOrderDialog = (props: Props) => {
       </DialogContent>
       <DialogActions>
         <LoadingButton onClick={props.cancelHandler} loadingIndicator='Loading...' loading={props.isLoading}>
-          キャンセル
+          閉じる
         </LoadingButton>
         <LoadingButton
           onClick={props.submitHandler}

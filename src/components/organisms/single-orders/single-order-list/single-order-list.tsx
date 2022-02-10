@@ -6,7 +6,7 @@ import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondar
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
 import { ReceiptTable } from 'components/molecules/receipt-table';
-import { DeleteSingleOrderButton } from 'components/organisms/single-orders/delete-single-order-button';
+import { DeleteSingleOrderButton } from 'components/organisms/single-orders/cancel-single-order-button';
 import { UpdateSingleOrderButton } from 'components/organisms/single-orders/update-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
