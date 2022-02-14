@@ -1,4 +1,4 @@
-import { CircularProgress, Typography } from '@mui/material';
+import { CircularProgress, TableCell, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { TableHeader } from 'types/table-header';
 
 type Props = {
@@ -17,6 +17,7 @@ type Props = {
   isEmptyList: boolean;
   tableHeaders: TableHeader[];
   emptyListDescription: string;
+  selectAllCheckbox?: ReactNode | null;
 };
 
 export const CommonTableContainer: React.FC<Props> = ({
@@ -25,6 +26,7 @@ export const CommonTableContainer: React.FC<Props> = ({
   isEmptyList,
   tableHeaders,
   emptyListDescription,
+  selectAllCheckbox,
   children,
 }) => {
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
@@ -35,9 +37,13 @@ export const CommonTableContainer: React.FC<Props> = ({
           <TableRow>
             {tableHeaders.map((item, index) => (
               <StyledTableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
-                <Typography variant='body2' fontWeight='bold'>
-                  {item.label}
-                </Typography>
+                {index === 0 && selectAllCheckbox ? (
+                  selectAllCheckbox
+                ) : (
+                  <Typography variant='body2' fontWeight='bold'>
+                    {item.label}
+                  </Typography>
+                )}
               </StyledTableCell>
             ))}
           </TableRow>

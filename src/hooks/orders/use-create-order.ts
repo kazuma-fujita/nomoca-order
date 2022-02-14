@@ -28,6 +28,7 @@ import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { DeliveryStatus } from '../../API';
 
 const updateOrderProducts = async (
   updateOrderID: string,
@@ -101,6 +102,7 @@ export const useCreateOrder = () => {
         const input: CreateOrderInput = {
           type: Type.order,
           orderType: orderType,
+          deliveryStatus: DeliveryStatus.ordered,
           ...inputParam,
         };
         const variables: CreateOrderMutationVariables = { input: input };

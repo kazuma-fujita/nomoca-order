@@ -12,9 +12,10 @@ import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
 import { ExtendedOrder } from 'hooks/orders/use-fetch-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
-import React from 'react';
+import React, { useState } from 'react';
 import { useToggle } from 'react-use';
 import { TableHeader } from 'types/table-header';
+import { useCallback } from 'react';
 
 const header: TableHeader[] = [
   {
@@ -45,27 +46,73 @@ const header: TableHeader[] = [
 
 export const SingleOrderList = (props: FetchResponse<ExtendedOrder[]>) => {
   const { data } = props;
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [isSelectedAll, setIsSelectedAll] = useToggle(false);
+  const handleAllSelectItem = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!data) return;
+    const isChecked = event.target.checked;
+    const newIDs = isChecked ? data!.map((item) => item.id) : [];
+    setSelectedItems(newIDs);
+    setIsSelectedAll(isChecked);
+  };
+
   return (
-    <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在注文の商品はありません'>
-      {data && data.map((item: ExtendedOrder) => <Row key={item.id} item={item} />)}
+    <CommonTableContainer
+      {...props}
+      tableHeaders={header}
+      emptyListDescription='現在注文の商品はありません'
+      selectAllCheckbox={
+        <Checkbox
+          color='primary'
+          indeterminate={selectedItems.length > 0 ? (data ? selectedItems.length !== data!.length : false) : false}
+          checked={isSelectedAll}
+          onChange={handleAllSelectItem}
+        />
+      }
+    >
+      {data &&
+        data.map((item: ExtendedOrder) => (
+          <Row
+            key={item.id}
+            item={item}
+            selectedItems={selectedItems}
+            orderItemsLength={data.length}
+            setSelectedItems={setSelectedItems}
+            setIsSelectedAll={setIsSelectedAll}
+          />
+        ))}
     </CommonTableContainer>
   );
 };
 
 type RowProps = {
   item: ExtendedOrder;
+  selectedItems: string[];
+  orderItemsLength: number;
+  setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
+  setIsSelectedAll: (nextValue?: any) => void;
 };
 
-const Row = ({ item }: RowProps) => {
+const Row = ({ item, selectedItems, orderItemsLength, setSelectedItems, setIsSelectedAll }: RowProps) => {
   const [on, toggle] = useToggle(false);
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const isChecked = event.target.checked;
+      const newIDs = isChecked ? [...selectedItems, item.id] : selectedItems.filter((id) => id !== item.id);
+      setSelectedItems(newIDs);
+      if (!isChecked && newIDs.length === 0) {
+        setIsSelectedAll(false);
+      } else if (isChecked && newIDs.length === orderItemsLength) {
+        setIsSelectedAll(true);
+      }
+    },
+    [item.id, orderItemsLength, selectedItems, setIsSelectedAll, setSelectedItems],
+  );
   return (
     <React.Fragment key={item.id}>
       <TableRow>
         <TableCell padding='checkbox' align='center'>
-          <Checkbox
-            color='primary'
-            // checked={isItemSelected}
-          />
+          <Checkbox color='primary' checked={selectedItems.includes(item.id)} onChange={handleChange} />
         </TableCell>
         <TableCell align='center'>
           <DeliveryStatusChip status={item.deliveryStatus!} />

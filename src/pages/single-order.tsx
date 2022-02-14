@@ -71,7 +71,7 @@ const StepperContainer: React.FC<StepperProps> = ({ activeStep, children }) => {
   );
 };
 
-const steps = ['注文を入力する', '入力内容を確認する', '注文完了'];
+const steps = ['注文を入力する', '注文内容を確認する', '注文完了'];
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();
