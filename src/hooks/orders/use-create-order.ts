@@ -132,7 +132,7 @@ export const useCreateOrder = () => {
         )) as GraphQLResult<UpdateOrderMutation>;
 
         if (!result.data || !result.data.updateOrder) {
-          throw Error('It returned null that an API witch executed to update order data.');
+          throw Error('It returned null that an API which executed to update order data.');
         }
         // データ更新成功後処理
         // Order と Product のリレーション更新

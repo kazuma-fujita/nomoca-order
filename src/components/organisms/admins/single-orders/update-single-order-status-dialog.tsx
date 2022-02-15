@@ -1,15 +1,14 @@
 import { Delete } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 type Props = {
-  label: string;
   on: boolean;
   isLoading: boolean;
   error: Error | null;
@@ -17,12 +16,18 @@ type Props = {
   cancelHandler: () => void;
 };
 
-export const CancelSingleOrderDialog = (props: Props) => {
+export const UpdateSingleOrderStatusDialog = (props: Props) => {
   return (
     <Dialog open={props.on}>
-      <DialogTitle>注文を{props.label}する</DialogTitle>
+      <DialogTitle>選択した注文を発送済みにする</DialogTitle>
       <DialogContent>
-        <DialogContentText>こちらの注文を{props.label}します。よろしいですか？</DialogContentText>
+        <DialogContentText>
+          発送済みにすると顧客に発送通知メールが送信されます。 <br />
+          顧客は注文キャンセルができなくなります。 <br />
+          一度発送済みにすると未発送の状態には戻せません。 <br />
+          <br />
+          発送済みにしてよろしいですか？
+        </DialogContentText>
         {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
         {/* <Box mt={2} mb={2}>
           <Typography>{props.name}</Typography>
@@ -38,9 +43,9 @@ export const CancelSingleOrderDialog = (props: Props) => {
           color='error'
           loading={props.isLoading}
           loadingPosition='start'
-          startIcon={<Delete />}
+          startIcon={<LocalShippingIcon />}
         >
-          {props.label}する
+          発送済みにする
         </LoadingButton>
       </DialogActions>
     </Dialog>

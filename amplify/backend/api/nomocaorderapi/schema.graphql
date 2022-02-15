@@ -23,7 +23,7 @@ enum DeliveryType {
 
 type Order
   @model
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }])
+  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, update] }])
   @key(name: "sortByCreatedAt", fields: ["type", "createdAt"], queryField: "listOrdersSortedByCreatedAt") {
   id: ID!
   type: Type!
@@ -32,11 +32,11 @@ type Order
   products: [OrderProduct] @connection(keyName: "byOrder", fields: ["id"])
   staff: Staff! @connection(fields: ["staffID"])
   deliveryStatus: DeliveryStatus
-    @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, update] }])
   deliveryType: DeliveryType
   deliveryStartYear: Int
   deliveryStartMonth: Int
   deliveryInterval: Int
+  deliveredAt: AWSDateTime
   createdAt: AWSDateTime!
 }
 

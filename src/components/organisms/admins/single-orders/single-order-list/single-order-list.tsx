@@ -16,6 +16,8 @@ import React, { useState } from 'react';
 import { useToggle } from 'react-use';
 import { TableHeader } from 'types/table-header';
 import { useCallback } from 'react';
+import { UpdateSingleOrderStatusButton } from '../update-single-order-status-button';
+import { ExportSingleOrderCSVButton } from '../export-single-order-csv-button';
 
 const header: TableHeader[] = [
   {
@@ -32,6 +34,10 @@ const header: TableHeader[] = [
   },
   {
     label: '注文日時',
+    minWidth: 160,
+  },
+  {
+    label: '発送日時',
     minWidth: 160,
   },
   {
@@ -57,31 +63,39 @@ export const SingleOrderList = (props: FetchResponse<ExtendedOrder[]>) => {
   };
 
   return (
-    <CommonTableContainer
-      {...props}
-      tableHeaders={header}
-      emptyListDescription='現在注文の商品はありません'
-      selectAllCheckbox={
-        <Checkbox
-          color='primary'
-          indeterminate={selectedItems.length > 0 ? (data ? selectedItems.length !== data!.length : false) : false}
-          checked={isSelectedAll}
-          onChange={handleAllSelectItem}
-        />
-      }
-    >
-      {data &&
-        data.map((item: ExtendedOrder) => (
-          <Row
-            key={item.id}
-            item={item}
-            selectedItems={selectedItems}
-            orderItemsLength={data.length}
-            setSelectedItems={setSelectedItems}
-            setIsSelectedAll={setIsSelectedAll}
+    <>
+      <Box width='auto' display='flex' justifyContent='flex-start' mb={4}>
+        <Box width='34em' display='flex' justifyContent='space-between'>
+          <ExportSingleOrderCSVButton exportOrderIDs={selectedItems} />
+          <UpdateSingleOrderStatusButton updateOrderIDs={selectedItems} />
+        </Box>
+      </Box>
+      <CommonTableContainer
+        {...props}
+        tableHeaders={header}
+        emptyListDescription='現在注文の商品はありません'
+        selectAllCheckbox={
+          <Checkbox
+            color='primary'
+            indeterminate={selectedItems.length > 0 ? (data ? selectedItems.length !== data!.length : false) : false}
+            checked={isSelectedAll}
+            onChange={handleAllSelectItem}
           />
-        ))}
-    </CommonTableContainer>
+        }
+      >
+        {data &&
+          data.map((item: ExtendedOrder) => (
+            <Row
+              key={item.id}
+              item={item}
+              selectedItems={selectedItems}
+              orderItemsLength={data.length}
+              setSelectedItems={setSelectedItems}
+              setIsSelectedAll={setIsSelectedAll}
+            />
+          ))}
+      </CommonTableContainer>
+    </>
   );
 };
 
@@ -123,6 +137,7 @@ const Row = ({ item, selectedItems, orderItemsLength, setSelectedItems, setIsSel
           </IconButton>
         </TableCell>
         <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+        <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt!) : '-'}</TableCell>
         <TableCell align='center'>
           <DeliveryTypeChip type={item.deliveryType!} />
         </TableCell>
