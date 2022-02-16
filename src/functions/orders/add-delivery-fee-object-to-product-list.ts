@@ -1,5 +1,5 @@
-import { calcSubtotalFromProductList } from 'functions/orders/calc-subtotal-from-product-list';
 import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { calcSubtotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 
 export const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): NormalizedProduct[] =>
   10000 > calcSubtotalFromProductList(products)

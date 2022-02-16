@@ -4,7 +4,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { calcSubtotalFromProductList } from 'functions/orders/calc-subtotal-from-product-list';
+import { taxRate } from 'constants/tax-rate';
+import { calcTotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 
 type Props = {
@@ -12,10 +13,7 @@ type Props = {
 };
 
 export const ReceiptTable = ({ products }: Props) => {
-  const taxRate = 0.1;
-  const invoiceSubtotal = calcSubtotalFromProductList(products);
-  const invoiceTaxes = taxRate * invoiceSubtotal;
-  const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+  const { total, taxes, subtotal } = calcTotalFromProductList(products);
   return (
     <TableContainer>
       <Table sx={{ minWidth: 700 }} aria-label='spanning table'>
@@ -39,16 +37,16 @@ export const ReceiptTable = ({ products }: Props) => {
           <TableRow>
             <TableCell rowSpan={3} />
             <TableCell colSpan={2}>小計</TableCell>
-            <TableCell align='right'>{invoiceSubtotal.toLocaleString()}</TableCell>
+            <TableCell align='right'>{subtotal.toLocaleString()}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>税</TableCell>
             <TableCell align='right'>{`${(taxRate * 100).toFixed(0)} %`}</TableCell>
-            <TableCell align='right'>{invoiceTaxes.toLocaleString()}</TableCell>
+            <TableCell align='right'>{taxes.toLocaleString()}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell colSpan={2}>合計</TableCell>
-            <TableCell align='right'>{invoiceTotal.toLocaleString()}</TableCell>
+            <TableCell align='right'>{total.toLocaleString()}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

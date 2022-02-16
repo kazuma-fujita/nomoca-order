@@ -1,6 +1,7 @@
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import Button from '@mui/material/Button';
 import { useUpdateSingleOrderStatus } from 'hooks/admins/single-orders/use-update-single-order-status';
+import { useExportOrderCSV } from 'hooks/admins/use-export-order-scv';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
 
@@ -9,7 +10,7 @@ type Props = {
 };
 
 export const ExportSingleOrderCSVButton = ({ exportOrderIDs }: Props) => {
-  const { updateOrderStatus, isLoading, error, resetState } = useUpdateSingleOrderStatus();
+  const { exportCSV, isLoading, error, resetState } = useExportOrderCSV();
   const [on, toggle] = useToggle(false);
 
   const cancelHandler = useCallback(() => {
@@ -19,10 +20,10 @@ export const ExportSingleOrderCSVButton = ({ exportOrderIDs }: Props) => {
 
   const submitHandler = useCallback(async () => {
     try {
-      await updateOrderStatus(exportOrderIDs);
+      await exportCSV(exportOrderIDs);
       cancelHandler();
     } catch (error) {}
-  }, [updateOrderStatus, exportOrderIDs, cancelHandler]);
+  }, [exportCSV, exportOrderIDs, cancelHandler]);
 
   return (
     <Button
