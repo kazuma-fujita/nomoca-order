@@ -2,6 +2,66 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createClinic = /* GraphQL */ `
+  mutation CreateClinic(
+    $input: CreateClinicInput!
+    $condition: ModelClinicConditionInput
+  ) {
+    createClinic(input: $input, condition: $condition) {
+      id
+      name
+      phoneNumber
+      postalCode
+      state
+      city
+      address
+      building
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateClinic = /* GraphQL */ `
+  mutation UpdateClinic(
+    $input: UpdateClinicInput!
+    $condition: ModelClinicConditionInput
+  ) {
+    updateClinic(input: $input, condition: $condition) {
+      id
+      name
+      phoneNumber
+      postalCode
+      state
+      city
+      address
+      building
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteClinic = /* GraphQL */ `
+  mutation DeleteClinic(
+    $input: DeleteClinicInput!
+    $condition: ModelClinicConditionInput
+  ) {
+    deleteClinic(input: $input, condition: $condition) {
+      id
+      name
+      phoneNumber
+      postalCode
+      state
+      city
+      address
+      building
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const createOrder = /* GraphQL */ `
   mutation CreateOrder(
     $input: CreateOrderInput!

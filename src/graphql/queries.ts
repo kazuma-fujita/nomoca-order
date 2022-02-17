@@ -2,6 +2,47 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getClinic = /* GraphQL */ `
+  query GetClinic($id: ID!) {
+    getClinic(id: $id) {
+      id
+      name
+      phoneNumber
+      postalCode
+      state
+      city
+      address
+      building
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listClinics = /* GraphQL */ `
+  query ListClinics(
+    $filter: ModelClinicFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listClinics(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const getOrder = /* GraphQL */ `
   query GetOrder($id: ID!) {
     getOrder(id: $id) {

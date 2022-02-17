@@ -21,6 +21,17 @@ enum DeliveryType {
   express
 }
 
+type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+  id: ID!
+  name: String!
+  phoneNumber: String!
+  postalCode: String!
+  state: String!
+  city: String!
+  address: String!
+  building: String
+}
+
 type Order
   @model
   @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, update] }])

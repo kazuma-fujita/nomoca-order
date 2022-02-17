@@ -2,6 +2,100 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type CreateClinicInput = {
+  id?: string | null,
+  name: string,
+  phoneNumber: string,
+  postalCode: string,
+  state: string,
+  city: string,
+  address: string,
+  building?: string | null,
+};
+
+export type ModelClinicConditionInput = {
+  name?: ModelStringInput | null,
+  phoneNumber?: ModelStringInput | null,
+  postalCode?: ModelStringInput | null,
+  state?: ModelStringInput | null,
+  city?: ModelStringInput | null,
+  address?: ModelStringInput | null,
+  building?: ModelStringInput | null,
+  and?: Array< ModelClinicConditionInput | null > | null,
+  or?: Array< ModelClinicConditionInput | null > | null,
+  not?: ModelClinicConditionInput | null,
+};
+
+export type ModelStringInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export enum ModelAttributeTypes {
+  binary = "binary",
+  binarySet = "binarySet",
+  bool = "bool",
+  list = "list",
+  map = "map",
+  number = "number",
+  numberSet = "numberSet",
+  string = "string",
+  stringSet = "stringSet",
+  _null = "_null",
+}
+
+
+export type ModelSizeInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+};
+
+export type Clinic = {
+  __typename: "Clinic",
+  id: string,
+  name: string,
+  phoneNumber: string,
+  postalCode: string,
+  state: string,
+  city: string,
+  address: string,
+  building?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type UpdateClinicInput = {
+  id: string,
+  name?: string | null,
+  phoneNumber?: string | null,
+  postalCode?: string | null,
+  state?: string | null,
+  city?: string | null,
+  address?: string | null,
+  building?: string | null,
+};
+
+export type DeleteClinicInput = {
+  id: string,
+};
+
 export type CreateOrderInput = {
   id?: string | null,
   type: Type,
@@ -85,30 +179,6 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export enum ModelAttributeTypes {
-  binary = "binary",
-  binarySet = "binarySet",
-  bool = "bool",
-  list = "list",
-  map = "map",
-  number = "number",
-  numberSet = "numberSet",
-  string = "string",
-  stringSet = "stringSet",
-  _null = "_null",
-}
-
-
-export type ModelSizeInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-};
-
 export type ModelDeliveryStatusInput = {
   eq?: DeliveryStatus | null,
   ne?: DeliveryStatus | null,
@@ -129,22 +199,6 @@ export type ModelIntInput = {
   between?: Array< number | null > | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
-};
-
-export type ModelStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
 };
 
 export type Order = {
@@ -423,6 +477,26 @@ export type DeleteStaffInput = {
   id: string,
 };
 
+export type ModelClinicFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  phoneNumber?: ModelStringInput | null,
+  postalCode?: ModelStringInput | null,
+  state?: ModelStringInput | null,
+  city?: ModelStringInput | null,
+  address?: ModelStringInput | null,
+  building?: ModelStringInput | null,
+  and?: Array< ModelClinicFilterInput | null > | null,
+  or?: Array< ModelClinicFilterInput | null > | null,
+  not?: ModelClinicFilterInput | null,
+};
+
+export type ModelClinicConnection = {
+  __typename: "ModelClinicConnection",
+  items:  Array<Clinic | null >,
+  nextToken?: string | null,
+};
+
 export type ModelOrderFilterInput = {
   id?: ModelIDInput | null,
   type?: ModelTypeInput | null,
@@ -524,6 +598,72 @@ export type ModelIntKeyConditionInput = {
   ge?: number | null,
   gt?: number | null,
   between?: Array< number | null > | null,
+};
+
+export type CreateClinicMutationVariables = {
+  input: CreateClinicInput,
+  condition?: ModelClinicConditionInput | null,
+};
+
+export type CreateClinicMutation = {
+  createClinic?:  {
+    __typename: "Clinic",
+    id: string,
+    name: string,
+    phoneNumber: string,
+    postalCode: string,
+    state: string,
+    city: string,
+    address: string,
+    building?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateClinicMutationVariables = {
+  input: UpdateClinicInput,
+  condition?: ModelClinicConditionInput | null,
+};
+
+export type UpdateClinicMutation = {
+  updateClinic?:  {
+    __typename: "Clinic",
+    id: string,
+    name: string,
+    phoneNumber: string,
+    postalCode: string,
+    state: string,
+    city: string,
+    address: string,
+    building?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteClinicMutationVariables = {
+  input: DeleteClinicInput,
+  condition?: ModelClinicConditionInput | null,
+};
+
+export type DeleteClinicMutation = {
+  deleteClinic?:  {
+    __typename: "Clinic",
+    id: string,
+    name: string,
+    phoneNumber: string,
+    postalCode: string,
+    state: string,
+    city: string,
+    address: string,
+    building?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
 };
 
 export type CreateOrderMutationVariables = {
@@ -1177,6 +1317,54 @@ export type DeleteStaffMutation = {
   } | null,
 };
 
+export type GetClinicQueryVariables = {
+  id: string,
+};
+
+export type GetClinicQuery = {
+  getClinic?:  {
+    __typename: "Clinic",
+    id: string,
+    name: string,
+    phoneNumber: string,
+    postalCode: string,
+    state: string,
+    city: string,
+    address: string,
+    building?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListClinicsQueryVariables = {
+  filter?: ModelClinicFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListClinicsQuery = {
+  listClinics?:  {
+    __typename: "ModelClinicConnection",
+    items:  Array< {
+      __typename: "Clinic",
+      id: string,
+      name: string,
+      phoneNumber: string,
+      postalCode: string,
+      state: string,
+      city: string,
+      address: string,
+      building?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetOrderQueryVariables = {
   id: string,
 };
@@ -1693,6 +1881,69 @@ export type ListStaffsSortedByViewOrderQuery = {
       owner?: string | null,
     } | null >,
     nextToken?: string | null,
+  } | null,
+};
+
+export type OnCreateClinicSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateClinicSubscription = {
+  onCreateClinic?:  {
+    __typename: "Clinic",
+    id: string,
+    name: string,
+    phoneNumber: string,
+    postalCode: string,
+    state: string,
+    city: string,
+    address: string,
+    building?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateClinicSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateClinicSubscription = {
+  onUpdateClinic?:  {
+    __typename: "Clinic",
+    id: string,
+    name: string,
+    phoneNumber: string,
+    postalCode: string,
+    state: string,
+    city: string,
+    address: string,
+    building?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteClinicSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteClinicSubscription = {
+  onDeleteClinic?:  {
+    __typename: "Clinic",
+    id: string,
+    name: string,
+    phoneNumber: string,
+    postalCode: string,
+    state: string,
+    city: string,
+    address: string,
+    building?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 

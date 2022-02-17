@@ -2,6 +2,57 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateClinic = /* GraphQL */ `
+  subscription OnCreateClinic($owner: String) {
+    onCreateClinic(owner: $owner) {
+      id
+      name
+      phoneNumber
+      postalCode
+      state
+      city
+      address
+      building
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateClinic = /* GraphQL */ `
+  subscription OnUpdateClinic($owner: String) {
+    onUpdateClinic(owner: $owner) {
+      id
+      name
+      phoneNumber
+      postalCode
+      state
+      city
+      address
+      building
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteClinic = /* GraphQL */ `
+  subscription OnDeleteClinic($owner: String) {
+    onDeleteClinic(owner: $owner) {
+      id
+      name
+      phoneNumber
+      postalCode
+      state
+      city
+      address
+      building
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const onCreateOrder = /* GraphQL */ `
   subscription OnCreateOrder($owner: String) {
     onCreateOrder(owner: $owner) {
