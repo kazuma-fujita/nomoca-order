@@ -36,11 +36,10 @@ type Order
   @model
   @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, update] }]) {
   id: ID!
-  type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
-  orderType: OrderType!
-  staffID: ID!
   products: [OrderProduct] @hasMany(indexName: "byOrder", fields: ["id"])
+  staffID: ID!
   staff: Staff! @hasOne(fields: ["staffID"])
+  orderType: OrderType!
   deliveryStatus: DeliveryStatus
   deliveryType: DeliveryType
   deliveryStartYear: Int
@@ -48,36 +47,37 @@ type Order
   deliveryInterval: Int
   deliveredAt: AWSDateTime
   createdAt: AWSDateTime!
+  type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
 }
 
 type OrderProduct
   @model(queries: null)
   @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
   id: ID!
-  orderID: ID! @index(name: "byOrder", sortKeyFields: ["productID"])
-  productID: ID!
-  product: Product! @hasOne(fields: ["productID"])
+  orderID: ID! @index(name: "byOrder", sortKeyFields: ["productID"]) # sortKeyFieldsをviewOrderにしてsort可能か検証
+  productID: ID! # sortKeyFields が viewOrderに代替可能なら変更
+  product: Product! @hasOne(fields: ["productID"]) # このフィールドは削除。name, unitPrice, viewOrder fieldを追加
   quantity: Int!
 }
 
 type SubscriptionOrder
   @model
-  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
+  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
   id: ID!
-  staffID: ID!
-  type: String!
-    @index(name: "sortByCreatedAt", queryField: "listSubscriptionOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
   products: [SubscriptionOrderProduct] @hasMany(indexName: "bySubscriptionOrder", fields: ["id"])
+  staffID: ID!
   staff: Staff! @hasOne(fields: ["staffID"])
   deliveryStartYear: Int!
   deliveryStartMonth: Int!
   deliveryInterval: Int!
   createdAt: AWSDateTime!
+  type: String!
+    @index(name: "sortByCreatedAt", queryField: "listSubscriptionOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
 }
 
 type SubscriptionOrderProduct
   @model(queries: null)
-  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
+  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
   id: ID!
   subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["productID"])
   productID: ID!
@@ -89,16 +89,16 @@ type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { al
   id: ID!
   name: String!
   unitPrice: Int!
-  type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
   orderType: OrderType!
   viewOrder: Int!
   disabled: Boolean!
+  type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }
 
 type Staff @model @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
   id: ID!
   name: String!
-  type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])
   viewOrder: Int!
   disabled: Boolean!
+  type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }

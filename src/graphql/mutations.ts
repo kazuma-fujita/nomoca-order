@@ -69,9 +69,6 @@ export const createOrder = /* GraphQL */ `
   ) {
     createOrder(input: $input, condition: $condition) {
       id
-      type
-      orderType
-      staffID
       products {
         items {
           id
@@ -81,10 +78,10 @@ export const createOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -95,16 +92,18 @@ export const createOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
       }
+      orderType
       deliveryStatus
       deliveryType
       deliveryStartYear
@@ -112,6 +111,7 @@ export const createOrder = /* GraphQL */ `
       deliveryInterval
       deliveredAt
       createdAt
+      type
       updatedAt
       owner
     }
@@ -124,9 +124,6 @@ export const updateOrder = /* GraphQL */ `
   ) {
     updateOrder(input: $input, condition: $condition) {
       id
-      type
-      orderType
-      staffID
       products {
         items {
           id
@@ -136,10 +133,10 @@ export const updateOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -150,16 +147,18 @@ export const updateOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
       }
+      orderType
       deliveryStatus
       deliveryType
       deliveryStartYear
@@ -167,6 +166,7 @@ export const updateOrder = /* GraphQL */ `
       deliveryInterval
       deliveredAt
       createdAt
+      type
       updatedAt
       owner
     }
@@ -179,9 +179,6 @@ export const deleteOrder = /* GraphQL */ `
   ) {
     deleteOrder(input: $input, condition: $condition) {
       id
-      type
-      orderType
-      staffID
       products {
         items {
           id
@@ -191,10 +188,10 @@ export const deleteOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -205,16 +202,18 @@ export const deleteOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
       }
+      orderType
       deliveryStatus
       deliveryType
       deliveryStartYear
@@ -222,6 +221,7 @@ export const deleteOrder = /* GraphQL */ `
       deliveryInterval
       deliveredAt
       createdAt
+      type
       updatedAt
       owner
     }
@@ -240,10 +240,10 @@ export const createOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -267,10 +267,10 @@ export const updateOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -294,10 +294,10 @@ export const deleteOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -315,8 +315,6 @@ export const createSubscriptionOrder = /* GraphQL */ `
   ) {
     createSubscriptionOrder(input: $input, condition: $condition) {
       id
-      staffID
-      type
       products {
         items {
           id
@@ -326,10 +324,10 @@ export const createSubscriptionOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -340,12 +338,13 @@ export const createSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
@@ -354,6 +353,7 @@ export const createSubscriptionOrder = /* GraphQL */ `
       deliveryStartMonth
       deliveryInterval
       createdAt
+      type
       updatedAt
       owner
     }
@@ -366,8 +366,6 @@ export const updateSubscriptionOrder = /* GraphQL */ `
   ) {
     updateSubscriptionOrder(input: $input, condition: $condition) {
       id
-      staffID
-      type
       products {
         items {
           id
@@ -377,10 +375,10 @@ export const updateSubscriptionOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -391,12 +389,13 @@ export const updateSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
@@ -405,6 +404,7 @@ export const updateSubscriptionOrder = /* GraphQL */ `
       deliveryStartMonth
       deliveryInterval
       createdAt
+      type
       updatedAt
       owner
     }
@@ -417,8 +417,6 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
   ) {
     deleteSubscriptionOrder(input: $input, condition: $condition) {
       id
-      staffID
-      type
       products {
         items {
           id
@@ -428,10 +426,10 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -442,12 +440,13 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
@@ -456,6 +455,7 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
       deliveryStartMonth
       deliveryInterval
       createdAt
+      type
       updatedAt
       owner
     }
@@ -474,10 +474,10 @@ export const createSubscriptionOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -501,10 +501,10 @@ export const updateSubscriptionOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -528,10 +528,10 @@ export const deleteSubscriptionOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -551,10 +551,10 @@ export const createProduct = /* GraphQL */ `
       id
       name
       unitPrice
-      type
       orderType
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
     }
@@ -569,10 +569,10 @@ export const updateProduct = /* GraphQL */ `
       id
       name
       unitPrice
-      type
       orderType
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
     }
@@ -587,10 +587,10 @@ export const deleteProduct = /* GraphQL */ `
       id
       name
       unitPrice
-      type
       orderType
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
     }
@@ -604,9 +604,9 @@ export const createStaff = /* GraphQL */ `
     createStaff(input: $input, condition: $condition) {
       id
       name
-      type
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
       owner
@@ -621,9 +621,9 @@ export const updateStaff = /* GraphQL */ `
     updateStaff(input: $input, condition: $condition) {
       id
       name
-      type
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
       owner
@@ -638,9 +638,9 @@ export const deleteStaff = /* GraphQL */ `
     deleteStaff(input: $input, condition: $condition) {
       id
       name
-      type
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
       owner

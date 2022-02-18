@@ -57,9 +57,6 @@ export const onCreateOrder = /* GraphQL */ `
   subscription OnCreateOrder($owner: String) {
     onCreateOrder(owner: $owner) {
       id
-      type
-      orderType
-      staffID
       products {
         items {
           id
@@ -69,10 +66,10 @@ export const onCreateOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -83,16 +80,18 @@ export const onCreateOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
       }
+      orderType
       deliveryStatus
       deliveryType
       deliveryStartYear
@@ -100,6 +99,7 @@ export const onCreateOrder = /* GraphQL */ `
       deliveryInterval
       deliveredAt
       createdAt
+      type
       updatedAt
       owner
     }
@@ -109,9 +109,6 @@ export const onUpdateOrder = /* GraphQL */ `
   subscription OnUpdateOrder($owner: String) {
     onUpdateOrder(owner: $owner) {
       id
-      type
-      orderType
-      staffID
       products {
         items {
           id
@@ -121,10 +118,10 @@ export const onUpdateOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -135,16 +132,18 @@ export const onUpdateOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
       }
+      orderType
       deliveryStatus
       deliveryType
       deliveryStartYear
@@ -152,6 +151,7 @@ export const onUpdateOrder = /* GraphQL */ `
       deliveryInterval
       deliveredAt
       createdAt
+      type
       updatedAt
       owner
     }
@@ -161,9 +161,6 @@ export const onDeleteOrder = /* GraphQL */ `
   subscription OnDeleteOrder($owner: String) {
     onDeleteOrder(owner: $owner) {
       id
-      type
-      orderType
-      staffID
       products {
         items {
           id
@@ -173,10 +170,10 @@ export const onDeleteOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -187,16 +184,18 @@ export const onDeleteOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
       }
+      orderType
       deliveryStatus
       deliveryType
       deliveryStartYear
@@ -204,6 +203,7 @@ export const onDeleteOrder = /* GraphQL */ `
       deliveryInterval
       deliveredAt
       createdAt
+      type
       updatedAt
       owner
     }
@@ -219,10 +219,10 @@ export const onCreateOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -243,10 +243,10 @@ export const onUpdateOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -267,10 +267,10 @@ export const onDeleteOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -285,8 +285,6 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
   subscription OnCreateSubscriptionOrder($owner: String) {
     onCreateSubscriptionOrder(owner: $owner) {
       id
-      staffID
-      type
       products {
         items {
           id
@@ -296,10 +294,10 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -310,12 +308,13 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
@@ -324,6 +323,7 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
       deliveryStartMonth
       deliveryInterval
       createdAt
+      type
       updatedAt
       owner
     }
@@ -333,8 +333,6 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
   subscription OnUpdateSubscriptionOrder($owner: String) {
     onUpdateSubscriptionOrder(owner: $owner) {
       id
-      staffID
-      type
       products {
         items {
           id
@@ -344,10 +342,10 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -358,12 +356,13 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
@@ -372,6 +371,7 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
       deliveryStartMonth
       deliveryInterval
       createdAt
+      type
       updatedAt
       owner
     }
@@ -381,8 +381,6 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
   subscription OnDeleteSubscriptionOrder($owner: String) {
     onDeleteSubscriptionOrder(owner: $owner) {
       id
-      staffID
-      type
       products {
         items {
           id
@@ -392,10 +390,10 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -406,12 +404,13 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
@@ -420,6 +419,7 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
       deliveryStartMonth
       deliveryInterval
       createdAt
+      type
       updatedAt
       owner
     }
@@ -435,10 +435,10 @@ export const onCreateSubscriptionOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -459,10 +459,10 @@ export const onUpdateSubscriptionOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -483,10 +483,10 @@ export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -503,10 +503,10 @@ export const onCreateProduct = /* GraphQL */ `
       id
       name
       unitPrice
-      type
       orderType
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
     }
@@ -518,10 +518,10 @@ export const onUpdateProduct = /* GraphQL */ `
       id
       name
       unitPrice
-      type
       orderType
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
     }
@@ -533,10 +533,10 @@ export const onDeleteProduct = /* GraphQL */ `
       id
       name
       unitPrice
-      type
       orderType
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
     }
@@ -547,9 +547,9 @@ export const onCreateStaff = /* GraphQL */ `
     onCreateStaff(owner: $owner) {
       id
       name
-      type
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
       owner
@@ -561,9 +561,9 @@ export const onUpdateStaff = /* GraphQL */ `
     onUpdateStaff(owner: $owner) {
       id
       name
-      type
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
       owner
@@ -575,9 +575,9 @@ export const onDeleteStaff = /* GraphQL */ `
     onDeleteStaff(owner: $owner) {
       id
       name
-      type
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
       owner

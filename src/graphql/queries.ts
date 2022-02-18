@@ -47,9 +47,6 @@ export const getOrder = /* GraphQL */ `
   query GetOrder($id: ID!) {
     getOrder(id: $id) {
       id
-      type
-      orderType
-      staffID
       products {
         items {
           id
@@ -59,10 +56,10 @@ export const getOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -73,16 +70,18 @@ export const getOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
       }
+      orderType
       deliveryStatus
       deliveryType
       deliveryStartYear
@@ -90,6 +89,7 @@ export const getOrder = /* GraphQL */ `
       deliveryInterval
       deliveredAt
       createdAt
+      type
       updatedAt
       owner
     }
@@ -104,9 +104,6 @@ export const listOrders = /* GraphQL */ `
     listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        type
-        orderType
-        staffID
         products {
           items {
             id
@@ -116,10 +113,10 @@ export const listOrders = /* GraphQL */ `
               id
               name
               unitPrice
-              type
               orderType
               viewOrder
               disabled
+              type
               createdAt
               updatedAt
             }
@@ -130,16 +127,18 @@ export const listOrders = /* GraphQL */ `
           }
           nextToken
         }
+        staffID
         staff {
           id
           name
-          type
           viewOrder
           disabled
+          type
           createdAt
           updatedAt
           owner
         }
+        orderType
         deliveryStatus
         deliveryType
         deliveryStartYear
@@ -147,6 +146,7 @@ export const listOrders = /* GraphQL */ `
         deliveryInterval
         deliveredAt
         createdAt
+        type
         updatedAt
         owner
       }
@@ -158,8 +158,6 @@ export const getSubscriptionOrder = /* GraphQL */ `
   query GetSubscriptionOrder($id: ID!) {
     getSubscriptionOrder(id: $id) {
       id
-      staffID
-      type
       products {
         items {
           id
@@ -169,10 +167,10 @@ export const getSubscriptionOrder = /* GraphQL */ `
             id
             name
             unitPrice
-            type
             orderType
             viewOrder
             disabled
+            type
             createdAt
             updatedAt
           }
@@ -183,12 +181,13 @@ export const getSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      staffID
       staff {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
@@ -197,6 +196,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
       deliveryStartMonth
       deliveryInterval
       createdAt
+      type
       updatedAt
       owner
     }
@@ -215,8 +215,6 @@ export const listSubscriptionOrders = /* GraphQL */ `
     ) {
       items {
         id
-        staffID
-        type
         products {
           items {
             id
@@ -226,10 +224,10 @@ export const listSubscriptionOrders = /* GraphQL */ `
               id
               name
               unitPrice
-              type
               orderType
               viewOrder
               disabled
+              type
               createdAt
               updatedAt
             }
@@ -240,12 +238,13 @@ export const listSubscriptionOrders = /* GraphQL */ `
           }
           nextToken
         }
+        staffID
         staff {
           id
           name
-          type
           viewOrder
           disabled
+          type
           createdAt
           updatedAt
           owner
@@ -254,6 +253,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
         deliveryStartMonth
         deliveryInterval
         createdAt
+        type
         updatedAt
         owner
       }
@@ -267,10 +267,10 @@ export const getProduct = /* GraphQL */ `
       id
       name
       unitPrice
-      type
       orderType
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
     }
@@ -287,10 +287,10 @@ export const listProducts = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -303,9 +303,9 @@ export const getStaff = /* GraphQL */ `
     getStaff(id: $id) {
       id
       name
-      type
       viewOrder
       disabled
+      type
       createdAt
       updatedAt
       owner
@@ -322,9 +322,9 @@ export const listStaff = /* GraphQL */ `
       items {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
@@ -352,9 +352,6 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
     ) {
       items {
         id
-        type
-        orderType
-        staffID
         products {
           items {
             id
@@ -364,10 +361,10 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
               id
               name
               unitPrice
-              type
               orderType
               viewOrder
               disabled
+              type
               createdAt
               updatedAt
             }
@@ -378,16 +375,18 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
           }
           nextToken
         }
+        staffID
         staff {
           id
           name
-          type
           viewOrder
           disabled
+          type
           createdAt
           updatedAt
           owner
         }
+        orderType
         deliveryStatus
         deliveryType
         deliveryStartYear
@@ -395,6 +394,7 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         deliveryInterval
         deliveredAt
         createdAt
+        type
         updatedAt
         owner
       }
@@ -421,8 +421,6 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
     ) {
       items {
         id
-        staffID
-        type
         products {
           items {
             id
@@ -432,10 +430,10 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
               id
               name
               unitPrice
-              type
               orderType
               viewOrder
               disabled
+              type
               createdAt
               updatedAt
             }
@@ -446,12 +444,13 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
           }
           nextToken
         }
+        staffID
         staff {
           id
           name
-          type
           viewOrder
           disabled
+          type
           createdAt
           updatedAt
           owner
@@ -460,6 +459,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
         deliveryStartMonth
         deliveryInterval
         createdAt
+        type
         updatedAt
         owner
       }
@@ -488,10 +488,10 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
         id
         name
         unitPrice
-        type
         orderType
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
       }
@@ -519,9 +519,9 @@ export const listStaffSortedByViewOrder = /* GraphQL */ `
       items {
         id
         name
-        type
         viewOrder
         disabled
+        type
         createdAt
         updatedAt
         owner
