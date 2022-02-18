@@ -1671,14 +1671,14 @@ export type GetStaffQuery = {
   } | null,
 };
 
-export type ListStaffsQueryVariables = {
+export type ListStaffQueryVariables = {
   filter?: ModelStaffFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListStaffsQuery = {
-  listStaffs?:  {
+export type ListStaffQuery = {
+  listStaff?:  {
     __typename: "ModelStaffConnection",
     items:  Array< {
       __typename: "Staff",
@@ -1696,7 +1696,7 @@ export type ListStaffsQuery = {
 };
 
 export type ListOrdersSortedByCreatedAtQueryVariables = {
-  type?: Type | null,
+  type: Type,
   createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelOrderFilterInput | null,
@@ -1765,7 +1765,7 @@ export type ListOrdersSortedByCreatedAtQuery = {
 };
 
 export type ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
-  type?: string | null,
+  type: string,
   createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelSubscriptionOrderFilterInput | null,
@@ -1830,7 +1830,7 @@ export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
 };
 
 export type ListProductsSortedByViewOrderQueryVariables = {
-  type?: Type | null,
+  type: Type,
   viewOrder?: ModelIntKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelProductFilterInput | null,
@@ -1857,8 +1857,8 @@ export type ListProductsSortedByViewOrderQuery = {
   } | null,
 };
 
-export type ListStaffsSortedByViewOrderQueryVariables = {
-  type?: Type | null,
+export type ListStaffSortedByViewOrderQueryVariables = {
+  type: Type,
   viewOrder?: ModelIntKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelStaffFilterInput | null,
@@ -1866,8 +1866,8 @@ export type ListStaffsSortedByViewOrderQueryVariables = {
   nextToken?: string | null,
 };
 
-export type ListStaffsSortedByViewOrderQuery = {
-  listStaffsSortedByViewOrder?:  {
+export type ListStaffSortedByViewOrderQuery = {
+  listStaffSortedByViewOrder?:  {
     __typename: "ModelStaffConnection",
     items:  Array< {
       __typename: "Staff",

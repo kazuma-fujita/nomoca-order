@@ -312,13 +312,13 @@ export const getStaff = /* GraphQL */ `
     }
   }
 `;
-export const listStaffs = /* GraphQL */ `
-  query ListStaffs(
+export const listStaff = /* GraphQL */ `
+  query ListStaff(
     $filter: ModelStaffFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listStaffs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listStaff(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
@@ -335,7 +335,7 @@ export const listStaffs = /* GraphQL */ `
 `;
 export const listOrdersSortedByCreatedAt = /* GraphQL */ `
   query ListOrdersSortedByCreatedAt(
-    $type: Type
+    $type: Type!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelOrderFilterInput
@@ -404,7 +404,7 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
 `;
 export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
   query ListSubscriptionOrdersSortedByCreatedAt(
-    $type: String
+    $type: String!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelSubscriptionOrderFilterInput
@@ -469,7 +469,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
 `;
 export const listProductsSortedByViewOrder = /* GraphQL */ `
   query ListProductsSortedByViewOrder(
-    $type: Type
+    $type: Type!
     $viewOrder: ModelIntKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelProductFilterInput
@@ -499,16 +499,16 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
     }
   }
 `;
-export const listStaffsSortedByViewOrder = /* GraphQL */ `
-  query ListStaffsSortedByViewOrder(
-    $type: Type
+export const listStaffSortedByViewOrder = /* GraphQL */ `
+  query ListStaffSortedByViewOrder(
+    $type: Type!
     $viewOrder: ModelIntKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelStaffFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listStaffsSortedByViewOrder(
+    listStaffSortedByViewOrder(
       type: $type
       viewOrder: $viewOrder
       sortDirection: $sortDirection

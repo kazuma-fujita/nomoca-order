@@ -34,14 +34,13 @@ type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Op
 
 type Order
   @model
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, update] }])
-  @key(name: "sortByCreatedAt", fields: ["type", "createdAt"], queryField: "listOrdersSortedByCreatedAt") {
+  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, update] }]) {
   id: ID!
-  type: Type!
+  type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
   orderType: OrderType!
   staffID: ID!
-  products: [OrderProduct] @connection(keyName: "byOrder", fields: ["id"])
-  staff: Staff! @connection(fields: ["staffID"])
+  products: [OrderProduct] @hasMany(indexName: "byOrder", fields: ["id"])
+  staff: Staff! @hasOne(fields: ["staffID"])
   deliveryStatus: DeliveryStatus
   deliveryType: DeliveryType
   deliveryStartYear: Int
@@ -53,28 +52,23 @@ type Order
 
 type OrderProduct
   @model(queries: null)
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }])
-  @key(name: "byOrder", fields: ["orderID", "productID"]) {
+  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
   id: ID!
-  orderID: ID!
+  orderID: ID! @index(name: "byOrder", sortKeyFields: ["productID"])
   productID: ID!
-  product: Product! @connection(fields: ["productID"])
+  product: Product! @hasOne(fields: ["productID"])
   quantity: Int!
 }
 
 type SubscriptionOrder
   @model
-  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
-  @key(
-    name: "sortedByCreatedAt"
-    fields: ["type", "createdAt"]
-    queryField: "listSubscriptionOrdersSortedByCreatedAt"
-  ) {
+  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
   id: ID!
   staffID: ID!
   type: String!
-  products: [SubscriptionOrderProduct] @connection(keyName: "bySubscriptionOrder", fields: ["id"])
-  staff: Staff! @connection(fields: ["staffID"])
+    @index(name: "sortByCreatedAt", queryField: "listSubscriptionOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
+  products: [SubscriptionOrderProduct] @hasMany(indexName: "bySubscriptionOrder", fields: ["id"])
+  staff: Staff! @hasOne(fields: ["staffID"])
   deliveryStartYear: Int!
   deliveryStartMonth: Int!
   deliveryInterval: Int!
@@ -83,35 +77,28 @@ type SubscriptionOrder
 
 type SubscriptionOrderProduct
   @model(queries: null)
-  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
-  @key(name: "bySubscriptionOrder", fields: ["subscriptionOrderID", "productID"]) {
+  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
   id: ID!
-  subscriptionOrderID: ID!
+  subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["productID"])
   productID: ID!
-  product: Product! @connection(fields: ["productID"])
+  product: Product! @hasOne(fields: ["productID"])
   quantity: Int!
 }
 
-type Product
-  @model
-  @auth(rules: [{ allow: groups, groups: ["Operators"] }, { allow: private, operations: [read] }])
-  @key(name: "sortByViewOrder", fields: ["type", "viewOrder"], queryField: "listProductsSortedByViewOrder") {
+type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { allow: private, operations: [read] }]) {
   id: ID!
   name: String!
   unitPrice: Int!
-  type: Type!
+  type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
   orderType: OrderType!
   viewOrder: Int!
   disabled: Boolean!
 }
 
-type Staff
-  @model
-  @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }])
-  @key(name: "sortByViewOrder", fields: ["type", "viewOrder"], queryField: "listStaffsSortedByViewOrder") {
+type Staff @model @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
   id: ID!
   name: String!
-  type: Type!
+  type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])
   viewOrder: Int!
   disabled: Boolean!
 }
