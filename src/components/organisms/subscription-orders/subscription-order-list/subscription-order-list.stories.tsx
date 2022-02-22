@@ -1,5 +1,5 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import * as Stories from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.stories';
+import * as Stories from 'components/templates/admins/subscription-orders/subscription-order-template.stories';
 import { SubscriptionOrderList } from './subscription-order-list';
 import { NowDateContextProvider } from 'stores/use-now-date';
 

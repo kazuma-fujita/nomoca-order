@@ -2,7 +2,7 @@ import { act, screen, waitFor, waitForElementToBeRemoved } from '@testing-librar
 import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/user-event/dist/utils';
 import { API } from 'aws-amplify';
-import { subscriptionOrderItems } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
+import { subscriptionOrderItems } from 'mocks/subscription-order-list.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import { customRender } from 'utilities/tests/custom-render';
 import { SubscriptionOrderTemplateContainer } from './subscription-order-template-container';
