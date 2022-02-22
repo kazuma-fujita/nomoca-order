@@ -12,12 +12,9 @@ import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
 import { ExtendedOrder } from 'hooks/orders/use-fetch-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { useToggle } from 'react-use';
 import { TableHeader } from 'types/table-header';
-import { useCallback } from 'react';
-import { UpdateSingleOrderStatusButton } from '../update-single-order-status-button';
-import { ExportSingleOrderCSVButton } from '../export-single-order-csv-button';
 
 const header: TableHeader[] = [
   {
@@ -50,9 +47,12 @@ const header: TableHeader[] = [
   },
 ];
 
-export const SingleOrderList = (props: FetchResponse<ExtendedOrder[]>) => {
-  const { data } = props;
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+type Props = FetchResponse<ExtendedOrder[]> & {
+  selectedItems: string[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+export const SingleOrderList = ({ selectedItems, setSelectedItems, data, ...rest }: Props) => {
   const [isSelectedAll, setIsSelectedAll] = useToggle(false);
   const handleAllSelectItem = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!data) return;
@@ -63,39 +63,31 @@ export const SingleOrderList = (props: FetchResponse<ExtendedOrder[]>) => {
   };
 
   return (
-    <>
-      <Box width='auto' display='flex' justifyContent='flex-start' mb={4}>
-        <Box width='34em' display='flex' justifyContent='space-between'>
-          <ExportSingleOrderCSVButton exportOrderIDs={selectedItems} />
-          <UpdateSingleOrderStatusButton updateOrderIDs={selectedItems} />
-        </Box>
-      </Box>
-      <CommonTableContainer
-        {...props}
-        tableHeaders={header}
-        emptyListDescription='現在注文の商品はありません'
-        selectAllCheckbox={
-          <Checkbox
-            color='primary'
-            indeterminate={selectedItems.length > 0 ? (data ? selectedItems.length !== data!.length : false) : false}
-            checked={isSelectedAll}
-            onChange={handleAllSelectItem}
+    <CommonTableContainer
+      {...rest}
+      tableHeaders={header}
+      emptyListDescription='現在注文の商品はありません'
+      selectAllCheckbox={
+        <Checkbox
+          color='primary'
+          indeterminate={selectedItems.length > 0 ? (data ? selectedItems.length !== data!.length : false) : false}
+          checked={isSelectedAll}
+          onChange={handleAllSelectItem}
+        />
+      }
+    >
+      {data &&
+        data.map((item: ExtendedOrder) => (
+          <Row
+            key={item.id}
+            item={item}
+            selectedItems={selectedItems}
+            orderItemsLength={data.length}
+            setSelectedItems={setSelectedItems}
+            setIsSelectedAll={setIsSelectedAll}
           />
-        }
-      >
-        {data &&
-          data.map((item: ExtendedOrder) => (
-            <Row
-              key={item.id}
-              item={item}
-              selectedItems={selectedItems}
-              orderItemsLength={data.length}
-              setSelectedItems={setSelectedItems}
-              setIsSelectedAll={setIsSelectedAll}
-            />
-          ))}
-      </CommonTableContainer>
-    </>
+        ))}
+    </CommonTableContainer>
   );
 };
 

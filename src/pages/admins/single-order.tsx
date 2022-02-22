@@ -1,37 +1,24 @@
-import { OrderType } from 'API';
 import { Main } from 'components/molecules/main';
-import { SingleOrderListContainer } from 'components/organisms/admins/single-orders/single-order-list/single-order-list-container';
+import { SingleOrderTemplate } from 'components/templates/admins/single-orders/single-order-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
+import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
-import { NowDateContextProvider } from 'stores/use-now-date';
-import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
-import { ProductListContextProvider } from 'stores/use-product-list';
-import { StaffListContextProvider } from 'stores/use-staff-list';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();
-  const router = useRouter();
+  const fetchReturn = useFetchOrderList();
 
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <ProductListContextProvider orderType={OrderType.singleOrder} isFilterByActiveProduct={true}>
-        <StaffListContextProvider isFilterByActiveStaff={true}>
-          <NowDateContextProvider now={new Date()}>
-            <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
-              <Main>
-                <SingleOrderListContainer />
-              </Main>
-            </OrderFormParamContextProvider>
-          </NowDateContextProvider>
-        </StaffListContextProvider>
-      </ProductListContextProvider>
+      <Main>
+        <SingleOrderTemplate {...fetchReturn} />
+      </Main>
     </>
   );
 };
