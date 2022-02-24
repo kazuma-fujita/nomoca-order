@@ -5,6 +5,9 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { Main } from 'components/molecules/main';
+import { ProductListContextProvider } from 'stores/use-product-list';
+import { ProductTemplate } from 'components/templates/admins/products/product-template';
+import { OrderType } from 'API';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -17,7 +20,9 @@ const SubscriptionOrderProductPage = (props: Props) => {
         <title>{props.pageTitle}</title>
       </Head>
       <Main>
-        <SubscriptionOrderProductTemplate />
+        <ProductListContextProvider orderType={OrderType.subscriptionOrder} isFilterByActiveProduct={false}>
+          <ProductTemplate />
+        </ProductListContextProvider>
       </Main>
     </>
   );

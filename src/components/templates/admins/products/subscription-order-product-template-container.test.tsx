@@ -2,8 +2,9 @@ import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/rea
 import userEvent from '@testing-library/user-event';
 import { OrderType, Type } from 'API';
 import { API } from 'aws-amplify';
+import { ProductListContextProvider } from 'stores/use-product-list';
 import { customRender } from 'utilities/tests/custom-render';
-import { SubscriptionOrderProductTemplate } from './subscription-order-product-template';
+import { ProductTemplateContainer } from './product-template-container';
 
 const item = {
   __typename: 'Product',
@@ -18,7 +19,12 @@ const item = {
   updatedAt: '2021-12-03T09:08:07.000Z',
 };
 
-const render = () => customRender(<SubscriptionOrderProductTemplate />);
+const render = () =>
+  customRender(
+    <ProductListContextProvider orderType={OrderType.subscriptionOrder} isFilterByActiveProduct={false}>
+      <ProductTemplateContainer />
+    </ProductListContextProvider>,
+  );
 
 const renderList = async () => {
   // It renders a list.

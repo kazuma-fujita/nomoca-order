@@ -4,9 +4,7 @@ import { SubscriptionOrderSearchFormContainer } from 'components/organisms/admin
 import { SubscriptionOrderList } from 'components/organisms/admins/subscription-orders/subscription-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 
-type Props = FetchResponse<SubscriptionOrder[]> & {};
-
-export const SubscriptionOrderTemplate = (props: Props) => (
+export const SubscriptionOrderTemplate = (props: FetchResponse<SubscriptionOrder[]>) => (
   <Grid container spacing={2} direction='column'>
     <Grid item>
       <Grid container justifyContent='center'>

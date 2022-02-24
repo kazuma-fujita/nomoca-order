@@ -11,7 +11,7 @@ import {
 } from 'API';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
 
-const product: Product = {
+export const productMock: Product = {
   __typename: 'Product',
   id: 'dummyProductID',
   name: '商品',
@@ -40,7 +40,7 @@ const orderProduct: OrderProduct = {
   id: '',
   orderID: '',
   productID: '',
-  product: product,
+  product: productMock,
   quantity: 1,
   createdAt: '2021-11-25T14:32:55Z',
   updatedAt: '2021-11-25T14:32:55Z',
@@ -70,7 +70,7 @@ const createProductConnections = (row: number): OrderProduct[] =>
   [...Array(row)].map((_, i) => ({
     ...orderProduct,
     product: {
-      ...product,
+      ...productMock,
       id: `dummyProductID-${i + 1}`,
       name: `商品${row}-${i + 1}`,
     },

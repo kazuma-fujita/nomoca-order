@@ -1,10 +1,12 @@
+import { OrderType } from 'API';
 import { Main } from 'components/molecules/main';
-import { SingleOrderProductTemplate } from 'components/templates/admins/products/single-order-product-template';
+import { ProductTemplate } from 'components/templates/admins/products/product-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
+import { ProductListContextProvider } from 'stores/use-product-list';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -17,7 +19,9 @@ const SingleOrderProductPage = (props: Props) => {
         <title>{props.pageTitle}</title>
       </Head>
       <Main>
-        <SingleOrderProductTemplate />
+        <ProductListContextProvider orderType={OrderType.singleOrder} isFilterByActiveProduct={false}>
+          <ProductTemplate />
+        </ProductListContextProvider>
       </Main>
     </>
   );

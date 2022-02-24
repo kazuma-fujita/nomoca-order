@@ -1,9 +1,10 @@
 import { Grid } from '@mui/material';
-import { Main } from 'components/molecules/main';
+import { Product } from 'API';
 import { CreateProductButton } from 'components/organisms/products/create-product-button';
 import { ProductList } from 'components/organisms/products/product-list';
+import { FetchResponse } from 'hooks/swr/use-fetch';
 
-export const ProductTemplate = () => {
+export const ProductTemplate = (props: FetchResponse<Product[]>) => {
   return (
     <Grid container spacing={2} direction='column'>
       <Grid item>
@@ -12,7 +13,7 @@ export const ProductTemplate = () => {
         </Grid>
       </Grid>
       <Grid item>
-        <ProductList />
+        <ProductList {...props} />
       </Grid>
     </Grid>
   );
