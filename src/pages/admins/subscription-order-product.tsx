@@ -1,13 +1,12 @@
-import { SubscriptionOrderProductTemplate } from 'components/templates/admins/products/subscription-order-product-template';
+import { OrderType } from 'API';
+import { Main } from 'components/molecules/main';
+import { ProductTemplateContainer } from 'components/templates/admins/products/product-template-container';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
-import { Main } from 'components/molecules/main';
 import { ProductListContextProvider } from 'stores/use-product-list';
-import { ProductTemplate } from 'components/templates/admins/products/product-template';
-import { OrderType } from 'API';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -21,7 +20,7 @@ const SubscriptionOrderProductPage = (props: Props) => {
       </Head>
       <Main>
         <ProductListContextProvider orderType={OrderType.subscriptionOrder} isFilterByActiveProduct={false}>
-          <ProductTemplate />
+          <ProductTemplateContainer />
         </ProductListContextProvider>
       </Main>
     </>
