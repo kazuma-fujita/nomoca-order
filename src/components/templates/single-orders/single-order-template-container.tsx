@@ -1,4 +1,8 @@
-import { SingleOrderListContainer } from 'components/organisms/single-orders/single-order-list/single-order-list-container';
+import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { SingleOrderTemplate } from './single-order-template';
 
-export const SingleOrderTemplateContainer = () => <SingleOrderTemplate listComponent={<SingleOrderListContainer />} />;
+export const SingleOrderTemplateContainer = () => {
+  const fetchReturn = useFetchOrderList();
+
+  return <SingleOrderTemplate {...fetchReturn} />;
+};
