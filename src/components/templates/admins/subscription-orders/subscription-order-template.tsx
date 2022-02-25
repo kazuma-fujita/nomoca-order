@@ -1,18 +1,18 @@
-import { Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { SubscriptionOrder } from 'API';
-import { SubscriptionOrderSearchFormContainer } from 'components/organisms/admins/subscription-orders/search-form/subscription-order-search-form-container';
+import { ExportSubscriptionOrderCSVButton } from 'components/organisms/admins/subscription-orders/export-subscription-order-csv-button';
 import { SubscriptionOrderList } from 'components/organisms/admins/subscription-orders/subscription-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 
-export const SubscriptionOrderTemplate = (props: FetchResponse<SubscriptionOrder[]>) => (
-  <Grid container spacing={2} direction='column'>
-    <Grid item>
-      <Grid container justifyContent='center'>
-        <SubscriptionOrderSearchFormContainer />
-      </Grid>
-    </Grid>
-    <Grid item>
+export const SubscriptionOrderTemplate = (props: FetchResponse<SubscriptionOrder[]>) => {
+  return (
+    <>
+      <Box width='auto' display='flex' justifyContent='flex-start' mb={4}>
+        <Box width='34em' display='flex' justifyContent='space-between'>
+          <ExportSubscriptionOrderCSVButton updateOrderIDs={[]} />
+        </Box>
+      </Box>
       <SubscriptionOrderList {...props} />
-    </Grid>
-  </Grid>
-);
+    </>
+  );
+};
