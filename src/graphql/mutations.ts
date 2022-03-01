@@ -73,19 +73,10 @@ export const createOrder = /* GraphQL */ `
         items {
           id
           orderID
-          productID
-          product {
-            id
-            name
-            unitPrice
-            orderType
-            viewOrder
-            disabled
-            type
-            createdAt
-            updatedAt
-          }
+          name
+          unitPrice
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -128,19 +119,10 @@ export const updateOrder = /* GraphQL */ `
         items {
           id
           orderID
-          productID
-          product {
-            id
-            name
-            unitPrice
-            orderType
-            viewOrder
-            disabled
-            type
-            createdAt
-            updatedAt
-          }
+          name
+          unitPrice
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -183,19 +165,10 @@ export const deleteOrder = /* GraphQL */ `
         items {
           id
           orderID
-          productID
-          product {
-            id
-            name
-            unitPrice
-            orderType
-            viewOrder
-            disabled
-            type
-            createdAt
-            updatedAt
-          }
+          name
+          unitPrice
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -235,19 +208,10 @@ export const createOrderProduct = /* GraphQL */ `
     createOrderProduct(input: $input, condition: $condition) {
       id
       orderID
-      productID
-      product {
-        id
-        name
-        unitPrice
-        orderType
-        viewOrder
-        disabled
-        type
-        createdAt
-        updatedAt
-      }
+      name
+      unitPrice
       quantity
+      viewOrder
       createdAt
       updatedAt
       owner
@@ -262,19 +226,10 @@ export const updateOrderProduct = /* GraphQL */ `
     updateOrderProduct(input: $input, condition: $condition) {
       id
       orderID
-      productID
-      product {
-        id
-        name
-        unitPrice
-        orderType
-        viewOrder
-        disabled
-        type
-        createdAt
-        updatedAt
-      }
+      name
+      unitPrice
       quantity
+      viewOrder
       createdAt
       updatedAt
       owner
@@ -289,19 +244,10 @@ export const deleteOrderProduct = /* GraphQL */ `
     deleteOrderProduct(input: $input, condition: $condition) {
       id
       orderID
-      productID
-      product {
-        id
-        name
-        unitPrice
-        orderType
-        viewOrder
-        disabled
-        type
-        createdAt
-        updatedAt
-      }
+      name
+      unitPrice
       quantity
+      viewOrder
       createdAt
       updatedAt
       owner

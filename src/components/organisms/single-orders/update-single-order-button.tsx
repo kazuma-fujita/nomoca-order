@@ -1,6 +1,6 @@
 import { Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';

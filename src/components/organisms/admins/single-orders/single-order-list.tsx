@@ -1,16 +1,12 @@
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, Checkbox, Collapse, IconButton, TableCell } from '@mui/material';
-import TableRow from '@mui/material/TableRow';
+import { Checkbox, TableCell } from '@mui/material';
+import { Order } from 'API';
 import { DeliveryStatusChip } from 'components/atoms/delivery-status-chip';
 import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
-import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
-import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
-import { ReceiptTable } from 'components/molecules/receipt-table';
+import { CommonTableRow } from 'components/molecules/common-table-row';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
-import { ExtendedOrder } from 'hooks/orders/use-fetch-order-list';
+import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import React, { useCallback } from 'react';
 import { useToggle } from 'react-use';
@@ -18,16 +14,16 @@ import { TableHeader } from 'types/table-header';
 
 const header: TableHeader[] = [
   {
+    label: '商品',
+    minWidth: 40,
+  },
+  {
     label: '',
     minWidth: 40,
   },
   {
     label: '発送状況',
     minWidth: 160,
-  },
-  {
-    label: '商品',
-    minWidth: 40,
   },
   {
     label: '注文日時',
@@ -47,7 +43,7 @@ const header: TableHeader[] = [
   },
 ];
 
-type Props = FetchResponse<ExtendedOrder[]> & {
+type Props = FetchResponse<ExtendedOrder<Order>[]> & {
   selectedItems: string[];
   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
 };
@@ -77,7 +73,7 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems, data, ...rest
       }
     >
       {data &&
-        data.map((item: ExtendedOrder) => (
+        data.map((item) => (
           <Row
             key={item.id}
             item={item}
@@ -92,7 +88,7 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems, data, ...rest
 };
 
 type RowProps = {
-  item: ExtendedOrder;
+  item: ExtendedOrder<Order>;
   selectedItems: string[];
   orderItemsLength: number;
   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
@@ -100,7 +96,6 @@ type RowProps = {
 };
 
 const Row = ({ item, selectedItems, orderItemsLength, setSelectedItems, setIsSelectedAll }: RowProps) => {
-  const [on, toggle] = useToggle(false);
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const isChecked = event.target.checked;
@@ -115,37 +110,23 @@ const Row = ({ item, selectedItems, orderItemsLength, setSelectedItems, setIsSel
     [item.id, orderItemsLength, selectedItems, setIsSelectedAll, setSelectedItems],
   );
   return (
-    <React.Fragment key={item.id}>
-      <TableRow>
-        <TableCell padding='checkbox' align='center'>
-          <Checkbox color='primary' checked={selectedItems.includes(item.id)} onChange={handleChange} />
-        </TableCell>
-        <TableCell align='center'>
-          <DeliveryStatusChip status={item.deliveryStatus!} />
-        </TableCell>
-        <TableCell align='center'>
-          <IconButton aria-label='expand row' onClick={toggle}>
-            {on ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
-        <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt!) : '-'}</TableCell>
-        <TableCell align='center'>
-          <DeliveryTypeChip type={item.deliveryType!} />
-        </TableCell>
-        <TableCell align='center'>{item.staff.name}</TableCell>
-      </TableRow>
-      <StyledSecondaryTableRow>
-        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={header.length}>
-          <Collapse in={on} timeout='auto' unmountOnExit>
-            <Box pb={4}>
-              <ReceiptTable
-                products={addDeliveryFeeAndExpressObjectToProductList(item.normalizedProducts, item.deliveryType!)}
-              />
-            </Box>
-          </Collapse>
-        </StyledTableCell>
-      </StyledSecondaryTableRow>
-    </React.Fragment>
+    <CommonTableRow
+      key={item.id}
+      colSpan={header.length}
+      products={addDeliveryFeeAndExpressObjectToProductList(item.normalizedProducts, item.deliveryType!)}
+    >
+      <TableCell padding='checkbox' align='center'>
+        <Checkbox color='primary' checked={selectedItems.includes(item.id)} onChange={handleChange} />
+      </TableCell>
+      <TableCell align='center'>
+        <DeliveryStatusChip status={item.deliveryStatus!} />
+      </TableCell>
+      <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+      <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt!) : '-'}</TableCell>
+      <TableCell align='center'>
+        <DeliveryTypeChip type={item.deliveryType!} />
+      </TableCell>
+      <TableCell align='center'>{item.staff.name}</TableCell>
+    </CommonTableRow>
   );
 };

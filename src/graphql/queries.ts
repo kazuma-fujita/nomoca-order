@@ -51,19 +51,10 @@ export const getOrder = /* GraphQL */ `
         items {
           id
           orderID
-          productID
-          product {
-            id
-            name
-            unitPrice
-            orderType
-            viewOrder
-            disabled
-            type
-            createdAt
-            updatedAt
-          }
+          name
+          unitPrice
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -108,19 +99,10 @@ export const listOrders = /* GraphQL */ `
           items {
             id
             orderID
-            productID
-            product {
-              id
-              name
-              unitPrice
-              orderType
-              viewOrder
-              disabled
-              type
-              createdAt
-              updatedAt
-            }
+            name
+            unitPrice
             quantity
+            viewOrder
             createdAt
             updatedAt
             owner
@@ -356,19 +338,10 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
           items {
             id
             orderID
-            productID
-            product {
-              id
-              name
-              unitPrice
-              orderType
-              viewOrder
-              disabled
-              type
-              createdAt
-              updatedAt
-            }
+            name
+            unitPrice
             quantity
+            viewOrder
             createdAt
             updatedAt
             owner

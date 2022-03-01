@@ -9,13 +9,13 @@ import {
   DeleteOrderProductInput,
   DeleteOrderProductMutation,
   DeleteOrderProductMutationVariables,
-  DeliveryType,
+  DeliveryStatus,
   Type,
   UpdateOrderInput,
   UpdateOrderMutation,
   UpdateOrderMutationVariables,
 } from 'API';
-import { API, graphqlOperation, input } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import {
   createOrder as createOrderQuery,
@@ -23,12 +23,11 @@ import {
   deleteOrderProduct,
   updateOrder as updateOrderQuery,
 } from 'graphql/mutations';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
-import { DeliveryStatus } from '../../API';
 
 const updateOrderProducts = async (
   updateOrderID: string,
@@ -60,8 +59,10 @@ const createOrderProducts = async (newOrderID: string, productRelations: Normali
   for (const item of productRelations) {
     const input: CreateOrderProductInput = {
       orderID: newOrderID,
-      productID: item.productID!,
+      name: item.name,
+      unitPrice: item.unitPrice,
       quantity: item.quantity!,
+      viewOrder: item.viewOrder!,
     };
     const variables: CreateOrderProductMutationVariables = { input: input };
     // データ新規登録実行

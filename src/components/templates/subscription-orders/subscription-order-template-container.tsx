@@ -1,6 +1,8 @@
-import { SubscriptionOrderListContainer } from 'components/organisms/subscription-orders/subscription-order-list/subscription-order-list-container';
-import { SubscriptionOrderTemplate } from './subscription-order-template';
+import { useFetchSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { SubscriptionOrderTemplate } from 'components/templates/subscription-orders/subscription-order-template';
 
-export const SubscriptionOrderTemplateContainer = () => (
-  <SubscriptionOrderTemplate listComponent={<SubscriptionOrderListContainer />} />
-);
+export const SubscriptionOrderTemplateContainer = () => {
+  const fetchReturn = useFetchSubscriptionOrderList();
+
+  return <SubscriptionOrderTemplate {...fetchReturn} />;
+};

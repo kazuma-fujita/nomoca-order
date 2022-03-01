@@ -1,5 +1,5 @@
 import { taxRate } from 'constants/tax-rate';
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 export type Receipt = { total: number; taxes: number; subtotal: number };
 

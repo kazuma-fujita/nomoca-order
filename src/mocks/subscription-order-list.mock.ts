@@ -1,33 +1,15 @@
-import {
-  ModelSubscriptionOrderProductConnection,
-  OrderType,
-  Product,
-  Staff,
-  SubscriptionOrder,
-  SubscriptionOrderProduct,
-  Type,
-} from 'API';
+import { ModelSubscriptionOrderProductConnection, Staff, SubscriptionOrder, SubscriptionOrderProduct, Type } from 'API';
 import { ObjectType } from 'constants/object-type';
-
-const product: Product = {
-  __typename: 'Product',
-  id: 'dummyProductID',
-  name: '商品',
-  unitPrice: 1000,
-  type: Type.product,
-  orderType: OrderType.subscriptionOrder,
-  viewOrder: 1,
-  disabled: false,
-  createdAt: '2021-11-25T14:32:55Z',
-  updatedAt: '2021-11-25T14:32:55Z',
-};
+import { createNormalizedProductsMock, productMock } from 'mocks/product.mock';
+import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { staffMock } from './staff.mock';
 
 const productRelation: SubscriptionOrderProduct = {
   __typename: 'SubscriptionOrderProduct',
   id: '',
   subscriptionOrderID: '',
   productID: '',
-  product: product,
+  product: productMock,
   quantity: 1,
   createdAt: '2021-11-25T14:32:55Z',
   updatedAt: '2021-11-25T14:32:55Z',
@@ -38,24 +20,13 @@ const products: ModelSubscriptionOrderProductConnection = {
   items: [productRelation],
 };
 
-const staff: Staff = {
-  __typename: 'Staff',
-  id: 'DummyStaffID',
-  name: '',
-  type: Type.staff,
-  viewOrder: 1,
-  disabled: false,
-  createdAt: '2021-11-25T14:32:55Z',
-  updatedAt: '2021-11-25T14:32:55Z',
-};
-
 const item: SubscriptionOrder = {
   __typename: ObjectType.SubscriptionOrder,
   id: 'dummyID',
   staffID: '',
   type: ObjectType.SubscriptionOrder,
   products: products,
-  staff: staff,
+  staff: staffMock,
   deliveryStartYear: 2022,
   deliveryStartMonth: 1,
   deliveryInterval: 1,
@@ -67,19 +38,20 @@ const createProductRelations = (row: number): SubscriptionOrderProduct[] =>
   [...Array(row)].map((_, i) => ({
     ...productRelation,
     product: {
-      ...product,
+      ...productMock,
       id: `dummyProductID-${i + 1}`,
       name: `商品${row}-${i + 1}`,
     },
   }));
 
-export const subscriptionOrderItems: SubscriptionOrder[] = [...Array(12)].map((_, i) => ({
+export const subscriptionOrderListMock: ExtendedOrder<SubscriptionOrder>[] = [...Array(12)].map((_, i) => ({
   ...item,
   id: `dummyID-${i + 1}`,
   products: {
     ...products,
     items: createProductRelations(i + 1),
   },
+  normalizedProducts: createNormalizedProductsMock(i + 1),
   staff: { ...item.staff, id: `dummyStaffID-${i + 1}`, name: `担当者${i + 1}` },
   deliveryStartMonth: i + 1,
   deliveryInterval: i + 1,

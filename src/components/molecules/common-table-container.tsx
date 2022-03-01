@@ -37,7 +37,7 @@ export const CommonTableContainer: React.FC<Props> = ({
           <TableRow>
             {tableHeaders.map((item, index) => (
               <StyledTableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
-                {index === 0 && selectAllCheckbox ? (
+                {index === 1 && selectAllCheckbox ? (
                   selectAllCheckbox
                 ) : (
                   <Typography variant='body2' fontWeight='bold'>

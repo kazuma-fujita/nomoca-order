@@ -4,38 +4,28 @@ import {
   ListOrdersSortedByCreatedAtQueryVariables,
   ModelSortDirection,
   Order,
+  OrderProduct,
   Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import { listOrdersSortedByCreatedAt } from 'graphql/queries';
+import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
-import { createContext, useContext } from 'react';
-import { OrderProduct, OrderType } from 'API';
-import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
 
 const createNormalizedProduct = (orderProduct: OrderProduct): NormalizedProduct =>
   ({
     relationID: orderProduct?.id,
-    productID: orderProduct?.productID,
-    name: orderProduct?.product.name,
-    unitPrice: orderProduct?.product.unitPrice,
+    productID: orderProduct?.orderID,
+    name: orderProduct?.name,
+    unitPrice: orderProduct?.unitPrice,
     quantity: orderProduct?.quantity,
   } as NormalizedProduct);
-
-// const createNormalizedProducts = (order: Order): NormalizedProduct[] => {
-//   const normalizedProducts = order.products?.items.map((orderProduct) =>
-//     createNormalizedProduct(orderProduct!),
-//   ) as NormalizedProduct[];
-//   return order.orderType === OrderType.singleOrder
-//     ? addDeliveryFeeAndExpressObjectToProductList(normalizedProducts, order.deliveryType!)
-//     : normalizedProducts;
-// };
 
 const createNormalizedProducts = (order: Order): NormalizedProduct[] =>
   order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct!)) as NormalizedProduct[];
 
-const fetcher = async (): Promise<ExtendedOrder[]> => {
+const fetcher = async (): Promise<ExtendedOrder<Order>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
   const sortVariables: ListOrdersSortedByCreatedAtQueryVariables = {
     type: Type.order,
@@ -61,7 +51,7 @@ const fetcher = async (): Promise<ExtendedOrder[]> => {
     }
   }
 
-  const extendedItems: ExtendedOrder[] = items.map((item) => ({
+  const extendedItems: ExtendedOrder<Order>[] = items.map((item) => ({
     ...item,
     normalizedProducts: createNormalizedProducts(item),
   }));
@@ -69,43 +59,5 @@ const fetcher = async (): Promise<ExtendedOrder[]> => {
   return extendedItems;
 };
 
-export type NormalizedProduct = {
-  relationID: string;
-  productID: string;
-  name: string;
-  unitPrice: number;
-  quantity: number;
-  viewOrder?: number | null;
-};
-
-export type ExtendedOrder = Order & {
-  normalizedProducts: NormalizedProduct[];
-};
-
-export const useFetchOrderList = (): FetchResponse<ExtendedOrder[]> =>
-  useFetch<ExtendedOrder[]>(SWRKey.orderList, fetcher);
-
-export type AdminOrderResponse = FetchResponse<Order[]> & {
-  allData: Order[] | null;
-};
-
-const AdminOrderListContext = createContext({} as AdminOrderResponse);
-
-export const useAdminOrderList = () => useContext(AdminOrderListContext);
-
-export const AdminOrderListContextProvider: React.FC = ({ children }) => {
-  // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
-  const fetchResponse = useFetch<Order[]>(SWRKey.AdminSubscriptionOrderList, fetcher, {
-    revalidateOnFocus: false,
-  });
-  const { data } = fetchResponse;
-  // メモリ上に全件データ保存するstate生成
-  const { data: allData, mutate } = useFetch<Order[]>(SWRKey.AdminAllSubscriptionOrderList, null);
-  // 全件データstateが存在しない(初回アクセス)、かつAPIからデータ取得成功時
-  if (!allData && data) {
-    // 全件データ保存
-    mutate(data, false);
-  }
-  const responseData = { ...fetchResponse, allData: allData };
-  return <AdminOrderListContext.Provider value={responseData}>{children}</AdminOrderListContext.Provider>;
-};
+export const useFetchOrderList = (): FetchResponse<ExtendedOrder<Order>[]> =>
+  useFetch<ExtendedOrder<Order>[]>(SWRKey.orderList, fetcher);

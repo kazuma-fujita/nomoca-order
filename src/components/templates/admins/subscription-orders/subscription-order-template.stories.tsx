@@ -1,6 +1,6 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { SubscriptionOrderTemplate } from 'components/templates/admins/subscription-orders/subscription-order-template';
-import { subscriptionOrderItems } from 'mocks/subscription-order-list.mock';
+import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';
 
 type Story = ComponentStoryObj<typeof SubscriptionOrderTemplate>;
@@ -8,7 +8,7 @@ type Story = ComponentStoryObj<typeof SubscriptionOrderTemplate>;
 export default { component: SubscriptionOrderTemplate };
 
 export const Default: Story = {
-  args: { data: subscriptionOrderItems },
+  args: { data: subscriptionOrderListMock },
   decorators: [
     (StoryComponent) => (
       <NowDateContextProvider now={new Date(2023, 0, 1, 9)}>

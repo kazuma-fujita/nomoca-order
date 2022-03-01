@@ -1,28 +1,20 @@
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, Collapse, IconButton, TableCell, Typography } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import { TableCell } from '@mui/material';
 import { SubscriptionOrder } from 'API';
-import { StyledSecondaryTableRow } from 'components/atoms/tables/styled-secondary-table-row';
-import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
+import { CommonTableRow } from 'components/molecules/common-table-row';
 import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription-orders/delete-subscription-order-button';
 import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { generateFormattedNextDeliveryYearMonth } from 'functions/delivery-dates/generate-next-delivery-year-month';
+import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
-import React from 'react';
-import { useToggle } from 'react-use';
+import React, { useMemo } from 'react';
 import { useNowDate } from 'stores/use-now-date';
 import { TableHeader } from 'types/table-header';
-import { useCallback, useMemo } from 'react';
 
 const header: TableHeader[] = [
   {
-    label: '',
+    label: '商品',
     minWidth: 40,
   },
   {
@@ -59,38 +51,22 @@ const header: TableHeader[] = [
   },
 ];
 
-const productHeader: TableHeader[] = [
-  {
-    label: '商品名',
-    minWidth: 160,
-  },
-  {
-    label: '数量',
-    minWidth: 80,
-  },
-  {
-    label: '金額',
-    minWidth: 160,
-  },
-];
-
-export const SubscriptionOrderList = (props: FetchResponse<SubscriptionOrder[]>) => {
+export const SubscriptionOrderList = (props: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>) => {
   const { data } = props;
   const { now } = useNowDate();
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
-      {data && data.map((item: SubscriptionOrder) => <Row key={item.id} item={item} now={now} />)}
+      {data && data.map((item) => <Row key={item.id} item={item} now={now} />)}
     </CommonTableContainer>
   );
 };
 
 type RowProps = {
-  item: SubscriptionOrder;
+  item: ExtendedOrder<SubscriptionOrder>;
   now: Date;
 };
 
 const Row = ({ item, now }: RowProps) => {
-  const [on, toggle] = useToggle(false);
   const formattedNextDeliveryDate = useMemo(
     () =>
       generateFormattedNextDeliveryYearMonth(
@@ -103,67 +79,23 @@ const Row = ({ item, now }: RowProps) => {
     [item.deliveryInterval, item.deliveryStartMonth, item.deliveryStartYear, now],
   );
   return (
-    <React.Fragment key={item.id}>
-      <TableRow>
-        <TableCell align='center'>
-          <IconButton aria-label='expand row' onClick={toggle}>
-            {on ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <StyledTableCell align='center'>{item.staff.name}</StyledTableCell>
-        <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
-        <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>
-        <StyledTableCell align='center'>{formattedNextDeliveryDate}</StyledTableCell>
-        <StyledTableCell align='center'>{formatDateHourMinute(item.createdAt)}</StyledTableCell>
-        <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
-        {item.products && (
-          <>
-            <StyledTableCell align='center'>
-              <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
-            </StyledTableCell>
-            <StyledTableCell align='center'>
-              <DeleteSubscriptionOrderButton id={item.id} products={item.products} />
-            </StyledTableCell>
-          </>
-        )}
-      </TableRow>
-      <StyledSecondaryTableRow>
-        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={header.length}>
-          <Collapse in={on} timeout='auto' unmountOnExit>
-            <Box pt={2} pb={4}>
-              <Table size='small' aria-label='purchases'>
-                <TableHead>
-                  <TableRow>
-                    {productHeader.map((item, index) => (
-                      <TableCell key={index} align='center' sx={{ minWidth: item.minWidth }}>
-                        <Typography variant='body2' fontWeight='bold' color='text.secondary'>
-                          {item.label}
-                        </Typography>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {item.products &&
-                    item.products.items &&
-                    item.products.items.map(
-                      (relation, index) =>
-                        relation && (
-                          <TableRow key={`${index}-${relation.product.id}`}>
-                            <StyledTableCell>{relation.product.name}</StyledTableCell>
-                            <StyledTableCell align='center'>{relation.quantity}</StyledTableCell>
-                            <StyledTableCell align='right'>
-                              {relation.product.unitPrice.toLocaleString()}
-                            </StyledTableCell>
-                          </TableRow>
-                        ),
-                    )}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </StyledTableCell>
-      </StyledSecondaryTableRow>
-    </React.Fragment>
+    <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
+      <TableCell align='center'>{item.staff.name}</TableCell>
+      <TableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</TableCell>
+      <TableCell align='center'>{`${item.deliveryInterval}ヶ月`}</TableCell>
+      <TableCell align='center'>{formattedNextDeliveryDate}</TableCell>
+      <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+      <TableCell align='center'>{formatDateHourMinute(item.updatedAt)}</TableCell>
+      {item.products && (
+        <>
+          <TableCell align='center'>
+            <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
+          </TableCell>
+          <TableCell align='center'>
+            <DeleteSubscriptionOrderButton id={item.id} products={item.products} />
+          </TableCell>
+        </>
+      )}
+    </CommonTableRow>
   );
 };

@@ -1,7 +1,7 @@
 import { mount, unmount } from '@cypress/react';
 import Amplify from 'aws-amplify';
 import awsconfig from 'aws-exports';
-import { subscriptionOrderItems } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
+import { subscriptionOrderListMock } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
 import { SubscriptionOrderTemplateContainer } from 'components/templates/admins/subscription-orders/subscription-order-template-container';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import AdminSubscriptionOrderPage from '../../../src/pages/admins/subscription-order';
@@ -15,7 +15,7 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
     // Cognito認証でAppSyncを実行するとNo current user errorが発生する為、API_KEY認証に切り替え
     Amplify.configure({ ...awsconfig, aws_appsync_authenticationType: 'API_KEY' });
     const data = {
-      data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderItems } },
+      data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderListMock } },
     };
     cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
     mount(<AdminSubscriptionOrderPage />);
@@ -64,7 +64,7 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
 
   // const mockQuery = () => {
   //   const data = {
-  //     data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderItems } },
+  //     data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderListMock } },
   //   };
   //   cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
   // };
@@ -72,7 +72,7 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
   describe('It searches a subscription order item', () => {
     // beforeEach(() => {
     //   const data = {
-    //     data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderItems } },
+    //     data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderListMock } },
     //   };
     //   cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
     // });

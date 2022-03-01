@@ -1,4 +1,4 @@
-import { subscriptionOrderItems } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
+import { subscriptionOrderListMock } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
 
 context('SubscriptionOrder', () => {
   before(() => {
@@ -46,7 +46,7 @@ context('SubscriptionOrder', () => {
   describe('It searches a subscription order item', () => {
     before(() => {
       const data = {
-        data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderItems } },
+        data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderListMock } },
       };
       cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
     });

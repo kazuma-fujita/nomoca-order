@@ -1,5 +1,5 @@
 import { DeliveryType } from 'API';
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 export const addExpressDeliveryObjectToProductList = (
   products: NormalizedProduct[],

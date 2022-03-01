@@ -61,19 +61,10 @@ export const onCreateOrder = /* GraphQL */ `
         items {
           id
           orderID
-          productID
-          product {
-            id
-            name
-            unitPrice
-            orderType
-            viewOrder
-            disabled
-            type
-            createdAt
-            updatedAt
-          }
+          name
+          unitPrice
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -113,19 +104,10 @@ export const onUpdateOrder = /* GraphQL */ `
         items {
           id
           orderID
-          productID
-          product {
-            id
-            name
-            unitPrice
-            orderType
-            viewOrder
-            disabled
-            type
-            createdAt
-            updatedAt
-          }
+          name
+          unitPrice
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -165,19 +147,10 @@ export const onDeleteOrder = /* GraphQL */ `
         items {
           id
           orderID
-          productID
-          product {
-            id
-            name
-            unitPrice
-            orderType
-            viewOrder
-            disabled
-            type
-            createdAt
-            updatedAt
-          }
+          name
+          unitPrice
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -214,19 +187,10 @@ export const onCreateOrderProduct = /* GraphQL */ `
     onCreateOrderProduct(owner: $owner) {
       id
       orderID
-      productID
-      product {
-        id
-        name
-        unitPrice
-        orderType
-        viewOrder
-        disabled
-        type
-        createdAt
-        updatedAt
-      }
+      name
+      unitPrice
       quantity
+      viewOrder
       createdAt
       updatedAt
       owner
@@ -238,19 +202,10 @@ export const onUpdateOrderProduct = /* GraphQL */ `
     onUpdateOrderProduct(owner: $owner) {
       id
       orderID
-      productID
-      product {
-        id
-        name
-        unitPrice
-        orderType
-        viewOrder
-        disabled
-        type
-        createdAt
-        updatedAt
-      }
+      name
+      unitPrice
       quantity
+      viewOrder
       createdAt
       updatedAt
       owner
@@ -262,19 +217,10 @@ export const onDeleteOrderProduct = /* GraphQL */ `
     onDeleteOrderProduct(owner: $owner) {
       id
       orderID
-      productID
-      product {
-        id
-        name
-        unitPrice
-        orderType
-        viewOrder
-        disabled
-        type
-        createdAt
-        updatedAt
-      }
+      name
+      unitPrice
       quantity
+      viewOrder
       createdAt
       updatedAt
       owner

@@ -1,10 +1,11 @@
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { Product } from 'API';
 
 export const mergeOrderFormProductList = (
   baseProducts: NormalizedProduct[],
   masterProducts: Product[],
 ): NormalizedProduct[] => {
+  // DBに登録されているproductマスターデータから必要な商品情報を取得
   const normalizedProducts: NormalizedProduct[] = baseProducts.map((item) => {
     const product = masterProducts.find((product) => product.id === item.productID);
     return {
@@ -17,8 +18,10 @@ export const mergeOrderFormProductList = (
     };
   });
 
+  // DBに登録されているproductマスターデータのviewOrder昇順でsort
   const sortedProducts = normalizedProducts.sort((a, b) => (a.viewOrder! > b.viewOrder! ? -1 : 1));
 
+  // 入力画面で同じ商品が複数選択されてる場合、個数を合算してlistをmerge
   const mergedProducts = sortedProducts.reduce(
     (results: NormalizedProduct[], current: NormalizedProduct, currentIndex: number) => {
       const prev = results.find((item) => item.viewOrder! === current.viewOrder!);

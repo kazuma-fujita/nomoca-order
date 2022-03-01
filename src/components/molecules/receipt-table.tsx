@@ -6,7 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { taxRate } from 'constants/tax-rate';
 import { calcTotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 type Props = {
   products: NormalizedProduct[];

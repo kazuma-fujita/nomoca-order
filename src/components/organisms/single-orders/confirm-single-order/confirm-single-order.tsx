@@ -7,7 +7,7 @@ import { CenteringBodyContainer } from 'components/atoms/centering-body-containe
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { FormScreenQuery } from 'constants/form-screen-query';
 import { Path } from 'constants/path';
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { BaseSyntheticEvent } from 'react';
 
 type Props = {

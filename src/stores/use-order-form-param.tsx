@@ -2,7 +2,7 @@ import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 import { DeliveryType, OrderType } from 'API';
 import { SWRKey } from 'constants/swr-key';
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 // TODO: will change non-null field
 export type OrderFormParam = {

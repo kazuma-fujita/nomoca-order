@@ -54,10 +54,11 @@ type OrderProduct
   @model(queries: null)
   @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
   id: ID!
-  orderID: ID! @index(name: "byOrder", sortKeyFields: ["productID"]) # sortKeyFieldsをviewOrderにしてsort可能か検証
-  productID: ID! # sortKeyFields が viewOrderに代替可能なら変更
-  product: Product! @hasOne(fields: ["productID"]) # このフィールドは削除。name, unitPrice, viewOrder fieldを追加
+  orderID: ID! @index(name: "byOrder", sortKeyFields: ["viewOrder"])
+  name: String!
+  unitPrice: Int!
   quantity: Int!
+  viewOrder: Int!
 }
 
 type SubscriptionOrder

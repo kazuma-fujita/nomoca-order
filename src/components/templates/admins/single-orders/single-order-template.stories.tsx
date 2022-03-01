@@ -1,5 +1,5 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { singleOrderItems } from 'mocks/order-list.mock';
+import { orderListMock } from 'mocks/order-list.mock';
 import { SingleOrderTemplate } from './single-order-template';
 
 type Story = ComponentStoryObj<typeof SingleOrderTemplate>;
@@ -7,7 +7,7 @@ type Story = ComponentStoryObj<typeof SingleOrderTemplate>;
 export default { component: SingleOrderTemplate };
 
 export const Default: Story = {
-  args: { data: singleOrderItems },
+  args: { data: orderListMock },
 };
 
 export const Loading: Story = {

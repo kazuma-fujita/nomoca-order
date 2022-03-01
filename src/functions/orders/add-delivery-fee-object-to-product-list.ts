@@ -1,4 +1,4 @@
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { calcSubtotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 
 export const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): NormalizedProduct[] =>

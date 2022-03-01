@@ -1,6 +1,6 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { ConfirmSingleOrder } from './confirm-single-order';
-import { NormalizedProduct } from 'hooks/orders/use-fetch-order-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 const products: NormalizedProduct[] = [...Array(3)].map((_, i) => ({
   relationID: `dummyRelationID-${i + 1}`,
