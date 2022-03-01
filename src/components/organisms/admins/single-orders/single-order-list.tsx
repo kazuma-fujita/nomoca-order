@@ -22,7 +22,11 @@ const header: TableHeader[] = [
     minWidth: 40,
   },
   {
-    label: '発送状況',
+    label: '施設名',
+    minWidth: 160,
+  },
+  {
+    label: '電話番号',
     minWidth: 160,
   },
   {
@@ -30,11 +34,15 @@ const header: TableHeader[] = [
     minWidth: 160,
   },
   {
-    label: '発送日時',
+    label: '配送方法',
     minWidth: 160,
   },
   {
-    label: '配送方法',
+    label: '発送状況',
+    minWidth: 160,
+  },
+  {
+    label: '発送日時',
     minWidth: 160,
   },
   {
@@ -118,14 +126,16 @@ const Row = ({ item, selectedItems, orderItemsLength, setSelectedItems, setIsSel
       <TableCell padding='checkbox' align='center'>
         <Checkbox color='primary' checked={selectedItems.includes(item.id)} onChange={handleChange} />
       </TableCell>
+      <TableCell align='center'>渋谷クリニック</TableCell>
+      <TableCell align='center'>09012345678</TableCell>
+      <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+      <TableCell align='center'>
+        <DeliveryTypeChip deliveryType={item.deliveryType!} />
+      </TableCell>
       <TableCell align='center'>
         <DeliveryStatusChip status={item.deliveryStatus!} />
       </TableCell>
-      <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
       <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt!) : '-'}</TableCell>
-      <TableCell align='center'>
-        <DeliveryTypeChip type={item.deliveryType!} />
-      </TableCell>
       <TableCell align='center'>{item.staff.name}</TableCell>
     </CommonTableRow>
   );

@@ -9,9 +9,10 @@ import { CancelSingleOrderDialog } from './cancel-single-order-dialog';
 type Props = {
   id: string;
   products: ModelOrderProductConnection;
+  disabled: boolean;
 };
 
-export const CancelSingleOrderButton = (props: Props) => {
+export const CancelSingleOrderButton = ({ id, products, disabled }: Props) => {
   const { deleteOrder, isLoading, error, resetState } = useDeleteOrder();
   const [on, toggle] = useToggle(false);
 
@@ -21,17 +22,24 @@ export const CancelSingleOrderButton = (props: Props) => {
   }, [resetState, toggle]);
 
   const submitHandler = useCallback(async () => {
-    const error = await deleteOrder(props.id, props.products);
+    const error = await deleteOrder(id, products);
     if (!error) {
       toggle();
     }
-  }, [deleteOrder, props.id, props.products, toggle]);
+  }, [deleteOrder, id, products, toggle]);
 
   const label = 'キャンセル';
 
   return (
     <>
-      <Button onClick={toggle} variant='outlined' color='error' startIcon={<Delete fontSize='small' />} size='small'>
+      <Button
+        onClick={toggle}
+        variant='outlined'
+        color='error'
+        startIcon={<Delete fontSize='small' />}
+        size='small'
+        disabled={disabled}
+      >
         キャンセルする
       </Button>
       <CancelSingleOrderDialog

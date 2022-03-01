@@ -1,11 +1,10 @@
 import { TableCell } from '@mui/material';
-import { Order } from 'API';
+import { DeliveryStatus, Order } from 'API';
 import { DeliveryStatusChip } from 'components/atoms/delivery-status-chip';
 import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
 import { CommonTableRow } from 'components/molecules/common-table-row';
 import { CancelSingleOrderButton } from 'components/organisms/single-orders/cancel-single-order-button';
-import { UpdateSingleOrderButton } from 'components/organisms/single-orders/update-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
@@ -19,10 +18,6 @@ const header: TableHeader[] = [
     minWidth: 40,
   },
   {
-    label: '発送状況',
-    minWidth: 160,
-  },
-  {
     label: '注文日時',
     minWidth: 160,
   },
@@ -31,15 +26,19 @@ const header: TableHeader[] = [
     minWidth: 160,
   },
   {
+    label: '発送状況',
+    minWidth: 160,
+  },
+  {
+    label: '発送日時',
+    minWidth: 160,
+  },
+  {
     label: '担当者',
     minWidth: 160,
   },
   {
-    label: '注文キャンセル',
-    minWidth: 80,
-  },
-  {
-    label: '注文内容変更',
+    label: '',
     minWidth: 80,
   },
 ];
@@ -64,26 +63,21 @@ const Row = ({ item }: RowProps) => {
       colSpan={header.length}
       products={addDeliveryFeeAndExpressObjectToProductList(item.normalizedProducts, item.deliveryType!)}
     >
+      <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+      <TableCell align='center'>
+        <DeliveryTypeChip deliveryType={item.deliveryType!} />
+      </TableCell>
       <TableCell align='center'>
         <DeliveryStatusChip status={item.deliveryStatus!} />
       </TableCell>
-      <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
-      <TableCell align='center'>
-        <DeliveryTypeChip type={item.deliveryType!} />
-      </TableCell>
+      <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt!) : '-'}</TableCell>
       <TableCell align='center'>{item.staff.name}</TableCell>
       {item.products && (
         <TableCell align='center'>
-          <CancelSingleOrderButton id={item.id} products={item.products} />
-        </TableCell>
-      )}
-      {item.products && (
-        <TableCell align='center'>
-          <UpdateSingleOrderButton
+          <CancelSingleOrderButton
             id={item.id}
-            products={item.normalizedProducts}
-            deliveryType={item.deliveryType!}
-            staffID={item.staff.id}
+            products={item.products}
+            disabled={item.deliveryStatus !== DeliveryStatus.ordered}
           />
         </TableCell>
       )}

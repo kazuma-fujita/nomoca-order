@@ -19,6 +19,7 @@ enum DeliveryStatus {
 enum DeliveryType {
   regular
   express
+  subscription
 }
 
 type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {

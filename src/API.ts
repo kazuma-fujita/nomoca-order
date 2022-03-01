@@ -126,6 +126,7 @@ export enum DeliveryStatus {
 export enum DeliveryType {
   regular = "regular",
   express = "express",
+  subscription = "subscription",
 }
 
 
