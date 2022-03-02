@@ -15,11 +15,11 @@ import { createContext, useContext } from 'react';
 
 export type NormalizedProduct = {
   relationID: string;
-  productID: string;
+  productID: string; // 入力フォームにセットする商品ID。他、productのDBキャッシュからviewOrderなどの値を取得する為に使用
   name: string;
   unitPrice: number;
   quantity: number;
-  viewOrder?: number | null;
+  viewOrder?: number | null; // 入力確認画面で商品を表示するソート順。また、注文登録では値をそのままOrderProductに登録
 };
 
 export type ExtendedOrder<T> = T & {
@@ -44,6 +44,7 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
     type: ObjectType.SubscriptionOrder,
     sortDirection: ModelSortDirection.DESC,
   };
+
   const result = (await API.graphql(
     graphqlOperation(listSubscriptionOrdersSortedByCreatedAt, sortVariables),
   )) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
@@ -55,6 +56,7 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   ) {
     throw Error('The API fetched data but it returned null.');
   }
+
   const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
   for (const item of items) {
     if (!item || !item.products || !item.products.items) {
