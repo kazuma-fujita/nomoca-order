@@ -1,9 +1,8 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { DeliveryType } from 'API';
 import { useFieldArray, UseFieldArrayReturn, useForm } from 'react-hook-form';
-import { userEvent, screen } from '@storybook/testing-library';
 import { OrderFormParam } from 'stores/use-order-form-param';
-import { InputSingleOrder } from './input-single-order';
+import { SingleOrderFormTemplate } from './single-order-form-template';
 
 const defaultValues: OrderFormParam = {
   products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
@@ -16,14 +15,8 @@ const Wrapper: React.FC = () => {
   const { handleSubmit, control } = formReturn;
   const fieldArrayReturn = useFieldArray({ control, name: 'products' });
   const submitHandler = handleSubmit((data: OrderFormParam) => console.log(data));
-  // const copy = {
-  //   formReturn: formReturn,
-  //   fieldArrayReturn: fieldArrayReturn,
-  //   submitHandler: submitHandler,
-  //   cancelHandler: () => {},
-  // };
   return (
-    <InputSingleOrder
+    <SingleOrderFormTemplate
       formReturn={formReturn}
       fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
       submitHandler={submitHandler}

@@ -1,5 +1,4 @@
 import { Container } from '@mui/material';
-import { ReactNode } from 'react';
 
 export const CenteringContainer: React.FC = ({ children }) => {
   return (

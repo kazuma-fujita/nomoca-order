@@ -1,4 +1,5 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import {
   Box,
@@ -12,18 +13,18 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Typography,
 } from '@mui/material';
 import { DeliveryType } from 'API';
 import Form from 'components/atoms/form';
+import { ReceiptTable } from 'components/molecules/receipt-table';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import { BaseSyntheticEvent, ReactElement, useCallback, useState } from 'react';
+import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
-import { ReceiptTable } from 'components/molecules/receipt-table';
-import { Typography } from '@mui/material';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ReactNode from 'react';
 
 type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
@@ -41,13 +42,14 @@ type ProductErrorField = {
 // 数字連番の配列を生成
 const quantities = Array.from({ length: 25 }, (_, i) => i + 1);
 
-export const InputSingleOrder = ({
+export const OrderForm: React.FC<Props> = ({
   submitHandler,
   cancelHandler,
   formReturn,
   fieldArrayReturn,
   initialReceiptProducts,
-}: Props) => {
+  children,
+}) => {
   const { data: productList } = useProductList();
   const { data: staffList } = useStaffList();
   const [selectedProducts, setSelectedProducts] = useState<NormalizedProduct[]>(initialReceiptProducts ?? []);
@@ -210,34 +212,7 @@ export const InputSingleOrder = ({
           ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
         </Typography>
       </Box>
-      <Box mt={8} mb={8} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
-        <Box mr={2} />
-        <Controller
-          name='deliveryType'
-          control={formReturn.control}
-          defaultValue={DeliveryType.regular}
-          rules={{ required: '配送方法を選択してください' }}
-          render={({ field, formState: { errors } }) => (
-            <FormControl error={Boolean(errors.deliveryType)}>
-              <FormLabel id='delivery-type-group-label'>配送方法</FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby='delivery-type-group-label'
-                name={field.name}
-                onChange={(e) => field.onChange(e.target.value)}
-                value={field.value === undefined ? DeliveryType.regular : field.value}
-              >
-                <FormControlLabel value={DeliveryType.regular} control={<Radio />} label='通常配送' />
-                <FormControlLabel value={DeliveryType.express} control={<Radio />} label='速達配送 +1,000円(税抜)' />
-              </RadioGroup>
-              <FormHelperText>{errors.deliveryType && errors.deliveryType.message}</FormHelperText>
-              <FormHelperText error={false}>
-                到着までの目安は通常配送 7営業日、速達配送 2営業日となります。
-              </FormHelperText>
-            </FormControl>
-          )}
-        />
-      </Box>
+      {children}
       <Box mt={8} mb={8}>
         <Controller
           name='staffID'

@@ -4,44 +4,39 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { useFieldArray, UseFieldArrayReturn, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
-import { InputSingleOrder } from './input-single-order';
 import { useProductList } from 'stores/use-product-list';
 import { mergeOrderFormProductList } from 'functions/orders/merge-order-form-product-list';
+import { OrderType } from 'API';
 
-export const InputSingleOrderContainer = () => {
+export const useOrderForm = () => {
   const router = useRouter();
-  const { data, mutate } = useOrderFormParam();
+  const { data, mutate, orderType } = useOrderFormParam();
   const { data: productList } = useProductList();
+  const orderFormBasePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
   if (!data || !productList) {
-    router.push(Path.singleOrder);
+    router.push(orderFormBasePath);
   }
+
   const formReturn = useForm<OrderFormParam>({ defaultValues: data! });
   const { handleSubmit, control } = formReturn;
   const fieldArrayReturn = useFieldArray({ control, name: 'products' });
 
   const cancelHandler = useCallback(() => {
     mutate(undefined, false);
-    router.push(Path.singleOrder, undefined, { shallow: true });
-  }, [router, mutate]);
+    router.push(orderFormBasePath, undefined, { shallow: true });
+  }, [mutate, router, orderFormBasePath]);
 
   const submitHandler = handleSubmit(
     useCallback(
       (data: OrderFormParam) => {
+        // 入力された商品配列データをviewOrder順に並び替え、重複商品はquantityを合計してmergeし重複削除
         const mergedProducts = mergeOrderFormProductList(data.products!, productList!);
         mutate({ ...data, products: mergedProducts }, false);
-        router.push(`${Path.singleOrder}?${FormScreenQuery.confirm}`, undefined, { shallow: true });
+        router.push(`${orderFormBasePath}?${FormScreenQuery.confirm}`, undefined, { shallow: true });
       },
-      [productList, mutate, router],
+      [productList, mutate, router, orderFormBasePath],
     ),
   );
 
-  return (
-    <InputSingleOrder
-      formReturn={formReturn}
-      fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
-      submitHandler={submitHandler}
-      cancelHandler={cancelHandler}
-      initialReceiptProducts={data!.products}
-    />
-  );
+  return { formReturn, fieldArrayReturn, submitHandler, cancelHandler };
 };

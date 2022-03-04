@@ -42,14 +42,14 @@ export const Header = () => {
         ],
         [
           { path: Path.singleOrderProduct, icon: CategoryIcon, label: ScreenName.SingleOrderProduct },
-          { path: Path.SubscriptionOrderProduct, icon: CategoryIcon, label: ScreenName.SubscriptionOrderProduct },
+          { path: Path.subscriptionOrderProduct, icon: CategoryIcon, label: ScreenName.SubscriptionOrderProduct },
           { path: Path.Term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
         ],
       ]
     : [
         [
           { path: Path.singleOrder, icon: ShoppingCartIcon, label: ScreenName.SingleOrder },
-          { path: Path.SubscriptionOrder, icon: WifiProtectedSetupIcon, label: ScreenName.SubscriptionOrder },
+          { path: Path.subscriptionOrder, icon: WifiProtectedSetupIcon, label: ScreenName.SubscriptionOrder },
         ],
         [
           { path: Path.Staff, icon: PeopleIcon, label: ScreenName.Staff },

@@ -72,7 +72,7 @@ export const useVerifyBeforeAuthenticate = () => {
     // 高速に遷移するため事前に遷移先画面をprefetchする
     router.prefetch(Path.Staff);
     // TODO: 遷移先未定
-    router.prefetch(Path.SubscriptionOrder);
+    router.prefetch(Path.subscriptionOrder);
     afterAuthTransition(router);
     // 画面ステータスをみてログイン後画面に遷移
     return onAuthUIStateChange((nextAuthState, authData) => {
@@ -91,7 +91,7 @@ const afterAuthTransition = (router: NextRouter) => {
       const groups: string[] | undefined = currentUser.signInUserSession.accessToken.payload['cognito:groups'];
       const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
       // UserGroupにより遷移先の振り分け
-      // isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.SubscriptionOrder);
+      // isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.subscriptionOrder);
       isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.singleOrder);
     } catch (error) {
       router.replace(Path.Index);

@@ -10,11 +10,11 @@ import { SubscriptionOrderTemplateContainer } from 'components/templates/subscri
 import { Main } from 'components/molecules/main';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import { OrderType } from 'API';
+import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 
-// type Props = InferGetStaticPropsType<typeof getStaticProps>;
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-// const SubscriptionOrderPage = (props: Props) => {
-const SubscriptionOrderPage = () => {
+const SubscriptionOrderPage = (props: Props) => {
   useVerifyAuthenticated();
 
   return (
@@ -24,11 +24,13 @@ const SubscriptionOrderPage = () => {
       </Head>
       <ProductListContextProvider orderType={OrderType.subscriptionOrder} isFilterByActiveProduct={true}>
         <StaffListContextProvider isFilterByActiveStaff={true}>
-          <NowDateContextProvider now={new Date()}>
-            <Main>
-              <SubscriptionOrderTemplateContainer />
-            </Main>
-          </NowDateContextProvider>
+          <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder}>
+            <NowDateContextProvider now={new Date()}>
+              <Main>
+                <SubscriptionOrderTemplateContainer />
+              </Main>
+            </NowDateContextProvider>
+          </OrderFormParamContextProvider>
         </StaffListContextProvider>
       </ProductListContextProvider>
     </>
@@ -37,10 +39,10 @@ const SubscriptionOrderPage = () => {
 
 export default SubscriptionOrderPage;
 
-// export const getStaticProps = async (context: GetStaticPropsContext) => {
-//   return {
-//     props: {
-//       pageTitle: ScreenName.SubscriptionOrder + TitleSuffix,
-//     },
-//   };
-// };
+export const getStaticProps = async (context: GetStaticPropsContext) => {
+  return {
+    props: {
+      pageTitle: ScreenName.SubscriptionOrder + TitleSuffix,
+    },
+  };
+};
