@@ -26,10 +26,12 @@ export const useOrderFormParam = () => useContext(OrderFormParamContext);
 
 type Props = {
   orderType: OrderType;
+  initialOrderFormParam?: OrderFormParam | null; // Storybook表示用
 };
 
-export const OrderFormParamContextProvider: React.FC<Props> = ({ orderType, ...rest }) => {
+export const OrderFormParamContextProvider: React.FC<Props> = ({ orderType, initialOrderFormParam, ...rest }) => {
   const swrKey = SWRKey.orderFormParam;
   const response = useFetch<OrderFormParam>(swrKey, null);
-  return <OrderFormParamContext.Provider value={{ ...response, orderType }} {...rest} />;
+  const result = initialOrderFormParam ? { ...response, data: initialOrderFormParam } : response;
+  return <OrderFormParamContext.Provider value={{ ...result, orderType }} {...rest} />;
 };

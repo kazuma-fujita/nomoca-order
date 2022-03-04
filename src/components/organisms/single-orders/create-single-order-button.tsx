@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { useOrderFormParam } from 'stores/use-order-form-param';
 
-const defaultValues = {
+export const singleOrderFormDefaultValues = {
   products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
   staffID: '',
   DeliveryType: DeliveryType.regular,
@@ -19,7 +19,7 @@ export const CreateSingleOrderButton = () => {
 
   const onButtonClick = useCallback(() => {
     // It initializes all global cache data.
-    mutate(defaultValues, false);
+    mutate(singleOrderFormDefaultValues, false);
     router.push(`${Path.singleOrder}?${FormScreenQuery.input}`, undefined, { shallow: true });
   }, [mutate, router]);
 

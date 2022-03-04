@@ -15,7 +15,7 @@ Amplify.configure({ ...awsconfig, aws_appsync_authenticationType: 'API_KEY' });
 const { Default } = composeStories(stories);
 
 const handlers = [
-  graphql.query('ListStaffsSortedByViewOrder', (req, res, ctx) => {
+  graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => {
     const response = {
       listStaffsSortedByViewOrder: {
         items: Default.args?.data,
@@ -50,7 +50,7 @@ describe('StaffListContainer', () => {
 
   test('It renders empty data.', async () => {
     server.use(
-      graphql.query('ListStaffsSortedByViewOrder', (req, res, ctx) => {
+      graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => {
         const response = { listStaffsSortedByViewOrder: { items: [] } };
         return res(ctx.data(response));
       }),
@@ -61,7 +61,7 @@ describe('StaffListContainer', () => {
   });
 
   test('A network error occurred.', async () => {
-    server.use(graphql.query('ListStaffsSortedByViewOrder', (req, res, ctx) => res.networkError('')));
+    server.use(graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => res.networkError('')));
     staffListContainerRender();
     await waitForElementToBeRemoved(() => screen.getByLabelText('Now loading'));
     expect(screen.getByRole('alert')).toHaveTextContent('Network Error');

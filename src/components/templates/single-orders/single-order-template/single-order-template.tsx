@@ -5,13 +5,13 @@ import { CompleteSingleOrderContainer } from 'components/organisms/single-orders
 import { ConfirmSingleOrderContainer } from 'components/organisms/single-orders/confirm-single-order/confirm-single-order-container';
 import { CreateSingleOrderButton } from 'components/organisms/single-orders/create-single-order-button';
 import { SingleOrderList } from 'components/organisms/single-orders/single-order-list/single-order-list';
-import { SingleOrderFormTemplateContainer } from 'components/templates/single-orders/single-order-form-template/single-order-form-template-container';
 import { FormScreenType } from 'constants/form-screen-query';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { ReactElement, useState } from 'react';
+import { SingleOrderFormTemplate } from '../single-order-form-template/single-order-form-template';
 
 type Props = FetchResponse<ExtendedOrder<Order>[]> & {
   currentScreen: string | string[] | undefined;
@@ -28,7 +28,7 @@ const Component = ({ currentScreen, ...rest }: Props) => {
   switch (currentScreen) {
     case FormScreenType.input:
       setActiveStep(0);
-      setComponent(<SingleOrderFormTemplateContainer />);
+      setComponent(<SingleOrderFormTemplate />);
     case FormScreenType.confirm:
       setActiveStep(1);
       setComponent(<ConfirmSingleOrderContainer />);

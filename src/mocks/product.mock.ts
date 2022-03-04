@@ -7,11 +7,11 @@ export const productMock: Product = {
   name: '商品',
   unitPrice: 1000,
   type: Type.product,
-  orderType: OrderType.subscriptionOrder,
+  orderType: OrderType.singleOrder,
   viewOrder: 1,
   disabled: false,
-  createdAt: '2021-11-25T14:32:55Z',
-  updatedAt: '2021-11-25T14:32:55Z',
+  createdAt: '2022-03-25T09:32:55Z',
+  updatedAt: '2022-03-25T09:32:55Z',
 };
 
 export const createNormalizedProductsMock = (row: number): NormalizedProduct[] =>
@@ -21,4 +21,15 @@ export const createNormalizedProductsMock = (row: number): NormalizedProduct[] =
     name: `商品${row}-${i + 1}`,
     unitPrice: 1000 * (i + 1),
     quantity: i + 1,
+    viewOrder: i + 1,
   }));
+
+export const productListMock: Product[] = [...Array(3)].map((_, i) => ({
+  ...productMock,
+  id: `dummyID-${i + 1}`,
+  name: `商品${i + 1}`,
+  unitPrice: 1000 * (i + 1),
+  quantity: i + 1,
+  viewOrder: i + 1,
+  updatedAt: new Date(2022, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),
+}));

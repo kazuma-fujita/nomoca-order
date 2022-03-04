@@ -9,6 +9,7 @@ module.exports = {
     '@storybook/addon-postcss',
     'storybook-addon-next-router',
   ],
+  staticDirs: ['../public'],
   webpackFinal: async (config, { configType }) => {
     // baseUrl settings in tsconfig.json
     config.resolve.modules.push(path.resolve(__dirname, '../src'));

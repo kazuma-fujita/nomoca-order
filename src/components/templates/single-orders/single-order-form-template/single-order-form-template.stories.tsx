@@ -1,49 +1,59 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { DeliveryType } from 'API';
-import { useFieldArray, UseFieldArrayReturn, useForm } from 'react-hook-form';
-import { OrderFormParam } from 'stores/use-order-form-param';
+import { DeliveryType, OrderType } from 'API';
+import Amplify from '@aws-amplify/core';
+import { productListMock } from 'mocks/product.mock';
+import { staffListMock } from 'mocks/staff.mock';
+import { graphql } from 'msw';
+import { OrderFormParam, OrderFormParamContextProvider } from 'stores/use-order-form-param';
+import { ProductListContextProvider } from 'stores/use-product-list';
+import { StaffListContextProvider } from 'stores/use-staff-list';
 import { SingleOrderFormTemplate } from './single-order-form-template';
+import awsconfig from 'aws-exports';
+import { singleOrderFormDefaultValues } from 'components/organisms/single-orders/create-single-order-button';
 
-const defaultValues: OrderFormParam = {
-  products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
-  staffID: '',
-  deliveryType: DeliveryType.regular,
+// Cognito認証でAppSyncを実行するとNo current user errorが発生する為、API_KEY認証に切り替え
+Amplify.configure({ ...awsconfig, aws_appsync_authenticationType: 'API_KEY' });
+
+type Story = ComponentStoryObj<typeof SingleOrderFormTemplate>;
+
+export default { component: SingleOrderFormTemplate };
+
+export const Default: Story = {
+  decorators: [
+    (StoryComponent) => (
+      <ProductListContextProvider orderType={OrderType.singleOrder} isFilterByActiveProduct={true}>
+        <StaffListContextProvider isFilterByActiveStaff={true}>
+          <OrderFormParamContextProvider
+            orderType={OrderType.singleOrder}
+            initialOrderFormParam={singleOrderFormDefaultValues}
+          >
+            <StoryComponent />
+          </OrderFormParamContextProvider>
+        </StaffListContextProvider>
+      </ProductListContextProvider>
+    ),
+  ],
 };
 
-const Wrapper: React.FC = () => {
-  const formReturn = useForm<OrderFormParam>({ defaultValues });
-  const { handleSubmit, control } = formReturn;
-  const fieldArrayReturn = useFieldArray({ control, name: 'products' });
-  const submitHandler = handleSubmit((data: OrderFormParam) => console.log(data));
-  return (
-    <SingleOrderFormTemplate
-      formReturn={formReturn}
-      fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
-      submitHandler={submitHandler}
-      cancelHandler={() => {}}
-    />
-  );
+Default.parameters = {
+  msw: {
+    handlers: [
+      graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => {
+        const response = {
+          listStaffSortedByViewOrder: {
+            items: staffListMock,
+          },
+        };
+        return res(ctx.data(response));
+      }),
+      graphql.query('ListProductsSortedByViewOrder', (req, res, ctx) => {
+        const response = {
+          listProductsSortedByViewOrder: {
+            items: productListMock,
+          },
+        };
+        return res(ctx.data(response));
+      }),
+    ],
+  },
 };
-
-type Story = ComponentStoryObj<typeof Wrapper>;
-
-export default { component: Wrapper };
-
-export const Default: Story = {};
-
-// export const Default: Story = {
-//   args: { on: true },
-// };
-
-// export const Loading: Story = {
-//   args: { ...Default.args, isLoading: true },
-// };
-
-// export const ErrorAlert: Story = {
-//   args: { ...Default.args, error: Error('It occurred an async error.') },
-// };
-
-// export const EmptyError = {
-//   ...Default,
-//   play: async () => userEvent.click(screen.getByText(/追加する/i)),
-// };

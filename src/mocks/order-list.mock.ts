@@ -1,13 +1,4 @@
-import {
-  DeliveryStatus,
-  DeliveryType,
-  ModelOrderProductConnection,
-  Order,
-  OrderProduct,
-  OrderType,
-  Staff,
-  Type,
-} from 'API';
+import { DeliveryStatus, DeliveryType, ModelOrderProductConnection, Order, OrderProduct, OrderType, Type } from 'API';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { createNormalizedProductsMock } from 'mocks/product.mock';
 import { staffMock } from './staff.mock';

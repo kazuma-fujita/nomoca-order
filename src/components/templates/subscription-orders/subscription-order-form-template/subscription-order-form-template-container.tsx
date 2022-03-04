@@ -1,14 +1,14 @@
 import { useOrderForm } from 'hooks/orders/use-order-form';
 import { UseFieldArrayReturn } from 'react-hook-form';
 import { useOrderFormParam } from 'stores/use-order-form-param';
-import { SingleOrderFormTemplate } from './single-order-form-template';
+import { SubscriptionOrderFormTemplate } from './subscription-order-form-template';
 
-export const SingleOrderFormTemplateContainer = () => {
+export const SubscriptionOrderFormTemplateContainer = () => {
   const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useOrderForm();
   const { data } = useOrderFormParam();
 
   return (
-    <SingleOrderFormTemplate
+    <SubscriptionOrderFormTemplate
       formReturn={formReturn}
       fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
       submitHandler={submitHandler}

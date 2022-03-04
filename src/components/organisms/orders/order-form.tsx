@@ -109,10 +109,6 @@ export const OrderForm: React.FC<Props> = ({
 
   return (
     <Form onSubmit={submitHandler}>
-      <Typography variant='h5' textAlign='center'>
-        注文を入力する
-      </Typography>
-      <Box mb={8} />
       {fieldArrayReturn.fields.map((item, index) => (
         <Box mt={2} mb={2} key={item.id} sx={{ display: 'flex' }}>
           <Controller
