@@ -1,16 +1,15 @@
-import { SubscriptionOrderTemplate } from 'components/templates/subscription-orders/subscription-order-template';
+import { OrderType } from 'API';
+import { Main } from 'components/molecules/main';
+import { SubscriptionOrderTemplateContainer } from 'components/templates/subscription-orders/subscription-order-template/subscription-order-template-container';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
-import { StaffListContextProvider } from 'stores/use-staff-list';
-import { ProductListContextProvider } from 'stores/use-product-list';
-import { SubscriptionOrderTemplateContainer } from 'components/templates/subscription-orders/subscription-order-template-container';
-import { Main } from 'components/molecules/main';
 import { NowDateContextProvider } from 'stores/use-now-date';
-import { OrderType } from 'API';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
+import { ProductListContextProvider } from 'stores/use-product-list';
+import { StaffListContextProvider } from 'stores/use-staff-list';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

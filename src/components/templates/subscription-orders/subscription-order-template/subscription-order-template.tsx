@@ -9,7 +9,7 @@ import { FetchResponse } from 'hooks/swr/use-fetch';
 import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { useState, ReactElement } from 'react';
-import { SubscriptionOrderFormTemplateContainer } from '../subscription-orders/subscription-order-form-template/subscription-order-form-template-container';
+import { SubscriptionOrderFormTemplate } from 'components/templates/subscription-orders/subscription-order-form-template/subscription-order-form-template';
 
 const steps = ['定期便を入力する', '定期便内容を確認する', '申し込み完了'];
 
@@ -26,7 +26,7 @@ const Component = ({ currentScreen, ...rest }: Props) => {
   switch (currentScreen) {
     case FormScreenType.input:
       setActiveStep(0);
-      setComponent(<SubscriptionOrderFormTemplateContainer />);
+      setComponent(<SubscriptionOrderFormTemplate />);
     case FormScreenType.confirm:
       setActiveStep(1);
     // setComponent(<ConfirmSubscriptionOrderContainer />);
