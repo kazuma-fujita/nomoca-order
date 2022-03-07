@@ -10,8 +10,9 @@ import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { useState, ReactElement } from 'react';
 import { SubscriptionOrderFormTemplate } from 'components/templates/subscription-orders/subscription-order-form-template/subscription-order-form-template';
+import { ConfirmSubscriptionOrderTemplate } from '../confirm-subscription-order-template/confirm-subscription-order-template';
 
-const steps = ['定期便を入力する', '定期便内容を確認する', '申し込み完了'];
+const steps = ['定期便注文を入力する', '定期便の注文内容を確認する', '申し込み完了'];
 
 type Props = FetchResponse<ExtendedOrder<SubscriptionOrder>[]> & {
   currentScreen: string | string[] | undefined;
@@ -29,7 +30,7 @@ const Component = ({ currentScreen, ...rest }: Props) => {
       setComponent(<SubscriptionOrderFormTemplate />);
     case FormScreenType.confirm:
       setActiveStep(1);
-    // setComponent(<ConfirmSubscriptionOrderContainer />);
+      setComponent(<ConfirmSubscriptionOrderTemplate />);
     case FormScreenType.complete:
       setActiveStep(2);
     // setComponent(<CompleteSubscriptionOrderContainer />);

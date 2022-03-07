@@ -5,27 +5,27 @@ import { FormScreenQuery } from 'constants/form-screen-query';
 import { Path } from 'constants/path';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
+import { useOrderFormParam } from 'stores/use-order-form-param';
 
-export const singleOrderFormDefaultValues: OrderFormParam = {
+const defaultValues = {
   products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
   staffID: '',
-  deliveryType: DeliveryType.regular,
+  DeliveryType: DeliveryType.regular,
 };
 
-export const CreateSingleOrderButton = () => {
+export const CreateSubscriptionOrderButton = () => {
   const router = useRouter();
   const { mutate } = useOrderFormParam();
 
   const onButtonClick = useCallback(() => {
     // It initializes all global cache data.
-    mutate(singleOrderFormDefaultValues, false);
-    router.push(`${Path.singleOrder}?${FormScreenQuery.input}`, undefined, { shallow: true });
+    mutate(defaultValues, false);
+    router.push(`${Path.subscriptionOrder}?${FormScreenQuery.input}`, undefined, { shallow: true });
   }, [mutate, router]);
 
   return (
     <Button onClick={onButtonClick} variant='outlined' startIcon={<Add />}>
-      商品を注文する
+      定期便を申し込む
     </Button>
   );
 };

@@ -89,7 +89,7 @@ const Row = ({ item, now }: RowProps) => {
       {item.products && (
         <>
           <TableCell align='center'>
-            <UpdateSubscriptionOrderButton id={item.id} products={item.products} staffID={item.staff.id} />
+            <UpdateSubscriptionOrderButton id={item.id} products={item.normalizedProducts} staffID={item.staff.id} />
           </TableCell>
           <TableCell align='center'>
             <DeleteSubscriptionOrderButton id={item.id} products={item.products} />

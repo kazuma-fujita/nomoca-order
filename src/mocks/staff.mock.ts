@@ -2,7 +2,7 @@ import { Staff, Type } from 'API';
 
 export const staffMock: Staff = {
   __typename: 'Staff',
-  id: 'dummyID',
+  id: 'dummyStaffID',
   name: '',
   type: Type.staff,
   viewOrder: 1,
@@ -13,7 +13,7 @@ export const staffMock: Staff = {
 
 export const staffListMock: Staff[] = [...Array(3)].map((_, i) => ({
   ...staffMock,
-  id: `dummyID-${i + 1}`,
+  id: `dummyStaffID-${i + 1}`,
   name: `担当者${i + 1}`,
   viewOrder: i + 1,
   updatedAt: new Date(2021, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),

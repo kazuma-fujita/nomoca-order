@@ -10,6 +10,7 @@ import {
   DeleteOrderProductMutation,
   DeleteOrderProductMutationVariables,
   DeliveryStatus,
+  OrderType,
   Type,
   UpdateOrderInput,
   UpdateOrderMutation,
@@ -77,12 +78,11 @@ const createOrderProducts = async (newOrderID: string, productRelations: Normali
 };
 
 export const useCreateOrder = () => {
-  const { orderType } = useOrderFormParam();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
-  const createOrder = async (data: OrderFormParam) => {
+  const createOrder = async (orderType: OrderType, data: OrderFormParam) => {
     setIsLoading(true);
     try {
       const productRelations = data.products;

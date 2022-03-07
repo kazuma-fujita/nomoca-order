@@ -1,40 +1,41 @@
 import Amplify from '@aws-amplify/core';
 import type { ComponentStoryObj } from '@storybook/react';
-import { OrderType } from 'API';
+import { DeliveryType, OrderType } from 'API';
 import awsconfig from 'aws-exports';
-import { singleOrderFormDefaultValues } from 'components/organisms/single-orders/create-single-order-button';
-import { productListMock } from 'mocks/product.mock';
+import { createNormalizedProductsMock, productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';
 import { graphql } from 'msw';
-import { NowDateContextProvider } from 'stores/use-now-date';
-import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
+import { OrderFormParam, OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { StaffListContextProvider } from 'stores/use-staff-list';
-import { SubscriptionOrderFormTemplate } from './subscription-order-form-template';
+import { ConfirmSubscriptionOrderTemplate } from './confirm-subscription-order-template';
 
 // Cognito認証でAppSyncを実行するとNo current user errorが発生する為、API_KEY認証に切り替え
 Amplify.configure({ ...awsconfig, aws_appsync_authenticationType: 'API_KEY' });
 
-type Story = ComponentStoryObj<typeof SubscriptionOrderFormTemplate>;
+type Story = ComponentStoryObj<typeof ConfirmSubscriptionOrderTemplate>;
 
-export default { component: SubscriptionOrderFormTemplate };
+export default { component: ConfirmSubscriptionOrderTemplate };
+
+const defaultValues: OrderFormParam = {
+  products: createNormalizedProductsMock(3),
+  staffID: 'dummyStaffID-1',
+  deliveryStartYear: 2022,
+  deliveryStartMonth: 3,
+  deliveryInterval: 3,
+};
 
 export const Default: Story = {
   decorators: [
     (StoryComponent) => (
       <ProductListContextProvider
-        orderType={OrderType.singleOrder}
+        orderType={OrderType.subscriptionOrder}
         isFilterByActiveProduct={true}
         isRevalidateOnFocus={false}
       >
         <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
-          <OrderFormParamContextProvider
-            orderType={OrderType.singleOrder}
-            initialOrderFormParam={singleOrderFormDefaultValues}
-          >
-            <NowDateContextProvider now={new Date(2022, 3, 1, 9)}>
-              <StoryComponent />
-            </NowDateContextProvider>
+          <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder} initialOrderFormParam={defaultValues}>
+            <StoryComponent />
           </OrderFormParamContextProvider>
         </StaffListContextProvider>
       </ProductListContextProvider>
@@ -64,3 +65,32 @@ Default.parameters = {
     ],
   },
 };
+
+// export const Default: Story = {
+//   args: {
+//     products: products,
+//     deliveryTypeLabel: '通常配送',
+//     staffName: '担当者1',
+//     isLoading: false,
+//     error: null,
+//     submitHandler: async () => {},
+//   },
+//   parameters: {
+//     nextRouter: {
+//       path: '/single-order',
+//       query: {
+//         screen: 'input',
+//       },
+//     },
+//   },
+// };
+
+// export const Loading: Story = {
+//   ...Default,
+//   args: { ...Default.args, isLoading: true },
+// };
+
+// export const ErrorAlert: Story = {
+//   ...Default,
+//   args: { ...Default.args, error: Error('It occurred an async error.') },
+// };

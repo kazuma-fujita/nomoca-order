@@ -30,11 +30,13 @@ export const useOrderForm = () => {
     useCallback(
       (data: OrderFormParam) => {
         // 入力された商品配列データをviewOrder順に並び替え、重複商品はquantityを合計してmergeし重複削除
-        const mergedProducts = mergeOrderFormProductList(data.products!, productList!);
-        mutate({ ...data, products: mergedProducts }, false);
+        // const mergedProducts = mergeOrderFormProductList(data.products!, productList!);
+        // mutate({ ...data, products: mergedProducts }, false);
+        mutate(data, false);
         router.push(`${orderFormBasePath}?${FormScreenQuery.confirm}`, undefined, { shallow: true });
       },
-      [productList, mutate, router, orderFormBasePath],
+      // [productList, mutate, router, orderFormBasePath],
+      [mutate, router, orderFormBasePath],
     ),
   );
 

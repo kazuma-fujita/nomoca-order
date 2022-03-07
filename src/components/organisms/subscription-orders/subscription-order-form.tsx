@@ -16,7 +16,7 @@ export const SubscriptionOrderForm = () => {
   const { data } = useOrderFormParam();
   const { now } = useNowDate();
   const nowYear = now.getFullYear();
-  const nowMonth = now.getMonth() + 1;
+  const nowMonth = now.getMonth();
   const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
   const deliveryStartMonths = Array.from({ length: 6 }, (_, i) => {
     const month = i + nextMonth;

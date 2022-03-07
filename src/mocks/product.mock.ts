@@ -26,7 +26,7 @@ export const createNormalizedProductsMock = (row: number): NormalizedProduct[] =
 
 export const productListMock: Product[] = [...Array(3)].map((_, i) => ({
   ...productMock,
-  id: `dummyID-${i + 1}`,
+  id: `dummyProductID-${i + 1}`,
   name: `商品${i + 1}`,
   unitPrice: 1000 * (i + 1),
   quantity: i + 1,

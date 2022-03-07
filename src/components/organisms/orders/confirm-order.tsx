@@ -3,7 +3,6 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Chip, Divider, Typography } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import Link from 'components/atoms/link';
-import { CenteringBodyContainer } from 'components/atoms/centering-body-container';
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { FormScreenQuery } from 'constants/form-screen-query';
 import { Path } from 'constants/path';
@@ -12,33 +11,15 @@ import { BaseSyntheticEvent } from 'react';
 
 type Props = {
   products: NormalizedProduct[];
-  deliveryTypeLabel: string;
   staffName: string;
   isLoading: boolean;
   error: Error | null;
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
 };
 
-export const ConfirmSingleOrder = ({
-  products,
-  deliveryTypeLabel,
-  staffName,
-  isLoading,
-  error,
-  submitHandler,
-}: Props) => {
+export const ConfirmOrder: React.FC<Props> = ({ products, staffName, isLoading, error, submitHandler, children }) => {
   return (
     <>
-      <Typography variant='h5' textAlign='center'>
-        注文内容を確認する
-      </Typography>
-      <Box mt={4} mb={4}>
-        <Typography variant='body2' textAlign='center'>
-          まだ注文は確定していません。 <br />
-          <br />
-          注文内容をご確認の上、注文するボタンをクリックしてください。
-        </Typography>
-      </Box>
       {error && (
         <Box mb={4}>
           <ErrorAlert>{error}</ErrorAlert>
@@ -50,12 +31,13 @@ export const ConfirmSingleOrder = ({
       <Box mb={8}>
         <ReceiptTable products={products} />
       </Box>
-      <Divider textAlign='left'>
+      {/* <Divider textAlign='left'>
         <Chip label='配送方法' />
       </Divider>
       <Box mt={2} mb={8} ml={4}>
         <Typography variant='body1'>{deliveryTypeLabel}</Typography>
-      </Box>
+      </Box> */}
+      {children}
       <Divider textAlign='left'>
         <Chip label='担当者' />
       </Divider>
