@@ -17,8 +17,13 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <ProductListContextProvider orderType={OrderType.singleOrder} isFilterByActiveProduct={true}>
-        <StaffListContextProvider isFilterByActiveStaff={true}>
+      {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
+      <ProductListContextProvider
+        orderType={OrderType.singleOrder}
+        isFilterByActiveProduct={true}
+        isRevalidateOnFocus={false}
+      >
+        <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
           <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
             <Main>
               <SingleOrderTemplateContainer />

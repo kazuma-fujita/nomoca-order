@@ -22,8 +22,13 @@ const SubscriptionOrderPage = (props: Props) => {
       <Head>
         <title>{ScreenName.SubscriptionOrder + TitleSuffix}</title>
       </Head>
-      <ProductListContextProvider orderType={OrderType.subscriptionOrder} isFilterByActiveProduct={true}>
-        <StaffListContextProvider isFilterByActiveStaff={true}>
+      {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
+      <ProductListContextProvider
+        orderType={OrderType.subscriptionOrder}
+        isFilterByActiveProduct={true}
+        isRevalidateOnFocus={false}
+      >
+        <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
           <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder}>
             <NowDateContextProvider now={new Date()}>
               <Main>

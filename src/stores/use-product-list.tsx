@@ -12,12 +12,10 @@ import { SWRKey } from 'constants/swr-key';
 import { listProductsSortedByViewOrder } from 'graphql/queries';
 import { useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
+import { Fetcher, PublicConfiguration } from 'swr/dist/types';
 import { FetchResponse } from '../hooks/swr/use-fetch';
 
 type ProviderProps = FetchResponse<Product[]> & {
-  // data: Product[] | undefined;
-  // error: Error | undefined;
-  // mutate: KeyedMutator<Product[]>;
   swrKey: (string | OrderType | boolean)[];
   orderType: OrderType;
 };
@@ -34,20 +32,25 @@ const fetcher = async (key: string, orderType: OrderType, isFilterByActiveProduc
   const sortVariables: ListProductsSortedByViewOrderQueryVariables = { type: Type.product, filter: filter };
   const operation = graphqlOperation(listProductsSortedByViewOrder, sortVariables);
   const result = (await API.graphql(operation)) as GraphQLResult<ListProductsSortedByViewOrderQuery>;
-  if (result.data && result.data.listProductsSortedByViewOrder && result.data.listProductsSortedByViewOrder.items) {
-    return result.data.listProductsSortedByViewOrder.items as Product[];
-  } else {
+  if (!result.data || !result.data.listProductsSortedByViewOrder || !result.data.listProductsSortedByViewOrder.items) {
     throw Error('The API fetched data but it returned null.');
   }
+  return result.data.listProductsSortedByViewOrder.items as Product[];
 };
 
 type Props = {
   orderType: OrderType;
-  isFilterByActiveProduct: boolean;
+  isFilterByActiveProduct: boolean; // 有効なproductでfilter実行可否フラグ
+  isRevalidateOnFocus?: boolean; // Windowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse
 };
 
-export const ProductListContextProvider: React.FC<Props> = ({ orderType, isFilterByActiveProduct, ...rest }) => {
+export const ProductListContextProvider: React.FC<Props> = ({
+  orderType,
+  isFilterByActiveProduct,
+  isRevalidateOnFocus = true,
+  ...rest
+}) => {
   const swrKey = [SWRKey.ProductList, orderType, isFilterByActiveProduct];
-  const response = useFetch<Product[]>(swrKey, fetcher);
+  const response = useFetch<Product[]>(swrKey, fetcher, { revalidateOnFocus: isRevalidateOnFocus });
   return <ProductListContext.Provider value={{ ...response, swrKey, orderType }} {...rest} />;
 };
