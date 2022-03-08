@@ -72,7 +72,7 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
 };
 
 export const useFetchSubscriptionOrderList = (): FetchResponse<ExtendedOrder<SubscriptionOrder>[]> =>
-  useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.SubscriptionOrderList, fetcher);
+  useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.subscriptionOrderList, fetcher);
 
 export type AdminSubscriptionOrderResponse = FetchResponse<ExtendedOrder<SubscriptionOrder>[]> & {
   allData: ExtendedOrder<SubscriptionOrder>[] | null;

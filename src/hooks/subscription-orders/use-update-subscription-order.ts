@@ -111,7 +111,7 @@ export const useUpdateSubscriptionOrder = () => {
           prevProductNonNullRelations,
         );
         // 再フェッチ実行
-        mutate(SWRKey.SubscriptionOrderList);
+        mutate(SWRKey.subscriptionOrderList);
       } else {
         throw Error('The API updated data but it returned null.');
       }
@@ -166,7 +166,7 @@ export const useUpdateSubscriptionOrder = () => {
 //   // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
 //   const updateSubscriptionOrder = useCallback(
 //     async (id: string, staffID: string) =>
-//       mutate(SWRKey.SubscriptionOrderList, onUpdateSubscriptionOrder(id, staffID), false),
+//       mutate(SWRKey.subscriptionOrderList, onUpdateSubscriptionOrder(id, staffID), false),
 //     []
 //   );
 

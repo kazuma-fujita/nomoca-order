@@ -64,7 +64,7 @@ export const useDeleteSubscriptionOrder = () => {
         const items = productRelations.items.flatMap((x) => (x === null ? [] : [x]));
         await deleteSubscriptionOrderProducts(items);
         // 再フェッチ実行
-        mutate(SWRKey.SubscriptionOrderList);
+        mutate(SWRKey.subscriptionOrderList);
       } else {
         throw Error('The API deleted data but it returned null.');
       }
@@ -114,7 +114,7 @@ export const useDeleteSubscriptionOrder = () => {
 
 //   // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
 //   const deleteSubscriptionOrder = useCallback(
-//     async (id: string) => mutate(SWRKey.SubscriptionOrderList, onDeleteSubscriptionOrder(id), false),
+//     async (id: string) => mutate(SWRKey.subscriptionOrderList, onDeleteSubscriptionOrder(id), false),
 //     []
 //   );
 

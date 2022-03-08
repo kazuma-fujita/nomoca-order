@@ -57,7 +57,7 @@ export const useDeleteOrder = () => {
         const items = productRelations.items.flatMap((x) => (x === null ? [] : [x]));
         await deleteOrderProducts(items);
         // 再フェッチ実行
-        mutate(SWRKey.SubscriptionOrderList);
+        mutate(SWRKey.subscriptionOrderList);
       } else {
         throw Error('The API deleted data but it returned null.');
       }

@@ -1,5 +1,6 @@
 enum Type {
   order
+  subscriptionOrder
   product
   staff
   clinic
@@ -41,11 +42,8 @@ type Order
   staffID: ID!
   staff: Staff! @hasOne(fields: ["staffID"])
   orderType: OrderType!
-  deliveryStatus: DeliveryStatus
-  deliveryType: DeliveryType
-  deliveryStartYear: Int
-  deliveryStartMonth: Int
-  deliveryInterval: Int
+  deliveryStatus: DeliveryStatus!
+  deliveryType: DeliveryType!
   deliveredAt: AWSDateTime
   createdAt: AWSDateTime!
   type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])

@@ -4,10 +4,10 @@ export const SWRKey = {
   ProductList: 'productList',
   SingleOrderList: 'singleOrderList',
   AdminSingleOrderList: 'adminSingleOrderList',
-  SubscriptionOrderList: 'subscriptionOrderList',
   AdminSubscriptionOrderList: 'adminSubscriptionOrderList',
   AdminAllSubscriptionOrderList: 'adminAllSubscriptionOrderList',
   orderList: 'orderList',
+  subscriptionOrderList: 'subscriptionOrderList',
   orderFormParam: 'orderFormParam',
 } as const;
 

@@ -79,7 +79,7 @@ export const useCreateSubscriptionOrder = () => {
         setIsLoading(false);
         setError(null);
         // データ再取得
-        mutate(SWRKey.SubscriptionOrderList);
+        mutate(SWRKey.subscriptionOrderList);
       } else {
         throw Error('The API created data but it returned null.');
       }

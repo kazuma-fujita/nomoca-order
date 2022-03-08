@@ -75,9 +75,6 @@ export const getOrder = /* GraphQL */ `
       orderType
       deliveryStatus
       deliveryType
-      deliveryStartYear
-      deliveryStartMonth
-      deliveryInterval
       deliveredAt
       createdAt
       type
@@ -123,9 +120,6 @@ export const listOrders = /* GraphQL */ `
         orderType
         deliveryStatus
         deliveryType
-        deliveryStartYear
-        deliveryStartMonth
-        deliveryInterval
         deliveredAt
         createdAt
         type
@@ -362,9 +356,6 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         orderType
         deliveryStatus
         deliveryType
-        deliveryStartYear
-        deliveryStartMonth
-        deliveryInterval
         deliveredAt
         createdAt
         type
