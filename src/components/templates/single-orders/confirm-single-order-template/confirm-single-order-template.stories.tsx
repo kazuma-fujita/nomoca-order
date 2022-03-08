@@ -17,7 +17,7 @@ type Story = ComponentStoryObj<typeof ConfirmSingleOrderTemplate>;
 
 export default { component: ConfirmSingleOrderTemplate };
 
-const singleOrderDefaultValues: OrderFormParam = {
+const defaultValues: OrderFormParam = {
   products: createNormalizedProductsMock(3),
   staffID: 'dummyStaffID-1',
   deliveryType: DeliveryType.regular,
@@ -32,10 +32,7 @@ export const Default: Story = {
         isRevalidateOnFocus={false}
       >
         <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
-          <OrderFormParamContextProvider
-            orderType={OrderType.singleOrder}
-            initialOrderFormParam={singleOrderDefaultValues}
-          >
+          <OrderFormParamContextProvider orderType={OrderType.singleOrder} initialOrderFormParam={defaultValues}>
             <StoryComponent />
           </OrderFormParamContextProvider>
         </StaffListContextProvider>

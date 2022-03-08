@@ -10,7 +10,8 @@ import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { useState, ReactElement } from 'react';
 import { SubscriptionOrderFormTemplate } from 'components/templates/subscription-orders/subscription-order-form-template/subscription-order-form-template';
-import { ConfirmSubscriptionOrderTemplate } from '../confirm-subscription-order-template/confirm-subscription-order-template';
+import { ConfirmSubscriptionOrderTemplate } from 'components/templates/subscription-orders/confirm-subscription-order-template/confirm-subscription-order-template';
+import { CompleteSubscriptionOrderTemplate } from 'components/templates/subscription-orders/complete-subscription-order/complete-subscription-order-template';
 
 const steps = ['定期便注文を入力する', '定期便の注文内容を確認する', '申し込み完了'];
 
@@ -33,7 +34,7 @@ const Component = ({ currentScreen, ...rest }: Props) => {
       setComponent(<ConfirmSubscriptionOrderTemplate />);
     case FormScreenType.complete:
       setActiveStep(2);
-    // setComponent(<CompleteSubscriptionOrderContainer />);
+      setComponent(<CompleteSubscriptionOrderTemplate />);
     default:
       setComponent(null);
   }

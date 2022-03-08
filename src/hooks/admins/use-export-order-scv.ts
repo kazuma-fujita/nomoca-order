@@ -2,7 +2,8 @@ import { GraphQLResult } from '@aws-amplify/api';
 import { GetOrderQuery, Order, OrderProduct } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { DateFormat } from 'constants/date-format';
-import { stringify } from 'csv-stringify/dist/cjs/sync';
+// import { stringify } from 'csv-stringify/dist/cjs/sync';
+import { stringify } from 'csv-stringify/sync';
 import { format } from 'date-fns';
 import { calcTotalFromPriceAndQuantity } from 'functions/orders/calc-total-taxes-subtotal';
 import { getOrder } from 'graphql/queries';
@@ -39,7 +40,7 @@ export const useExportOrderCSV = () => {
             throw Error('An order product is null.');
           }
           const { total, taxes, subtotal } = calcTotalFromPriceAndQuantity(
-            orderProduct!.product.unitPrice,
+            orderProduct!.unitPrice,
             orderProduct!.quantity,
           );
           exportData.push({
@@ -51,7 +52,7 @@ export const useExportOrderCSV = () => {
             empty4: '',
             empty5: '',
             empty6: '',
-            productName: orderProduct!.product.name,
+            productName: orderProduct!.name,
             empty7: '',
             empty8: '',
             empty9: '',

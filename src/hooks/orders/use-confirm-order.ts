@@ -6,7 +6,6 @@ import { getDeliveryTypeLabel } from 'functions/orders/get-delivery-type-label';
 import { mergeOrderFormProductList } from 'functions/orders/merge-order-form-product-list';
 import { useCreateOrder } from 'hooks/orders/use-create-order';
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
 import { useOrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
@@ -14,19 +13,20 @@ import { useStaffList } from 'stores/use-staff-list';
 export const useConfirmOrder = () => {
   const router = useRouter();
   const { data: orderFormParam, orderType } = useOrderFormParam();
-  const { data: staffList } = useStaffList();
   const { data: productList } = useProductList();
+  const { data: staffList } = useStaffList();
   const { createOrder, isLoading, error } = useCreateOrder();
-  const orderFormBasePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
+  const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
 
   if (
     !orderFormParam ||
     !orderFormParam.products ||
     !orderFormParam.deliveryType ||
     !orderFormParam.staffID ||
+    !productList ||
     !staffList
   ) {
-    router.push(orderFormBasePath);
+    router.push(basePath);
   }
 
   // 入力された商品配列データをviewOrder順に並び替え、重複商品はquantityを合計してmergeし重複削除
@@ -36,7 +36,7 @@ export const useConfirmOrder = () => {
     try {
       // merge済みの商品を登録
       await createOrder(orderType, { ...orderFormParam, products: products });
-      router.push(`${orderFormBasePath}?${FormScreenQuery.complete}`, undefined, { shallow: true });
+      router.push(`${basePath}?${FormScreenQuery.complete}`, undefined, { shallow: true });
     } catch (error) {}
   };
 

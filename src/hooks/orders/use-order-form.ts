@@ -12,9 +12,9 @@ export const useOrderForm = () => {
   const router = useRouter();
   const { data, mutate, orderType } = useOrderFormParam();
   const { data: productList } = useProductList();
-  const orderFormBasePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
+  const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
   if (!data || !productList) {
-    router.push(orderFormBasePath);
+    router.push(basePath);
   }
 
   const formReturn = useForm<OrderFormParam>({ defaultValues: data! });
@@ -23,8 +23,8 @@ export const useOrderForm = () => {
 
   const cancelHandler = useCallback(() => {
     mutate(undefined, false);
-    router.push(orderFormBasePath, undefined, { shallow: true });
-  }, [mutate, router, orderFormBasePath]);
+    router.push(basePath, undefined, { shallow: true });
+  }, [mutate, router, basePath]);
 
   const submitHandler = handleSubmit(
     useCallback(
@@ -33,10 +33,10 @@ export const useOrderForm = () => {
         // const mergedProducts = mergeOrderFormProductList(data.products!, productList!);
         // mutate({ ...data, products: mergedProducts }, false);
         mutate(data, false);
-        router.push(`${orderFormBasePath}?${FormScreenQuery.confirm}`, undefined, { shallow: true });
+        router.push(`${basePath}?${FormScreenQuery.confirm}`, undefined, { shallow: true });
       },
-      // [productList, mutate, router, orderFormBasePath],
-      [mutate, router, orderFormBasePath],
+      // [productList, mutate, router, basePath],
+      [mutate, router, basePath],
     ),
   );
 

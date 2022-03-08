@@ -1,6 +1,6 @@
 import Amplify from '@aws-amplify/core';
 import type { ComponentStoryObj } from '@storybook/react';
-import { DeliveryType, OrderType } from 'API';
+import { OrderType } from 'API';
 import awsconfig from 'aws-exports';
 import { createNormalizedProductsMock, productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';

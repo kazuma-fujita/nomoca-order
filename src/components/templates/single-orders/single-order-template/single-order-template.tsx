@@ -1,7 +1,6 @@
 import { Grid } from '@mui/material';
 import { Order } from 'API';
 import { StepperContainer } from 'components/molecules/stepper-container';
-import { CompleteSingleOrderContainer } from 'components/organisms/single-orders/complete-single-order/complete-single-order-container';
 import { CreateSingleOrderButton } from 'components/organisms/single-orders/create-single-order-button';
 import { SingleOrderList } from 'components/organisms/single-orders/single-order-list/single-order-list';
 import { FormScreenType } from 'constants/form-screen-query';
@@ -10,6 +9,7 @@ import { FetchResponse } from 'hooks/swr/use-fetch';
 import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { ReactElement, useState } from 'react';
+import { CompleteSingleOrderTemplate } from '../complete-single-order/complete-single-order-template';
 import { ConfirmSingleOrderTemplate } from '../confirm-single-order-template/confirm-single-order-template';
 import { SingleOrderFormTemplate } from '../single-order-form-template/single-order-form-template';
 
@@ -34,7 +34,7 @@ const Component = ({ currentScreen, ...rest }: Props) => {
       setComponent(<ConfirmSingleOrderTemplate />);
     case FormScreenType.complete:
       setActiveStep(2);
-      setComponent(<CompleteSingleOrderContainer />);
+      setComponent(<CompleteSingleOrderTemplate />);
     default:
       setComponent(null);
   }
