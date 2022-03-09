@@ -5,7 +5,7 @@ import { API } from 'aws-amplify';
 import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import { customRender } from 'utilities/tests/custom-render';
-import { SubscriptionOrderTemplateContainer } from './subscription-order-template-container';
+import { SubscriptionOrderListTemplate } from './subscription-order-list-template';
 
 const expectTemplateElements = async () => {
   screen.getByRole('table');
@@ -37,7 +37,7 @@ const expectAllList = () => {
   screen.getByRole('cell', { name: '2022/12月' });
 };
 
-describe.skip('SubscriptionOrderTemplateContainer', () => {
+describe.skip('SubscriptionOrderListTemplate', () => {
   const spy = jest.spyOn(API, 'graphql');
 
   afterEach(() => {
@@ -72,7 +72,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/1.
       customRender(
         <NowDateContextProvider now={new Date(2023, 0)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -92,7 +92,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/2.
       customRender(
         <NowDateContextProvider now={new Date(2023, 1)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -111,7 +111,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/3.
       customRender(
         <NowDateContextProvider now={new Date(2023, 2)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -130,7 +130,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/4.
       customRender(
         <NowDateContextProvider now={new Date(2023, 3)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -149,7 +149,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/5.
       customRender(
         <NowDateContextProvider now={new Date(2023, 4)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -167,7 +167,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/6.
       customRender(
         <NowDateContextProvider now={new Date(2023, 5)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -184,7 +184,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/7.
       customRender(
         <NowDateContextProvider now={new Date(2023, 6)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -201,7 +201,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/8.
       customRender(
         <NowDateContextProvider now={new Date(2023, 7)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -218,7 +218,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/9.
       customRender(
         <NowDateContextProvider now={new Date(2023, 8)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -235,7 +235,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/10.
       customRender(
         <NowDateContextProvider now={new Date(2023, 9)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -252,7 +252,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/11.
       customRender(
         <NowDateContextProvider now={new Date(2023, 10)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -271,7 +271,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
       // Current date is 2023/12.
       customRender(
         <NowDateContextProvider now={new Date(2023, 11)}>
-          <SubscriptionOrderTemplateContainer />
+          <SubscriptionOrderListTemplate />
         </NowDateContextProvider>,
       );
       await expectTemplateElements();
@@ -291,7 +291,7 @@ describe.skip('SubscriptionOrderTemplateContainer', () => {
     spy.mockRejectedValueOnce(Error('It occurred an async error.'));
     customRender(
       <NowDateContextProvider now={new Date(2023, 11)}>
-        <SubscriptionOrderTemplateContainer />
+        <SubscriptionOrderListTemplate />
       </NowDateContextProvider>,
     );
     // It waits for viewing alert.

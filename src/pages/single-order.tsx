@@ -1,5 +1,6 @@
 import { OrderType } from 'API';
 import { Main } from 'components/molecules/main';
+import { SingleOrderTemplate } from 'components/templates/single-orders/single-order-template/single-order-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
@@ -8,7 +9,6 @@ import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { StaffListContextProvider } from 'stores/use-staff-list';
-import { SingleOrderTemplateContainer } from 'components/templates/single-orders/single-order-template/single-order-template-container';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();
@@ -26,7 +26,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
         <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
           <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
             <Main>
-              <SingleOrderTemplateContainer />
+              <SingleOrderTemplate />
             </Main>
           </OrderFormParamContextProvider>
         </StaffListContextProvider>

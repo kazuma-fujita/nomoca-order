@@ -7,8 +7,8 @@ import { CommonTableRow } from 'components/molecules/common-table-row';
 import { CancelSingleOrderButton } from 'components/organisms/single-orders/cancel-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
+import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import { FetchResponse } from 'hooks/swr/use-fetch';
 import React from 'react';
 import { TableHeader } from 'types/table-header';
 
@@ -43,11 +43,11 @@ const header: TableHeader[] = [
   },
 ];
 
-export const SingleOrderList = (props: FetchResponse<ExtendedOrder<Order>[]>) => {
-  const { data } = props;
+export const SingleOrderList = () => {
+  const fetchReturn = useFetchOrderList();
   return (
-    <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在注文の商品はありません'>
-      {data && data.map((item: ExtendedOrder<Order>) => <Row key={item.id} item={item} />)}
+    <CommonTableContainer {...fetchReturn} tableHeaders={header} emptyListDescription='現在注文の商品はありません'>
+      {fetchReturn.data && fetchReturn.data.map((item: ExtendedOrder<Order>) => <Row key={item.id} item={item} />)}
     </CommonTableContainer>
   );
 };

@@ -6,8 +6,10 @@ import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription
 import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { generateFormattedNextDeliveryYearMonth } from 'functions/delivery-dates/generate-next-delivery-year-month';
-import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import { FetchResponse } from 'hooks/swr/use-fetch';
+import {
+  ExtendedOrder,
+  useFetchSubscriptionOrderList,
+} from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import React, { useMemo } from 'react';
 import { useNowDate } from 'stores/use-now-date';
 import { TableHeader } from 'types/table-header';
@@ -51,12 +53,12 @@ const header: TableHeader[] = [
   },
 ];
 
-export const SubscriptionOrderList = (props: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>) => {
-  const { data } = props;
+export const SubscriptionOrderList = () => {
+  const fetchReturn = useFetchSubscriptionOrderList();
   const { now } = useNowDate();
   return (
-    <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
-      {data && data.map((item) => <Row key={item.id} item={item} now={now} />)}
+    <CommonTableContainer {...fetchReturn} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
+      {fetchReturn.data && fetchReturn.data.map((item) => <Row key={item.id} item={item} now={now} />)}
     </CommonTableContainer>
   );
 };

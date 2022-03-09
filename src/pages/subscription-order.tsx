@@ -1,6 +1,6 @@
 import { OrderType } from 'API';
 import { Main } from 'components/molecules/main';
-import { SubscriptionOrderTemplateContainer } from 'components/templates/subscription-orders/subscription-order-template/subscription-order-template-container';
+import { SubscriptionOrderTemplate } from 'components/templates/subscription-orders/subscription-order-template/subscription-order-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
@@ -31,7 +31,7 @@ const SubscriptionOrderPage = (props: Props) => {
           <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder}>
             <NowDateContextProvider now={new Date()}>
               <Main>
-                <SubscriptionOrderTemplateContainer />
+                <SubscriptionOrderTemplate />
               </Main>
             </NowDateContextProvider>
           </OrderFormParamContextProvider>
