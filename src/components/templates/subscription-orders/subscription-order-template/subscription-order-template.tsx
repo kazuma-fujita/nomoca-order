@@ -1,11 +1,10 @@
 import { StepperContainer } from 'components/molecules/stepper-container';
-import { SubscriptionOrderList } from 'components/organisms/subscription-orders/subscription-order-list/subscription-order-list';
 import { ConfirmSubscriptionOrderTemplate } from 'components/templates/subscription-orders/confirm-subscription-order-template/confirm-subscription-order-template';
 import { SubscriptionOrderFormTemplate } from 'components/templates/subscription-orders/subscription-order-form-template/subscription-order-form-template';
+import { SubscriptionOrderListTemplate } from 'components/templates/subscription-orders/subscription-order-list-template/subscription-order-list-template';
 import { FormScreenType } from 'constants/form-screen-query';
 import Error from 'next/error';
 import { useRouter } from 'next/router';
-import { SubscriptionOrderListTemplate } from 'components/templates/subscription-orders/subscription-order-list-template/subscription-order-list-template';
 
 const steps = ['定期便注文を入力する', '注文内容を確認する', '申し込み完了'];
 

@@ -6,7 +6,7 @@ import { ConfirmSingleOrderTemplate } from '../confirm-single-order-template/con
 import { SingleOrderFormTemplate } from '../single-order-form-template/single-order-form-template';
 import { SingleOrderListTemplate } from '../single-order-list-template/single-order-list-template';
 
-const steps = ['定期便注文を入力する', '注文内容を確認する', '申し込み完了'];
+const steps = ['注文を入力する', '注文内容を確認する', '申し込み完了'];
 
 export const SingleOrderTemplate = () => {
   const router = useRouter();

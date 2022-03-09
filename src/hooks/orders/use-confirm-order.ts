@@ -3,7 +3,6 @@ import { FormScreenQuery } from 'constants/form-screen-query';
 import { Path } from 'constants/path';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
 import { getDeliveryTypeLabel } from 'functions/orders/get-delivery-type-label';
-import { mergeOrderFormProductList } from 'functions/orders/merge-order-form-product-list';
 import { useCreateOrder } from 'hooks/orders/use-create-order';
 import { useRouter } from 'next/router';
 import { useOrderFormParam } from 'stores/use-order-form-param';
@@ -34,26 +33,28 @@ export const useConfirmOrder = () => {
   ) {
     router.push(basePath);
   }
-
-  // 入力された商品配列データをviewOrder順に並び替え、重複商品はquantityを合計してmergeし重複削除
-  const mergedProducts = mergeOrderFormProductList(orderFormParam!.products!, productList!);
-  const products = addDeliveryFeeAndExpressObjectToProductList(mergedProducts, orderFormParam!.deliveryType!);
+  // 速達料金、配送手数料を配列に追加
+  const products = addDeliveryFeeAndExpressObjectToProductList(
+    orderFormParam!.products!,
+    orderFormParam!.deliveryType!,
+  );
+  // 注文ボタン押下処理
   const submitHandler = async () => {
     try {
-      // merge済みの商品を登録
+      // 重複商品配列はuseOrderFormでmerge済み。更に速達、配送手数料を加えた商品配列を登録
       await createOrder(orderType, { ...orderFormParam, products: products });
       router.push(`${basePath}?${FormScreenQuery.complete}`, undefined, { shallow: true });
     } catch (error) {}
   };
+  // 修正するボタン押下時処理。shallow=true でSPA画面遷移
   const cancelHandler = () => {
     router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
   };
-
-  const staff = staffList!.find((staff) => staff.id === orderFormParam!.staffID);
+  // 確認画面表示label取得
   const deliveryTypeLabel = getDeliveryTypeLabel(orderFormParam!.deliveryType!);
   const deliveryStartLabel = `${orderFormParam!.deliveryStartYear} / ${orderFormParam!.deliveryStartMonth}月`;
   const deliveryIntervalLabel = `${orderFormParam!.deliveryInterval}ヶ月`;
-  const staffName = staff!.name;
+  const staffName = staffList!.find((staff) => staff.id === orderFormParam!.staffID)!.name;
   return {
     products,
     deliveryTypeLabel,

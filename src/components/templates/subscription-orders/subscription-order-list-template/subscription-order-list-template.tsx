@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { CreateSubscriptionOrderButton } from 'components/organisms/subscription-orders/create-subscription-order-button';
+import { CreateOrderButton } from 'components/organisms/orders/create-order-button';
 import { SubscriptionOrderList } from 'components/organisms/subscription-orders/subscription-order-list/subscription-order-list';
 
 export const SubscriptionOrderListTemplate = () => {
@@ -7,7 +7,7 @@ export const SubscriptionOrderListTemplate = () => {
     <Grid container spacing={2} direction='column'>
       <Grid item>
         <Grid container justifyContent='flex-end'>
-          <CreateSubscriptionOrderButton />
+          <CreateOrderButton />
         </Grid>
       </Grid>
       <Grid item>

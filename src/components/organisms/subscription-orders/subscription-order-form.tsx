@@ -21,7 +21,7 @@ export const SubscriptionOrderForm = () => {
   // 配送開始月SelectField初期値。翌月を設定
   const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
   // 配送開始月SelectFieldプルダウン月配列
-  const deliveryStartMonths = Array.from({ length: 12 }, (_, i) => {
+  const deliveryStartMonths = Array.from({ length: 6 }, (_, i) => {
     const month = i + nextMonth;
     return 12 < month ? month - 12 : month;
   });
