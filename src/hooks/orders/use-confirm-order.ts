@@ -18,13 +18,19 @@ export const useConfirmOrder = () => {
   const { createOrder, isLoading, error } = useCreateOrder();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
 
+  if (!orderFormParam || !orderFormParam.products || !orderFormParam.staffID || !productList || !staffList) {
+    router.push(basePath);
+  }
+
+  if (orderType === OrderType.singleOrder && (!orderFormParam || !orderFormParam.deliveryType)) {
+    router.push(basePath);
+  }
   if (
-    !orderFormParam ||
-    !orderFormParam.products ||
-    !orderFormParam.deliveryType ||
-    !orderFormParam.staffID ||
-    !productList ||
-    !staffList
+    orderType === OrderType.subscriptionOrder &&
+    (!orderFormParam ||
+      !orderFormParam.deliveryStartYear ||
+      !orderFormParam.deliveryStartMonth ||
+      !orderFormParam.deliveryInterval)
   ) {
     router.push(basePath);
   }
@@ -38,6 +44,9 @@ export const useConfirmOrder = () => {
       await createOrder(orderType, { ...orderFormParam, products: products });
       router.push(`${basePath}?${FormScreenQuery.complete}`, undefined, { shallow: true });
     } catch (error) {}
+  };
+  const cancelHandler = () => {
+    router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
   };
 
   const staff = staffList!.find((staff) => staff.id === orderFormParam!.staffID);
@@ -54,5 +63,6 @@ export const useConfirmOrder = () => {
     isLoading,
     error,
     submitHandler,
+    cancelHandler,
   };
 };

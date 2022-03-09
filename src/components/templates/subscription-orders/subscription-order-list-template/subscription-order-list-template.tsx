@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { CreateSubscriptionOrderButton } from 'components/organisms/subscription-orders/create-subscription-order/create-subscription-order-button';
+import { CreateSubscriptionOrderButton } from 'components/organisms/subscription-orders/create-subscription-order-button';
 import { SubscriptionOrderList } from 'components/organisms/subscription-orders/subscription-order-list/subscription-order-list';
 
 export const SubscriptionOrderListTemplate = () => {

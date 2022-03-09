@@ -3,7 +3,7 @@ import { ConfirmOrder } from 'components/organisms/orders/confirm-order';
 import { useConfirmOrder } from 'hooks/orders/use-confirm-order';
 
 export const ConfirmSingleOrder = () => {
-  const { products, deliveryTypeLabel, staffName, isLoading, error, submitHandler } = useConfirmOrder();
+  const { products, deliveryTypeLabel, staffName, isLoading, error, submitHandler, cancelHandler } = useConfirmOrder();
 
   return (
     <ConfirmOrder
@@ -12,6 +12,7 @@ export const ConfirmSingleOrder = () => {
       isLoading={isLoading}
       error={error}
       submitHandler={submitHandler}
+      cancelHandler={cancelHandler}
     >
       <Divider textAlign='left'>
         <Chip label='配送方法' />

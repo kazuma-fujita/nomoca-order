@@ -5,6 +5,7 @@ import { SubscriptionOrderFormTemplate } from 'components/templates/subscription
 import { FormScreenType } from 'constants/form-screen-query';
 import Error from 'next/error';
 import { useRouter } from 'next/router';
+import { SubscriptionOrderListTemplate } from 'components/templates/subscription-orders/subscription-order-list-template/subscription-order-list-template';
 
 const steps = ['定期便注文を入力する', '注文内容を確認する', '申し込み完了'];
 
@@ -12,7 +13,7 @@ export const SubscriptionOrderTemplate = () => {
   const router = useRouter();
   switch (router.query.screen) {
     case undefined:
-      return <SubscriptionOrderList />;
+      return <SubscriptionOrderListTemplate />;
     case FormScreenType.input:
       return (
         <StepperContainer steps={steps} activeStep={0}>

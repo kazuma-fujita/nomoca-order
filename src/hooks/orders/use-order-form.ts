@@ -1,12 +1,30 @@
-import { Path } from 'constants/path';
+import { OrderType } from 'API';
 import { FormScreenQuery } from 'constants/form-screen-query';
+import { Path } from 'constants/path';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { useFieldArray, UseFieldArrayReturn, useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
-import { mergeOrderFormProductList } from 'functions/orders/merge-order-form-product-list';
-import { OrderType } from 'API';
+
+const defaultValues: OrderFormParam = {
+  products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
+  staffID: '',
+};
+
+export const useCreateOrderButton = () => {
+  const router = useRouter();
+  const { mutate, orderType } = useOrderFormParam();
+  const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
+  const buttonLabel = orderType === OrderType.singleOrder ? '商品を注文する' : '定期便を申し込む';
+
+  const onButtonClick = useCallback(() => {
+    // It initializes all global cache data.
+    mutate(defaultValues, false);
+    router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
+  }, [basePath, mutate, router]);
+  return { buttonLabel, onButtonClick };
+};
 
 export const useOrderForm = () => {
   const router = useRouter();

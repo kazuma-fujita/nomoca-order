@@ -6,9 +6,10 @@ import { Controller, UseFieldArrayReturn } from 'react-hook-form';
 import { useNowDate } from 'stores/use-now-date';
 import { useOrderFormParam } from 'stores/use-order-form-param';
 
+// 配送頻度プルダウンの月配列
 const deliveryIntervals = [1, 2, 3, 4, 6];
 
-export const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth: number) =>
+const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth: number) =>
   selectMonth <= nowMonth ? nowYear + 1 : nowYear;
 
 export const SubscriptionOrderForm = () => {
@@ -17,16 +18,20 @@ export const SubscriptionOrderForm = () => {
   const { now } = useNowDate();
   const nowYear = now.getFullYear();
   const nowMonth = now.getMonth();
+  // 配送開始月SelectField初期値。翌月を設定
   const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
-  const deliveryStartMonths = Array.from({ length: 6 }, (_, i) => {
+  // 配送開始月SelectFieldプルダウン月配列
+  const deliveryStartMonths = Array.from({ length: 12 }, (_, i) => {
     const month = i + nextMonth;
     return 12 < month ? month - 12 : month;
   });
-
-  const [deliveryStartYear, setDeliveryStartYear] = useState(addYearWithSelectedMonth(nowYear, nowMonth, nextMonth));
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value, 10);
+  // 配送開始年TextField初期値。配送開始月初期値が翌年の場合、翌年の値を初期値に設定。また、確認画面戻りで既に値があれば初期値として設定
+  const initialYear = (data && data.deliveryStartYear) ?? addYearWithSelectedMonth(nowYear, nowMonth, nextMonth);
+  const [deliveryStartYear, setDeliveryStartYear] = useState(initialYear);
+  formReturn.setValue('deliveryStartYear', deliveryStartYear);
+  // 配送開始月プルダウン変更handler。プルダウンで翌年を選択した場合、翌年の値を配送開始年に設定
+  const handleChangeDeliveryStartMonth = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
     setDeliveryStartYear(addYearWithSelectedMonth(nowYear, nowMonth, value));
     formReturn.setValue('deliveryStartMonth', value);
   };
@@ -45,7 +50,6 @@ export const SubscriptionOrderForm = () => {
           variant='standard'
           disabled
           label=''
-          value={deliveryStartYear}
           sx={{ width: 40 }}
           {...formReturn.register('deliveryStartYear', { valueAsNumber: true })}
         />
@@ -58,7 +62,7 @@ export const SubscriptionOrderForm = () => {
           render={({ field: { onChange, ...rest }, formState: { errors } }) => (
             <TextField
               select
-              onChange={handleChange}
+              onChange={handleChangeDeliveryStartMonth}
               label='配送開始月'
               error={Boolean(errors.deliveryStartMonth)}
               helperText={errors.deliveryStartMonth && errors.deliveryStartMonth.message}

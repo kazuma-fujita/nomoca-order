@@ -13,7 +13,7 @@ import { listProductsSortedByViewOrder } from 'graphql/queries';
 import { useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 import { Fetcher, PublicConfiguration } from 'swr/dist/types';
-import { FetchResponse } from '../hooks/swr/use-fetch';
+import { FetchResponse } from 'hooks/swr/use-fetch';
 
 type ProviderProps = FetchResponse<Product[]> & {
   swrKey: (string | OrderType | boolean)[];

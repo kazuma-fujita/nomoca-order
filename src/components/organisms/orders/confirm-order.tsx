@@ -2,12 +2,9 @@ import SendIcon from '@mui/icons-material/Send';
 import { LoadingButton } from '@mui/lab';
 import { Box, Chip, Divider, Typography } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
-import Link from 'components/atoms/link';
 import { ReceiptTable } from 'components/molecules/receipt-table';
-import { FormScreenQuery } from 'constants/form-screen-query';
-import { Path } from 'constants/path';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import { BaseSyntheticEvent } from 'react';
+import { BaseSyntheticEvent, MouseEventHandler } from 'react';
 
 type Props = {
   products: NormalizedProduct[];
@@ -15,9 +12,18 @@ type Props = {
   isLoading: boolean;
   error: Error | null;
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
+  cancelHandler: MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
-export const ConfirmOrder: React.FC<Props> = ({ products, staffName, isLoading, error, submitHandler, children }) => {
+export const ConfirmOrder: React.FC<Props> = ({
+  products,
+  staffName,
+  isLoading,
+  error,
+  submitHandler,
+  cancelHandler,
+  children,
+}) => {
   return (
     <>
       {error && (
@@ -31,12 +37,6 @@ export const ConfirmOrder: React.FC<Props> = ({ products, staffName, isLoading, 
       <Box mb={8}>
         <ReceiptTable products={products} />
       </Box>
-      {/* <Divider textAlign='left'>
-        <Chip label='配送方法' />
-      </Divider>
-      <Box mt={2} mb={8} ml={4}>
-        <Typography variant='body1'>{deliveryTypeLabel}</Typography>
-      </Box> */}
       {children}
       <Divider textAlign='left'>
         <Chip label='担当者' />
@@ -45,13 +45,7 @@ export const ConfirmOrder: React.FC<Props> = ({ products, staffName, isLoading, 
         <Typography variant='body1'>{staffName}</Typography>
       </Box>
       <Box mt={8} mb={8} width='auto' display='flex' justifyContent='center'>
-        <LoadingButton
-          loadingIndicator='Loading...'
-          loading={isLoading}
-          component={Link}
-          href={`${Path.singleOrder}?${FormScreenQuery.input}`}
-          shallow
-        >
+        <LoadingButton loadingIndicator='Loading...' loading={isLoading} onClick={cancelHandler}>
           修正する
         </LoadingButton>
         <Box ml={16} />
