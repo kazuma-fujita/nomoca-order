@@ -1,6 +1,6 @@
 import { OrderType } from 'API';
 import { Main } from 'components/molecules/main';
-import { SingleOrderTemplate } from 'components/templates/single-orders/single-order-template/single-order-template';
+import { OrderTemplate } from 'components/templates/orders/order-template/order-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
@@ -26,7 +26,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
         <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
           <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
             <Main>
-              <SingleOrderTemplate />
+              <OrderTemplate />
             </Main>
           </OrderFormParamContextProvider>
         </StaffListContextProvider>

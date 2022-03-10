@@ -1,6 +1,6 @@
 import Amplify from '@aws-amplify/core';
 import type { ComponentStoryObj } from '@storybook/react';
-import { OrderType } from 'API';
+import { DeliveryType, OrderType } from 'API';
 import awsconfig from 'aws-exports';
 import { createNormalizedProductsMock, productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';
@@ -8,33 +8,31 @@ import { graphql } from 'msw';
 import { OrderFormParam, OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { StaffListContextProvider } from 'stores/use-staff-list';
-import { ConfirmSubscriptionOrderTemplate } from './confirm-subscription-order-template';
+import { ConfirmOrderTemplate } from './confirm-order-template';
 
 // Cognito認証でAppSyncを実行するとNo current user errorが発生する為、API_KEY認証に切り替え
 Amplify.configure({ ...awsconfig, aws_appsync_authenticationType: 'API_KEY' });
 
-type Story = ComponentStoryObj<typeof ConfirmSubscriptionOrderTemplate>;
+type Story = ComponentStoryObj<typeof ConfirmOrderTemplate>;
 
-export default { component: ConfirmSubscriptionOrderTemplate };
+export default { component: ConfirmOrderTemplate };
 
 const defaultValues: OrderFormParam = {
   products: createNormalizedProductsMock(3),
   staffID: 'dummyStaffID-1',
-  deliveryStartYear: 2022,
-  deliveryStartMonth: 3,
-  deliveryInterval: 3,
+  deliveryType: DeliveryType.regular,
 };
 
 export const Default: Story = {
   decorators: [
     (StoryComponent) => (
       <ProductListContextProvider
-        orderType={OrderType.subscriptionOrder}
+        orderType={OrderType.singleOrder}
         isFilterByActiveProduct={true}
         isRevalidateOnFocus={false}
       >
         <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
-          <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder} initialOrderFormParam={defaultValues}>
+          <OrderFormParamContextProvider orderType={OrderType.singleOrder} initialOrderFormParam={defaultValues}>
             <StoryComponent />
           </OrderFormParamContextProvider>
         </StaffListContextProvider>

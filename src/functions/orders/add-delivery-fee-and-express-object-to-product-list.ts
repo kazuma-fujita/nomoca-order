@@ -7,6 +7,8 @@ export const addDeliveryFeeAndExpressObjectToProductList = (
   products: NormalizedProduct[],
   deliveryType: DeliveryType,
 ): NormalizedProduct[] => {
-  const tempProducts = addExpressDeliveryObjectToProductList(products, deliveryType);
-  return addDeliveryFeeObjectToProductList(tempProducts);
+  // 商品合計金額が10,000円未満の場合、配送手数料を追加
+  const tempProducts = addDeliveryFeeObjectToProductList(products);
+  // 速達配送の場合、速達配送手数料を追加
+  return addExpressDeliveryObjectToProductList(tempProducts, deliveryType);
 };

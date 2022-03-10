@@ -7,19 +7,19 @@ import {
   SubscriptionOrderProduct,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { ObjectType } from 'constants/object-type';
 import { SWRKey } from 'constants/swr-key';
 import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
+import { Type } from 'API';
 
 export type NormalizedProduct = {
   relationID: string;
-  productID: string; // 入力フォームにセットする商品ID。他、productのDBキャッシュからviewOrderなどの値を取得する為に使用
+  productID: string; // use-hook-formで入力フォームにセットする商品ID。他、productのDBキャッシュからviewOrderなどの値を取得する為に使用
   name: string;
   unitPrice: number;
   quantity: number;
-  viewOrder?: number | null; // 入力確認画面で商品を表示するソート順。また、注文登録では値をそのままOrderProductに登録
+  viewOrder?: number | null; // 入力確認画面で商品を表示するソート順。useCreateOrderでは値をOrderProductに登録
 };
 
 export type ExtendedOrder<T> = T & {
@@ -41,7 +41,7 @@ const createNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[]
 const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
   const sortVariables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
-    type: ObjectType.SubscriptionOrder,
+    type: Type.subscriptionOrder,
     sortDirection: ModelSortDirection.DESC,
   };
 

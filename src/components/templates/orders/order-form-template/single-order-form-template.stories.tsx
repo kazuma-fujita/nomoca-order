@@ -1,22 +1,17 @@
-import Amplify from '@aws-amplify/core';
 import type { ComponentStoryObj } from '@storybook/react';
 import { OrderType } from 'API';
-import awsconfig from 'aws-exports';
-import { singleOrderFormDefaultValues } from 'components/organisms/single-orders/create-single-order-button';
+import { orderFormDefaultValues } from 'hooks/orders/use-order-form';
 import { productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';
 import { graphql } from 'msw';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { StaffListContextProvider } from 'stores/use-staff-list';
-import { SingleOrderFormTemplate } from './single-order-form-template';
+import { OrderFormTemplate } from './order-form-template';
 
-// Cognito認証でAppSyncを実行するとNo current user errorが発生する為、API_KEY認証に切り替え
-Amplify.configure({ ...awsconfig, aws_appsync_authenticationType: 'API_KEY' });
+type Story = ComponentStoryObj<typeof OrderFormTemplate>;
 
-type Story = ComponentStoryObj<typeof SingleOrderFormTemplate>;
-
-export default { component: SingleOrderFormTemplate };
+export default { component: OrderFormTemplate };
 
 export const Default: Story = {
   decorators: [
@@ -29,7 +24,7 @@ export const Default: Story = {
         <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
           <OrderFormParamContextProvider
             orderType={OrderType.singleOrder}
-            initialOrderFormParam={singleOrderFormDefaultValues}
+            initialOrderFormParam={orderFormDefaultValues}
           >
             <StoryComponent />
           </OrderFormParamContextProvider>

@@ -26,13 +26,13 @@ export const ConfirmSubscriptionOrder = () => {
       <Divider textAlign='left'>
         <Chip label='配送開始月' />
       </Divider>
-      <Box mt={2} mb={8} ml={4}>
+      <Box mt={2} mb={4} ml={4}>
         <Typography variant='body1'>{deliveryStartLabel}</Typography>
       </Box>
       <Divider textAlign='left'>
         <Chip label='配送頻度' />
       </Divider>
-      <Box mt={2} mb={8} ml={4}>
+      <Box mt={2} mb={4} ml={4}>
         <Typography variant='body1'>{deliveryIntervalLabel}</Typography>
       </Box>
     </ConfirmOrder>

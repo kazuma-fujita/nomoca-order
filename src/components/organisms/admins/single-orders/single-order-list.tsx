@@ -118,11 +118,7 @@ const Row = ({ item, selectedItems, orderItemsLength, setSelectedItems, setIsSel
     [item.id, orderItemsLength, selectedItems, setIsSelectedAll, setSelectedItems],
   );
   return (
-    <CommonTableRow
-      key={item.id}
-      colSpan={header.length}
-      products={addDeliveryFeeAndExpressObjectToProductList(item.normalizedProducts, item.deliveryType!)}
-    >
+    <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
       <TableCell padding='checkbox' align='center'>
         <Checkbox color='primary' checked={selectedItems.includes(item.id)} onChange={handleChange} />
       </TableCell>

@@ -1,30 +1,16 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
-import {
-  Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  IconButton,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { DeliveryType } from 'API';
+import { Box, Button, IconButton, MenuItem, TextField, Typography } from '@mui/material';
+import { OrderType } from 'API';
 import Form from 'components/atoms/form';
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
-import { OrderFormParam } from 'stores/use-order-form-param';
+import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
-import ReactNode from 'react';
 
 type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
@@ -39,7 +25,7 @@ type ProductErrorField = {
   quantity: { message: string };
 };
 
-// 数字連番の配列を生成
+// 商品個数の数字連番の配列を生成
 const quantities = Array.from({ length: 25 }, (_, i) => i + 1);
 
 export const OrderForm: React.FC<Props> = ({
@@ -50,6 +36,7 @@ export const OrderForm: React.FC<Props> = ({
   initialReceiptProducts,
   children,
 }) => {
+  const { orderType } = useOrderFormParam();
   const { data: productList } = useProductList();
   const { data: staffList } = useStaffList();
   const [selectedProducts, setSelectedProducts] = useState<NormalizedProduct[]>(initialReceiptProducts ?? []);
@@ -138,7 +125,6 @@ export const OrderForm: React.FC<Props> = ({
                   'productID' in (errors.products as ProductErrorField[])[index] &&
                   (errors.products as ProductErrorField[])[index].productID.message
                 }
-                // {...field}
               >
                 {productList &&
                   productList.map((product) => (
@@ -204,9 +190,11 @@ export const OrderForm: React.FC<Props> = ({
       ))}
       <Box mt={8} mb={8}>
         <ReceiptTable products={selectedProducts} />
-        <Typography variant='caption'>
-          ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
-        </Typography>
+        {orderType === OrderType.singleOrder && (
+          <Typography variant='caption'>
+            ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
+          </Typography>
+        )}
       </Box>
       {children}
       <Box mt={8} mb={8}>

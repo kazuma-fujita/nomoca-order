@@ -9,7 +9,7 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
 
-const defaultValues: OrderFormParam = {
+export const orderFormDefaultValues: OrderFormParam = {
   products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
   staffID: '',
 };
@@ -18,7 +18,7 @@ export const useUpdateOrderButton = ({ id, products, staffID }: UpdateOrderProps
   const router = useRouter();
   const { mutate, orderType } = useOrderFormParam();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
-  const buttonLabel = '商品を変更する';
+  const buttonLabel = '変更する';
   // 入力フォーム初期値
   const defaultValues: OrderFormParam = useMemo(
     () => ({
@@ -48,7 +48,7 @@ export const useCreateOrderButton = () => {
   // 注文する、申し込むボタン押下時処理
   const onButtonClick = useCallback(() => {
     // useOrderFormで入力フォーム初期値が無ければ一覧画面に遷移させる為、このタイミングでStateを保存
-    mutate(defaultValues, false);
+    mutate(orderFormDefaultValues, false);
     router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
   }, [basePath, mutate, router]);
   return { buttonLabel, onButtonClick };

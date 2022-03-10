@@ -33,11 +33,12 @@ export const useConfirmOrder = () => {
   ) {
     router.push(basePath);
   }
-  // 速達料金、配送手数料を配列に追加
-  const products = addDeliveryFeeAndExpressObjectToProductList(
-    orderFormParam!.products!,
-    orderFormParam!.deliveryType!,
-  );
+  // 通常注文の場合、速達料金、配送手数料を配列に追加
+  const products =
+    orderType === OrderType.singleOrder
+      ? addDeliveryFeeAndExpressObjectToProductList(orderFormParam!.products!, orderFormParam!.deliveryType!)
+      : orderFormParam!.products!;
+
   // 注文ボタン押下処理
   const submitHandler = async () => {
     try {

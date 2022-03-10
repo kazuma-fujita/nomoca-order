@@ -8,6 +8,8 @@ import { useOrderFormParam } from 'stores/use-order-form-param';
 
 // 配送頻度プルダウンの月配列
 const deliveryIntervals = [1, 2, 3, 4, 6];
+// 配送開始月の上限。Nヶ月を指定
+const deliveryIntervalLimit = 6;
 
 const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth: number) =>
   selectMonth <= nowMonth ? nowYear + 1 : nowYear;
@@ -17,11 +19,11 @@ export const SubscriptionOrderForm = () => {
   const { data } = useOrderFormParam();
   const { now } = useNowDate();
   const nowYear = now.getFullYear();
-  const nowMonth = now.getMonth();
+  const nowMonth = now.getMonth() + 1;
   // 配送開始月SelectField初期値。翌月を設定
   const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
-  // 配送開始月SelectFieldプルダウン月配列
-  const deliveryStartMonths = Array.from({ length: 6 }, (_, i) => {
+  // 配送開始月SelectFieldプルダウン月配列。lengthの数値で配送開始月の上限を設定
+  const deliveryStartMonths = Array.from({ length: deliveryIntervalLimit }, (_, i) => {
     const month = i + nextMonth;
     return 12 < month ? month - 12 : month;
   });
