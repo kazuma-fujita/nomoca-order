@@ -17,7 +17,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
         <title>{pageTitle}</title>
       </Head>
       <Main>
-        <SingleOrderTemplate {...fetchReturn} />
+        <SingleOrderTemplate />
       </Main>
     </>
   );

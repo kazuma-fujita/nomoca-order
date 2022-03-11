@@ -1,5 +1,6 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { adminOrderListMock, orderListMock } from 'mocks/order-list.mock';
+import { graphql } from 'msw';
 import { SingleOrderTemplate } from './single-order-template';
 
 const description = `
@@ -21,9 +22,7 @@ type Story = ComponentStoryObj<typeof SingleOrderTemplate>;
 
 export default { component: SingleOrderTemplate };
 
-export const Default: Story = {
-  args: { data: adminOrderListMock },
-};
+export const Default: Story = {};
 
 Default.parameters = {
   docs: {
@@ -31,19 +30,31 @@ Default.parameters = {
       component: description,
     },
   },
+  msw: {
+    handlers: [
+      graphql.query('ListOrdersSortedByCreatedAt', (req, res, ctx) => {
+        const response = {
+          listOrdersSortedByCreatedAt: {
+            items: adminOrderListMock,
+          },
+        };
+        return res(ctx.data(response));
+      }),
+    ],
+  },
 };
 
-export const Loading: Story = {
-  ...Default,
-  args: { isLoading: true },
-};
+// export const Loading: Story = {
+//   ...Default,
+//   args: { isLoading: true },
+// };
 
-export const Empty: Story = {
-  ...Default,
-  args: { isEmptyList: true },
-};
+// export const Empty: Story = {
+//   ...Default,
+//   args: { isEmptyList: true },
+// };
 
-export const FetchError: Story = {
-  ...Default,
-  args: { error: Error('The API fetched data but it returned null.') },
-};
+// export const FetchError: Story = {
+//   ...Default,
+//   args: { error: Error('The API fetched data but it returned null.') },
+// };

@@ -5,9 +5,8 @@ import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
 import { CommonTableRow } from 'components/molecules/common-table-row';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
-import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
+import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import { FetchResponse } from 'hooks/swr/use-fetch';
 import React, { useCallback } from 'react';
 import { useToggle } from 'react-use';
 import { TableHeader } from 'types/table-header';
@@ -51,12 +50,14 @@ const header: TableHeader[] = [
   },
 ];
 
-type Props = FetchResponse<ExtendedOrder<Order>[]> & {
+type Props = {
   selectedItems: string[];
   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-export const SingleOrderList = ({ selectedItems, setSelectedItems, data, ...rest }: Props) => {
+export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
+  const fetchReturn = useFetchOrderList();
+  const { data } = fetchReturn;
   const [isSelectedAll, setIsSelectedAll] = useToggle(false);
   const handleAllSelectItem = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!data) return;
@@ -68,7 +69,7 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems, data, ...rest
 
   return (
     <CommonTableContainer
-      {...rest}
+      {...fetchReturn}
       tableHeaders={header}
       emptyListDescription='現在注文の商品はありません'
       selectAllCheckbox={

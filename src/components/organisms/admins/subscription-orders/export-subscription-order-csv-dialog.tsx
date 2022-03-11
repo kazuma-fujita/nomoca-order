@@ -28,9 +28,6 @@ export const ExportSubscriptionOrderCSVDialog = (props: Props) => {
           当月発送分をCSV出力して顧客に発送通知をしてよろしいですか？
         </DialogContentText>
         {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
-        {/* <Box mt={2} mb={2}>
-          <Typography>{props.name}</Typography>
-        </Box> */}
       </DialogContent>
       <DialogActions>
         <LoadingButton onClick={props.cancelHandler} loadingIndicator='Loading...' loading={props.isLoading}>

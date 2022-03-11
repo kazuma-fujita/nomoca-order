@@ -1,13 +1,10 @@
 import { Box } from '@mui/material';
-import { Order } from 'API';
 import { ExportSingleOrderCSVButton } from 'components/organisms/admins/single-orders/export-single-order-csv-button';
 import { SingleOrderList } from 'components/organisms/admins/single-orders/single-order-list';
 import { UpdateSingleOrderStatusButton } from 'components/organisms/admins/single-orders/update-single-order-status-button';
-import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import { FetchResponse } from 'hooks/swr/use-fetch';
 import React, { useState } from 'react';
 
-export const SingleOrderTemplate = (props: FetchResponse<ExtendedOrder<Order>[]>) => {
+export const SingleOrderTemplate = () => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   return (
@@ -18,7 +15,7 @@ export const SingleOrderTemplate = (props: FetchResponse<ExtendedOrder<Order>[]>
           <UpdateSingleOrderStatusButton updateOrderIDs={selectedItems} />
         </Box>
       </Box>
-      <SingleOrderList selectedItems={selectedItems} setSelectedItems={setSelectedItems} {...props} />
+      <SingleOrderList selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
     </>
   );
 };

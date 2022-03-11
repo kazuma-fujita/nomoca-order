@@ -1,5 +1,5 @@
 import { Main } from 'components/molecules/main';
-import { SubscriptionOrderTemplateContainer } from 'components/templates/admins/subscription-orders/subscription-order-template-container';
+import { SubscriptionOrderTemplate } from 'components/templates/admins/subscription-orders/subscription-order-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import { AdminSubscriptionOrderListContextProvider } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
@@ -19,7 +19,7 @@ const SubscriptionOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof get
       <AdminSubscriptionOrderListContextProvider>
         <NowDateContextProvider now={new Date()}>
           <Main>
-            <SubscriptionOrderTemplateContainer />
+            <SubscriptionOrderTemplate />
           </Main>
         </NowDateContextProvider>
       </AdminSubscriptionOrderListContextProvider>
