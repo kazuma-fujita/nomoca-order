@@ -1,7 +1,7 @@
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import Button from '@mui/material/Button';
 import { useUpdateSingleOrderStatus } from 'hooks/admins/single-orders/use-update-single-order-status';
-import { useExportOrderCSV } from 'hooks/admins/use-export-order-scv';
+import { useExportOrderCSV } from 'hooks/admins/use-export-order-csv';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
 
