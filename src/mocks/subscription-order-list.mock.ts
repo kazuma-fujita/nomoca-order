@@ -1,5 +1,4 @@
 import { ModelSubscriptionOrderProductConnection, Staff, SubscriptionOrder, SubscriptionOrderProduct, Type } from 'API';
-import { ObjectType } from 'constants/object-type';
 import { createNormalizedProductsMock, productMock } from 'mocks/product.mock';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { staffMock } from './staff.mock';
@@ -21,10 +20,10 @@ const products: ModelSubscriptionOrderProductConnection = {
 };
 
 const item: SubscriptionOrder = {
-  __typename: ObjectType.SubscriptionOrder,
+  __typename: 'SubscriptionOrder',
   id: 'dummyID',
   staffID: '',
-  type: ObjectType.SubscriptionOrder,
+  type: Type.subscriptionOrder,
   products: products,
   staff: staffMock,
   deliveryStartYear: 2022,

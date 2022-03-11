@@ -1,4 +1,4 @@
-import { Box, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, FormHelperText, MenuItem, TextField, Typography } from '@mui/material';
 import { OrderForm } from 'components/organisms/orders/order-form';
 import { useOrderForm } from 'hooks/orders/use-order-form';
 import { useState } from 'react';
@@ -9,7 +9,7 @@ import { useOrderFormParam } from 'stores/use-order-form-param';
 // 配送頻度プルダウンの月配列
 const deliveryIntervals = [1, 2, 3, 4, 6];
 // 配送開始月の上限。Nヶ月を指定
-const deliveryIntervalLimit = 6;
+const deliveryStartMonthLimit = 6;
 
 const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth: number) =>
   selectMonth <= nowMonth ? nowYear + 1 : nowYear;
@@ -18,14 +18,16 @@ export const SubscriptionOrderForm = () => {
   const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useOrderForm();
   const { data } = useOrderFormParam();
   const { now } = useNowDate();
+  // 現在年、月を取得。現在月はgetMonthの値に+1をして取得
   const nowYear = now.getFullYear();
   const nowMonth = now.getMonth() + 1;
-  // 配送開始月SelectField初期値。翌月を設定
+  // 配送開始月SelectField初期値。初期値として翌月を設定
   const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
-  // 配送開始月SelectFieldプルダウン月配列。lengthの数値で配送開始月の上限を設定
-  const deliveryStartMonths = Array.from({ length: deliveryIntervalLimit }, (_, i) => {
-    const month = i + nextMonth;
-    return 12 < month ? month - 12 : month;
+  // 配送開始月SelectFieldプルダウン月配列生成。翌月から〜lengthの数値で配送開始月の上限を設定
+  const deliveryStartMonths = Array.from({ length: deliveryStartMonthLimit }, (_, i) => {
+    const month = nextMonth + i;
+    // 配送開始月プルダウンの年跨ぎを計算 e.g.) 10, 11, 12, 1, 2, 3月
+    return month > 12 ? month - 12 : month;
   });
   // 配送開始年TextField初期値。配送開始月初期値が翌年の場合、翌年の値を初期値に設定。また、確認画面戻りで既に値があれば初期値として設定
   const initialYear = (data && data.deliveryStartYear) ?? addYearWithSelectedMonth(nowYear, nowMonth, nextMonth);
@@ -103,6 +105,7 @@ export const SubscriptionOrderForm = () => {
           )}
         />
       </Box>
+      <FormHelperText>定期便の新規申し込み、または注文内容変更後の配送開始月は翌月から承ります</FormHelperText>
     </OrderForm>
   );
 };
