@@ -9,7 +9,7 @@ export const SubscriptionOrderTemplate = () => {
     <>
       <Box width='auto' display='flex' justifyContent='flex-start' mb={4}>
         <Box width='34em' display='flex' justifyContent='space-between'>
-          <ExportSubscriptionOrderCSVButton updateOrderIDs={[]} />
+          <ExportSubscriptionOrderCSVButton orders={fetchReturn.data} />
         </Box>
       </Box>
       <SubscriptionOrderList {...fetchReturn} />
