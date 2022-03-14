@@ -233,6 +233,7 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
             unitPrice
             orderType
             viewOrder
+            isExportCSV
             disabled
             type
             createdAt
@@ -281,6 +282,7 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
             unitPrice
             orderType
             viewOrder
+            isExportCSV
             disabled
             type
             createdAt
@@ -329,6 +331,7 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
             unitPrice
             orderType
             viewOrder
+            isExportCSV
             disabled
             type
             createdAt
@@ -374,6 +377,7 @@ export const onCreateSubscriptionOrderProduct = /* GraphQL */ `
         unitPrice
         orderType
         viewOrder
+        isExportCSV
         disabled
         type
         createdAt
@@ -398,6 +402,7 @@ export const onUpdateSubscriptionOrderProduct = /* GraphQL */ `
         unitPrice
         orderType
         viewOrder
+        isExportCSV
         disabled
         type
         createdAt
@@ -422,6 +427,7 @@ export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
         unitPrice
         orderType
         viewOrder
+        isExportCSV
         disabled
         type
         createdAt
@@ -442,6 +448,7 @@ export const onCreateProduct = /* GraphQL */ `
       unitPrice
       orderType
       viewOrder
+      isExportCSV
       disabled
       type
       createdAt
@@ -457,6 +464,7 @@ export const onUpdateProduct = /* GraphQL */ `
       unitPrice
       orderType
       viewOrder
+      isExportCSV
       disabled
       type
       createdAt
@@ -472,6 +480,7 @@ export const onDeleteProduct = /* GraphQL */ `
       unitPrice
       orderType
       viewOrder
+      isExportCSV
       disabled
       type
       createdAt

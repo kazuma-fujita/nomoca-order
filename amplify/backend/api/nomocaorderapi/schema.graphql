@@ -91,6 +91,7 @@ type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { al
   unitPrice: Int!
   orderType: OrderType!
   viewOrder: Int!
+  isExportCSV: Boolean!
   disabled: Boolean!
   type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }

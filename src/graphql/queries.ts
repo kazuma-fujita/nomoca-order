@@ -145,6 +145,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
             unitPrice
             orderType
             viewOrder
+            isExportCSV
             disabled
             type
             createdAt
@@ -202,6 +203,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
               unitPrice
               orderType
               viewOrder
+              isExportCSV
               disabled
               type
               createdAt
@@ -245,6 +247,7 @@ export const getProduct = /* GraphQL */ `
       unitPrice
       orderType
       viewOrder
+      isExportCSV
       disabled
       type
       createdAt
@@ -265,6 +268,7 @@ export const listProducts = /* GraphQL */ `
         unitPrice
         orderType
         viewOrder
+        isExportCSV
         disabled
         type
         createdAt
@@ -396,6 +400,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
               unitPrice
               orderType
               viewOrder
+              isExportCSV
               disabled
               type
               createdAt
@@ -454,6 +459,7 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
         unitPrice
         orderType
         viewOrder
+        isExportCSV
         disabled
         type
         createdAt

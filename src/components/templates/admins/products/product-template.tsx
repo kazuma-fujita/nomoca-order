@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { Product } from 'API';
-import { CreateProductButton } from 'components/organisms/products/create-product-button';
-import { ProductList } from 'components/organisms/products/product-list';
+import { CreateProductButton } from 'components/organisms/admins/products/create-product-button';
+import { ProductList } from 'components/organisms/admins/products/product-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 
 export const ProductTemplate = (props: FetchResponse<Product[]>) => {

@@ -1,4 +1,5 @@
 import { Add } from '@mui/icons-material';
+import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@mui/material';
 import Button from '@mui/material/Button';
 import { Product } from 'API';
 import { InputDialog } from 'components/atoms/dialogs/input-dialog';
@@ -6,7 +7,7 @@ import { ProductNameTextField } from 'components/atoms/text-fields/product-name-
 import { ProductUnitPriceTextField } from 'components/atoms/text-fields/product-unit-price-text-field';
 import { useCreateProduct } from 'hooks/products/use-create-product';
 import { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 
 export const CreateProductButton = () => {
@@ -25,7 +26,7 @@ export const CreateProductButton = () => {
     useCallback(
       async (data: Product) => {
         try {
-          await createProduct(data.name, data.unitPrice);
+          await createProduct(data);
           cancelHandler();
         } catch (error) {}
       },
@@ -53,6 +54,20 @@ export const CreateProductButton = () => {
         <>
           <ProductNameTextField {...useFormReturn} disabled={isLoading} />
           <ProductUnitPriceTextField {...useFormReturn} disabled={isLoading} />
+          <FormControl error={Boolean(useFormReturn.formState.errors.isExportCSV?.message)}>
+            <FormHelperText>{useFormReturn.formState.errors.isExportCSV?.message}</FormHelperText>
+            <Controller
+              control={useFormReturn.control}
+              name='isExportCSV'
+              rules={{
+                pattern: {
+                  value: /^true|false+$/i,
+                  message: 'CSV出力の値が不正です',
+                },
+              }}
+              render={(props) => <FormControlLabel control={<Checkbox defaultChecked={false} />} label={'CSV出力'} />}
+            />
+          </FormControl>
         </>
       </InputDialog>
     </>

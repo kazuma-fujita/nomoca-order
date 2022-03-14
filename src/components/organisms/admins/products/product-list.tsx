@@ -10,8 +10,8 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
-import { ActivateProductButton } from 'components/organisms/products/activate-product-button';
-import { UpdateProductButton } from 'components/organisms/products/update-product-button';
+import { ActivateProductButton } from 'components/organisms/admins/products/activate-product-button';
+import { UpdateProductButton } from 'components/organisms/admins/products/update-product-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useUpdateAllProduct } from 'hooks/products/use-update-all-product';
 import { useCallback } from 'react';
@@ -27,6 +27,10 @@ const header = [
   },
   {
     label: '単価',
+    minWidth: 160,
+  },
+  {
+    label: 'CSV出力',
     minWidth: 160,
   },
   {
@@ -93,6 +97,7 @@ export const ProductList = ({ data, error, isLoading, isEmptyList }: FetchRespon
                         <StyledTableRow key={item.id} ref={provided.innerRef} {...provided.draggableProps}>
                           <StyledTableCell>{item.name}</StyledTableCell>
                           <StyledTableCell>{item.unitPrice.toLocaleString()}</StyledTableCell>
+                          <StyledTableCell>{item.isExportCSV ? '❍' : '-'}</StyledTableCell>
                           <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                           <StyledTableCell align='center'>
                             <UpdateProductButton
