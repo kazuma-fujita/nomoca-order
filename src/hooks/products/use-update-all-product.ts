@@ -1,13 +1,11 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import { Product, UpdateProductInput, UpdateProductMutation, UpdateProductMutationVariables } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SWRMultiKey } from 'constants/swr-key';
 import { updateProduct as updateProductQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { OrderType } from '../../API';
-import { useProductList } from '../../stores/use-product-list';
+import { useProductList } from 'stores/use-product-list';
 
 type Args = {
   sourceIndex: number;

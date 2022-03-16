@@ -6,21 +6,29 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Staff } from 'API';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
-import { ActivateStaffButton } from 'components/organisms/staffs/activate-staff-button';
-import { UpdateStaffButton } from 'components/organisms/staffs/update-staff-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
-import { FetchResponse } from 'hooks/swr/use-fetch';
+import { useUpdateAllStaff } from 'hooks/staffs/use-update-all-staff';
+import { useCallback } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
+import { useStaffList } from 'stores/use-staff-list';
+import { UpsertStaffButton } from '../upsert-staff-button';
 
 const header = [
   {
     label: '担当者名',
     minWidth: 160,
+  },
+  {
+    label: '無効',
+    minWidth: 80,
+  },
+  {
+    label: 'プルダウン表示順',
+    minWidth: 80,
   },
   {
     label: '更新日時',
@@ -30,24 +38,24 @@ const header = [
     label: '編集',
     minWidth: 80,
   },
-  {
-    label: 'プルダウン表示',
-    minWidth: 80,
-  },
-  {
-    label: 'プルダウン表示順',
-    minWidth: 80,
-  },
 ];
 
-type Props = FetchResponse<Staff[]> & {
-  handleOnDragEnd: (result: DropResult, provided: ResponderProvided) => void;
-};
+export const StaffList = () => {
+  const { data, error, isLoading, isEmptyList } = useStaffList();
+  const { updateAllStaff, error: updateAllError } = useUpdateAllStaff();
 
-export const StaffList = ({ data, error, isLoading, isEmptyList, handleOnDragEnd }: Props) => {
+  const handleOnDragEnd = useCallback(
+    (result: DropResult, provided: ResponderProvided) => {
+      if (result.destination) {
+        updateAllStaff({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
+      }
+    },
+    [updateAllStaff],
+  );
+
   const droppableId = 'staffs';
-
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
+  if (updateAllError) return <ErrorAlert>{updateAllError}</ErrorAlert>;
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <TableContainer component={Paper}>
@@ -78,15 +86,13 @@ export const StaffList = ({ data, error, isLoading, isEmptyList, handleOnDragEnd
                       {(provided) => (
                         <StyledTableRow key={item.id} ref={provided.innerRef} {...provided.draggableProps}>
                           <StyledTableCell>{item.name}</StyledTableCell>
-                          <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
-                          <StyledTableCell align='center'>
-                            <UpdateStaffButton id={item.id} name={item.name} disabled={item.disabled} />
-                          </StyledTableCell>
-                          <StyledTableCell align='center'>
-                            <ActivateStaffButton id={item.id} name={item.name} disabled={item.disabled} />
-                          </StyledTableCell>
+                          <StyledTableCell align='center'>{item.disabled ? '◯' : '-'}</StyledTableCell>
                           <StyledTableCell align='center' {...provided.dragHandleProps}>
                             <FormatLineSpacingIcon />
+                          </StyledTableCell>
+                          <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
+                          <StyledTableCell align='center'>
+                            <UpsertStaffButton staff={item} />
                           </StyledTableCell>
                         </StyledTableRow>
                       )}

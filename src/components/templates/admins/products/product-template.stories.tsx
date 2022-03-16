@@ -1,19 +1,20 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { staffListMock } from 'mocks/staff.mock';
+import { OrderType } from 'API';
+import { ProductTemplate } from 'components/templates/admins/products/product-template';
+import { productListMock } from 'mocks/product.mock';
 import { graphql } from 'msw';
-import { StaffListContextProvider } from 'stores/use-staff-list';
-import { StaffTemplate } from './staff-template';
+import { ProductListContextProvider } from 'stores/use-product-list';
 
-type Story = ComponentStoryObj<typeof StaffTemplate>;
+type Story = ComponentStoryObj<typeof ProductTemplate>;
 
-export default { component: StaffTemplate };
+export default { component: ProductTemplate };
 
 export const Default: Story = {
   decorators: [
     (StoryComponent) => (
-      <StaffListContextProvider isFilterByActiveStaff={false}>
+      <ProductListContextProvider isFilterByActiveProduct={false} orderType={OrderType.singleOrder}>
         <StoryComponent />
-      </StaffListContextProvider>
+      </ProductListContextProvider>
     ),
   ],
 };
@@ -26,10 +27,10 @@ Default.parameters = {
   // },
   msw: {
     handlers: [
-      graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => {
+      graphql.query('ListProductsSortedByViewOrder', (req, res, ctx) => {
         const response = {
-          listStaffSortedByViewOrder: {
-            items: staffListMock,
+          listProductsSortedByViewOrder: {
+            items: productListMock,
           },
         };
         return res(ctx.data(response));

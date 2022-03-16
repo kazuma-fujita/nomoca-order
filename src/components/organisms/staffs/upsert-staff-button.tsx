@@ -3,20 +3,18 @@ import Button from '@mui/material/Button';
 import { Product, Staff } from 'API';
 import { InputDialog } from 'components/atoms/dialogs/input-dialog';
 import { DisabledCheckbox } from 'components/molecules/checkboxes/disabled-checkbox';
-import { ExportCSVCheckbox } from 'components/molecules/checkboxes/export-csv-checkbox';
-import { ProductNameTextField } from 'components/molecules/text-fields/product-name-text-field';
-import { ProductUnitPriceTextField } from 'components/molecules/text-fields/product-unit-price-text-field';
-import { useUpsertProductButton } from 'hooks/products/use-upsert-product-button';
+import { StaffNameTextField } from 'components/molecules/text-fields/staff-name-text-field';
+import { useUpsertStaffButton } from 'hooks/staffs/use-upsert-staff-button';
 import { UseFormReturn } from 'react-hook-form';
 
 type Props = {
-  product?: Product;
+  staff?: Staff;
 };
 
-export const UpsertProductButton = ({ product }: Props) => {
+export const UpsertStaffButton = ({ staff }: Props) => {
   const { useFormReturn, submitButtonLabel, dialogTitle, on, toggle, isLoading, error, submitHandler, cancelHandler } =
-    useUpsertProductButton(product);
-  const startIcon = product ? <Edit /> : <Add />;
+    useUpsertStaffButton(staff);
+  const startIcon = staff ? <Edit /> : <Add />;
   return (
     <>
       <Button onClick={toggle} variant='outlined' startIcon={startIcon}>
@@ -33,18 +31,11 @@ export const UpsertProductButton = ({ product }: Props) => {
         cancelHandler={cancelHandler}
       >
         <>
-          <ProductNameTextField {...useFormReturn} disabled={isLoading} />
-          <ProductUnitPriceTextField {...useFormReturn} disabled={isLoading} />
-          <ExportCSVCheckbox
-            {...useFormReturn}
-            isExportCSV={product ? product.isExportCSV : false}
-            disabled={isLoading}
-          />
+          <StaffNameTextField {...useFormReturn} disabled={isLoading} />
           <DisabledCheckbox
-            // {...useFormReturn}
             {...(useFormReturn as UseFormReturn<Staff | Product, object>)}
-            helperTextLabel={'商品'}
-            isDisabled={product ? product.disabled : false}
+            helperTextLabel={'担当者'}
+            isDisabled={staff ? staff.disabled : false}
             disabled={isLoading}
           />
         </>

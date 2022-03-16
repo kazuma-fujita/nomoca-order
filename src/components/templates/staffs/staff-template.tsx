@@ -1,23 +1,18 @@
 import { Grid } from '@mui/material';
-import { CreateStaffButton } from 'components/organisms/staffs/create-staff/create-staff-button';
-import { ReactElement } from 'react';
-import { StaffListContextProvider } from 'stores/use-staff-list';
+import { StaffList } from 'components/organisms/staffs/staff-list/staff-list';
+import { UpsertStaffButton } from 'components/organisms/staffs/upsert-staff-button';
 
-type Props = {
-  listComponent: ReactElement;
-};
-
-export const StaffTemplate = ({ listComponent }: Props) => {
+export const StaffTemplate = () => {
   return (
-    <StaffListContextProvider isFilterByActiveStaff={false}>
-      <Grid container spacing={2} direction='column'>
-        <Grid item>
-          <Grid container justifyContent='flex-end'>
-            <CreateStaffButton />
-          </Grid>
+    <Grid container spacing={2} direction='column'>
+      <Grid item>
+        <Grid container justifyContent='flex-end'>
+          <UpsertStaffButton />
         </Grid>
-        <Grid item>{listComponent}</Grid>
       </Grid>
-    </StaffListContextProvider>
+      <Grid item>
+        <StaffList />
+      </Grid>
+    </Grid>
   );
 };

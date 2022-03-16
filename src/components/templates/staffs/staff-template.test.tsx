@@ -2,8 +2,9 @@ import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/rea
 import userEvent from '@testing-library/user-event';
 import { Type } from 'API';
 import { API } from 'aws-amplify';
+import { StaffListContextProvider } from 'stores/use-staff-list';
 import { customRender } from 'utilities/tests/custom-render';
-import { StaffTemplateContainer } from './staff-template-container';
+import { StaffTemplate } from './staff-template';
 
 const item = {
   __typename: 'Staff',
@@ -16,7 +17,12 @@ const item = {
   updatedAt: '2021-12-03T09:08:07.000Z',
 };
 
-const render = () => customRender(<StaffTemplateContainer />);
+const render = () =>
+  customRender(
+    <StaffListContextProvider isFilterByActiveStaff={false}>
+      <StaffTemplate />
+    </StaffListContextProvider>,
+  );
 
 const createStaff = async () => {
   // It renders a staff list.

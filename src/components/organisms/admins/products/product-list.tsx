@@ -35,6 +35,10 @@ const header = [
     minWidth: 80,
   },
   {
+    label: 'プルダウン表示順',
+    minWidth: 80,
+  },
+  {
     label: '更新日時',
     minWidth: 160,
   },
@@ -42,15 +46,11 @@ const header = [
     label: '編集',
     minWidth: 80,
   },
-  {
-    label: 'プルダウン表示順',
-    minWidth: 80,
-  },
 ];
 
 export const ProductList = () => {
   const { data, error, isLoading, isEmptyList } = useProductList();
-  const { updateAllProduct, error: updateError } = useUpdateAllProduct();
+  const { updateAllProduct, error: updateAllError } = useUpdateAllProduct();
 
   const handleOnDragEnd = useCallback(
     (result: DropResult, provided: ResponderProvided) => {
@@ -63,7 +63,7 @@ export const ProductList = () => {
 
   const droppableId = 'products';
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
-  if (updateError) return <ErrorAlert>{updateError}</ErrorAlert>;
+  if (updateAllError) return <ErrorAlert>{updateAllError}</ErrorAlert>;
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <TableContainer component={Paper}>
@@ -97,12 +97,12 @@ export const ProductList = () => {
                           <StyledTableCell>{item.unitPrice.toLocaleString()}</StyledTableCell>
                           <StyledTableCell align='center'>{item.isExportCSV ? '◯' : '-'}</StyledTableCell>
                           <StyledTableCell align='center'>{item.disabled ? '◯' : '-'}</StyledTableCell>
+                          <StyledTableCell align='center' {...provided.dragHandleProps}>
+                            <FormatLineSpacingIcon />
+                          </StyledTableCell>
                           <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                           <StyledTableCell align='center'>
                             <UpsertProductButton product={item} />
-                          </StyledTableCell>
-                          <StyledTableCell align='center' {...provided.dragHandleProps}>
-                            <FormatLineSpacingIcon />
                           </StyledTableCell>
                         </StyledTableRow>
                       )}

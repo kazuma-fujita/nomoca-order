@@ -20,21 +20,21 @@ export const useUpsertProductButton = (product?: Product) => {
   const [on, toggle] = useToggle(false);
 
   const cancelHandler = useCallback(() => {
+    clearErrors();
     resetForm();
     resetState();
     toggle();
-  }, [resetForm, resetState, toggle]);
+  }, [clearErrors, resetForm, resetState, toggle]);
 
   const submitHandler = handleSubmit(
     useCallback(
       async (data: Product) => {
         try {
           await upsertProduct(product ? { ...data, id: product.id } : data);
-          clearErrors();
-          toggle();
+          cancelHandler();
         } catch (error) {}
       },
-      [clearErrors, product, toggle, upsertProduct],
+      [cancelHandler, product, upsertProduct],
     ),
   );
 

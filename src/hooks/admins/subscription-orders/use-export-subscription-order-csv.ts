@@ -1,7 +1,7 @@
 import { SubscriptionOrder } from 'API';
 import { DateFormat } from 'constants/date-format';
-// import { stringify } from 'csv-stringify/dist/cjs/sync';
-import { stringify } from 'csv-stringify/sync';
+import { stringify } from 'csv-stringify/dist/cjs/sync';
+// import { stringify } from 'csv-stringify/sync';
 import { format } from 'date-fns';
 import { calcTotalFromPriceAndQuantity } from 'functions/orders/calc-total-taxes-subtotal';
 import iconv from 'iconv-lite';
