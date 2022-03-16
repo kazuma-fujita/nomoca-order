@@ -1,19 +1,17 @@
 import { Grid } from '@mui/material';
-import { Product } from 'API';
-import { CreateProductButton } from 'components/organisms/admins/products/create-product-button';
 import { ProductList } from 'components/organisms/admins/products/product-list';
-import { FetchResponse } from 'hooks/swr/use-fetch';
+import { UpsertProductButton } from 'components/organisms/admins/products/upsert-product-button';
 
-export const ProductTemplate = (props: FetchResponse<Product[]>) => {
+export const ProductTemplate = () => {
   return (
     <Grid container spacing={2} direction='column'>
       <Grid item>
         <Grid container justifyContent='flex-end'>
-          <CreateProductButton />
+          <UpsertProductButton />
         </Grid>
       </Grid>
       <Grid item>
-        <ProductList {...props} />
+        <ProductList />
       </Grid>
     </Grid>
   );

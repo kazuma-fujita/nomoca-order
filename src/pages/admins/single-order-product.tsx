@@ -1,6 +1,6 @@
 import { OrderType } from 'API';
 import { Main } from 'components/molecules/main';
-import { ProductTemplateContainer } from 'components/templates/admins/products/product-template-container';
+import { ProductTemplate } from 'components/templates/admins/products/product-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
@@ -20,7 +20,7 @@ const SingleOrderProductPage = (props: Props) => {
       </Head>
       <Main>
         <ProductListContextProvider orderType={OrderType.singleOrder} isFilterByActiveProduct={false}>
-          <ProductTemplateContainer />
+          <ProductTemplate />
         </ProductListContextProvider>
       </Main>
     </>

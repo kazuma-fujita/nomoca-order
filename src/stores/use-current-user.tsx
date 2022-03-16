@@ -50,7 +50,7 @@ export const useVerifyAuthenticated = () => {
   const { mutateUser } = useCurrentUser();
   useEffect(() => {
     // 高速に遷移するため事前に遷移先画面をprefetchする
-    router.prefetch(Path.Index);
+    router.prefetch(Path.index);
     (async () => {
       try {
         // Cognitoから認証情報取得
@@ -60,7 +60,7 @@ export const useVerifyAuthenticated = () => {
       } catch (error) {
         console.error('useVerifyAuthenticated error:', error);
         // URL直叩き対応。未認証の場合 The user is not authenticated が発生する
-        router.replace(Path.Index);
+        router.replace(Path.index);
       }
     })();
   }, []);
@@ -70,7 +70,7 @@ export const useVerifyBeforeAuthenticate = () => {
   const router = useRouter();
   useEffect(() => {
     // 高速に遷移するため事前に遷移先画面をprefetchする
-    router.prefetch(Path.Staff);
+    router.prefetch(Path.staff);
     // TODO: 遷移先未定
     router.prefetch(Path.subscriptionOrder);
     afterAuthTransition(router);
@@ -91,10 +91,10 @@ const afterAuthTransition = (router: NextRouter) => {
       const groups: string[] | undefined = currentUser.signInUserSession.accessToken.payload['cognito:groups'];
       const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
       // UserGroupにより遷移先の振り分け
-      // isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.subscriptionOrder);
-      isOperator ? router.replace(Path.AdminsSubscriptionOrder) : router.replace(Path.singleOrder);
+      // isOperator ? router.replace(Path.adminsSubscriptionOrder) : router.replace(Path.subscriptionOrder);
+      isOperator ? router.replace(Path.adminsSubscriptionOrder) : router.replace(Path.singleOrder);
     } catch (error) {
-      router.replace(Path.Index);
+      router.replace(Path.index);
     }
   })();
 };
@@ -107,11 +107,11 @@ export const useSignOut = () => {
   const router = useRouter();
   // useEffect(() => {
   //   // 高速に遷移するため事前に遷移先画面をprefetchする
-  //   router.prefetch(Path.Index);
+  //   router.prefetch(Path.index);
   //   // 画面ステータスをみてログイン画面に遷移
   //   return onAuthUIStateChange((nextAuthState, authData) => {
   //     if (nextAuthState === AuthState.SignedOut) {
-  //       router.replace(Path.Index);
+  //       router.replace(Path.index);
   //     }
   //   });
   // }, []);
@@ -120,7 +120,7 @@ export const useSignOut = () => {
     // componentがunmountされてからログイン画面へ遷移させる
     return () => {
       if (isSignedOut) {
-        router.replace(Path.Index);
+        router.replace(Path.index);
       }
     };
   }, [isSignedOut]);

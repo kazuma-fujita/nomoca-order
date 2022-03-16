@@ -1,7 +1,7 @@
 import { Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { Staff } from 'API';
-import { StaffNameTextField } from 'components/atoms/text-fields/staff-name-text-field';
+import { StaffNameTextField } from 'components/molecules/text-fields/staff-name-text-field';
 import { useUpdateStaff } from 'hooks/staffs/use-update-staff';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';

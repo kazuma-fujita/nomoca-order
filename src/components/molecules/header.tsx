@@ -33,17 +33,17 @@ export const Header = () => {
   const drawerItems: HeaderItem[][] = isOperator
     ? [
         [
-          { path: Path.AdminsSingleOrder, icon: ShoppingCartIcon, label: ScreenName.AdminsSingleOrder },
+          { path: Path.adminsSingleOrder, icon: ShoppingCartIcon, label: ScreenName.adminsSingleOrder },
           {
-            path: Path.AdminsSubscriptionOrder,
+            path: Path.adminsSubscriptionOrder,
             icon: WifiProtectedSetupIcon,
-            label: ScreenName.AdminsSubscriptionOrder,
+            label: ScreenName.adminsSubscriptionOrder,
           },
         ],
         [
           { path: Path.singleOrderProduct, icon: CategoryIcon, label: ScreenName.SingleOrderProduct },
           { path: Path.subscriptionOrderProduct, icon: CategoryIcon, label: ScreenName.SubscriptionOrderProduct },
-          { path: Path.Term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
+          { path: Path.term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
         ],
       ]
     : [
@@ -52,14 +52,14 @@ export const Header = () => {
           { path: Path.subscriptionOrder, icon: WifiProtectedSetupIcon, label: ScreenName.SubscriptionOrder },
         ],
         [
-          { path: Path.Staff, icon: PeopleIcon, label: ScreenName.Staff },
-          { path: Path.Clinic, icon: EditIcon, label: ScreenName.Clinic },
-          { path: Path.Term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
+          { path: Path.staff, icon: PeopleIcon, label: ScreenName.Staff },
+          { path: Path.clinic, icon: EditIcon, label: ScreenName.Clinic },
+          { path: Path.term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
         ],
       ];
   const menuItems: HeaderItem[][] = [
-    [{ path: Path.ChangePassword, icon: LockIcon, label: ScreenName.ChangePassword }],
-    [{ path: Path.SignOut, icon: LogoutIcon, label: ScreenName.SignOut }],
+    [{ path: Path.changePassword, icon: LockIcon, label: ScreenName.ChangePassword }],
+    [{ path: Path.signOut, icon: LogoutIcon, label: ScreenName.SignOut }],
   ];
   // findItemsが無かった場合401画面へ遷移
   var findItems = drawerItems

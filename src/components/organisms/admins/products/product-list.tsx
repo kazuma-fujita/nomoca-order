@@ -10,15 +10,12 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
-import { ActivateProductButton } from 'components/organisms/admins/products/activate-product-button';
-import { UpdateProductButton } from 'components/organisms/admins/products/update-product-button';
+import { UpsertProductButton } from 'components/organisms/admins/products/upsert-product-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useUpdateAllProduct } from 'hooks/products/use-update-all-product';
 import { useCallback } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { useProductList } from 'stores/use-product-list';
-import { FetchResponse } from 'hooks/swr/use-fetch';
-import { Product } from 'API';
 
 const header = [
   {
@@ -34,6 +31,10 @@ const header = [
     minWidth: 160,
   },
   {
+    label: '無効',
+    minWidth: 80,
+  },
+  {
     label: '更新日時',
     minWidth: 160,
   },
@@ -42,16 +43,13 @@ const header = [
     minWidth: 80,
   },
   {
-    label: 'プルダウン表示',
-    minWidth: 80,
-  },
-  {
     label: 'プルダウン表示順',
     minWidth: 80,
   },
 ];
 
-export const ProductList = ({ data, error, isLoading, isEmptyList }: FetchResponse<Product[]>) => {
+export const ProductList = () => {
+  const { data, error, isLoading, isEmptyList } = useProductList();
   const { updateAllProduct, error: updateError } = useUpdateAllProduct();
 
   const handleOnDragEnd = useCallback(
@@ -97,18 +95,11 @@ export const ProductList = ({ data, error, isLoading, isEmptyList }: FetchRespon
                         <StyledTableRow key={item.id} ref={provided.innerRef} {...provided.draggableProps}>
                           <StyledTableCell>{item.name}</StyledTableCell>
                           <StyledTableCell>{item.unitPrice.toLocaleString()}</StyledTableCell>
-                          <StyledTableCell>{item.isExportCSV ? '❍' : '-'}</StyledTableCell>
-                          <StyledTableCell>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
+                          <StyledTableCell align='center'>{item.isExportCSV ? '◯' : '-'}</StyledTableCell>
+                          <StyledTableCell align='center'>{item.disabled ? '◯' : '-'}</StyledTableCell>
+                          <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
                           <StyledTableCell align='center'>
-                            <UpdateProductButton
-                              id={item.id}
-                              name={item.name}
-                              unitPrice={item.unitPrice}
-                              disabled={item.disabled}
-                            />
-                          </StyledTableCell>
-                          <StyledTableCell align='center'>
-                            <ActivateProductButton id={item.id} name={item.name} disabled={item.disabled} />
+                            <UpsertProductButton product={item} />
                           </StyledTableCell>
                           <StyledTableCell align='center' {...provided.dragHandleProps}>
                             <FormatLineSpacingIcon />

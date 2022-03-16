@@ -14,17 +14,17 @@ const AuthPage = () => {
   // const router = useRouter();
   // useEffect(() => {
   //   // 高速に遷移するため事前に遷移先画面をprefetchする
-  //   router.prefetch(Path.Staff);
+  //   router.prefetch(Path.staff);
   //   (async () => {
   //     try {
   //       // 認証済みの場合dashboardへ遷移
   //       await Auth.currentAuthenticatedUser();
-  //       router.replace(Path.Staff);
+  //       router.replace(Path.staff);
   //     } catch (error) {}
   //   })();
   //   return onAuthUIStateChange((nextAuthState, authData) => {
   //     if (nextAuthState === AuthState.SignedIn && authData) {
-  //       router.replace(Path.Staff);
+  //       router.replace(Path.staff);
   //     }
   //   });
   // }, []);

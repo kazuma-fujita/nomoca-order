@@ -4,7 +4,7 @@ import { OrderType, Type } from 'API';
 import { API } from 'aws-amplify';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { customRender } from 'utilities/tests/custom-render';
-import { ProductTemplateContainer } from './product-template-container';
+import { ProductTemplate } from './product-template';
 
 const item = {
   __typename: 'Product',
@@ -22,7 +22,7 @@ const item = {
 const render = () =>
   customRender(
     <ProductListContextProvider orderType={OrderType.subscriptionOrder} isFilterByActiveProduct={false}>
-      <ProductTemplateContainer />
+      <ProductTemplate />
     </ProductListContextProvider>,
   );
 

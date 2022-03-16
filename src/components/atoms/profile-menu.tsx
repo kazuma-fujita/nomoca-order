@@ -79,7 +79,7 @@ export const ProfileMenu = (props: Props) => {
         {props.menuItems.map((items, index) => (
           <div key={index}>
             {items.map((item) =>
-              item.path === Path.SignOut ? (
+              item.path === Path.signOut ? (
                 <SignOutMenuItem handleClose={handleClose} key={item.path}>
                   <ListItemIcon>
                     <SvgIcon component={item.icon} fontSize='small' />

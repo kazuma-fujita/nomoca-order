@@ -1,7 +1,7 @@
 import { Add } from '@mui/icons-material';
 import { Staff } from 'API';
 import { InputDialog } from 'components/atoms/dialogs/input-dialog';
-import { StaffNameTextField } from 'components/atoms/text-fields/staff-name-text-field';
+import { StaffNameTextField } from 'components/molecules/text-fields/staff-name-text-field';
 import { BaseSyntheticEvent } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
