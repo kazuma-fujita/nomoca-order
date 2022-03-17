@@ -215,7 +215,7 @@ export const OrderForm: React.FC<Props> = ({
               {staffList &&
                 staffList.map((staff) => (
                   <MenuItem key={staff.id} value={staff.id}>
-                    {staff.name}
+                    {`${staff.lastName} ${staff.firstName}`}
                   </MenuItem>
                 ))}
             </TextField>

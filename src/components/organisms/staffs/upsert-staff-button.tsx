@@ -3,9 +3,11 @@ import Button from '@mui/material/Button';
 import { Product, Staff } from 'API';
 import { InputDialog } from 'components/atoms/dialogs/input-dialog';
 import { DisabledCheckbox } from 'components/molecules/checkboxes/disabled-checkbox';
-import { StaffNameTextField } from 'components/molecules/text-fields/staff-name-text-field';
+import { FirstNameTextField } from 'components/molecules/text-fields/first-name-text-field';
+import { LastNameTextField } from 'components/molecules/text-fields/last-name-text-field';
 import { useUpsertStaffButton } from 'hooks/staffs/use-upsert-staff-button';
 import { UseFormReturn } from 'react-hook-form';
+import { Box } from '@mui/material';
 
 type Props = {
   staff?: Staff;
@@ -31,13 +33,17 @@ export const UpsertStaffButton = ({ staff }: Props) => {
         cancelHandler={cancelHandler}
       >
         <>
-          <StaffNameTextField {...useFormReturn} disabled={isLoading} />
-          <DisabledCheckbox
-            {...(useFormReturn as UseFormReturn<Staff | Product, object>)}
-            helperTextLabel={'担当者'}
-            isDisabled={staff ? staff.disabled : false}
-            disabled={isLoading}
-          />
+          <LastNameTextField {...useFormReturn} disabled={isLoading} />
+          <Box component='span' ml={2} />
+          <FirstNameTextField {...useFormReturn} disabled={isLoading} />
+          {staff && (
+            <DisabledCheckbox
+              {...(useFormReturn as UseFormReturn<Staff | Product, object>)}
+              helperTextLabel={'担当者'}
+              isDisabled={staff ? staff.disabled : false}
+              disabled={isLoading}
+            />
+          )}
         </>
       </InputDialog>
     </>

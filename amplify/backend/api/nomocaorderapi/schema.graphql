@@ -98,7 +98,8 @@ type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { al
 
 type Staff @model @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
   id: ID!
-  name: String!
+  firstName: String!
+  lastName: String!
   viewOrder: Int!
   disabled: Boolean!
   type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])

@@ -28,7 +28,8 @@ export const useUpsertStaff = () => {
       try {
         let ret = [];
         const inputParam = {
-          name: param.name,
+          firstName: param.firstName,
+          lastName: param.lastName,
           disabled: param.disabled,
         };
         if (!param.id) {

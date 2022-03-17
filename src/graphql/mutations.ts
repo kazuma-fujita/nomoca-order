@@ -86,7 +86,8 @@ export const createOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -129,7 +130,8 @@ export const updateOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -172,7 +174,8 @@ export const deleteOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -279,7 +282,8 @@ export const createSubscriptionOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -331,7 +335,8 @@ export const updateSubscriptionOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -383,7 +388,8 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -549,7 +555,8 @@ export const createStaff = /* GraphQL */ `
   ) {
     createStaff(input: $input, condition: $condition) {
       id
-      name
+      firstName
+      lastName
       viewOrder
       disabled
       type
@@ -566,7 +573,8 @@ export const updateStaff = /* GraphQL */ `
   ) {
     updateStaff(input: $input, condition: $condition) {
       id
-      name
+      firstName
+      lastName
       viewOrder
       disabled
       type
@@ -583,7 +591,8 @@ export const deleteStaff = /* GraphQL */ `
   ) {
     deleteStaff(input: $input, condition: $condition) {
       id
-      name
+      firstName
+      lastName
       viewOrder
       disabled
       type

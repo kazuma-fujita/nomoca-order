@@ -223,7 +223,8 @@ export type OrderProduct = {
 export type Staff = {
   __typename: "Staff",
   id: string,
-  name: string,
+  firstName: string,
+  lastName: string,
   viewOrder: number,
   disabled: boolean,
   type: Type,
@@ -450,14 +451,16 @@ export type DeleteProductInput = {
 
 export type CreateStaffInput = {
   id?: string | null,
-  name: string,
+  firstName: string,
+  lastName: string,
   viewOrder: number,
   disabled: boolean,
   type: Type,
 };
 
 export type ModelStaffConditionInput = {
-  name?: ModelStringInput | null,
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
   viewOrder?: ModelIntInput | null,
   disabled?: ModelBooleanInput | null,
   type?: ModelTypeInput | null,
@@ -468,7 +471,8 @@ export type ModelStaffConditionInput = {
 
 export type UpdateStaffInput = {
   id: string,
-  name?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
   viewOrder?: number | null,
   disabled?: boolean | null,
   type?: Type | null,
@@ -559,7 +563,8 @@ export type ModelProductConnection = {
 
 export type ModelStaffFilterInput = {
   id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
   viewOrder?: ModelIntInput | null,
   disabled?: ModelBooleanInput | null,
   type?: ModelTypeInput | null,
@@ -694,7 +699,8 @@ export type CreateOrderMutation = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -742,7 +748,8 @@ export type UpdateOrderMutation = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -790,7 +797,8 @@ export type DeleteOrderMutation = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -909,7 +917,8 @@ export type CreateSubscriptionOrderMutation = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -967,7 +976,8 @@ export type UpdateSubscriptionOrderMutation = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -1025,7 +1035,8 @@ export type DeleteSubscriptionOrderMutation = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -1208,7 +1219,8 @@ export type CreateStaffMutation = {
   createStaff?:  {
     __typename: "Staff",
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     viewOrder: number,
     disabled: boolean,
     type: Type,
@@ -1227,7 +1239,8 @@ export type UpdateStaffMutation = {
   updateStaff?:  {
     __typename: "Staff",
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     viewOrder: number,
     disabled: boolean,
     type: Type,
@@ -1246,7 +1259,8 @@ export type DeleteStaffMutation = {
   deleteStaff?:  {
     __typename: "Staff",
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     viewOrder: number,
     disabled: boolean,
     type: Type,
@@ -1332,7 +1346,8 @@ export type GetOrderQuery = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -1383,7 +1398,8 @@ export type ListOrdersQuery = {
       staff:  {
         __typename: "Staff",
         id: string,
-        name: string,
+        firstName: string,
+        lastName: string,
         viewOrder: number,
         disabled: boolean,
         type: Type,
@@ -1443,7 +1459,8 @@ export type GetSubscriptionOrderQuery = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -1504,7 +1521,8 @@ export type ListSubscriptionOrdersQuery = {
       staff:  {
         __typename: "Staff",
         id: string,
-        name: string,
+        firstName: string,
+        lastName: string,
         viewOrder: number,
         disabled: boolean,
         type: Type,
@@ -1578,7 +1596,8 @@ export type GetStaffQuery = {
   getStaff?:  {
     __typename: "Staff",
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     viewOrder: number,
     disabled: boolean,
     type: Type,
@@ -1600,7 +1619,8 @@ export type ListStaffQuery = {
     items:  Array< {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -1647,7 +1667,8 @@ export type ListOrdersSortedByCreatedAtQuery = {
       staff:  {
         __typename: "Staff",
         id: string,
-        name: string,
+        firstName: string,
+        lastName: string,
         viewOrder: number,
         disabled: boolean,
         type: Type,
@@ -1714,7 +1735,8 @@ export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
       staff:  {
         __typename: "Staff",
         id: string,
-        name: string,
+        firstName: string,
+        lastName: string,
         viewOrder: number,
         disabled: boolean,
         type: Type,
@@ -1778,7 +1800,8 @@ export type ListStaffSortedByViewOrderQuery = {
     items:  Array< {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -1881,7 +1904,8 @@ export type OnCreateOrderSubscription = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -1928,7 +1952,8 @@ export type OnUpdateOrderSubscription = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -1975,7 +2000,8 @@ export type OnDeleteOrderSubscription = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -2090,7 +2116,8 @@ export type OnCreateSubscriptionOrderSubscription = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -2147,7 +2174,8 @@ export type OnUpdateSubscriptionOrderSubscription = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -2204,7 +2232,8 @@ export type OnDeleteSubscriptionOrderSubscription = {
     staff:  {
       __typename: "Staff",
       id: string,
-      name: string,
+      firstName: string,
+      lastName: string,
       viewOrder: number,
       disabled: boolean,
       type: Type,
@@ -2368,7 +2397,8 @@ export type OnCreateStaffSubscription = {
   onCreateStaff?:  {
     __typename: "Staff",
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     viewOrder: number,
     disabled: boolean,
     type: Type,
@@ -2386,7 +2416,8 @@ export type OnUpdateStaffSubscription = {
   onUpdateStaff?:  {
     __typename: "Staff",
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     viewOrder: number,
     disabled: boolean,
     type: Type,
@@ -2404,7 +2435,8 @@ export type OnDeleteStaffSubscription = {
   onDeleteStaff?:  {
     __typename: "Staff",
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     viewOrder: number,
     disabled: boolean,
     type: Type,

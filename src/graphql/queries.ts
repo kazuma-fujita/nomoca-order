@@ -64,7 +64,8 @@ export const getOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -109,7 +110,8 @@ export const listOrders = /* GraphQL */ `
         staffID
         staff {
           id
-          name
+          firstName
+          lastName
           viewOrder
           disabled
           type
@@ -161,7 +163,8 @@ export const getSubscriptionOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -219,7 +222,8 @@ export const listSubscriptionOrders = /* GraphQL */ `
         staffID
         staff {
           id
-          name
+          firstName
+          lastName
           viewOrder
           disabled
           type
@@ -282,7 +286,8 @@ export const getStaff = /* GraphQL */ `
   query GetStaff($id: ID!) {
     getStaff(id: $id) {
       id
-      name
+      firstName
+      lastName
       viewOrder
       disabled
       type
@@ -301,7 +306,8 @@ export const listStaff = /* GraphQL */ `
     listStaff(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -349,7 +355,8 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         staffID
         staff {
           id
-          name
+          firstName
+          lastName
           viewOrder
           disabled
           type
@@ -416,7 +423,8 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
         staffID
         staff {
           id
-          name
+          firstName
+          lastName
           viewOrder
           disabled
           type
@@ -488,7 +496,8 @@ export const listStaffSortedByViewOrder = /* GraphQL */ `
     ) {
       items {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type

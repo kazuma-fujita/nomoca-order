@@ -40,13 +40,14 @@ export const UpsertProductButton = ({ product }: Props) => {
             isExportCSV={product ? product.isExportCSV : false}
             disabled={isLoading}
           />
-          <DisabledCheckbox
-            // {...useFormReturn}
-            {...(useFormReturn as UseFormReturn<Staff | Product, object>)}
-            helperTextLabel={'商品'}
-            isDisabled={product ? product.disabled : false}
-            disabled={isLoading}
-          />
+          {product && (
+            <DisabledCheckbox
+              {...(useFormReturn as UseFormReturn<Staff | Product, object>)}
+              helperTextLabel={'商品'}
+              isDisabled={product ? product.disabled : false}
+              disabled={isLoading}
+            />
+          )}
         </>
       </InputDialog>
     </>

@@ -74,7 +74,8 @@ export const onCreateOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -114,7 +115,8 @@ export const onUpdateOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -154,7 +156,8 @@ export const onDeleteOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -249,7 +252,8 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -298,7 +302,8 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -347,7 +352,8 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
       staffID
       staff {
         id
-        name
+        firstName
+        lastName
         viewOrder
         disabled
         type
@@ -492,7 +498,8 @@ export const onCreateStaff = /* GraphQL */ `
   subscription OnCreateStaff($owner: String) {
     onCreateStaff(owner: $owner) {
       id
-      name
+      firstName
+      lastName
       viewOrder
       disabled
       type
@@ -506,7 +513,8 @@ export const onUpdateStaff = /* GraphQL */ `
   subscription OnUpdateStaff($owner: String) {
     onUpdateStaff(owner: $owner) {
       id
-      name
+      firstName
+      lastName
       viewOrder
       disabled
       type
@@ -520,7 +528,8 @@ export const onDeleteStaff = /* GraphQL */ `
   subscription OnDeleteStaff($owner: String) {
     onDeleteStaff(owner: $owner) {
       id
-      name
+      firstName
+      lastName
       viewOrder
       disabled
       type

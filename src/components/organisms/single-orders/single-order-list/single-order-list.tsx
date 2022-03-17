@@ -34,10 +34,6 @@ const header: TableHeader[] = [
     minWidth: 160,
   },
   {
-    label: '担当者',
-    minWidth: 160,
-  },
-  {
     label: '',
     minWidth: 80,
   },
@@ -67,7 +63,6 @@ const Row = ({ item }: RowProps) => {
         <DeliveryStatusChip status={item.deliveryStatus!} />
       </TableCell>
       <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt!) : '-'}</TableCell>
-      <TableCell align='center'>{item.staff.name}</TableCell>
       {item.products && (
         <TableCell align='center'>
           <CancelSingleOrderButton

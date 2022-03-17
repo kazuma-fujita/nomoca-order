@@ -85,7 +85,7 @@ export const StaffList = () => {
                     <Draggable key={item.id} draggableId={item.id} index={index}>
                       {(provided) => (
                         <StyledTableRow key={item.id} ref={provided.innerRef} {...provided.draggableProps}>
-                          <StyledTableCell>{item.name}</StyledTableCell>
+                          <StyledTableCell>{`${item.lastName}  ${item.firstName}`}</StyledTableCell>
                           <StyledTableCell align='center'>{item.disabled ? '◯' : '-'}</StyledTableCell>
                           <StyledTableCell align='center' {...provided.dragHandleProps}>
                             <FormatLineSpacingIcon />

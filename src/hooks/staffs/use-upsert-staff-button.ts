@@ -7,7 +7,8 @@ import { useUpsertStaff } from './use-upsert-staff';
 export const useUpsertStaffButton = (staff?: Staff) => {
   const defaultValues = {
     defaultValues: {
-      name: staff ? staff.name : '',
+      firstName: staff ? staff.firstName : '',
+      lastName: staff ? staff.lastName : '',
       disabled: staff ? staff.disabled : false,
     },
   };

@@ -133,7 +133,7 @@ const Row = ({ item, selectedItems, orderItemsLength, setSelectedItems, setIsSel
         <DeliveryStatusChip status={item.deliveryStatus!} />
       </TableCell>
       <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt!) : '-'}</TableCell>
-      <TableCell align='center'>{item.staff.name}</TableCell>
+      <TableCell align='center'>{`${item.staff.lastName}  ${item.staff.firstName}`}</TableCell>
     </CommonTableRow>
   );
 };

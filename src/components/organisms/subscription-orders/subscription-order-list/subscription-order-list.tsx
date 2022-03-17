@@ -20,10 +20,6 @@ const header: TableHeader[] = [
     minWidth: 40,
   },
   {
-    label: '担当者',
-    minWidth: 160,
-  },
-  {
     label: '配送開始月',
     minWidth: 160,
   },
@@ -36,7 +32,7 @@ const header: TableHeader[] = [
     minWidth: 160,
   },
   {
-    label: '作成日時',
+    label: '申し込み日時',
     minWidth: 160,
   },
   {
@@ -82,7 +78,6 @@ const Row = ({ item, now }: RowProps) => {
   );
   return (
     <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
-      <TableCell align='center'>{item.staff.name}</TableCell>
       <TableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</TableCell>
       <TableCell align='center'>{`${item.deliveryInterval}ヶ月`}</TableCell>
       <TableCell align='center'>{formattedNextDeliveryDate}</TableCell>
