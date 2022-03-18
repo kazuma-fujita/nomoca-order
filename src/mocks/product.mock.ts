@@ -9,6 +9,7 @@ export const productMock: Product = {
   type: Type.product,
   orderType: OrderType.singleOrder,
   viewOrder: 1,
+  isExportCSV: false,
   disabled: false,
   createdAt: '2022-03-25T09:32:55Z',
   updatedAt: '2022-03-25T09:32:55Z',
@@ -31,5 +32,6 @@ export const productListMock: Product[] = [...Array(3)].map((_, i) => ({
   unitPrice: 1000 * (i + 1),
   quantity: i + 1,
   viewOrder: i + 1,
+  isExportCSV: Boolean((i + 1) % 2),
   updatedAt: new Date(2022, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),
 }));

@@ -4,6 +4,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import CategoryIcon from '@mui/icons-material/Category';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
@@ -53,7 +54,7 @@ export const Header = () => {
         ],
         [
           { path: Path.staff, icon: PeopleIcon, label: ScreenName.Staff },
-          { path: Path.clinic, icon: EditIcon, label: ScreenName.Clinic },
+          { path: Path.clinic, icon: LocalShippingIcon, label: ScreenName.clinic },
           { path: Path.term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
         ],
       ];

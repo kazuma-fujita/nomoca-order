@@ -26,7 +26,6 @@ export const InputDialog: React.FC<Props> = (props: Props) => {
       <Form onSubmit={props.submitHandler}>
         <DialogTitle>{props.dialogTitle}</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>説明が入ります</DialogContentText> */}
           {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
           <Box mt={2} mb={2}>
             {props.children}

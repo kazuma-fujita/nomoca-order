@@ -7,7 +7,6 @@ import { NextRouter, useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import useSWR, { KeyedMutator, useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { SubscriptionOrderList } from '../components/organisms/subscription-orders/subscription-order-list/subscription-order-list';
 
 type ProviderProps = {
   currentUser: CognitoUserInterface | undefined;
@@ -45,6 +44,7 @@ export const CurrentUserContextProvider = ({ ...props }) => {
   // return <CurrentUserContext.Provider value={{ currentUser, error, mutateUser, groups, isOperator }} {...props} />;
 };
 
+// ログイン後画面の認証判定
 export const useVerifyAuthenticated = () => {
   const router = useRouter();
   const { mutateUser } = useCurrentUser();
@@ -55,7 +55,7 @@ export const useVerifyAuthenticated = () => {
       try {
         // Cognitoから認証情報取得
         const currentUser = await Auth.currentAuthenticatedUser();
-        // Global stateの更新。useSWRの第2引数にfalseを指定すると再検証(再fetch)をしない
+        // 認証済みの場合Global stateの更新。useSWRの第2引数にfalseを指定すると再検証(再fetch)をしない
         mutateUser(currentUser, false);
       } catch (error) {
         console.error('useVerifyAuthenticated error:', error);
@@ -66,16 +66,14 @@ export const useVerifyAuthenticated = () => {
   }, []);
 };
 
+// ログイン前画面の認証判定
 export const useVerifyBeforeAuthenticate = () => {
   const router = useRouter();
   useEffect(() => {
-    // 高速に遷移するため事前に遷移先画面をprefetchする
-    router.prefetch(Path.staff);
-    // TODO: 遷移先未定
-    router.prefetch(Path.subscriptionOrder);
     afterAuthTransition(router);
     // 画面ステータスをみてログイン後画面に遷移
     return onAuthUIStateChange((nextAuthState, authData) => {
+      // ログイン直後判定
       if (nextAuthState === AuthState.SignedIn && authData) {
         afterAuthTransition(router);
       }
@@ -90,10 +88,14 @@ const afterAuthTransition = (router: NextRouter) => {
       // currentUserがUserGroupに所属していない場合undefinedが返却される
       const groups: string[] | undefined = currentUser.signInUserSession.accessToken.payload['cognito:groups'];
       const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
+      // 高速に遷移するため事前に遷移先画面をprefetchする
+      // TODO: 遷移先未定
+      router.prefetch(Path.adminsSingleOrder);
+      router.prefetch(Path.singleOrder);
       // UserGroupにより遷移先の振り分け
-      // isOperator ? router.replace(Path.adminsSubscriptionOrder) : router.replace(Path.subscriptionOrder);
-      isOperator ? router.replace(Path.adminsSubscriptionOrder) : router.replace(Path.singleOrder);
+      isOperator ? router.replace(Path.adminsSingleOrder) : router.replace(Path.singleOrder);
     } catch (error) {
+      // currentAuthenticatedUser実行時に未認証の場合 The user is not authenticated が発生。ログイン画面へ遷移
       router.replace(Path.index);
     }
   })();

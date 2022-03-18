@@ -1,7 +1,7 @@
 import { Add, Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { Product, Staff } from 'API';
-import { InputDialog } from 'components/atoms/dialogs/input-dialog';
+import { InputDialog } from 'components/molecules/dialogs/input-dialog';
 import { DisabledCheckbox } from 'components/molecules/checkboxes/disabled-checkbox';
 import { FirstNameTextField } from 'components/molecules/text-fields/first-name-text-field';
 import { LastNameTextField } from 'components/molecules/text-fields/last-name-text-field';
