@@ -33,9 +33,11 @@ export const UpsertStaffButton = ({ staff }: Props) => {
         cancelHandler={cancelHandler}
       >
         <>
-          <LastNameTextField {...useFormReturn} disabled={isLoading} />
-          <Box component='span' ml={2} />
-          <FirstNameTextField {...useFormReturn} disabled={isLoading} />
+          <Box display='flex'>
+            <LastNameTextField {...useFormReturn} disabled={isLoading} />
+            <Box component='span' ml={2} />
+            <FirstNameTextField {...useFormReturn} disabled={isLoading} />
+          </Box>
           {staff && (
             <DisabledCheckbox
               {...(useFormReturn as UseFormReturn<Staff | Product, object>)}

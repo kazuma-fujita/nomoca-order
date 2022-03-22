@@ -11,14 +11,14 @@ import { useClinicForm } from 'hooks/clinics/use-clinic-form';
 export const ClinicTemplate = () => {
   return (
     <Box display='flex' justifyContent='center' alignItems='center' mt={8}>
-      <Box width='40%'>
-        <Box display='flex' justifyContent='center' mb={8}>
-          <Typography variant='h4'>配送先</Typography>
-        </Box>
-        <Box display='flex' justifyContent='center' mb={8}>
-          <ClinicDetail />
-        </Box>
-      </Box>
+      {/* <Box width='40%'> */}
+      {/* <Box display='flex' justifyContent='center' mb={8}>
+        <Typography variant='h4'>配送先</Typography>
+      </Box> */}
+      {/* <Box display='flex' justifyContent='center' mb={8}> */}
+      <ClinicDetail />
+      {/* </Box> */}
+      {/* </Box> */}
     </Box>
   );
 };

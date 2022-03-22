@@ -39,14 +39,12 @@ export const ConfirmOrder: React.FC<Props> = ({
         <ReceiptTable products={products} />
       </Box>
       {children}
-      <Box mb={8}>
-        <ClinicDetail />
-      </Box>
+      <ClinicDetail isHiddenUpsertButton={true} />
       <Divider textAlign='left'>
         <Chip label='担当者' />
       </Divider>
       <Box mt={2} mb={4} ml={4}>
-        <Typography variant='body1'>{staffName}</Typography>
+        <Typography variant='body2'>{staffName}</Typography>
       </Box>
       <Box mt={8} mb={8} width='auto' display='flex' justifyContent='center'>
         <LoadingButton loadingIndicator='Loading...' loading={isLoading} onClick={cancelHandler}>

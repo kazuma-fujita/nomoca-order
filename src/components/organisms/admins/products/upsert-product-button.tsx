@@ -8,6 +8,7 @@ import { ProductNameTextField } from 'components/molecules/text-fields/product-n
 import { ProductUnitPriceTextField } from 'components/molecules/text-fields/product-unit-price-text-field';
 import { useUpsertProductButton } from 'hooks/products/use-upsert-product-button';
 import { UseFormReturn } from 'react-hook-form';
+import { Box } from '@mui/material';
 
 type Props = {
   product?: Product;
@@ -34,6 +35,7 @@ export const UpsertProductButton = ({ product }: Props) => {
       >
         <>
           <ProductNameTextField {...useFormReturn} disabled={isLoading} />
+          <Box mb={2} />
           <ProductUnitPriceTextField {...useFormReturn} disabled={isLoading} />
           <ExportCSVCheckbox
             {...useFormReturn}

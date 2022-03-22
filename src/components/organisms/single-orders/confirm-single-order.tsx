@@ -18,7 +18,7 @@ export const ConfirmSingleOrder = () => {
         <Chip label='配送方法' />
       </Divider>
       <Box mt={2} mb={8} ml={4}>
-        <Typography variant='body1'>{deliveryTypeLabel}</Typography>
+        <Typography variant='body2'>{deliveryTypeLabel}</Typography>
       </Box>
     </ConfirmOrder>
   );

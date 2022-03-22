@@ -5,7 +5,8 @@ import { orderFormDefaultValues } from 'hooks/orders/use-order-form';
 import { clinicMock } from 'mocks/clinic.mock';
 import { productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';
-import { graphql } from 'msw';
+import { graphql, setupWorker } from 'msw';
+import { useEffect } from 'react';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'stores/use-product-list';
 import { StaffListContextProvider } from 'stores/use-staff-list';
@@ -66,5 +67,39 @@ Default.parameters = {
         return res(ctx.data(response));
       }),
     ],
+  },
+};
+
+export const EmptyClinic: Story = {
+  ...Default,
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => {
+          const response = {
+            listStaffSortedByViewOrder: {
+              items: staffListMock,
+            },
+          };
+          return res(ctx.data(response));
+        }),
+        graphql.query('ListProductsSortedByViewOrder', (req, res, ctx) => {
+          const response = {
+            listProductsSortedByViewOrder: {
+              items: productListMock,
+            },
+          };
+          return res(ctx.data(response));
+        }),
+        graphql.query('ListClinics', (req, res, ctx) => {
+          const response = {
+            listClinics: {
+              items: [],
+            },
+          };
+          return res(ctx.data(response));
+        }),
+      ],
+    },
   },
 };
