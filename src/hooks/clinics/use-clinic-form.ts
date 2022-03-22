@@ -43,10 +43,15 @@ export const useClinicForm = () => {
         const result = await searchAddress(value);
         if (result) {
           // formの値を上書き
-          setValue('state', result.state);
-          setValue('city', result.city);
-          setValue('address', result.address);
-          setValue('building', '');
+          if (result.state) {
+            setValue('state', result.state);
+          }
+          if (result.city) {
+            setValue('city', result.city);
+          }
+          if (result.address) {
+            setValue('address', result.address);
+          }
         }
       }
     },

@@ -11,6 +11,7 @@ import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form'
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
+import { ClinicDetail } from 'components/organisms/clinics/clinic-detail';
 
 type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
@@ -197,6 +198,9 @@ export const OrderForm: React.FC<Props> = ({
         )}
       </Box>
       {children}
+      <Box mb={8}>
+        <ClinicDetail />
+      </Box>
       <Box mt={8} mb={8}>
         <Controller
           name='staffID'

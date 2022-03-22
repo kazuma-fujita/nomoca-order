@@ -1,4 +1,6 @@
 import type { ComponentStoryObj } from '@storybook/react';
+import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
+import { clinicMock } from 'mocks/clinic.mock';
 import { adminOrderListMock, orderListMock } from 'mocks/order-list.mock';
 import { graphql } from 'msw';
 import { SingleOrderTemplate } from './single-order-template';
@@ -22,7 +24,15 @@ type Story = ComponentStoryObj<typeof SingleOrderTemplate>;
 
 export default { component: SingleOrderTemplate };
 
-export const Default: Story = {};
+export const Default: Story = {
+  decorators: [
+    (StoryComponent) => (
+      <ClinicContextProvider>
+        <StoryComponent />
+      </ClinicContextProvider>
+    ),
+  ],
+};
 
 Default.parameters = {
   docs: {
@@ -36,6 +46,14 @@ Default.parameters = {
         const response = {
           listOrdersSortedByCreatedAt: {
             items: adminOrderListMock,
+          },
+        };
+        return res(ctx.data(response));
+      }),
+      graphql.query('ListClinics', (req, res, ctx) => {
+        const response = {
+          listClinics: {
+            items: [clinicMock],
           },
         };
         return res(ctx.data(response));

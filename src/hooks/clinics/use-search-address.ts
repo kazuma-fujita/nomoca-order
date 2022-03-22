@@ -66,14 +66,15 @@ export const getAddress = async (postalCode: string): Promise<SearchAddress | nu
         break;
     }
   });
-
-  return { state: state, city: city, address: address };
+  // ??演算子は左辺の null と undefinedを評価し、 ||演算子は空文字や0を含む左辺の値を評価する。
+  // 以下のケースでは住所検索結果の値が無ければnullを代入する。
+  return { state: state || null, city: city || null, address: address || null };
 };
 
 export type SearchAddress = {
-  state: string;
-  city: string;
-  address: string;
+  state: string | null;
+  city: string | null;
+  address: string | null;
 };
 
 export const useSearchAddress = () => {

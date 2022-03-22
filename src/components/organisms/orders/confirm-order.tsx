@@ -5,6 +5,7 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { BaseSyntheticEvent, MouseEventHandler } from 'react';
+import { ClinicDetail } from 'components/organisms/clinics/clinic-detail';
 
 type Props = {
   products: NormalizedProduct[];
@@ -38,6 +39,9 @@ export const ConfirmOrder: React.FC<Props> = ({
         <ReceiptTable products={products} />
       </Box>
       {children}
+      <Box mb={8}>
+        <ClinicDetail />
+      </Box>
       <Divider textAlign='left'>
         <Chip label='担当者' />
       </Divider>

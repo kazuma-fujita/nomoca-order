@@ -1,6 +1,8 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { OrderType } from 'API';
+import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
 import { orderFormDefaultValues } from 'hooks/orders/use-order-form';
+import { clinicMock } from 'mocks/clinic.mock';
 import { productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';
 import { graphql } from 'msw';
@@ -28,7 +30,9 @@ export const Default: Story = {
             initialOrderFormParam={orderFormDefaultValues}
           >
             <NowDateContextProvider now={new Date(2022, 3, 1, 9)}>
-              <StoryComponent />
+              <ClinicContextProvider>
+                <StoryComponent />
+              </ClinicContextProvider>
             </NowDateContextProvider>
           </OrderFormParamContextProvider>
         </StaffListContextProvider>
@@ -52,6 +56,14 @@ Default.parameters = {
         const response = {
           listProductsSortedByViewOrder: {
             items: productListMock,
+          },
+        };
+        return res(ctx.data(response));
+      }),
+      graphql.query('ListClinics', (req, res, ctx) => {
+        const response = {
+          listClinics: {
+            items: [clinicMock],
           },
         };
         return res(ctx.data(response));

@@ -3,6 +3,7 @@ import { Main } from 'components/molecules/main';
 import { OrderTemplate } from 'components/templates/orders/order-template/order-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
+import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
@@ -30,9 +31,11 @@ const SubscriptionOrderPage = (props: Props) => {
         <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
           <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder}>
             <NowDateContextProvider now={new Date()}>
-              <Main>
-                <OrderTemplate />
-              </Main>
+              <ClinicContextProvider>
+                <Main>
+                  <OrderTemplate />
+                </Main>
+              </ClinicContextProvider>
             </NowDateContextProvider>
           </OrderFormParamContextProvider>
         </StaffListContextProvider>

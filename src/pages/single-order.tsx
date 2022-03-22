@@ -3,6 +3,7 @@ import { Main } from 'components/molecules/main';
 import { OrderTemplate } from 'components/templates/orders/order-template/order-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
+import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
@@ -25,9 +26,11 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       >
         <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
           <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
-            <Main>
-              <OrderTemplate />
-            </Main>
+            <ClinicContextProvider>
+              <Main>
+                <OrderTemplate />
+              </Main>
+            </ClinicContextProvider>
           </OrderFormParamContextProvider>
         </StaffListContextProvider>
       </ProductListContextProvider>

@@ -2,6 +2,8 @@ import Amplify from '@aws-amplify/core';
 import type { ComponentStoryObj } from '@storybook/react';
 import { DeliveryType, OrderType } from 'API';
 import awsconfig from 'aws-exports';
+import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
+import { clinicMock } from 'mocks/clinic.mock';
 import { createNormalizedProductsMock, productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';
 import { graphql } from 'msw';
@@ -33,7 +35,9 @@ export const Default: Story = {
       >
         <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
           <OrderFormParamContextProvider orderType={OrderType.singleOrder} initialOrderFormParam={defaultValues}>
-            <StoryComponent />
+            <ClinicContextProvider>
+              <StoryComponent />
+            </ClinicContextProvider>
           </OrderFormParamContextProvider>
         </StaffListContextProvider>
       </ProductListContextProvider>
@@ -56,6 +60,14 @@ Default.parameters = {
         const response = {
           listProductsSortedByViewOrder: {
             items: productListMock,
+          },
+        };
+        return res(ctx.data(response));
+      }),
+      graphql.query('ListClinics', (req, res, ctx) => {
+        const response = {
+          listClinics: {
+            items: [clinicMock],
           },
         };
         return res(ctx.data(response));
