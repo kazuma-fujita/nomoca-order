@@ -70,7 +70,7 @@ Default.parameters = {
   },
 };
 
-export const EmptyClinic: Story = {
+export const EmptyClinicAndStaff: Story = {
   ...Default,
   parameters: {
     msw: {
@@ -78,7 +78,7 @@ export const EmptyClinic: Story = {
         graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => {
           const response = {
             listStaffSortedByViewOrder: {
-              items: staffListMock,
+              items: [],
             },
           };
           return res(ctx.data(response));

@@ -14,16 +14,16 @@ export const ClinicDetail = ({ isHiddenUpsertButton }: Props) => {
       <Divider textAlign='left'>
         <Chip label='配送先' />
       </Divider>
-      <Box mb={8} ml={4}>
+      <Box mt={4} ml={4}>
         {error ||
           (!data && (
-            <Box mt={4}>
+            <>
               {error && <ErrorAlert>{error}</ErrorAlert>}
               {!data && <UpsertClinicButton />}
-            </Box>
+            </>
           ))}
         {data && (
-          <Box display='flex' alignItems='center' mt={2}>
+          <Box display='flex' alignItems='center'>
             <Box sx={{ typography: 'body2' }}>
               {data.name} <br />
               {`〒  ${data.postalCode}`} <br />

@@ -1,7 +1,7 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
-import { Box, Button, IconButton, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, Chip, Divider, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import { OrderType } from 'API';
 import Form from 'components/atoms/form';
 import { ReceiptTable } from 'components/molecules/receipt-table';
@@ -12,6 +12,7 @@ import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useProductList } from 'stores/use-product-list';
 import { useStaffList } from 'stores/use-staff-list';
 import { ClinicDetail } from 'components/organisms/clinics/clinic-detail';
+import { StaffSelectBox } from 'components/molecules/select-boxes/staff-select-box';
 
 type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
@@ -202,29 +203,10 @@ export const OrderForm: React.FC<Props> = ({
         <ClinicDetail />
       </Box>
       <Box mt={8} mb={8}>
-        <Controller
-          name='staffID'
-          control={formReturn.control}
-          defaultValue={''}
-          rules={{ required: '発注担当者を選択してください' }}
-          render={({ field, formState: { errors } }) => (
-            <TextField
-              select
-              fullWidth
-              label='発注担当者'
-              error={Boolean(errors.staffID)}
-              helperText={errors.staffID && errors.staffID.message}
-              {...field}
-            >
-              {staffList &&
-                staffList.map((staff) => (
-                  <MenuItem key={staff.id} value={staff.id}>
-                    {`${staff.lastName} ${staff.firstName}`}
-                  </MenuItem>
-                ))}
-            </TextField>
-          )}
-        />
+        <Divider textAlign='left'>
+          <Chip label='発送担当者' />
+        </Divider>
+        <StaffSelectBox {...formReturn} />
       </Box>
       <Box mt={8} mb={8} width='auto' display='flex' justifyContent='center'>
         <Button onClick={cancelHandler}>キャンセル</Button>

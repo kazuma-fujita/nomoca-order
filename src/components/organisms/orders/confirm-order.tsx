@@ -39,7 +39,9 @@ export const ConfirmOrder: React.FC<Props> = ({
         <ReceiptTable products={products} />
       </Box>
       {children}
-      <ClinicDetail isHiddenUpsertButton={true} />
+      <Box mb={8}>
+        <ClinicDetail isHiddenUpsertButton={true} />
+      </Box>
       <Divider textAlign='left'>
         <Chip label='発注担当者' />
       </Divider>
