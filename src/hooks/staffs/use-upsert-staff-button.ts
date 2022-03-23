@@ -37,6 +37,6 @@ export const useUpsertStaffButton = (staff?: Staff) => {
   );
 
   const submitButtonLabel = staff ? '編集する' : '追加する';
-  const dialogTitle = `担当者を${submitButtonLabel}`;
+  const dialogTitle = `発注担当者を${submitButtonLabel}`;
   return { useFormReturn, submitButtonLabel, dialogTitle, on, toggle, isLoading, error, submitHandler, cancelHandler };
 };

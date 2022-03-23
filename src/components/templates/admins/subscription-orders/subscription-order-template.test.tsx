@@ -20,10 +20,10 @@ const expectAllList = () => {
   const rows = screen.getAllByRole('row');
   expect(rows).toHaveLength(25);
   // staff
-  screen.queryByRole('cell', { name: '担当者0' });
-  screen.getByRole('cell', { name: '担当者1' });
-  screen.getByRole('cell', { name: '担当者12' });
-  screen.queryByRole('cell', { name: '担当者13' });
+  screen.queryByRole('cell', { name: '発注担当者0' });
+  screen.getByRole('cell', { name: '発注担当者1' });
+  screen.getByRole('cell', { name: '発注担当者12' });
+  screen.queryByRole('cell', { name: '発注担当者13' });
   // delivery start month
   screen.getByRole('cell', { name: '2022/1月' });
   screen.getByRole('cell', { name: '2022/2月' });

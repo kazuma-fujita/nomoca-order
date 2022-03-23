@@ -82,7 +82,7 @@ Default.parameters = {
 //   args: {
 //     products: products,
 //     deliveryTypeLabel: '通常配送',
-//     staffName: '担当者1',
+//     staffName: '発注担当者1',
 //     isLoading: false,
 //     error: null,
 //     submitHandler: async () => {},

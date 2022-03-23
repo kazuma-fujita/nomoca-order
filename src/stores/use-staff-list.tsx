@@ -35,8 +35,8 @@ type Props = {
   isRevalidateOnFocus?: boolean;
 };
 
-// 担当者一覧画面の他、各画面の担当者プルダウンのマスターデータとなる為、
-// 担当者プルダウンを実装する画面はTop階層(pages)で一回のみデータfetch、useContextを利用してdataを使い回す
+// 発注担当者一覧画面の他、各画面の発注担当者プルダウンのマスターデータとなる為、
+// 発注担当者プルダウンを実装する画面はTop階層(pages)で一回のみデータfetch、useContextを利用してdataを使い回す
 export const StaffListContextProvider: React.FC<Props> = ({
   isFilterByActiveStaff,
   isRevalidateOnFocus = true,

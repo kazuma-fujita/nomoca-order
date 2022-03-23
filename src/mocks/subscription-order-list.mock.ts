@@ -51,7 +51,7 @@ export const subscriptionOrderListMock: ExtendedOrder<SubscriptionOrder>[] = [..
     items: createProductRelations(i + 1),
   },
   normalizedProducts: createNormalizedProductsMock(i + 1),
-  staff: { ...item.staff, id: `dummyStaffID-${i + 1}`, name: `担当者${i + 1}` },
+  staff: { ...item.staff, id: `dummyStaffID-${i + 1}`, name: `発注担当者${i + 1}` },
   deliveryStartMonth: i + 1,
   deliveryInterval: i + 1,
   updatedAt: new Date(2021, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),

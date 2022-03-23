@@ -41,7 +41,7 @@ export const ConfirmOrder: React.FC<Props> = ({
       {children}
       <ClinicDetail isHiddenUpsertButton={true} />
       <Divider textAlign='left'>
-        <Chip label='担当者' />
+        <Chip label='発注担当者' />
       </Divider>
       <Box mt={2} mb={4} ml={4}>
         <Typography variant='body2'>{staffName}</Typography>

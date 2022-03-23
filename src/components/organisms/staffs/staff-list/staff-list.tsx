@@ -19,7 +19,7 @@ import { UpsertStaffButton } from '../upsert-staff-button';
 
 const header = [
   {
-    label: '担当者名',
+    label: '発注担当者名',
     minWidth: 160,
   },
   {
@@ -79,7 +79,7 @@ export const StaffList = () => {
                     <CircularProgress aria-label='Now loading' />
                   </EmptyTableBody>
                 )}
-                {isEmptyList && <EmptyTableBody colSpan={header.length}>担当者を追加してください</EmptyTableBody>}
+                {isEmptyList && <EmptyTableBody colSpan={header.length}>発注担当者を追加してください</EmptyTableBody>}
                 {data &&
                   data.map((item, index) => (
                     <Draggable key={item.id} draggableId={item.id} index={index}>

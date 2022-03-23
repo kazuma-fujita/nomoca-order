@@ -41,7 +41,7 @@ export const UpsertStaffButton = ({ staff }: Props) => {
           {staff && (
             <DisabledCheckbox
               {...(useFormReturn as UseFormReturn<Staff | Product, object>)}
-              helperTextLabel={'担当者'}
+              helperTextLabel={'発注担当者'}
               isDisabled={staff ? staff.disabled : false}
               disabled={isLoading}
             />

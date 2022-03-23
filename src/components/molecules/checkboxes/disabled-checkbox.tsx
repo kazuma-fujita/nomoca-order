@@ -8,13 +8,6 @@ type Props = UseFormReturn<Staff | Product> & {
   isDisabled?: boolean;
 };
 
-// type Props = {
-//   control: Control;
-//   disabled: boolean;
-//   helperTextLabel: string;
-//   isDisabled?: boolean;
-// };
-
 export const DisabledCheckbox = ({ control, disabled, helperTextLabel, isDisabled }: Props) => {
   return (
     <Controller

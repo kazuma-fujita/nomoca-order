@@ -37,8 +37,8 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
   const expectAllRows = () => {
     cy.findAllByRole('row').should('have.length', 25);
     // staff
-    cy.findByRole('cell', { name: '担当者1' });
-    cy.findByRole('cell', { name: '担当者12' });
+    cy.findByRole('cell', { name: '発注担当者1' });
+    cy.findByRole('cell', { name: '発注担当者12' });
     // delivery start month
     cy.findByRole('cell', { name: '2022/1月' });
     cy.findByRole('cell', { name: '2022/2月' });

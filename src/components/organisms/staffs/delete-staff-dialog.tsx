@@ -21,9 +21,9 @@ type Props = {
 export const DeleteStaffDialog = (props: Props) => {
   return (
     <Dialog open={props.on}>
-      <DialogTitle>担当者を{props.label}する</DialogTitle>
+      <DialogTitle>発注担当者を{props.label}する</DialogTitle>
       <DialogContent>
-        <DialogContentText>こちらの担当者を{props.label}します。よろしいですか？</DialogContentText>
+        <DialogContentText>こちらの発注担当者を{props.label}します。よろしいですか？</DialogContentText>
         {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
         <Box mt={2} mb={2}>
           <Typography>{props.name}</Typography>

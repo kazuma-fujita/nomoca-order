@@ -24,7 +24,7 @@ const header: TableHeader[] = [
     minWidth: 160,
   },
   {
-    label: '担当者',
+    label: '発注担当者',
     minWidth: 160,
   },
   {

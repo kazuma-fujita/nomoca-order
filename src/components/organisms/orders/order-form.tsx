@@ -206,12 +206,12 @@ export const OrderForm: React.FC<Props> = ({
           name='staffID'
           control={formReturn.control}
           defaultValue={''}
-          rules={{ required: '担当者を選択してください' }}
+          rules={{ required: '発注担当者を選択してください' }}
           render={({ field, formState: { errors } }) => (
             <TextField
               select
               fullWidth
-              label='担当者'
+              label='発注担当者'
               error={Boolean(errors.staffID)}
               helperText={errors.staffID && errors.staffID.message}
               {...field}
