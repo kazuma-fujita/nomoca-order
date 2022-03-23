@@ -38,6 +38,24 @@ Default.parameters = {
   },
 };
 
+export const Empty: Story = {
+  ...Default,
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query('ListClinics', (req, res, ctx) => {
+          const response = {
+            listClinics: {
+              items: [],
+            },
+          };
+          return res(ctx.data(response));
+        }),
+      ],
+    },
+  },
+};
+
 // export const Loading: Story = {
 //   args: { isLoading: true },
 // };

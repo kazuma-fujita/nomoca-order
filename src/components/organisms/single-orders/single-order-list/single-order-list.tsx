@@ -6,7 +6,6 @@ import { CommonTableContainer } from 'components/molecules/common-table-containe
 import { CommonTableRow } from 'components/molecules/common-table-row';
 import { CancelSingleOrderButton } from 'components/organisms/single-orders/cancel-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
-import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
 import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import React from 'react';
