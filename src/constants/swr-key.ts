@@ -1,7 +1,7 @@
 export const SWRKey = {
   CurrentUser: 'currentUser',
-  StaffList: 'staffList',
-  ProductList: 'productList',
+  staffList: 'staffList',
+  productList: 'productList',
   SingleOrderList: 'singleOrderList',
   AdminSingleOrderList: 'adminSingleOrderList',
   AdminSubscriptionOrderList: 'adminSubscriptionOrderList',
@@ -12,10 +12,3 @@ export const SWRKey = {
 } as const;
 
 export type SWRKey = typeof SWRKey[keyof typeof SWRKey];
-
-export const SWRMultiKey = {
-  AllStaffList: [SWRKey.StaffList, false],
-  ActiveStaffList: [SWRKey.StaffList, true],
-};
-
-export type SWRMultiKey = typeof SWRMultiKey[keyof typeof SWRMultiKey];

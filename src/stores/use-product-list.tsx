@@ -50,7 +50,7 @@ export const ProductListContextProvider: React.FC<Props> = ({
   isRevalidateOnFocus = true,
   ...rest
 }) => {
-  const swrKey = [SWRKey.ProductList, orderType, isFilterByActiveProduct];
+  const swrKey = [SWRKey.productList, orderType, isFilterByActiveProduct];
   const response = useFetch<Product[]>(swrKey, fetcher, { revalidateOnFocus: isRevalidateOnFocus });
   return <ProductListContext.Provider value={{ ...response, swrKey, orderType }} {...rest} />;
 };

@@ -1,13 +1,17 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { ModelStaffFilterInput, Staff, Type } from 'API';
+import { ModelStaffFilterInput, OrderType, Staff, Type } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SWRMultiKey } from 'constants/swr-key';
+import { SWRKey } from 'constants/swr-key';
 import { listStaffSortedByViewOrder } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 import { ListStaffSortedByViewOrderQuery, ListStaffSortedByViewOrderQueryVariables } from 'API';
 
-const StaffListContext = createContext({} as FetchResponse<Staff[]>);
+type ProviderProps = FetchResponse<Staff[]> & {
+  swrKey: (string | boolean)[];
+};
+
+const StaffListContext = createContext({} as ProviderProps);
 
 export const useStaffList = () => useContext(StaffListContext);
 
@@ -43,7 +47,7 @@ export const StaffListContextProvider: React.FC<Props> = ({
   ...rest
 }) => {
   // SWRKeyは [SWRKeyString, boolean] の配列を指定
-  const key = isFilterByActiveStaff ? SWRMultiKey.ActiveStaffList : SWRMultiKey.AllStaffList;
-  const response = useFetch<Staff[]>(key, fetcher, { revalidateOnFocus: isRevalidateOnFocus });
-  return <StaffListContext.Provider value={response} {...rest} />;
+  const swrKey = [SWRKey.staffList, isFilterByActiveStaff];
+  const response = useFetch<Staff[]>(swrKey, fetcher, { revalidateOnFocus: isRevalidateOnFocus });
+  return <StaffListContext.Provider value={{ ...response, swrKey }} {...rest} />;
 };

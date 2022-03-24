@@ -13,6 +13,7 @@ type Props = {
   submitButtonLabel: string;
   startIcon: ReactElement;
   on: boolean;
+  formId: string;
   isLoading: boolean;
   error: Error | null;
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
@@ -25,6 +26,7 @@ export const InputDialog: React.FC<Props> = ({
   submitButtonLabel,
   startIcon,
   on,
+  formId,
   error,
   isLoading,
   submitHandler,
@@ -33,33 +35,32 @@ export const InputDialog: React.FC<Props> = ({
 }) => {
   return (
     <Dialog open={on}>
-      <Form onSubmit={submitHandler}>
-        <Box display='flex' justifyContent='center' alignItems='center' mt={4}>
-          <Box width='80%'>
-            <Box display='flex' justifyContent='center' mb={4}>
-              <Typography variant='h5'>{dialogTitle}</Typography>
-            </Box>
-            {error && <ErrorAlert>{error}</ErrorAlert>}
-            <Form onSubmit={submitHandler}>
-              {children}
-              <Box display='flex' justifyContent='space-around' mt={4} mb={4}>
-                <LoadingButton onClick={cancelHandler} loadingIndicator='Loading...' loading={isLoading}>
-                  キャンセル
-                </LoadingButton>
-                <LoadingButton
-                  type='submit'
-                  variant='contained'
-                  loading={isLoading}
-                  loadingPosition='start'
-                  startIcon={startIcon}
-                >
-                  {submitButtonLabel}
-                </LoadingButton>
-              </Box>
-            </Form>
+      <Box display='flex' justifyContent='center' alignItems='center' mt={4}>
+        <Box width='80%'>
+          <Box display='flex' justifyContent='center' mb={4}>
+            <Typography variant='h5'>{dialogTitle}</Typography>
+          </Box>
+          {error && <ErrorAlert>{error}</ErrorAlert>}
+          <Form id={formId} onSubmit={submitHandler}>
+            {children}
+          </Form>
+          <Box display='flex' justifyContent='space-around' mt={4} mb={4}>
+            <LoadingButton onClick={cancelHandler} loadingIndicator='Loading...' loading={isLoading}>
+              キャンセル
+            </LoadingButton>
+            <LoadingButton
+              type='submit'
+              variant='contained'
+              loading={isLoading}
+              loadingPosition='start'
+              startIcon={startIcon}
+              form={formId}
+            >
+              {submitButtonLabel}
+            </LoadingButton>
           </Box>
         </Box>
-      </Form>
+      </Box>
     </Dialog>
   );
 };

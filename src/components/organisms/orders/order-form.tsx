@@ -17,9 +17,6 @@ type Props = {
   initialReceiptProducts?: NormalizedProduct[] | null;
 };
 
-// 商品個数の数字連番の配列を生成
-const quantities = Array.from({ length: 25 }, (_, i) => i + 1);
-
 export const OrderForm: React.FC<Props> = ({
   submitHandler,
   cancelHandler,
@@ -29,13 +26,15 @@ export const OrderForm: React.FC<Props> = ({
   children,
 }) => {
   return (
-    <Form onSubmit={submitHandler}>
-      <ProductSelectBox
-        fieldArrayReturn={fieldArrayReturn}
-        initialReceiptProducts={initialReceiptProducts}
-        {...formReturn}
-      />
-      {children}
+    <>
+      <Form id='order-form' onSubmit={submitHandler}>
+        <ProductSelectBox
+          fieldArrayReturn={fieldArrayReturn}
+          initialReceiptProducts={initialReceiptProducts}
+          {...formReturn}
+        />
+        {children}
+      </Form>
       <Box mb={8}>
         <ClinicDetail />
       </Box>
@@ -48,10 +47,10 @@ export const OrderForm: React.FC<Props> = ({
       <Box mt={8} mb={8} width='auto' display='flex' justifyContent='center'>
         <Button onClick={cancelHandler}>キャンセル</Button>
         <Box mr={18} />
-        <Button type='submit' variant='contained' startIcon={<ArrowForwardIosIcon />}>
+        <Button type='submit' variant='contained' startIcon={<ArrowForwardIosIcon />} form='order-form'>
           確認する
         </Button>
       </Box>
-    </Form>
+    </>
   );
 };

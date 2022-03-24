@@ -95,7 +95,7 @@ export const ProductSelectBox = ({ control, fieldArrayReturn, initialReceiptProd
                 name={field.name}
                 select
                 // fullWidth
-                sx={{ width: '65%' }}
+                sx={{ width: '60%' }}
                 label='商品'
                 onChange={(e) => {
                   onChangeProduct(index, e.target.value);

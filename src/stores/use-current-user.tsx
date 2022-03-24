@@ -1,7 +1,7 @@
 import { AuthState, CognitoUserInterface, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import { Auth } from 'aws-amplify';
 import { Path } from 'constants/path';
-import { SWRKey, SWRMultiKey } from 'constants/swr-key';
+import { SWRKey } from 'constants/swr-key';
 import { UserGroup } from 'constants/user-group';
 import { NextRouter, useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -135,9 +135,6 @@ export const useSignOut = () => {
       await Auth.signOut({ global: true });
       // Store(useSWR)のCacheをクリア
       for (const key of Object.values(SWRKey)) {
-        cache.delete(key);
-      }
-      for (const key of Object.values(SWRMultiKey)) {
         cache.delete(key);
       }
       setIsLoading(false);

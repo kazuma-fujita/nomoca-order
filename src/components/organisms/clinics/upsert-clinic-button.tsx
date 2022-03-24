@@ -29,6 +29,7 @@ export const UpsertClinicButton = () => {
         submitButtonLabel={submitButtonLabel}
         startIcon={startIcon}
         on={on}
+        formId='clinic-form'
         isLoading={isLoading}
         error={error}
         submitHandler={submitHandler}

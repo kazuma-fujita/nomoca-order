@@ -26,9 +26,9 @@ export const useUpsertStaffButton = (staff?: Staff) => {
 
   const submitHandler = handleSubmit(
     useCallback(
-      async (data: Staff) => {
+      async (param: Staff) => {
         try {
-          await upsertStaff(staff ? { ...data, id: staff.id } : data);
+          await upsertStaff(staff ? { ...param, id: staff.id } : { ...param, id: '' });
           cancelHandler();
         } catch (error) {}
       },

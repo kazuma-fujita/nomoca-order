@@ -1,21 +1,23 @@
 import React, { FormEventHandler } from 'react';
 
 type Props = {
+  id: string;
   onSubmit: FormEventHandler;
   // key: string;
 };
 
 /* react-hook-formがcomponentのdefaultValueのcacheを保持する為、
    formのkeyにユニークな値(timestamp)を設定し表示毎にform以下のcomponentをrenderしdefaultValueのcache clearさせる */
-const Form: React.FC<Props> = (props) => (
+const Form: React.FC<Props> = ({ id, onSubmit, children }) => (
   <form
-    onSubmit={props.onSubmit}
+    id={id}
+    onSubmit={onSubmit}
     noValidate
     autoComplete='off'
     // key={props.key}
     // id='signup-form'
   >
-    {props.children}
+    {children}
   </form>
 );
 

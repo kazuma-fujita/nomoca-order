@@ -27,6 +27,7 @@ export const UpsertStaffButton = ({ staff }: Props) => {
         submitButtonLabel={submitButtonLabel}
         startIcon={startIcon}
         on={on}
+        formId='staff-form'
         isLoading={isLoading}
         error={error}
         submitHandler={submitHandler}
