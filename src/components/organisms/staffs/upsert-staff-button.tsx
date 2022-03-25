@@ -5,7 +5,7 @@ import { InputDialog } from 'components/molecules/dialogs/input-dialog';
 import { DisabledCheckbox } from 'components/molecules/checkboxes/disabled-checkbox';
 import { FirstNameTextField } from 'components/molecules/text-fields/first-name-text-field';
 import { LastNameTextField } from 'components/molecules/text-fields/last-name-text-field';
-import { useUpsertStaffButton } from 'hooks/staffs/use-upsert-staff-button';
+import { useUpsertStaffForm } from 'hooks/staffs/use-upsert-staff-form';
 import { UseFormReturn } from 'react-hook-form';
 import { Box } from '@mui/material';
 
@@ -15,7 +15,7 @@ type Props = {
 
 export const UpsertStaffButton = ({ staff }: Props) => {
   const { useFormReturn, submitButtonLabel, dialogTitle, on, toggle, isLoading, error, submitHandler, cancelHandler } =
-    useUpsertStaffButton(staff);
+    useUpsertStaffForm(staff);
   const startIcon = staff ? <Edit /> : <Add />;
   return (
     <>
