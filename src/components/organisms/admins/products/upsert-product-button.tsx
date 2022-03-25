@@ -6,7 +6,7 @@ import { DisabledCheckbox } from 'components/molecules/checkboxes/disabled-check
 import { ExportCSVCheckbox } from 'components/molecules/checkboxes/export-csv-checkbox';
 import { ProductNameTextField } from 'components/molecules/text-fields/product-name-text-field';
 import { ProductUnitPriceTextField } from 'components/molecules/text-fields/product-unit-price-text-field';
-import { useUpsertProductButton } from 'hooks/products/use-upsert-product-button';
+import { useUpsertProductForm } from 'hooks/products/use-upsert-product-form';
 import { UseFormReturn } from 'react-hook-form';
 import { Box } from '@mui/material';
 
@@ -16,7 +16,7 @@ type Props = {
 
 export const UpsertProductButton = ({ product }: Props) => {
   const { useFormReturn, submitButtonLabel, dialogTitle, on, toggle, isLoading, error, submitHandler, cancelHandler } =
-    useUpsertProductButton(product);
+    useUpsertProductForm(product);
   const startIcon = product ? <Edit /> : <Add />;
   return (
     <>

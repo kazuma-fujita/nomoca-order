@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
-import { useProductList } from 'stores/use-product-list';
+import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 
 export const orderFormDefaultValues: OrderFormParam = {
   products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
@@ -57,7 +57,7 @@ export const useCreateOrderButton = () => {
 export const useOrderForm = () => {
   const router = useRouter();
   const { data, mutate, orderType } = useOrderFormParam();
-  const { data: productList } = useProductList();
+  const { data: productList } = useFetchProductList();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
 
   if (!data || !productList) {

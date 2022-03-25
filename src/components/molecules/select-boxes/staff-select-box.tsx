@@ -3,10 +3,10 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { UpsertStaffButton } from 'components/organisms/staffs/upsert-staff-button';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam } from 'stores/use-order-form-param';
-import { useStaffList } from 'stores/use-staff-list';
+import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 
 const StaffSelectInput = ({ control }: UseFormReturn<OrderFormParam>) => {
-  const { data: staffList, isLoading } = useStaffList();
+  const { data: staffList, isLoading } = useFetchStaffList();
   return (
     <Controller
       name='staffID'
@@ -36,7 +36,7 @@ const StaffSelectInput = ({ control }: UseFormReturn<OrderFormParam>) => {
 };
 
 export const StaffSelectBox = (props: UseFormReturn<OrderFormParam>) => {
-  const { data: staffList, isLoading, error, isEmptyList } = useStaffList();
+  const { data: staffList, isLoading, error, isEmptyList } = useFetchStaffList();
   return (
     <>
       {isLoading ||

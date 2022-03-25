@@ -13,7 +13,7 @@ type ProviderProps = FetchResponse<Staff[]> & {
 
 const StaffListContext = createContext({} as ProviderProps);
 
-export const useStaffList = () => useContext(StaffListContext);
+export const useFetchStaffList = () => useContext(StaffListContext);
 
 const fetcher = async (key: string, isFilterByActiveStaff: boolean = false) => {
   // activeなstaffのみを抽出する条件

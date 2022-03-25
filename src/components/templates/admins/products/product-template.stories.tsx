@@ -3,7 +3,7 @@ import { OrderType } from 'API';
 import { ProductTemplate } from 'components/templates/admins/products/product-template';
 import { productListMock } from 'mocks/product.mock';
 import { graphql } from 'msw';
-import { ProductListContextProvider } from 'stores/use-product-list';
+import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 
 type Story = ComponentStoryObj<typeof ProductTemplate>;
 

@@ -8,8 +8,8 @@ import { createNormalizedProductsMock, productListMock } from 'mocks/product.moc
 import { staffListMock } from 'mocks/staff.mock';
 import { graphql } from 'msw';
 import { OrderFormParam, OrderFormParamContextProvider } from 'stores/use-order-form-param';
-import { ProductListContextProvider } from 'stores/use-product-list';
-import { StaffListContextProvider } from 'stores/use-staff-list';
+import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
+import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { ConfirmOrderTemplate } from './confirm-order-template';
 
 // Cognito認証でAppSyncを実行するとNo current user errorが発生する為、API_KEY認証に切り替え

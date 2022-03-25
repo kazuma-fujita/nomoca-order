@@ -13,12 +13,12 @@ import {
 import { API, graphqlOperation } from 'aws-amplify';
 import { createProduct as createProductMutation, updateProduct as updateProductMutation } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
-import { useProductList } from 'stores/use-product-list';
+import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useUpsertProduct = () => {
-  const { swrKey, orderType } = useProductList();
+  const { swrKey, orderType } = useFetchProductList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();

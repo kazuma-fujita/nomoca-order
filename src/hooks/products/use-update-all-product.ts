@@ -5,7 +5,7 @@ import { updateProduct as updateProductQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { useProductList } from 'stores/use-product-list';
+import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 
 type Args = {
   sourceIndex: number;
@@ -13,7 +13,7 @@ type Args = {
 };
 
 export const useUpdateAllProduct = () => {
-  const { swrKey } = useProductList();
+  const { swrKey } = useFetchProductList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();

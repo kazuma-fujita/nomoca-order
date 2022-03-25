@@ -2,7 +2,7 @@ import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/rea
 import userEvent from '@testing-library/user-event';
 import { OrderType, Type } from 'API';
 import { API } from 'aws-amplify';
-import { ProductListContextProvider } from 'stores/use-product-list';
+import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { customRender } from 'utilities/tests/custom-render';
 import { ProductTemplate } from './product-template';
 

@@ -14,10 +14,10 @@ import { createStaff as createStaffMutation, updateStaff as updateStaffMutation 
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { useStaffList } from 'stores/use-staff-list';
+import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 
 export const useUpsertStaff = () => {
-  const { swrKey } = useStaffList();
+  const { swrKey } = useFetchStaffList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();

@@ -5,10 +5,10 @@ import { deleteStaff as deleteStaffQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { useStaffList } from '../../stores/use-staff-list';
+import { useFetchStaffList } from '../../hooks/staffs/use-fetch-staff-list';
 
 export const useDeleteStaff = () => {
-  const { swrKey } = useStaffList();
+  const { swrKey } = useFetchStaffList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();

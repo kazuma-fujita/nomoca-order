@@ -22,7 +22,7 @@ type ProviderProps = FetchResponse<Product[]> & {
 
 const ProductListContext = createContext({} as ProviderProps);
 
-export const useProductList = () => useContext(ProductListContext);
+export const useFetchProductList = () => useContext(ProductListContext);
 
 const fetcher = async (key: string, orderType: OrderType, isFilterByActiveProduct: boolean) => {
   const orderTypeFilter: ModelProductFilterInput = { orderType: { eq: orderType } };

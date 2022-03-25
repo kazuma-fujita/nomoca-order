@@ -2,7 +2,7 @@ import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/rea
 import userEvent from '@testing-library/user-event';
 import { Type } from 'API';
 import { API } from 'aws-amplify';
-import { StaffListContextProvider } from 'stores/use-staff-list';
+import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { customRender } from 'utilities/tests/custom-render';
 import { StaffTemplate } from './staff-template';
 

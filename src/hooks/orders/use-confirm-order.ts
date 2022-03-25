@@ -6,14 +6,14 @@ import { getDeliveryTypeLabel } from 'functions/orders/get-delivery-type-label';
 import { useCreateOrder } from 'hooks/orders/use-create-order';
 import { useRouter } from 'next/router';
 import { useOrderFormParam } from 'stores/use-order-form-param';
-import { useProductList } from 'stores/use-product-list';
-import { useStaffList } from 'stores/use-staff-list';
+import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
+import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 
 export const useConfirmOrder = () => {
   const router = useRouter();
   const { data: orderFormParam, orderType } = useOrderFormParam();
-  const { data: productList } = useProductList();
-  const { data: staffList } = useStaffList();
+  const { data: productList } = useFetchProductList();
+  const { data: staffList } = useFetchStaffList();
   const { createOrder, isLoading, error } = useCreateOrder();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
 

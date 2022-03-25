@@ -14,7 +14,7 @@ import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useUpdateAllStaff } from 'hooks/staffs/use-update-all-staff';
 import { useCallback } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import { useStaffList } from 'stores/use-staff-list';
+import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 import { UpsertStaffButton } from '../upsert-staff-button';
 
 const header = [
@@ -41,7 +41,7 @@ const header = [
 ];
 
 export const StaffList = () => {
-  const { data, error, isLoading, isEmptyList } = useStaffList();
+  const { data, error, isLoading, isEmptyList } = useFetchStaffList();
   const { updateAllStaff, error: updateAllError } = useUpdateAllStaff();
 
   const handleOnDragEnd = useCallback(

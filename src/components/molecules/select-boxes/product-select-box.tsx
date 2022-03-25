@@ -8,7 +8,7 @@ import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscript
 import { useCallback, useState } from 'react';
 import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
-import { useProductList } from 'stores/use-product-list';
+import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 
 type Props = UseFormReturn<OrderFormParam, object> & {
   fieldArrayReturn: UseFieldArrayReturn;
@@ -25,7 +25,7 @@ const quantities = Array.from({ length: 25 }, (_, i) => i + 1);
 
 export const ProductSelectBox = ({ control, fieldArrayReturn, initialReceiptProducts }: Props) => {
   const { orderType } = useOrderFormParam();
-  const { data: productList } = useProductList();
+  const { data: productList } = useFetchProductList();
   const [selectedProducts, setSelectedProducts] = useState<NormalizedProduct[]>(initialReceiptProducts ?? []);
 
   const onChangeProduct = useCallback(

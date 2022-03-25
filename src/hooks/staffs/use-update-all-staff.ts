@@ -3,7 +3,7 @@ import { Staff, UpdateStaffInput, UpdateStaffMutation, UpdateStaffMutationVariab
 import { API, graphqlOperation } from 'aws-amplify';
 import { updateStaff as updateStaffQuery } from 'graphql/mutations';
 import { useCallback, useState } from 'react';
-import { useStaffList } from 'stores/use-staff-list';
+import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 
@@ -13,7 +13,7 @@ type Args = {
 };
 
 export const useUpdateAllStaff = () => {
-  const { swrKey } = useStaffList();
+  const { swrKey } = useFetchStaffList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();

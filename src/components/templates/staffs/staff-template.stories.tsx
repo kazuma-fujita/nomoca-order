@@ -1,7 +1,7 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { staffListMock } from 'mocks/staff.mock';
 import { graphql } from 'msw';
-import { StaffListContextProvider } from 'stores/use-staff-list';
+import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { StaffTemplate } from './staff-template';
 
 type Story = ComponentStoryObj<typeof StaffTemplate>;

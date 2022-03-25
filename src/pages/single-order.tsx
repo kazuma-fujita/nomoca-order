@@ -8,8 +8,8 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
-import { ProductListContextProvider } from 'stores/use-product-list';
-import { StaffListContextProvider } from 'stores/use-staff-list';
+import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
+import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();

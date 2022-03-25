@@ -5,7 +5,7 @@ import awsconfig from 'aws-exports';
 import { staffListMock } from 'mocks/staff.mock';
 import { graphql } from 'msw';
 import { setupServer } from 'msw/node';
-import { StaffListContextProvider } from 'stores/use-staff-list';
+import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { customRender } from 'utilities/tests/custom-render';
 import { StaffList } from './staff-list';
 // import * as stories from './staff-list.stories';

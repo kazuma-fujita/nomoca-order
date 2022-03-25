@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { useUpsertProduct } from './use-upsert-product';
 
-export const useUpsertProductButton = (product?: Product) => {
+export const useUpsertProductForm = (product?: Product) => {
   const defaultValues = {
     defaultValues: {
       id: product ? product.id : '',

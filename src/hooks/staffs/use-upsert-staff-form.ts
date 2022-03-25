@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { useUpsertStaff } from './use-upsert-staff';
 
-export const useUpsertStaffButton = (staff?: Staff) => {
+export const useUpsertStaffForm = (staff?: Staff) => {
   const defaultValues = {
     defaultValues: {
       id: staff ? staff.id : '',

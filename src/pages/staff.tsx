@@ -5,7 +5,7 @@ import { TitleSuffix } from 'constants/title-suffix';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
-import { StaffListContextProvider } from 'stores/use-staff-list';
+import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

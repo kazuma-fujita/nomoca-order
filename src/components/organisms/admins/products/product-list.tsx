@@ -15,7 +15,7 @@ import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useUpdateAllProduct } from 'hooks/products/use-update-all-product';
 import { useCallback } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import { useProductList } from 'stores/use-product-list';
+import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 
 const header = [
   {
@@ -49,7 +49,7 @@ const header = [
 ];
 
 export const ProductList = () => {
-  const { data, error, isLoading, isEmptyList } = useProductList();
+  const { data, error, isLoading, isEmptyList } = useFetchProductList();
   const { updateAllProduct, error: updateAllError } = useUpdateAllProduct();
 
   const handleOnDragEnd = useCallback(
