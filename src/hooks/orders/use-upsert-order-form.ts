@@ -8,13 +8,14 @@ import { useCallback, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
+import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 export const orderFormDefaultValues: OrderFormParam = {
   products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
   staffID: '',
 };
 
-export const useUpdateOrderButton = ({ id, products, staffID }: UpdateOrderProps) => {
+export const useUpdateOrderButton = (id: string, products: NormalizedProduct[], staffID: string) => {
   const router = useRouter();
   const { mutate, orderType } = useOrderFormParam();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
@@ -30,12 +31,12 @@ export const useUpdateOrderButton = ({ id, products, staffID }: UpdateOrderProps
     [id, products, staffID],
   );
 
+  // ボタン押下時処理
   const onButtonClick = useCallback(() => {
     mutate(defaultValues, false);
     router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
   }, [basePath, defaultValues, mutate, router]);
 
-  // 注文する、申し込むボタン押下時処理
   return { buttonLabel, onButtonClick };
 };
 
@@ -51,6 +52,7 @@ export const useCreateOrderButton = () => {
     mutate(orderFormDefaultValues, false);
     router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
   }, [basePath, mutate, router]);
+
   return { buttonLabel, onButtonClick };
 };
 
@@ -73,6 +75,7 @@ export const useOrderForm = () => {
     router.push(basePath, undefined, { shallow: true });
   }, [mutate, router, basePath]);
 
+  // 確認するボタン押下時処理
   const submitHandler = handleSubmit(
     useCallback(
       (data: OrderFormParam) => {

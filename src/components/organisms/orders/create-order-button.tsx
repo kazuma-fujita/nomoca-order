@@ -1,6 +1,6 @@
 import { Add } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import { useCreateOrderButton } from 'hooks/orders/use-order-form';
+import { useCreateOrderButton } from 'hooks/orders/use-upsert-order-form';
 
 export const CreateOrderButton = () => {
   const { buttonLabel, onButtonClick } = useCreateOrderButton();

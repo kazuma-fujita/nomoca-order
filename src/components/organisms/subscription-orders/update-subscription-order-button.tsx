@@ -1,6 +1,6 @@
 import { Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import { useUpdateOrderButton } from 'hooks/orders/use-order-form';
+import { useUpdateOrderButton } from 'hooks/orders/use-upsert-order-form';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 export type UpdateOrderProps = {
@@ -10,7 +10,7 @@ export type UpdateOrderProps = {
 };
 
 export const UpdateSubscriptionOrderButton = ({ id, products, staffID }: UpdateOrderProps) => {
-  const { buttonLabel, onButtonClick } = useUpdateOrderButton({ id: id, products: products, staffID: staffID });
+  const { buttonLabel, onButtonClick } = useUpdateOrderButton(id, products, staffID);
   return (
     <Button onClick={onButtonClick} variant='outlined' startIcon={<Edit fontSize='small' />} size='small'>
       {buttonLabel}
