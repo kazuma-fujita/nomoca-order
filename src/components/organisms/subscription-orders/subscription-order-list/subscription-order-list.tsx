@@ -2,8 +2,8 @@ import { TableCell } from '@mui/material';
 import { SubscriptionOrder } from 'API';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
 import { CommonTableRow } from 'components/molecules/common-table-row';
+import { UpsertOrderButton } from 'components/organisms/orders/upsert-order-button';
 import { DeleteSubscriptionOrderButton } from 'components/organisms/subscription-orders/delete-subscription-order-button';
-import { UpdateSubscriptionOrderButton } from 'components/organisms/subscription-orders/update-subscription-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { generateFormattedNextDeliveryYearMonth } from 'functions/delivery-dates/generate-next-delivery-year-month';
 import {
@@ -86,7 +86,7 @@ const Row = ({ item, now }: RowProps) => {
       {item.products && (
         <>
           <TableCell align='center'>
-            <UpdateSubscriptionOrderButton id={item.id} products={item.normalizedProducts} staffID={item.staff.id} />
+            <UpsertOrderButton id={item.id} products={item.normalizedProducts} staffID={item.staff.id} />
           </TableCell>
           <TableCell align='center'>
             <DeleteSubscriptionOrderButton id={item.id} products={item.products} />

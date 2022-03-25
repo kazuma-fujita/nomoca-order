@@ -28,6 +28,7 @@ export const UpsertProductButton = ({ product }: Props) => {
         submitButtonLabel={submitButtonLabel}
         startIcon={startIcon}
         on={on}
+        formId='product-form'
         isLoading={isLoading}
         error={error}
         submitHandler={submitHandler}

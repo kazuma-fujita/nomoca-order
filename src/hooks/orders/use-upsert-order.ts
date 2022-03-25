@@ -137,17 +137,18 @@ const createOrderProducts = async (newOrderID: string, productRelations: Normali
   }
 };
 
-const createSingleOrder = async (orderType: OrderType, data: OrderFormParam) => {
-  if (!data.deliveryType || !data.staffID || !data.products) {
-    throw Error('It is null that a required field which use to create or update order data.');
+const createSingleOrder = async (orderType: OrderType, param: OrderFormParam) => {
+  if (!param.deliveryType || !param.clinicID || !param.staffID || !param.products) {
+    throw Error('It is null that a required field which use to create or update order param.');
   }
   const inputParam = {
     orderType: orderType,
-    deliveryType: data.deliveryType,
-    staffID: data.staffID,
+    deliveryType: param.deliveryType,
+    clinicID: param.clinicID,
+    staffID: param.staffID,
   };
 
-  if (!data.id) {
+  if (!param.id) {
     // It executes to create order data.
     const input: CreateOrderInput = {
       type: Type.order,
@@ -163,14 +164,14 @@ const createSingleOrder = async (orderType: OrderType, data: OrderFormParam) => 
     }
     const newOrder = result.data.createOrder;
     // SubscriptionOrder と Product のリレーション作成
-    await createOrderProducts(newOrder.id, data.products);
+    await createOrderProducts(newOrder.id, param.products);
   } else {
     // It executes to update order data.
-    if (!data.deleteProducts) {
+    if (!param.deleteProducts) {
       throw Error('It is null that a required field which use to delete order data.');
     }
     const input: UpdateOrderInput = {
-      id: data.id,
+      id: param.id,
       ...inputParam,
     };
     const variables: UpdateOrderMutationVariables = { input: input };
@@ -184,28 +185,30 @@ const createSingleOrder = async (orderType: OrderType, data: OrderFormParam) => 
     }
     // データ更新成功後処理
     // Order と Product のリレーション更新
-    await updateOrderProducts(data.id, data.products, data.deleteProducts);
+    await updateOrderProducts(param.id, param.products, param.deleteProducts);
   }
 };
 
-const createSubscriptionOrder = async (data: OrderFormParam) => {
+const createSubscriptionOrder = async (param: OrderFormParam) => {
   if (
-    !data.deliveryStartYear ||
-    !data.deliveryStartMonth ||
-    !data.deliveryInterval ||
-    !data.staffID ||
-    !data.products
+    !param.deliveryStartYear ||
+    !param.deliveryStartMonth ||
+    !param.deliveryInterval ||
+    !param.clinicID ||
+    !param.staffID ||
+    !param.products
   ) {
-    throw Error('It is null that a required field which use to create or update order data.');
+    throw Error('It is null that a required field which use to create or update order param.');
   }
   const inputParam = {
-    deliveryStartYear: data.deliveryStartYear,
-    deliveryStartMonth: data.deliveryStartMonth,
-    deliveryInterval: data.deliveryInterval,
-    staffID: data.staffID,
+    deliveryStartYear: param.deliveryStartYear,
+    deliveryStartMonth: param.deliveryStartMonth,
+    deliveryInterval: param.deliveryInterval,
+    clinicID: param.clinicID,
+    staffID: param.staffID,
   };
 
-  if (!data.id) {
+  if (!param.id) {
     // It executes to create order data.
     const input: CreateSubscriptionOrderInput = {
       type: Type.subscriptionOrder,
@@ -220,14 +223,14 @@ const createSubscriptionOrder = async (data: OrderFormParam) => {
     }
     const newSubscriptionOrder = result.data.createSubscriptionOrder;
     // SubscriptionOrder と Product のリレーション作成
-    await createSubscriptionOrderProducts(newSubscriptionOrder.id, data.products);
+    await createSubscriptionOrderProducts(newSubscriptionOrder.id, param.products);
   } else {
     // It executes to update order data.
-    if (!data.deleteProducts) {
+    if (!param.deleteProducts) {
       throw Error('It is null that a required field which use to delete order data.');
     }
     const input: UpdateSubscriptionOrderInput = {
-      id: data.id,
+      id: param.id,
       ...inputParam,
     };
     const variables: UpdateSubscriptionOrderMutationVariables = { input: input };
@@ -241,7 +244,7 @@ const createSubscriptionOrder = async (data: OrderFormParam) => {
     }
     // データ更新成功後処理
     // Order と Product のリレーション更新
-    await updateSubscriptionOrderProducts(data.id, data.products, data.deleteProducts);
+    await updateSubscriptionOrderProducts(param.id, param.products, param.deleteProducts);
   }
 };
 
@@ -250,13 +253,13 @@ export const useCreateOrder = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
 
-  const createOrder = async (orderType: OrderType, data: OrderFormParam) => {
+  const createOrder = async (orderType: OrderType, param: OrderFormParam) => {
     setIsLoading(true);
     try {
       // OrderTypeはpagesでContextに保存している値
       orderType === OrderType.singleOrder
-        ? await createSingleOrder(orderType, data)
-        : await createSubscriptionOrder(data);
+        ? await createSingleOrder(orderType, param)
+        : await createSubscriptionOrder(param);
       setIsLoading(false);
       setError(null);
       // 更新後データ再fetch実行

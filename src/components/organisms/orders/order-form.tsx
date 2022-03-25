@@ -30,14 +30,13 @@ export const OrderForm: React.FC<Props> = ({
     <>
       {/* 配送先と担当者の入力formがネストしている為、配送先と担当者を登録しようとすると注文画面のformも送信されてしまう。
 			form二重送信を回避する為、formのid属性とsubmit buttonのform属性に同じidを設定する。かつ、submit buttonをformタグの外に出す */}
-      <Form id='order-form' onSubmit={submitHandler}>
-        <ProductSelectBox
-          fieldArrayReturn={fieldArrayReturn}
-          initialReceiptProducts={initialReceiptProducts}
-          {...formReturn}
-        />
-        {children}
-      </Form>
+      <Form id='order-form' onSubmit={submitHandler}></Form>
+      <ProductSelectBox
+        fieldArrayReturn={fieldArrayReturn}
+        initialReceiptProducts={initialReceiptProducts}
+        {...formReturn}
+      />
+      {children}
       {/* 配送先と担当者componentsはそれぞれ入力formがあるので、注文画面のformタグの外に配置する */}
       <Box mb={8}>
         <Divider textAlign='left'>
