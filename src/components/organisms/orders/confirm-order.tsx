@@ -40,7 +40,12 @@ export const ConfirmOrder: React.FC<Props> = ({
       </Box>
       {children}
       <Box mb={8}>
-        <ClinicDetail isHiddenUpsertButton={true} />
+        <Divider textAlign='left'>
+          <Chip label='配送先' />
+        </Divider>
+        <Box mt={4} ml={4}>
+          <ClinicDetail />
+        </Box>
       </Box>
       <Divider textAlign='left'>
         <Chip label='発注担当者' />

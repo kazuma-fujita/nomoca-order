@@ -8,6 +8,7 @@ import { useUpsertProduct } from './use-upsert-product';
 export const useUpsertProductButton = (product?: Product) => {
   const defaultValues = {
     defaultValues: {
+      id: product ? product.id : '',
       name: product ? product.name : '',
       unitPrice: product ? product.unitPrice : 0,
       isExportCSV: product ? product.isExportCSV : false,
@@ -28,13 +29,15 @@ export const useUpsertProductButton = (product?: Product) => {
 
   const submitHandler = handleSubmit(
     useCallback(
-      async (data: Product) => {
+      async (param: Product) => {
         try {
-          await upsertProduct(product ? { ...data, id: product.id } : data);
+          // await upsertProduct(product ? { ...data, id: product.id } : data);
+          await upsertProduct(param);
           cancelHandler();
         } catch (error) {}
       },
-      [cancelHandler, product, upsertProduct],
+      // [cancelHandler, product, upsertProduct],
+      [cancelHandler, upsertProduct],
     ),
   );
 

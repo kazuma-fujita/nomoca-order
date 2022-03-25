@@ -41,6 +41,7 @@ export const InputDialog: React.FC<Props> = ({
             <Typography variant='h5'>{dialogTitle}</Typography>
           </Box>
           {error && <ErrorAlert>{error}</ErrorAlert>}
+          {/* form二重送信を回避する為、formのid属性とsubmit buttonのform属性に同じidを設定する。かつ、submit buttonをformタグの外に出す */}
           <Form id={formId} onSubmit={submitHandler}>
             {children}
           </Form>

@@ -7,6 +7,7 @@ import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscript
 // TODO: will change non-null field
 export type OrderFormParam = {
   id?: string | null;
+  clinicID?: string | null;
   staffID?: string | null;
   products?: NormalizedProduct[] | null;
   deleteProducts?: NormalizedProduct[] | null;

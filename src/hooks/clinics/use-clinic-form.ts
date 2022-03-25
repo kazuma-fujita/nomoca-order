@@ -10,10 +10,22 @@ const POSTAL_CODE_LENGTH = 7;
 
 export const useClinicForm = () => {
   const { data } = useFetchClinic();
+  const defaultValues = {
+    defaultValues: {
+      id: data ? data.id : '',
+      name: data ? data.name : '',
+      postalCode: data ? data.postalCode : '',
+      state: data ? data.state : '',
+      city: data ? data.city : '',
+      address: data ? data.address : '',
+      building: data ? data.building : '',
+      phoneNumber: data ? data.phoneNumber : '',
+    },
+  };
+  const formReturn = useForm<Clinic>(defaultValues);
+  const { handleSubmit, reset: resetForm, clearErrors, setValue } = formReturn;
   const { upsertClinic, isLoading, error, resetState } = useUpsertClinic();
   const { searchAddress } = useSearchAddress();
-  const formReturn = useForm<Clinic>(data ? { defaultValues: data } : {});
-  const { handleSubmit, reset: resetForm, clearErrors, setValue } = formReturn;
   const [on, toggle] = useToggle(false);
 
   const cancelHandler = useCallback(() => {
@@ -27,11 +39,15 @@ export const useClinicForm = () => {
     useCallback(
       async (param: Clinic) => {
         try {
-          await upsertClinic(data ? { ...param, id: data.id } : param);
-          cancelHandler();
+          await upsertClinic(param);
+          // resetFormをcallすると配送先情報更新後の値が次回dialogを開いた時のformに反映されない。
+          // その為、resetFormを含むcancelHandlerはcallしない。
+          clearErrors();
+          resetState();
+          toggle();
         } catch (error) {}
       },
-      [cancelHandler, data, upsertClinic],
+      [clearErrors, resetState, toggle, upsertClinic],
     ),
   );
 

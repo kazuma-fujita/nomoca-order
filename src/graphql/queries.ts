@@ -61,6 +61,20 @@ export const getOrder = /* GraphQL */ `
         }
         nextToken
       }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
       staffID
       staff {
         id
@@ -106,6 +120,20 @@ export const listOrders = /* GraphQL */ `
             owner
           }
           nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          createdAt
+          updatedAt
+          owner
         }
         staffID
         staff {
@@ -159,6 +187,20 @@ export const getSubscriptionOrder = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
       }
       staffID
       staff {
@@ -218,6 +260,20 @@ export const listSubscriptionOrders = /* GraphQL */ `
             owner
           }
           nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          createdAt
+          updatedAt
+          owner
         }
         staffID
         staff {
@@ -352,6 +408,20 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
           }
           nextToken
         }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          createdAt
+          updatedAt
+          owner
+        }
         staffID
         staff {
           id
@@ -419,6 +489,20 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
             owner
           }
           nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          createdAt
+          updatedAt
+          owner
         }
         staffID
         staff {

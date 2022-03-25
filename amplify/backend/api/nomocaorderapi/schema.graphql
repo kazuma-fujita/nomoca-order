@@ -39,6 +39,8 @@ type Order
   @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, update] }]) {
   id: ID!
   products: [OrderProduct] @hasMany(indexName: "byOrder", fields: ["id"])
+  clinicID: ID!
+  clinic: Clinic! @hasOne(fields: ["clinicID"])
   staffID: ID!
   staff: Staff! @hasOne(fields: ["staffID"])
   orderType: OrderType!
@@ -65,6 +67,8 @@ type SubscriptionOrder
   @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
   id: ID!
   products: [SubscriptionOrderProduct] @hasMany(indexName: "bySubscriptionOrder", fields: ["id"])
+  clinicID: ID!
+  clinic: Clinic! @hasOne(fields: ["clinicID"])
   staffID: ID!
   staff: Staff! @hasOne(fields: ["staffID"])
   deliveryStartYear: Int!

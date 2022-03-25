@@ -83,6 +83,20 @@ export const createOrder = /* GraphQL */ `
         }
         nextToken
       }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
       staffID
       staff {
         id
@@ -127,6 +141,20 @@ export const updateOrder = /* GraphQL */ `
         }
         nextToken
       }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
       staffID
       staff {
         id
@@ -170,6 +198,20 @@ export const deleteOrder = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
       }
       staffID
       staff {
@@ -279,6 +321,20 @@ export const createSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
       staffID
       staff {
         id
@@ -332,6 +388,20 @@ export const updateSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
       staffID
       staff {
         id
@@ -384,6 +454,20 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
       }
       staffID
       staff {

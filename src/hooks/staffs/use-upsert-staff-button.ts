@@ -7,6 +7,7 @@ import { useUpsertStaff } from './use-upsert-staff';
 export const useUpsertStaffButton = (staff?: Staff) => {
   const defaultValues = {
     defaultValues: {
+      id: staff ? staff.id : '',
       firstName: staff ? staff.firstName : '',
       lastName: staff ? staff.lastName : '',
       disabled: staff ? staff.disabled : false,
@@ -28,11 +29,13 @@ export const useUpsertStaffButton = (staff?: Staff) => {
     useCallback(
       async (param: Staff) => {
         try {
-          await upsertStaff(staff ? { ...param, id: staff.id } : { ...param, id: '' });
+          // await upsertStaff(staff ? { ...param, id: staff.id } : { ...param, id: '' });
+          await upsertStaff(param);
           cancelHandler();
         } catch (error) {}
       },
-      [cancelHandler, staff, upsertStaff],
+      // [cancelHandler, staff, upsertStaff],
+      [cancelHandler, upsertStaff],
     ),
   );
 

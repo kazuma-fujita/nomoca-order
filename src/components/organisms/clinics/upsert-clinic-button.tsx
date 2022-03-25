@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { InputDialog } from 'components/molecules/dialogs/input-dialog';
 import { useClinicForm } from 'hooks/clinics/use-clinic-form';
 import { ClinicForm } from './clinic-form';
+import { useFetchClinic } from 'hooks/clinics/use-fetch-clinic';
 
 export const UpsertClinicButton = () => {
   const {
@@ -11,13 +12,13 @@ export const UpsertClinicButton = () => {
     dialogTitle,
     on,
     toggle,
-    data,
     isLoading,
     error,
     submitHandler,
     cancelHandler,
     handleOnChangePostalCode,
   } = useClinicForm();
+  const { data } = useFetchClinic();
   const startIcon = data ? <Edit /> : <Add />;
   return (
     <>

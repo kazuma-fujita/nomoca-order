@@ -8,6 +8,7 @@ import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscript
 import { BaseSyntheticEvent } from 'react';
 import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam } from 'stores/use-order-form-param';
+import { ClinicDetailInput, ClinicDetailOrderFormInput } from '../clinics/clinic-detail-input';
 
 type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
@@ -27,6 +28,8 @@ export const OrderForm: React.FC<Props> = ({
 }) => {
   return (
     <>
+      {/* 配送先と担当者の入力formがネストしている為、配送先と担当者を登録しようとすると注文画面のformも送信されてしまう。
+			form二重送信を回避する為、formのid属性とsubmit buttonのform属性に同じidを設定する。かつ、submit buttonをformタグの外に出す */}
       <Form id='order-form' onSubmit={submitHandler}>
         <ProductSelectBox
           fieldArrayReturn={fieldArrayReturn}
@@ -35,14 +38,22 @@ export const OrderForm: React.FC<Props> = ({
         />
         {children}
       </Form>
+      {/* 配送先と担当者componentsはそれぞれ入力formがあるので、注文画面のformタグの外に配置する */}
       <Box mb={8}>
-        <ClinicDetail />
+        <Divider textAlign='left'>
+          <Chip label='配送先' />
+        </Divider>
+        <Box mt={4} ml={4}>
+          <ClinicDetailOrderFormInput {...formReturn} />
+        </Box>
       </Box>
       <Box mt={8} mb={8}>
         <Divider textAlign='left'>
           <Chip label='発注担当者' />
         </Divider>
-        <StaffSelectBox {...formReturn} />
+        <Box mt={4} ml={4}>
+          <StaffSelectBox {...formReturn} />
+        </Box>
       </Box>
       <Box mt={8} mb={8} width='auto' display='flex' justifyContent='center'>
         <Button onClick={cancelHandler}>キャンセル</Button>

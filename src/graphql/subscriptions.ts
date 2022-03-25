@@ -71,6 +71,20 @@ export const onCreateOrder = /* GraphQL */ `
         }
         nextToken
       }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
       staffID
       staff {
         id
@@ -112,6 +126,20 @@ export const onUpdateOrder = /* GraphQL */ `
         }
         nextToken
       }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
       staffID
       staff {
         id
@@ -152,6 +180,20 @@ export const onDeleteOrder = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
       }
       staffID
       staff {
@@ -249,6 +291,20 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
       staffID
       staff {
         id
@@ -299,6 +355,20 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
         }
         nextToken
       }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
       staffID
       staff {
         id
@@ -348,6 +418,20 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
       }
       staffID
       staff {
