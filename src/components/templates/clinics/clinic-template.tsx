@@ -1,5 +1,5 @@
 import { Box, Chip, Divider } from '@mui/material';
-import { ClinicDetail } from 'components/organisms/clinics/clinic-detail';
+import { ClinicDetailInput } from '../../organisms/clinics/clinic-detail-input';
 
 export const ClinicTemplate = () => {
   return (
@@ -8,7 +8,7 @@ export const ClinicTemplate = () => {
         <Chip label='配送先' />
       </Divider>
       <Box mt={4} ml={4}>
-        <ClinicDetail />
+        <ClinicDetailInput />
       </Box>
     </Box>
   );

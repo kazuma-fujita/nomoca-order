@@ -10,6 +10,7 @@ import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-
 import React, { useCallback } from 'react';
 import { useToggle } from 'react-use';
 import { TableHeader } from 'types/table-header';
+import { ClinicDetailButton } from 'components/organisms/clinics/clinic-detail-button';
 
 const header: TableHeader[] = [
   {
@@ -26,6 +27,10 @@ const header: TableHeader[] = [
   },
   {
     label: '電話番号',
+    minWidth: 160,
+  },
+  {
+    label: '配送先',
     minWidth: 160,
   },
   {
@@ -125,6 +130,9 @@ const Row = ({ item, selectedItems, orderItemsLength, setSelectedItems, setIsSel
       </TableCell>
       <TableCell align='center'>渋谷クリニック</TableCell>
       <TableCell align='center'>09012345678</TableCell>
+      <TableCell align='center'>
+        <ClinicDetailButton {...item.clinic} />
+      </TableCell>
       <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
       <TableCell align='center'>
         <DeliveryTypeChip deliveryType={item.deliveryType!} />

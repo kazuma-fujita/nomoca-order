@@ -2,6 +2,7 @@ import { DeliveryStatus, DeliveryType, ModelOrderProductConnection, Order, Order
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { createNormalizedProductsMock } from 'mocks/product.mock';
 import { staffMock } from './staff.mock';
+import { clinicMock } from './clinic.mock';
 
 const orderProduct: OrderProduct = {
   __typename: 'OrderProduct',
@@ -23,10 +24,12 @@ const orderProductConnection: ModelOrderProductConnection = {
 const orderItem: Order = {
   __typename: 'Order',
   id: 'dummyID',
+  clinicID: '',
   staffID: '',
   type: Type.order,
   orderType: OrderType.singleOrder,
   products: orderProductConnection,
+  clinic: clinicMock,
   staff: staffMock,
   deliveryStatus: DeliveryStatus.ordered,
   deliveryType: DeliveryType.regular,

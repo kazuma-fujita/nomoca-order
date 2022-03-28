@@ -2,6 +2,7 @@ import { ModelSubscriptionOrderProductConnection, Staff, SubscriptionOrder, Subs
 import { createNormalizedProductsMock, productMock } from 'mocks/product.mock';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { staffMock } from './staff.mock';
+import { clinicMock } from './clinic.mock';
 
 const productRelation: SubscriptionOrderProduct = {
   __typename: 'SubscriptionOrderProduct',
@@ -22,9 +23,11 @@ const products: ModelSubscriptionOrderProductConnection = {
 const item: SubscriptionOrder = {
   __typename: 'SubscriptionOrder',
   id: 'dummyID',
+  clinicID: '',
   staffID: '',
   type: Type.subscriptionOrder,
   products: products,
+  clinic: clinicMock,
   staff: staffMock,
   deliveryStartYear: 2022,
   deliveryStartMonth: 1,
