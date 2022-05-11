@@ -16,10 +16,10 @@ type Props = {
   cancelHandler: () => void;
 };
 
-export const UpdateSingleOrderStatusDialog = (props: Props) => {
+export const ExportSingleOrderCSVDialog = (props: Props) => {
   return (
     <Dialog open={props.on}>
-      <DialogTitle>選択した注文を発送済みにする</DialogTitle>
+      <DialogTitle>CSVを出力する前に必ず以下を確認してください</DialogTitle>
       <DialogContent>
         <DialogContentText>
           発送済みにすると顧客に発送通知メールが送信されます。 <br />
@@ -29,9 +29,6 @@ export const UpdateSingleOrderStatusDialog = (props: Props) => {
           発送済みにしてよろしいですか？
         </DialogContentText>
         {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
-        {/* <Box mt={2} mb={2}>
-          <Typography>{props.name}</Typography>
-        </Box> */}
       </DialogContent>
       <DialogActions>
         <LoadingButton onClick={props.cancelHandler} loadingIndicator='Loading...' loading={props.isLoading}>

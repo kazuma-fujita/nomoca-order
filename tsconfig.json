@@ -15,8 +15,9 @@
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "baseUrl": "src",
-    "incremental": true
+    "incremental": true,
     // "types": ["jest"]
+    "paths": { "@/csv-stringify": ["node_modules/csv-stringify/sync"] }
   },
   // "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"],

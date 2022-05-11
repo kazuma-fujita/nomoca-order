@@ -22,7 +22,7 @@ const header: TableHeader[] = [
     minWidth: 40,
   },
   {
-    label: '施設名',
+    label: '医院名',
     minWidth: 160,
   },
   {
@@ -128,8 +128,8 @@ const Row = ({ item, selectedItems, orderItemsLength, setSelectedItems, setIsSel
       <TableCell padding='checkbox' align='center'>
         <Checkbox color='primary' checked={selectedItems.includes(item.id)} onChange={handleChange} />
       </TableCell>
-      <TableCell align='center'>渋谷クリニック</TableCell>
-      <TableCell align='center'>09012345678</TableCell>
+      <TableCell align='center'>{item.clinic.name}</TableCell>
+      <TableCell align='center'>{item.clinic.phoneNumber}</TableCell>
       <TableCell align='center'>
         <ClinicDetailButton {...item.clinic} />
       </TableCell>

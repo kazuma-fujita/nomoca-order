@@ -19,7 +19,7 @@ export type Props = {
 export const SubscriptionOrderSearchForm = ({ isLoading, error, submitHandler, control }: Props) => {
   const { now } = useNowDate();
   return (
-    <Form onSubmit={submitHandler}>
+    <Form id='search-form' onSubmit={submitHandler}>
       <Grid container direction='row' alignItems='center' spacing={4}>
         <Grid item>{/* <SearchDeliveryYearSelectBox control={control} now={now} /> */}</Grid>
         <Grid item>

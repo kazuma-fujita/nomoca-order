@@ -16,7 +16,7 @@ const header: TableHeader[] = [
     minWidth: 40,
   },
   {
-    label: '施設名',
+    label: '医院名',
     minWidth: 160,
   },
   {
@@ -78,8 +78,8 @@ const Row = ({ item, now }: RowProps) => {
   );
   return (
     <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
-      <StyledTableCell align='center'>渋谷クリニック</StyledTableCell>
-      <StyledTableCell align='center'>09012345678</StyledTableCell>
+      <StyledTableCell align='center'>{item.clinic.name}</StyledTableCell>
+      <StyledTableCell align='center'>{item.clinic.phoneNumber}</StyledTableCell>
       <StyledTableCell align='center'>{`${item.staff.lastName}  ${item.staff.firstName}`}</StyledTableCell>
       <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
       <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>

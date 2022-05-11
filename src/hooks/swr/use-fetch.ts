@@ -20,7 +20,7 @@ export const useFetch = <Data = any>(
     data: data ?? null,
     error: error ? parseResponseError(error) : null,
     isLoading: Boolean(!data && !error),
-    isEmptyList: Boolean(Array.isArray(data) && data.length == 0),
+    isEmptyList: Boolean(Array.isArray(data) && data.length === 0),
     mutate: mutate,
   } as const;
 };

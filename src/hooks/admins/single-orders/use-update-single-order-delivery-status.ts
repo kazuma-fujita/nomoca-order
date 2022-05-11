@@ -2,6 +2,7 @@ import { GraphQLResult } from '@aws-amplify/api';
 import {
   DeliveryStatus,
   GetOrderQuery,
+  Order,
   UpdateOrderInput,
   UpdateOrderMutation,
   UpdateOrderMutationVariables,
@@ -14,35 +15,28 @@ import { useNowDate } from 'stores/use-now-date';
 import { getOrder } from 'graphql/queries';
 import { SWRKey } from 'constants/swr-key';
 import { useSWRConfig } from 'swr';
+import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
-export const useUpdateSingleOrderStatus = () => {
+export const useUpdateSingleOrderDeliveryStatus = () => {
   const { now } = useNowDate();
   const { mutate } = useSWRConfig();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const updateOrderStatus = async (updateOrderIDs: string[]) => {
+  const updateOrderDeliveryStatus = async (orders: ExtendedOrder<Order>[]) => {
     setIsLoading(true);
     try {
-      if (updateOrderIDs.length === 0) {
+      if (orders.length === 0) {
         throw Error('It is empty that an ID list which update a delivery status.');
       }
-      for (const updateOrderID of updateOrderIDs) {
-        // deliveryStatus判別の為、order取得
-        const getResult = (await API.graphql(
-          graphqlOperation(getOrder, { id: updateOrderID }),
-        )) as GraphQLResult<GetOrderQuery>;
-
-        if (!getResult.data || !getResult.data.getOrder) {
-          throw Error('It returned null that an API which gets order data.');
-        }
+      for (const order of orders) {
         // deliveryStatusが発送前以外はcontinue
-        if (getResult.data.getOrder.deliveryStatus !== DeliveryStatus.ordered) {
+        if (order.deliveryStatus !== DeliveryStatus.ordered) {
           continue;
         }
         // deliveryStatusを発送済みに設定
         const input: UpdateOrderInput = {
-          id: updateOrderID,
+          id: order.id,
           deliveryStatus: DeliveryStatus.delivered,
           deliveredAt: now.toISOString(),
         };
@@ -73,5 +67,5 @@ export const useUpdateSingleOrderStatus = () => {
     setError(null);
   }, []);
 
-  return { updateOrderStatus, isLoading, error, resetState };
+  return { updateOrderDeliveryStatus, isLoading, error, resetState };
 };
