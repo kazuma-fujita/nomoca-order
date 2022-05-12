@@ -1,17 +1,17 @@
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
-import Amplify, { I18n } from 'aws-amplify';
-import awsconfig from 'aws-exports';
-import { loggingMiddleware } from 'hooks/swr/logging-middleware';
+import { Amplify, I18n } from 'aws-amplify';
 import { AppProps } from 'next/app';
 import PropTypes from 'prop-types';
+import { SWRConfig } from 'swr';
+import awsconfig from 'aws-exports';
+import { loggingMiddleware } from 'hooks/swr/logging-middleware';
+import { CurrentUserContextProvider } from 'stores/use-current-user';
 import 'styles/globals.css';
 import theme from 'styles/theme';
-import { SWRConfig } from 'swr';
 import createEmotionCache from 'utilities/create-emotion-cache';
 import { L10n } from 'utilities/l10n';
-import { CurrentUserContextProvider } from 'stores/use-current-user';
 
 I18n.setLanguage('ja'); // Add
 I18n.putVocabularies(L10n); // Add

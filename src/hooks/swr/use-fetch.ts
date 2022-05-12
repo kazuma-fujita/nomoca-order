@@ -1,5 +1,5 @@
-import useSWR, { Fetcher, Key, KeyedMutator } from 'swr';
-import { PublicConfiguration } from 'swr/dist/types';
+import useSWR, { Key, KeyedMutator } from 'swr';
+import { Fetcher, PublicConfiguration } from 'swr/dist/types';
 import { parseResponseError } from 'utilities/parse-response-error';
 
 export type FetchResponse<Data = any> = {
