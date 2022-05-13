@@ -1,4 +1,8 @@
+import { ObjectType } from 'constants/object-type';
 import { GraphQLResult } from '@aws-amplify/api';
+import { API, graphqlOperation } from 'aws-amplify';
+import { useCallback, useState } from 'react';
+import { useSWRConfig } from 'swr';
 import {
   CreateSubscriptionOrderInput,
   CreateSubscriptionOrderMutation,
@@ -6,20 +10,15 @@ import {
   CreateSubscriptionOrderProductInput,
   CreateSubscriptionOrderProductMutation,
   CreateSubscriptionOrderProductMutationVariables,
-  ModelSubscriptionOrderProductConnection,
+  SubscriptionOrder,
   SubscriptionOrderProduct,
 } from 'API';
-import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import {
   createSubscriptionOrder as createSubscriptionOrderQuery,
   createSubscriptionOrderProduct,
 } from 'graphql/mutations';
-import { useCallback, useState } from 'react';
-import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { ObjectType } from 'constants/object-type';
-import { SubscriptionOrder } from 'API';
 
 const createSubscriptionOrderProducts = async (
   productRelations: SubscriptionOrderProduct[],

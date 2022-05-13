@@ -1,6 +1,5 @@
-import React from 'react';
-import { Alert, Chip } from '@mui/material';
-import { DeliveryStatus, DeliveryType } from 'API';
+import { Chip } from '@mui/material';
+import { DeliveryType } from 'API';
 import { getDeliveryTypeLabel } from 'functions/orders/get-delivery-type-label';
 
 type Props = {
