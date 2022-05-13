@@ -1,4 +1,3 @@
-import { ObjectType } from 'constants/object-type';
 import { GraphQLResult } from '@aws-amplify/api';
 import { API, graphqlOperation } from 'aws-amplify';
 import { useCallback, useState } from 'react';
@@ -12,6 +11,7 @@ import {
   CreateSubscriptionOrderProductMutationVariables,
   SubscriptionOrder,
   SubscriptionOrderProduct,
+  Type,
 } from 'API';
 import { SWRKey } from 'constants/swr-key';
 import {
@@ -59,11 +59,12 @@ export const useCreateSubscriptionOrder = () => {
         throw Error('A relation object array is null.');
       }
       const input: CreateSubscriptionOrderInput = {
-        type: ObjectType.SubscriptionOrder,
+        type: Type.subscriptionOrder,
+        clinicID: data.clinicID,
+        staffID: data.staffID,
         deliveryStartYear: data.deliveryStartYear,
         deliveryStartMonth: data.deliveryStartMonth,
         deliveryInterval: data.deliveryInterval,
-        staffID: data.staffID,
       };
       const variables: CreateSubscriptionOrderMutationVariables = { input: input };
       const result = (await API.graphql(
