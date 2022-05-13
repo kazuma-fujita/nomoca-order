@@ -39,6 +39,12 @@
       "auth": {
         "nomocaorder0f71faa3": {},
         "userPoolGroups": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2sd5z0aon9dbx",
+          "type": "cicd"
+        }
       }
     }
   }
