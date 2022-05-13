@@ -1,4 +1,3 @@
-import BallotIcon from '@mui/icons-material/Ballot';
 import { Box, Button, Typography } from '@mui/material';
 import { CorporateInformation } from 'constants/corporate-information';
 import { useCompleteOrder } from 'hooks/orders/use-complete-order';

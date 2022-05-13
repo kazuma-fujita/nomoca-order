@@ -20,7 +20,7 @@ const SubscriptionOrderPage = (props: Props) => {
   return (
     <>
       <Head>
-        <title>{ScreenName.SubscriptionOrder + TitleSuffix}</title>
+        <title>{props.pageTitle}</title>
       </Head>
       {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
       <ProductListContextProvider
@@ -46,6 +46,7 @@ const SubscriptionOrderPage = (props: Props) => {
 
 export default SubscriptionOrderPage;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {

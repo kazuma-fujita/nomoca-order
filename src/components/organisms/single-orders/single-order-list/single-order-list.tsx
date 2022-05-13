@@ -8,7 +8,6 @@ import { CancelSingleOrderButton } from 'components/organisms/single-orders/canc
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import React from 'react';
 import { TableHeader } from 'types/table-header';
 
 const header: TableHeader[] = [
@@ -56,12 +55,12 @@ const Row = ({ item }: RowProps) => {
     <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
       <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
       <TableCell align='center'>
-        <DeliveryTypeChip deliveryType={item.deliveryType!} />
+        <DeliveryTypeChip deliveryType={item.deliveryType} />
       </TableCell>
       <TableCell align='center'>
-        <DeliveryStatusChip status={item.deliveryStatus!} />
+        <DeliveryStatusChip status={item.deliveryStatus} />
       </TableCell>
-      <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt!) : '-'}</TableCell>
+      <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt) : '-'}</TableCell>
       {item.products && (
         <TableCell align='center'>
           <CancelSingleOrderButton

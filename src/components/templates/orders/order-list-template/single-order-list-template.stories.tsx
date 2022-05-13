@@ -1,7 +1,5 @@
-import Amplify from '@aws-amplify/core';
 import type { ComponentStoryObj } from '@storybook/react';
 import { OrderType } from 'API';
-import awsconfig from 'aws-exports';
 import { orderListMock } from 'mocks/order-list.mock';
 import { graphql } from 'msw';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';

@@ -1,4 +1,4 @@
-import Amplify from '@aws-amplify/core';
+import { Amplify } from '@aws-amplify/core';
 import type { ComponentStoryObj } from '@storybook/react';
 import { OrderType } from 'API';
 import awsconfig from 'aws-exports';

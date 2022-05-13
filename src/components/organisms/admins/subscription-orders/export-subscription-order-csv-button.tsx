@@ -21,8 +21,9 @@ export const ExportSubscriptionOrderCSVButton = ({ orders }: props) => {
   }, [resetState, toggle]);
 
   const submitHandler = useCallback(async () => {
+    if (!orders) return;
     try {
-      await exportCSV(orders!);
+      await exportCSV(orders);
       cancelHandler();
     } catch (error) {}
   }, [orders, exportCSV, cancelHandler]);

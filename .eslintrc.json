@@ -9,14 +9,14 @@
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
-    "eqeqeq": "error",
-    "import/order": [
-      "error",
-      {
-        "alphabetize": {
-          "order": "asc"
-        }
-      }
-    ]
+    "eqeqeq": "error"
+    // "import/order": [
+    //   "error",
+    //   {
+    //     "alphabetize": {
+    //       "order": "asc"
+    //     }
+    //   }
+    // ]
   }
 }

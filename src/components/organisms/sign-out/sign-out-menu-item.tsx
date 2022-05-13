@@ -1,10 +1,8 @@
-import { Delete } from '@mui/icons-material';
-import Button from '@mui/material/Button';
+import { MenuItem } from '@mui/material';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
 import { useSignOut } from 'stores/use-current-user';
 import { SignOutDialog } from './sign-out-dialog';
-import { MenuItem } from '@mui/material';
 
 type Props = {
   handleClose: () => void;

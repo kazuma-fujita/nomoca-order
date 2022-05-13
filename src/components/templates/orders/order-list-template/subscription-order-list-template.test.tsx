@@ -1,6 +1,4 @@
-import { act, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { wait } from '@testing-library/user-event/dist/utils';
+import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import { API } from 'aws-amplify';
 import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';

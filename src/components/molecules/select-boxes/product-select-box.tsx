@@ -1,14 +1,12 @@
-import { Add, Clear, Delete, DeleteForever, RemoveCircle } from '@mui/icons-material';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
+import { Add, DeleteForever } from '@mui/icons-material';
 import { Box, Button, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import { OrderType } from 'API';
 import { ReceiptTable } from 'components/molecules/receipt-table';
+import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { Controller, UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
-import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 
 type Props = UseFormReturn<OrderFormParam, object> & {
   fieldArrayReturn: UseFieldArrayReturn;
@@ -30,7 +28,8 @@ export const ProductSelectBox = ({ control, fieldArrayReturn, initialReceiptProd
 
   const onChangeProduct = useCallback(
     (selectedIndex: number, productID: string) => {
-      const product = productList!.find((product) => product.id === productID);
+      if (!productList) return;
+      const product = productList.find((product) => product.id === productID);
       if (!product) return;
       // 保存されている商品を取得
       const prev = selectedProducts[selectedIndex];

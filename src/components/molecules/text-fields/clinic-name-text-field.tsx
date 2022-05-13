@@ -1,6 +1,5 @@
 import { TextField } from '@mui/material';
-import { Clinic, Staff } from 'API';
-import React from 'react';
+import { Clinic } from 'API';
 import { UseFormReturn } from 'react-hook-form';
 
 type Props = UseFormReturn<Clinic> & {

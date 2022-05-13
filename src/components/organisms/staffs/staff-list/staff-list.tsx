@@ -11,10 +11,10 @@ import { EmptyTableBody } from 'components/atoms/tables/empty-table-body';
 import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
+import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 import { useUpdateAllStaff } from 'hooks/staffs/use-update-all-staff';
 import { useCallback } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { UpsertStaffButton } from '../upsert-staff-button';
 
 const header = [
@@ -45,7 +45,8 @@ export const StaffList = () => {
   const { updateAllStaff, error: updateAllError } = useUpdateAllStaff();
 
   const handleOnDragEnd = useCallback(
-    (result: DropResult, provided: ResponderProvided) => {
+    // (result: DropResult, provided: ResponderProvided) => {
+    (result: DropResult) => {
       if (result.destination) {
         updateAllStaff({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
       }

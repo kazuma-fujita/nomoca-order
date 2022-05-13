@@ -1,6 +1,6 @@
-import React from 'react';
-import { Alert, Chip } from '@mui/material';
+import { Chip } from '@mui/material';
 import { DeliveryStatus } from 'API';
+import React from 'react';
 
 type Props = {
   status: DeliveryStatus;

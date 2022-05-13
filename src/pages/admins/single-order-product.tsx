@@ -29,6 +29,7 @@ const SingleOrderProductPage = (props: Props) => {
 
 export default SingleOrderProductPage;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {

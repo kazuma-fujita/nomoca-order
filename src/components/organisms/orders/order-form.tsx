@@ -3,12 +3,11 @@ import { Box, Button, Chip, Divider } from '@mui/material';
 import Form from 'components/atoms/form';
 import { ProductSelectBox } from 'components/molecules/select-boxes/product-select-box';
 import { StaffSelectBox } from 'components/molecules/select-boxes/staff-select-box';
-import { ClinicDetail } from 'components/organisms/clinics/clinic-detail';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { BaseSyntheticEvent } from 'react';
 import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam } from 'stores/use-order-form-param';
-import { ClinicDetailInput, ClinicDetailOrderFormInput } from '../clinics/clinic-detail-input';
+import { ClinicDetailOrderFormInput } from '../clinics/clinic-detail-input';
 
 type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;

@@ -40,6 +40,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
 
 export default SingleOrderPage;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {

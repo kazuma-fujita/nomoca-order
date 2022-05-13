@@ -2,14 +2,13 @@ import type { ComponentStoryObj } from '@storybook/react';
 import { OrderType } from 'API';
 import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
 import { orderFormDefaultValues } from 'hooks/orders/use-upsert-order-form';
+import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
+import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { clinicMock } from 'mocks/clinic.mock';
 import { productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';
-import { graphql, setupWorker } from 'msw';
-import { useEffect } from 'react';
+import { graphql } from 'msw';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
-import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
-import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { OrderFormTemplate } from './order-form-template';
 
 type Story = ComponentStoryObj<typeof OrderFormTemplate>;

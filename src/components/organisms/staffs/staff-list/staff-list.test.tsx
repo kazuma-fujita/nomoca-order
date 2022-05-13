@@ -1,11 +1,10 @@
-import Amplify from '@aws-amplify/core';
-import { composeStories } from '@storybook/testing-react';
+import { Amplify } from '@aws-amplify/core';
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import awsconfig from 'aws-exports';
+import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { staffListMock } from 'mocks/staff.mock';
 import { graphql } from 'msw';
 import { setupServer } from 'msw/node';
-import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { customRender } from 'utilities/tests/custom-render';
 import { StaffList } from './staff-list';
 // import * as stories from './staff-list.stories';
@@ -82,7 +81,7 @@ describe('StaffListContainer', () => {
   });
 
   test('A network error occurred.', async () => {
-    server.use(graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => res.networkError('')));
+    server.use(graphql.query('ListStaffSortedByViewOrder', (req, res) => res.networkError('')));
     staffListContainerRender();
     await waitForElementToBeRemoved(() => screen.getByLabelText('Now loading'));
     expect(screen.getByRole('alert')).toHaveTextContent('Network Error');

@@ -29,6 +29,7 @@ const SubscriptionOrderProductPage = (props: Props) => {
 
 export default SubscriptionOrderProductPage;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {

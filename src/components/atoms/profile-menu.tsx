@@ -1,6 +1,5 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
 import SvgIcon from '@mui/material/SvgIcon';
 import Link from 'components/atoms/link';
 import { HeaderItem } from 'components/molecules/header';

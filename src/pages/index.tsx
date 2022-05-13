@@ -1,50 +1,30 @@
+import { AuthTemplate } from 'components/templates/auth-template';
 import { ProductName } from 'constants/product-name';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyBeforeAuthenticate } from 'stores/use-current-user';
-import AuthTemplate from 'components/templates/auth-template';
 
-// Amplify.configure(awsconfig);
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-// type Props = InferGetStaticPropsType<typeof getStaticProps>;
-
-// const AuthPage = (props: Props) => {
-const AuthPage = () => {
+const AuthPage = (props: Props) => {
   useVerifyBeforeAuthenticate();
-  // const router = useRouter();
-  // useEffect(() => {
-  //   // 高速に遷移するため事前に遷移先画面をprefetchする
-  //   router.prefetch(Path.staff);
-  //   (async () => {
-  //     try {
-  //       // 認証済みの場合dashboardへ遷移
-  //       await Auth.currentAuthenticatedUser();
-  //       router.replace(Path.staff);
-  //     } catch (error) {}
-  //   })();
-  //   return onAuthUIStateChange((nextAuthState, authData) => {
-  //     if (nextAuthState === AuthState.SignedIn && authData) {
-  //       router.replace(Path.staff);
-  //     }
-  //   });
-  // }, []);
-
   return (
     <>
       <Head>
-        <title>{ProductName}</title>
+        <title>{props.pageTitle}</title>
       </Head>
-      <AuthTemplate pageTitle={ProductName} />
+      <AuthTemplate pageTitle={props.pageTitle} />
     </>
   );
 };
 
 export default AuthPage;
 
-// export const getStaticProps = async (context: GetStaticPropsContext) => {
-//   return {
-//     props: {
-//       pageTitle: 'Nomoca Order',
-//     },
-//   };
-// };
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const getStaticProps = async (context: GetStaticPropsContext) => {
+  return {
+    props: {
+      pageTitle: ProductName,
+    },
+  };
+};

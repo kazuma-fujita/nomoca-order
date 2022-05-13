@@ -6,8 +6,6 @@ import { BaseSyntheticEvent } from 'react';
 import { Control } from 'react-hook-form';
 import { SearchDeliveryMonthSelectBox } from './search-delivery-month-select-box';
 import { SubscriptionOrderSearchParams } from './subscription-order-search-form-container';
-import { SearchDeliveryYearSelectBox } from './search-delivery-year-select-box';
-import { useNowDate } from 'stores/use-now-date';
 
 export type Props = {
   isLoading: boolean;
@@ -17,7 +15,6 @@ export type Props = {
 };
 
 export const SubscriptionOrderSearchForm = ({ isLoading, error, submitHandler, control }: Props) => {
-  const { now } = useNowDate();
   return (
     <Form id='search-form' onSubmit={submitHandler}>
       <Grid container direction='row' alignItems='center' spacing={4}>

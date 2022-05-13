@@ -28,6 +28,7 @@ const ClinicPage = (props: Props) => {
 
 export default ClinicPage;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {

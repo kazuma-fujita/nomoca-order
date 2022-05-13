@@ -1,12 +1,10 @@
-import EditIcon from '@mui/icons-material/Edit';
+import CategoryIcon from '@mui/icons-material/Category';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import CategoryIcon from '@mui/icons-material/Category';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material/SvgIcon/SvgIcon';
@@ -21,7 +19,7 @@ import { useCurrentUser } from 'stores/use-current-user';
 
 export type HeaderItem = {
   path: string;
-  icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
+  icon: OverridableComponent<SvgIconTypeMap<unknown, 'svg'>> & {
     muiName: string;
   };
   label: string;
@@ -63,7 +61,7 @@ export const Header = () => {
     [{ path: Path.signOut, icon: LogoutIcon, label: ScreenName.SignOut }],
   ];
   // findItemsが無かった場合401画面へ遷移
-  var findItems = drawerItems
+  let findItems = drawerItems
     // .map((items) => items.find((item) => `/${item.path}` === router.pathname))
     .map((items) => items.find((item) => item.path === router.pathname))
     .filter((item) => item);
@@ -78,7 +76,7 @@ export const Header = () => {
     // Nextの組み込み401 Unauthorizedページを表示
     return <Error statusCode={401} />;
   }
-  const appBarLabel = findItems[0]!.label;
+  const appBarLabel = findItems[0] ? findItems[0].label : 'unknown';
   return (
     <>
       <AppBar screenName={appBarLabel} menuItems={menuItems} on={on} toggle={toggle} />

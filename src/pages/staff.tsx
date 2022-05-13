@@ -28,6 +28,7 @@ const StaffPage = (props: Props) => {
 
 export default StaffPage;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {

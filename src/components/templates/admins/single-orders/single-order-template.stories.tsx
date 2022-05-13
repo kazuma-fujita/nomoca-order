@@ -1,7 +1,7 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
 import { clinicMock } from 'mocks/clinic.mock';
-import { adminOrderListMock, orderListMock } from 'mocks/order-list.mock';
+import { adminOrderListMock } from 'mocks/order-list.mock';
 import { graphql } from 'msw';
 import { SingleOrderTemplate } from './single-order-template';
 

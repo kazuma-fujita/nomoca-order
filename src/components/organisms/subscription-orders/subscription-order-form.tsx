@@ -63,6 +63,7 @@ export const SubscriptionOrderForm = () => {
           control={formReturn.control}
           defaultValue={nextMonth}
           rules={{ required: '配送開始月を選択してください' }}
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           render={({ field: { onChange, ...rest }, formState: { errors } }) => (
             <TextField
               select

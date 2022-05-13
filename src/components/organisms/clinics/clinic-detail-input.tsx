@@ -1,4 +1,4 @@
-import { Box, Chip, Divider, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { useFetchClinic } from 'hooks/clinics/use-fetch-clinic';
 import { useEffect } from 'react';
@@ -23,7 +23,7 @@ export const ClinicDetailOrderFormInput = ({ setValue, control }: UseFormReturn<
         control={control}
         defaultValue={''}
         rules={{ required: '配送先を作成してください' }}
-        render={({ field, formState: { errors } }) => (
+        render={({ formState: { errors } }) => (
           <>
             <Typography variant='caption' color='error'>
               {errors.clinicID && errors.clinicID.message}

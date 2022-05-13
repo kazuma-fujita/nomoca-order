@@ -12,10 +12,10 @@ import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { StyledTableRow } from 'components/atoms/tables/styled-table-row';
 import { UpsertProductButton } from 'components/organisms/admins/products/upsert-product-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
+import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { useUpdateAllProduct } from 'hooks/products/use-update-all-product';
 import { useCallback } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 
 const header = [
   {
@@ -53,7 +53,8 @@ export const ProductList = () => {
   const { updateAllProduct, error: updateAllError } = useUpdateAllProduct();
 
   const handleOnDragEnd = useCallback(
-    (result: DropResult, provided: ResponderProvided) => {
+    // (result: DropResult, provided: ResponderProvided) => {
+    (result: DropResult) => {
       if (result.destination) {
         updateAllProduct({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
       }

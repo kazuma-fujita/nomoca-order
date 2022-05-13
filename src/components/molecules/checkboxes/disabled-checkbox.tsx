@@ -1,6 +1,6 @@
 import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@mui/material';
 import { Product, Staff } from 'API';
-import { Control, Controller, FieldValues, UseFormReturn } from 'react-hook-form';
+import { Controller, UseFormReturn } from 'react-hook-form';
 
 type Props = UseFormReturn<Staff | Product> & {
   disabled: boolean;

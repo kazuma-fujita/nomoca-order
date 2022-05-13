@@ -1,4 +1,4 @@
-import { Delete } from '@mui/icons-material';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -6,7 +6,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 type Props = {
   on: boolean;

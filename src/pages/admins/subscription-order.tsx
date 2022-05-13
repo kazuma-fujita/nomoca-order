@@ -29,6 +29,7 @@ const SubscriptionOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof get
 
 export default SubscriptionOrderPage;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
