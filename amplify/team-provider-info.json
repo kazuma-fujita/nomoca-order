@@ -16,5 +16,24 @@
         "nomocaorder0f71faa3": {}
       }
     }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nomocaorder-prod-114027-authRole",
+      "UnauthRoleArn": "arn:aws:iam::409193243105:role/amplify-nomocaorder-prod-114027-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::409193243105:role/amplify-nomocaorder-prod-114027-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-nomocaorder-prod-114027-deployment",
+      "UnauthRoleName": "amplify-nomocaorder-prod-114027-unauthRole",
+      "StackName": "amplify-nomocaorder-prod-114027",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:409193243105:stack/amplify-nomocaorder-prod-114027/0c9a2ad0-d266-11ec-a86e-0a5f98338a5d",
+      "AmplifyAppId": "d2sd5z0aon9dbx"
+    },
+    "categories": {
+      "auth": {
+        "nomocaorder0f71faa3": {},
+        "userPoolGroups": {}
+      }
+    }
   }
 }
