@@ -38,7 +38,7 @@ const create = async () => {
   screen.getByText('商品を追加してください');
   // It views a dialog.
   userEvent.click(screen.getByRole('button', { name: '商品を追加する' }));
-  screen.getByRole('dialog', { name: '商品を追加する' });
+  screen.getByRole('heading', { name: '商品を追加する' });
   // It submits form input values.
   userEvent.type(screen.getByRole('textbox', { name: '商品名' }), '商品A');
   userEvent.type(screen.getByRole('spinbutton', { name: '単価' }), '1000');
@@ -52,7 +52,7 @@ const update = async () => {
   screen.getByRole('cell', { name: '商品A' });
   // It views a dialog.
   userEvent.click(screen.getByRole('button', { name: '商品を編集する' }));
-  screen.getByRole('dialog', { name: '商品を編集する' });
+  screen.getByRole('heading', { name: '商品を編集する' });
   // It submits form input values.
   userEvent.type(screen.getByRole('textbox', { name: '商品名' }), '商品B');
   userEvent.type(screen.getByRole('spinbutton', { name: '単価' }), '1000000');
@@ -82,7 +82,7 @@ describe('SubscriptionOrderProductTemplate', () => {
       .mockResolvedValueOnce({ data: { createProduct: item } });
     await create();
     // It waits for it to disappear dialog.
-    await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '商品を追加する' }));
+    await waitForElementToBeRemoved(() => screen.getByRole('heading', { name: '商品を追加する' }));
     const rows = screen.getAllByRole('row');
     // Rows below include a 'th' header row.
     expect(rows).toHaveLength(2);
@@ -90,7 +90,7 @@ describe('SubscriptionOrderProductTemplate', () => {
     screen.getByRole('cell', { name: '1,000' });
     screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '商品を編集する' });
-    screen.getByRole('checkbox', { name: 'activate-switch' });
+    // screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
@@ -112,7 +112,7 @@ describe('SubscriptionOrderProductTemplate', () => {
       .mockResolvedValueOnce({ data: { updateProduct: { ...item, name: '商品B', unitPrice: 1000000 } } });
     await update();
     // It waits for it to disappear dialog.
-    await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '商品を編集する' }));
+    await waitForElementToBeRemoved(() => screen.getByRole('heading', { name: '商品を編集する' }));
     const rows = screen.getAllByRole('row');
     // Below rows include a 'th' header row.
     expect(rows).toHaveLength(2);
@@ -120,7 +120,7 @@ describe('SubscriptionOrderProductTemplate', () => {
     screen.getByRole('cell', { name: '1,000,000' });
     screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '商品を編集する' });
-    screen.getByRole('checkbox', { name: 'activate-switch' });
+    // screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
