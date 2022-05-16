@@ -52,7 +52,7 @@ const staffListContainerRender = () =>
     </StaffListContextProvider>,
   );
 
-describe('StaffListContainer', () => {
+describe.skip('StaffListContainer', () => {
   const server = setupServer(...handlers);
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
