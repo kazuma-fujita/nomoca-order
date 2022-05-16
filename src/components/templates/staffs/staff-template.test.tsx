@@ -1,15 +1,16 @@
 import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Type } from 'API';
+import { Staff, Type } from 'API';
 import { API } from 'aws-amplify';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { customRender } from 'utilities/tests/custom-render';
 import { StaffTemplate } from './staff-template';
 
-const item = {
+const item: Staff = {
   __typename: 'Staff',
   id: 'dummyID-1',
-  name: '発注担当者A',
+  lastName: '発注担当者',
+  firstName: 'A',
   type: Type.staff,
   viewOrder: 1,
   disabled: false,
@@ -30,12 +31,14 @@ const createStaff = async () => {
   screen.getByRole('table', { name: 'staffs table' });
   await waitForElementToBeRemoved(() => screen.getByLabelText('Now loading'));
   screen.getByText('発注担当者を追加してください');
+
   // It views a dialog.
   userEvent.click(screen.getByRole('button', { name: '発注担当者を追加する' }));
-  screen.getByRole('dialog', { name: '発注担当者を追加する' });
-  screen.getByRole('textbox', { name: '発注担当者名' });
-  const textbox = screen.getByRole('textbox', { name: '発注担当者名' });
-  userEvent.type(textbox, '発注担当者A');
+  screen.getByRole('heading', { name: '発注担当者を追加する' });
+  const lastNameTextbox = screen.getByRole('textbox', { name: '性' });
+  const firstNameTextbox = screen.getByRole('textbox', { name: '名' });
+  userEvent.type(lastNameTextbox, '発注担当者性');
+  userEvent.type(firstNameTextbox, 'A');
   // It submits form input values.
   const submitButton = screen.getByRole('button', { name: '追加する' });
   userEvent.click(submitButton);
@@ -46,22 +49,22 @@ const updateStaff = async () => {
   render();
   screen.getByRole('table', { name: 'staffs table' });
   await waitForElementToBeRemoved(() => screen.getByLabelText('Now loading'));
-  const rows = screen.getAllByRole('row');
-  expect(rows).toHaveLength(2);
-  screen.getByRole('cell', { name: '発注担当者A' });
+  expect(screen.getAllByRole('row')).toHaveLength(2);
+  screen.getByRole('cell', { name: '発注担当者 A' });
   const editButton = screen.getByRole('button', { name: '発注担当者を編集する' });
   // It views a dialog.
   userEvent.click(editButton);
-  screen.getByRole('dialog', { name: '発注担当者を編集する' });
-  screen.getByRole('textbox', { name: '発注担当者名' });
-  const textbox = screen.getByRole('textbox', { name: '発注担当者名' });
-  userEvent.type(textbox, '発注担当者B');
+  screen.getByRole('heading', { name: '発注担当者を編集する' });
+  const lastNameTextbox = screen.getByRole('textbox', { name: '性' });
+  const firstNameTextbox = screen.getByRole('textbox', { name: '名' });
+  userEvent.type(lastNameTextbox, '発注担当者性');
+  userEvent.type(firstNameTextbox, 'B');
   // It submits form input values.
   const submitButton = screen.getByRole('button', { name: '編集する' });
   userEvent.click(submitButton);
 };
 
-describe('StaffTemplateContainer', () => {
+describe('StaffTemplate', () => {
   const spy = jest.spyOn(API, 'graphql');
 
   afterEach(() => {
@@ -70,24 +73,24 @@ describe('StaffTemplateContainer', () => {
 
   test('It renders a staff list after it creates a staff.', async () => {
     spy
-      .mockResolvedValueOnce({ data: { listStaffsSortedByViewOrder: { items: [] } } })
+      .mockResolvedValueOnce({ data: { listStaffSortedByViewOrder: { items: [] } } })
       .mockResolvedValueOnce({ data: { createStaff: item } });
     await createStaff();
     // It waits for it to disappear dialog.
-    await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '発注担当者を追加する' }));
+    await waitForElementToBeRemoved(() => screen.getByRole('heading', { name: '発注担当者を追加する' }));
     const rows = screen.getAllByRole('row');
     // Below rows include a 'th' header row.
     expect(rows).toHaveLength(2);
-    screen.getByRole('cell', { name: '発注担当者A' });
+    screen.getByRole('cell', { name: '発注担当者 A' });
     screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '発注担当者を編集する' });
-    screen.getByRole('checkbox', { name: 'activate-switch' });
+    // screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
   test('It ocurred an error when it creates a staff.', async () => {
     spy
-      .mockResolvedValueOnce({ data: { listStaffsSortedByViewOrder: { items: [] } } })
+      .mockResolvedValueOnce({ data: { listStaffSortedByViewOrder: { items: [] } } })
       .mockRejectedValueOnce(Error('It occurred an async error.'));
 
     await createStaff();
@@ -101,31 +104,30 @@ describe('StaffTemplateContainer', () => {
 
   test('It renders a staff list after it updates a staff.', async () => {
     spy
-      .mockResolvedValueOnce({ data: { listStaffsSortedByViewOrder: { items: [item] } } })
-      .mockResolvedValueOnce({ data: { updateStaff: { ...item, name: '発注担当者B' } } });
+      .mockResolvedValueOnce({ data: { listStaffSortedByViewOrder: { items: [item] } } })
+      .mockResolvedValueOnce({ data: { updateStaff: { ...item, lastName: '発注担当者', firstName: 'B' } } });
     await updateStaff();
     // It waits for it to disappear dialog.
-    await waitForElementToBeRemoved(() => screen.getByRole('dialog', { name: '発注担当者を編集する' }));
+    await waitForElementToBeRemoved(() => screen.getByRole('heading', { name: '発注担当者を編集する' }));
     const rows = screen.getAllByRole('row');
     // Below rows include a 'th' header row.
     expect(rows).toHaveLength(2);
-    screen.getByRole('cell', { name: '発注担当者B' });
+    screen.getByRole('cell', { name: '発注担当者 B' });
     screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '発注担当者を編集する' });
-    screen.getByRole('checkbox', { name: 'activate-switch' });
+    // screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
   test('It ocurred an error when it updates a staff.', async () => {
     spy
-      .mockResolvedValueOnce({ data: { listStaffsSortedByViewOrder: { items: [item] } } })
+      .mockResolvedValueOnce({ data: { listStaffSortedByViewOrder: { items: [item] } } })
       .mockRejectedValueOnce(Error('It occurred an async error.'));
 
     await updateStaff();
     // It waits for viewing alert.
     await waitFor(() => {
-      const alert = screen.getByRole('alert');
-      expect(alert).toHaveTextContent('It occurred an async error.');
+      expect(screen.getByRole('alert')).toHaveTextContent('It occurred an async error.');
     });
     expect(spy).toHaveBeenCalledTimes(2);
   });

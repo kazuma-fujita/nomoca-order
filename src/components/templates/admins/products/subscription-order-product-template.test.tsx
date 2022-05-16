@@ -47,7 +47,7 @@ const create = async () => {
 
 const update = async () => {
   await renderList();
-  // It renders a staff list.
+  // It renders a list.
   expect(screen.getAllByRole('row')).toHaveLength(2);
   screen.getByRole('cell', { name: '商品A' });
   // It views a dialog.

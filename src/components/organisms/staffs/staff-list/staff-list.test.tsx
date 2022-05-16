@@ -71,7 +71,7 @@ describe('StaffListContainer', () => {
   test('It renders empty data.', async () => {
     server.use(
       graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => {
-        const response = { listStaffsSortedByViewOrder: { items: [] } };
+        const response = { listStaffSortedByViewOrder: { items: [] } };
         return res(ctx.data(response));
       }),
     );

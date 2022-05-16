@@ -1,11 +1,16 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { ModelStaffFilterInput, OrderType, Staff, Type } from 'API';
+import {
+  ListStaffSortedByViewOrderQuery,
+  ListStaffSortedByViewOrderQueryVariables,
+  ModelStaffFilterInput,
+  Staff,
+  Type,
+} from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import { listStaffSortedByViewOrder } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { ListStaffSortedByViewOrderQuery, ListStaffSortedByViewOrderQueryVariables } from 'API';
 
 type ProviderProps = FetchResponse<Staff[]> & {
   swrKey: (string | boolean)[];
@@ -15,7 +20,7 @@ const StaffListContext = createContext({} as ProviderProps);
 
 export const useFetchStaffList = () => useContext(StaffListContext);
 
-const fetcher = async (key: string, isFilterByActiveStaff: boolean = false) => {
+const fetcher = async (key: string, isFilterByActiveStaff = false) => {
   // activeなstaffのみを抽出する条件
   const filter: ModelStaffFilterInput = { disabled: { eq: false } };
   // schema.graphqlのKeyディレクティブでtypeとviewOrderのsort条件を追加。sortを実行する為にtypeを指定。defaultでviewOrderの降順でsortを実行
