@@ -1,4 +1,4 @@
-import { subscriptionOrderListMock } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
+import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 
 context('SubscriptionOrder', () => {
   before(() => {

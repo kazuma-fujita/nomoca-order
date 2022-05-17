@@ -1,10 +1,8 @@
-import { mount, unmount } from '@cypress/react';
-import Amplify from 'aws-amplify';
+import { mount } from '@cypress/react';
+import { Amplify } from 'aws-amplify';
 import awsconfig from 'aws-exports';
-import { subscriptionOrderListMock } from 'components/organisms/admins/subscription-orders/subscription-order-list/subscription-order-list.mock';
-import { SubscriptionOrderTemplateContainer } from 'components/templates/admins/subscription-orders/subscription-order-template-container';
-import { NowDateContextProvider } from 'stores/use-now-date';
-import AdminSubscriptionOrderPage from '../../../src/pages/admins/subscription-order';
+import { SubscriptionOrderTemplate } from 'components/templates/admins/subscription-orders/subscription-order-template';
+import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 
 context.skip('SubscriptionOrderTemplateContainer', () => {
   before(() => {
@@ -18,7 +16,7 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
       data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderListMock } },
     };
     cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
-    mount(<AdminSubscriptionOrderPage />);
+    mount(<SubscriptionOrderTemplate />);
     // mount(
     //   <NowDateContextProvider now={new Date()}>
     //     <SubscriptionOrderTemplateContainer />
@@ -69,7 +67,7 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
   //   cy.mockQuery('listSubscriptionOrdersSortedByCreatedAt', JSON.stringify(data));
   // };
 
-  describe('It searches a subscription order item', () => {
+  describe.skip('It searches a subscription order item', () => {
     // beforeEach(() => {
     //   const data = {
     //     data: { listSubscriptionOrdersSortedByCreatedAt: { items: subscriptionOrderListMock } },
@@ -92,7 +90,7 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
 			11月:11ヶ月=[11,10]
 			12月:12ヶ月=[12]
 		*/
-    it('with delivery month of January.', () => {
+    it.skip('with delivery month of January.', () => {
       // mockQuery();
       // Current date is 2023/1.
       cy.clock(new Date(2023, 0));
@@ -110,7 +108,7 @@ context.skip('SubscriptionOrderTemplateContainer', () => {
       reRenderAllRows('1月');
     });
 
-    it('with delivery month of February.', async () => {
+    it.skip('with delivery month of February.', async () => {
       // mockQuery();
       // Current date is 2023/2.
       expectTemplateElements(new Date(2023, 1));
