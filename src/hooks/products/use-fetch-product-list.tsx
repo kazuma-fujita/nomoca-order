@@ -3,17 +3,15 @@ import {
   ListProductsSortedByViewOrderQuery,
   ListProductsSortedByViewOrderQueryVariables,
   ModelProductFilterInput,
-  Product,
   OrderType,
+  Product,
   Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import { listProductsSortedByViewOrder } from 'graphql/queries';
-import { useFetch } from 'hooks/swr/use-fetch';
+import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { Fetcher, PublicConfiguration } from 'swr/dist/types';
-import { FetchResponse } from 'hooks/swr/use-fetch';
 
 type ProviderProps = FetchResponse<Product[]> & {
   swrKey: (string | OrderType | boolean)[];
@@ -24,7 +22,7 @@ const ProductListContext = createContext({} as ProviderProps);
 
 export const useFetchProductList = () => useContext(ProductListContext);
 
-const fetcher = async (key: string, orderType: OrderType, isFilterByActiveProduct: boolean) => {
+const fetcher = async (_: string, orderType: OrderType, isFilterByActiveProduct: boolean) => {
   const orderTypeFilter: ModelProductFilterInput = { orderType: { eq: orderType } };
   // activeなproductのみ抽出する場合filter条件追加
   const filter = isFilterByActiveProduct ? { ...orderTypeFilter, disabled: { eq: false } } : orderTypeFilter;

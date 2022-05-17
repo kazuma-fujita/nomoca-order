@@ -20,7 +20,7 @@ const StaffListContext = createContext({} as ProviderProps);
 
 export const useFetchStaffList = () => useContext(StaffListContext);
 
-const fetcher = async (key: string, isFilterByActiveStaff = false) => {
+const fetcher = async (_: string, isFilterByActiveStaff: boolean): Promise<Staff[]> => {
   // activeなstaffのみを抽出する条件
   const filter: ModelStaffFilterInput = { disabled: { eq: false } };
   // schema.graphqlのKeyディレクティブでtypeとviewOrderのsort条件を追加。sortを実行する為にtypeを指定。defaultでviewOrderの降順でsortを実行
@@ -32,11 +32,10 @@ const fetcher = async (key: string, isFilterByActiveStaff = false) => {
   const operation = graphqlOperation(listStaffSortedByViewOrder, variables);
   // Graphql query操作実行
   const result = (await API.graphql(operation)) as GraphQLResult<ListStaffSortedByViewOrderQuery>;
-  if (result.data && result.data.listStaffSortedByViewOrder && result.data.listStaffSortedByViewOrder.items) {
-    return result.data.listStaffSortedByViewOrder.items as Staff[];
-  } else {
+  if (!result.data || !result.data.listStaffSortedByViewOrder || !result.data.listStaffSortedByViewOrder.items) {
     throw Error('The API fetched data but it returned null.');
   }
+  return result.data.listStaffSortedByViewOrder.items as Staff[];
 };
 
 type Props = {

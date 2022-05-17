@@ -1,5 +1,5 @@
 import useSWR, { Key, KeyedMutator } from 'swr';
-import { Fetcher, PublicConfiguration } from 'swr/dist/types';
+import { BareFetcher, PublicConfiguration } from 'swr/dist/types';
 import { parseResponseError } from 'utilities/parse-response-error';
 
 export type FetchResponse<Data = any> = {
@@ -12,8 +12,8 @@ export type FetchResponse<Data = any> = {
 
 export const useFetch = <Data = any>(
   key: Key,
-  fetcher: Fetcher<Data> | null,
-  config?: Partial<PublicConfiguration<Data, any, Fetcher<Data>>> | undefined,
+  fetcher: BareFetcher<Data> | null,
+  config?: Partial<PublicConfiguration<Data, any, BareFetcher<Data>>> | undefined,
 ): FetchResponse<Data> => {
   const { data, error, mutate } = useSWR<Data>(key, fetcher, config);
   return {
