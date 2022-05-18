@@ -1,0 +1,56 @@
+{
+  "version": "1",
+  "cognitoConfig": {
+    "identityPoolName": "nomocaorder6482d332_identitypool_6482d332",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "nomoca6482d332",
+    "userPoolName": "nomocaorder6482d332_userpool_6482d332",
+    "autoVerifiedAttributes": ["email"],
+    "mfaConfiguration": "OFF",
+    "mfaTypes": ["SMS Text Message"],
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Nomoca Orderからセキリティコードをお送りします",
+    "emailVerificationMessage": "Nomoca Stand 備品発注サービス Nomoca Order のご利用ありがとうございます。<br>\n<br>\nEメールアドレスの確認のため、セキュリティコードを入力してください。<br>\n<br>\nセキリティコードは {####} です。<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n▼本メールについて<br>\n※このEメールアドレスは配信専用です。このメッセージにはご返信いただけません。<br>\n※ 本メールに心当たりのない方はお手数ですがその旨をお客様サポートまでご連絡ください。<br>\n<br>\n▼送信者に関する情報<br>\n株式会社GENOVA<br>\n〒150-8510 東京都渋谷区渋谷２丁目２１−１ ヒカリエ 34階<br>\nお客様サポート 0120-811-009 (受付時間 9:00〜18:00)<br>\n<br>\n",
+    "invitationEmailSubject": "Nomoca Orderから仮パスワードをお送りします",
+    "invitationEmailMessage": "この度は Nomoca Stand 備品発注サービス Nomoca Order のご利用ありがとうございます。<br>\n<br>\n下記のURLからメールアドレスと仮パスワードでログインして、ご希望のパスワードへご変更ください。<br>\n<br>\n<ログインURL><br>\nhttps://order.nomoca.com <br>\n<br>\nメールアドレス: {username} <br>\n仮パスワード: {####} <br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n<br>\n▼本メールについて<br>\n※ このEメールアドレスは配信専用です。このメッセージにはご返信いただけません。<br>\n※ 本メールに心当たりのない方はお手数ですがその旨をお客様サポートまでご連絡ください。<br>\n<br>\n▼送信者に関する情報<br>\n株式会社GENOVA<br>\n〒150-8510 東京都渋谷区渋谷２丁目２１−１ ヒカリエ 34階<br>\nお客様サポート 0120-811-009 (受付時間 9:00〜18:00)<br>\n<br>\n",
+    "defaultPasswordPolicy": true,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": ["Requires Lowercase", "Requires Uppercase", "Requires Numbers"],
+    "requiredAttributes": ["email"],
+    "aliasAttributes": [],
+    "userpoolClientGenerateSecret": false,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientWriteAttributes": ["email"],
+    "userpoolClientReadAttributes": ["email"],
+    "userpoolClientLambdaRole": "nomoca6482d332_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "sharedId": "6482d332",
+    "resourceName": "nomocaorder6482d3326482d332",
+    "authSelections": "identityPoolAndUserPool",
+    "useDefault": "manual",
+    "thirdPartyAuth": false,
+    "usernameAttributes": ["email"],
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": {},
+    "hostedUI": false,
+    "userPoolGroupList": ["Operators"],
+    "serviceName": "Cognito",
+    "usernameCaseSensitive": false,
+    "useEnabledMfas": true,
+    "authRoleArn": {
+      "Fn::GetAtt": ["AuthRole", "Arn"]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": ["UnauthRole", "Arn"]
+    },
+    "breakCircularDependency": true,
+    "dependsOn": [],
+    "authProviders": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "permissions": []
+  }
+}

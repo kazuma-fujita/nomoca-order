@@ -1,21 +1,13 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import {
-  DeliveryStatus,
-  GetOrderQuery,
-  Order,
-  UpdateOrderInput,
-  UpdateOrderMutation,
-  UpdateOrderMutationVariables,
-} from 'API';
+import { DeliveryStatus, Order, UpdateOrderInput, UpdateOrderMutation, UpdateOrderMutationVariables } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { updateOrder } from 'graphql/mutations';
-import { useCallback, useState } from 'react';
-import { parseResponseError } from 'utilities/parse-response-error';
-import { useNowDate } from 'stores/use-now-date';
-import { getOrder } from 'graphql/queries';
 import { SWRKey } from 'constants/swr-key';
-import { useSWRConfig } from 'swr';
+import { updateOrder } from 'graphql/mutations';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { useCallback, useState } from 'react';
+import { useNowDate } from 'stores/use-now-date';
+import { useSWRConfig } from 'swr';
+import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useUpdateSingleOrderDeliveryStatus = () => {
   const { now } = useNowDate();
