@@ -1,0 +1,30 @@
+/* html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
+} */
+
+/* a {
+  color: inherit;
+  text-decoration: none;
+} */
+
+/* * {
+  box-sizing: border-box;
+} */
+
+/*
+  --amplify-primary-color: before color #29b6f6
+*/
+
+:root {
+  --amplify-primary-color: #0284c7;
+  --amplify-primary-tint: #e0f2fe;
+  --amplify-primary-shade: #0c4a6e;
+}
+
+amplify-authenticator {
+  --container-height: 100%;
+}

@@ -1,0 +1,51 @@
+{
+  "develop": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nomocaorder-develop-152014-authRole",
+      "UnauthRoleArn": "arn:aws:iam::409193243105:role/amplify-nomocaorder-develop-152014-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::409193243105:role/amplify-nomocaorder-develop-152014-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
+      "UnauthRoleName": "amplify-nomocaorder-develop-152014-unauthRole",
+      "StackName": "amplify-nomocaorder-develop-152014",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:409193243105:stack/amplify-nomocaorder-develop-152014/95eff6b0-d672-11ec-b074-0e70d0c46325",
+      "AmplifyAppId": "d37kyr3s00ujyn"
+    },
+    "categories": {
+      "auth": {
+        "nomocaorder6482d3326482d332": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d37kyr3s00ujyn",
+          "type": "cicd"
+        }
+      }
+    }
+  },
+  "main": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nomocaorder-main-203343-authRole",
+      "UnauthRoleArn": "arn:aws:iam::409193243105:role/amplify-nomocaorder-main-203343-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::409193243105:role/amplify-nomocaorder-main-203343-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-nomocaorder-main-203343-deployment",
+      "UnauthRoleName": "amplify-nomocaorder-main-203343-unauthRole",
+      "StackName": "amplify-nomocaorder-main-203343",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:409193243105:stack/amplify-nomocaorder-main-203343/6091afa0-d69e-11ec-b63e-0eae6d8bae47",
+      "AmplifyAppId": "d37kyr3s00ujyn"
+    },
+    "categories": {
+      "auth": {
+        "userPoolGroups": {},
+        "nomocaorder6482d3326482d332": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d37kyr3s00ujyn",
+          "type": "cicd"
+        }
+      }
+    }
+  }
+}
