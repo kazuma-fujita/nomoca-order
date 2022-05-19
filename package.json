@@ -20,7 +20,7 @@
     "cy:run:ct:firefox": "cypress run-ct --browser firefox"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^2.18.0",
+    "@aws-amplify/ui-react": "^1.2.20",
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.4.1",
     "@emotion/server": "^11.4.0",
