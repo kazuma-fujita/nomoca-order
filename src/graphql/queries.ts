@@ -149,67 +149,6 @@ export const listOrders = /* GraphQL */ `
     }
   }
 `;
-export const listOrdersSortedByCreatedAt = /* GraphQL */ `
-  query ListOrdersSortedByCreatedAt(
-    $type: Type!
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelOrderFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listOrdersSortedByCreatedAt(
-      type: $type
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        products {
-          nextToken
-        }
-        clinicID
-        clinic {
-          id
-          name
-          phoneNumber
-          postalCode
-          state
-          city
-          address
-          building
-          createdAt
-          updatedAt
-          owner
-        }
-        staffID
-        staff {
-          id
-          firstName
-          lastName
-          viewOrder
-          disabled
-          type
-          createdAt
-          updatedAt
-          owner
-        }
-        orderType
-        deliveryStatus
-        deliveryType
-        deliveredAt
-        createdAt
-        type
-        updatedAt
-        owner
-      }
-      nextToken
-    }
-  }
-`;
 export const getSubscriptionOrder = /* GraphQL */ `
   query GetSubscriptionOrder($id: ID!) {
     getSubscriptionOrder(id: $id) {
@@ -316,6 +255,143 @@ export const listSubscriptionOrders = /* GraphQL */ `
     }
   }
 `;
+export const getProduct = /* GraphQL */ `
+  query GetProduct($id: ID!) {
+    getProduct(id: $id) {
+      id
+      name
+      unitPrice
+      orderType
+      viewOrder
+      isExportCSV
+      disabled
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listProducts = /* GraphQL */ `
+  query ListProducts(
+    $filter: ModelProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        unitPrice
+        orderType
+        viewOrder
+        isExportCSV
+        disabled
+        type
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getStaff = /* GraphQL */ `
+  query GetStaff($id: ID!) {
+    getStaff(id: $id) {
+      id
+      firstName
+      lastName
+      viewOrder
+      disabled
+      type
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listStaff = /* GraphQL */ `
+  query ListStaff(
+    $filter: ModelStaffFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStaff(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const listOrdersSortedByCreatedAt = /* GraphQL */ `
+  query ListOrdersSortedByCreatedAt(
+    $type: Type!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrdersSortedByCreatedAt(
+      type: $type
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        products {
+          nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          createdAt
+          updatedAt
+          owner
+        }
+        staffID
+        staff {
+          id
+          firstName
+          lastName
+          viewOrder
+          disabled
+          type
+          createdAt
+          updatedAt
+          owner
+        }
+        orderType
+        deliveryStatus
+        deliveryType
+        deliveredAt
+        createdAt
+        type
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
   query ListSubscriptionOrdersSortedByCreatedAt(
     $type: String!
@@ -376,45 +452,6 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
     }
   }
 `;
-export const getProduct = /* GraphQL */ `
-  query GetProduct($id: ID!) {
-    getProduct(id: $id) {
-      id
-      name
-      unitPrice
-      orderType
-      viewOrder
-      isExportCSV
-      disabled
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listProducts = /* GraphQL */ `
-  query ListProducts(
-    $filter: ModelProductFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        unitPrice
-        orderType
-        viewOrder
-        isExportCSV
-        disabled
-        type
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const listProductsSortedByViewOrder = /* GraphQL */ `
   query ListProductsSortedByViewOrder(
     $type: Type!
@@ -443,43 +480,6 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
         type
         createdAt
         updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getStaff = /* GraphQL */ `
-  query GetStaff($id: ID!) {
-    getStaff(id: $id) {
-      id
-      firstName
-      lastName
-      viewOrder
-      disabled
-      type
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const listStaff = /* GraphQL */ `
-  query ListStaff(
-    $filter: ModelStaffFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listStaff(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        firstName
-        lastName
-        viewOrder
-        disabled
-        type
-        createdAt
-        updatedAt
-        owner
       }
       nextToken
     }

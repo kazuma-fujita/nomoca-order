@@ -104,5 +104,6 @@ export const L10n = {
       '初回ログインが完了していない為、アカウントのパスワードをリセットすることはできません', // cognitoコンソールからアカウント発行後、初回ログイン時のパスワード設定を行っていない状態でforgotPassword API(パスワード忘れAPI)を実行すると発生
     'Invalid session for the user, session can only be used once.':
       'アカウントのセッションが無効です。セッションは1回しか使用できません。', // cognitoコンソールからアカウント発行後、初回ログイン時の新パスワード設定を連続で複数回行うと発生
+    // 'Authentication Error': '認証エラーが発生しました。', // 表示条件不明
   },
 };

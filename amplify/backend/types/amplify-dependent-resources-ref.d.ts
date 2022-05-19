@@ -15,7 +15,6 @@ export type AmplifyDependentResourcesAttributes = {
     },
     "api": {
         "nomocaorderApi": {
-            "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }
