@@ -4,11 +4,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v2
       - name: Checkout
-        uses: ./.github/workflows/checkout.yaml
+        uses: actions/checkout@v2
+      - name: Export dummy aws-exports.js
+        uses: ./.github/actions/export
       - name: Install modules
-        run: npm install
+        run: npm ci
       - name: Run tests
         run: npm run test
