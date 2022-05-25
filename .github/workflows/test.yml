@@ -10,10 +10,7 @@ jobs:
         uses: ./.github/actions/export
       - name: Install modules
         run: npm ci
-      - name: Set timezone of JST
-        env:
-          TZ: 'Asia/Tokyo'
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M')"
       - name: Run tests
         run: npm run test
+        env:
+          TZ: 'Asia/Tokyo'

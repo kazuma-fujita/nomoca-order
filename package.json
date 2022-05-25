@@ -63,6 +63,7 @@
     "@types/react": "17.0.27",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "babel-loader": "^8.2.3",
+    "chromatic": "^6.5.4",
     "cypress": "^9.2.0",
     "eslint": "7.32.0",
     "eslint-config-next": "^12.1.6",
