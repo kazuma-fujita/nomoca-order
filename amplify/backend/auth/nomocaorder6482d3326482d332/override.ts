@@ -12,4 +12,11 @@ export function override(resources: AmplifyAuthCognitoStackTemplate) {
       },
     },
   });
+
+  // Set the user pool emailConfiguration
+  // SESからメール送信をする設定
+  resources.userPool.emailConfiguration = {
+    emailSendingAccount: 'DEVELOPER',
+    sourceArn: 'arn:aws:ses:us-east-1:409193243105:identity/no-reply@nomoca-order.com',
+  };
 }
