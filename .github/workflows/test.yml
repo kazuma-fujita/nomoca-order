@@ -10,5 +10,8 @@ jobs:
         uses: ./.github/actions/export
       - name: Install modules
         run: npm ci
+      - name: Set timezone of JST
+        env:
+          TZ: 'Asia/Tokyo'
       - name: Run tests
         run: npm run test
