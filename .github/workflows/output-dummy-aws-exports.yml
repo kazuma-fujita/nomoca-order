@@ -10,6 +10,8 @@ jobs:
   output-aws-exports:
     # Job steps
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Output dummy aws-exports.js
         run: |
           cat <<EOS > src/aws-exports.js
