@@ -19,10 +19,22 @@ jobs:
         run: npm run fmt
       - name: Run lint
         run: npm run lint
-      - name: Run tests
+      - name: Run tests ⚗️
         run: npm run test
         env:
           TZ: 'Asia/Tokyo'
+      - name: Run E2E tests 🧪
+        uses: cypress-io/github-action@v2
+        # with:
+        #   build: npm run build
+        #   start: npm start
+      - name: Run Component tests with Cypress 🧪
+        uses: cypress-io/github-action@v2
+        with:
+          # we have already installed everything
+          install: false
+          # to run component tests we need to use "cypress run-ct"
+          command: npm run cy:run:ct
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
