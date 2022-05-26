@@ -37,21 +37,17 @@ export const ClinicDetailOrderFormInput = ({ setValue, control }: UseFormReturn<
 
 export const ClinicDetailInput = () => {
   const { data, error } = useFetchClinic();
+  if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <>
-      {error ||
-        (!data && (
-          <>
-            {error && <ErrorAlert>{error}</ErrorAlert>}
-            {!data && <UpsertClinicButton />}
-          </>
-        ))}
-      {data && (
+      {data ? (
         <Box display='flex' alignItems='center'>
           <ClinicDetail />
           <Box ml={4} />
           <UpsertClinicButton />
         </Box>
+      ) : (
+        <UpsertClinicButton />
       )}
     </>
   );

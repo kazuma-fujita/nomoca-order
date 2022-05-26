@@ -39,7 +39,7 @@ export const useConfirmOrder = () => {
       ? addDeliveryFeeAndExpressObjectToProductList(orderFormParam!.products!, orderFormParam!.deliveryType!)
       : orderFormParam!.products!;
 
-  // 注文ボタン押下処理
+  // 注文ボタン押下処
   const submitHandler = async () => {
     try {
       // 重複商品配列はuseOrderFormでmerge済み。更に速達、配送手数料を加えた商品配列を登録
@@ -55,8 +55,8 @@ export const useConfirmOrder = () => {
   const deliveryTypeLabel = getDeliveryTypeLabel(orderFormParam!.deliveryType!);
   const deliveryStartLabel = `${orderFormParam!.deliveryStartYear} / ${orderFormParam!.deliveryStartMonth}月`;
   const deliveryIntervalLabel = `${orderFormParam!.deliveryInterval}ヶ月`;
-  const staff = staffList!.find((staff) => staff.id === orderFormParam!.staffID);
-  const staffName = `${staff!.lastName}  ${staff!.firstName}`;
+  const staff = staffList && staffList.find((staff) => staff.id === orderFormParam!.staffID);
+  const staffName = staffList ? `${staff!.lastName}  ${staff!.firstName}` : '担当者取得エラー';
   return {
     products,
     deliveryTypeLabel,

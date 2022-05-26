@@ -36,24 +36,19 @@ const StaffSelectInput = ({ control }: UseFormReturn<OrderFormParam>) => {
 };
 
 export const StaffSelectBox = (props: UseFormReturn<OrderFormParam>) => {
-  const { data: staffList, isLoading, error, isEmptyList } = useFetchStaffList();
+  const { isLoading, error, isEmptyList } = useFetchStaffList();
+  if (error) return <ErrorAlert>{error}</ErrorAlert>;
+  if (isLoading) return <CircularProgress aria-label='Now loading' />;
   return (
     <>
-      {isLoading ||
-        error ||
-        (isEmptyList && (
-          <>
-            {isLoading && <CircularProgress aria-label='Now loading' />}
-            {error && <ErrorAlert>{error}</ErrorAlert>}
-            {isEmptyList && <UpsertStaffButton />}
-          </>
-        ))}
-      {staffList && !isEmptyList && (
+      {!isEmptyList ? (
         <Box display='flex' alignItems='center'>
           <StaffSelectInput {...props} />
           <Box ml={4} />
           <UpsertStaffButton />
         </Box>
+      ) : (
+        <UpsertStaffButton />
       )}
     </>
   );
