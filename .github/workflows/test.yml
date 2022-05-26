@@ -25,9 +25,9 @@ jobs:
           TZ: 'Asia/Tokyo'
       - name: Run E2E tests 🧪
         uses: cypress-io/github-action@v2
-        # with:
-        #   build: npm run build
-        #   start: npm start
+        with:
+          build: npm run build
+          start: npm start
       - name: Run Component tests with Cypress 🧪
         uses: cypress-io/github-action@v2
         with:
