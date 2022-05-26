@@ -42,8 +42,8 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: Github
           SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-          SLACK_TITLE: "${{ job.status }} === 'success' ? 'Success tests' : 'Failure tests'"
-          SLACK_COLOR: "${{ job.status }} === 'success' ? '#5cb85c' : '#dc143c'"
+          # SLACK_TITLE: ${{ job.status }} === 'success' ? 'Success tests' : 'Failure tests'
+          # SLACK_COLOR: ${{ job.status }} === 'success' ? '#5cb85c' : '#dc143c'
           # SLACK_TITLE: 'Success to Deploy to GitHub Pages :rocket:'
       # - name: Slack notification failure
       #   if: failure()
