@@ -3,10 +3,7 @@
 // this is an auto generated file. This will be overwritten
 
 export const createClinic = /* GraphQL */ `
-  mutation CreateClinic(
-    $input: CreateClinicInput!
-    $condition: ModelClinicConditionInput
-  ) {
+  mutation CreateClinic($input: CreateClinicInput!, $condition: ModelClinicConditionInput) {
     createClinic(input: $input, condition: $condition) {
       id
       name
@@ -23,10 +20,7 @@ export const createClinic = /* GraphQL */ `
   }
 `;
 export const updateClinic = /* GraphQL */ `
-  mutation UpdateClinic(
-    $input: UpdateClinicInput!
-    $condition: ModelClinicConditionInput
-  ) {
+  mutation UpdateClinic($input: UpdateClinicInput!, $condition: ModelClinicConditionInput) {
     updateClinic(input: $input, condition: $condition) {
       id
       name
@@ -43,10 +37,7 @@ export const updateClinic = /* GraphQL */ `
   }
 `;
 export const deleteClinic = /* GraphQL */ `
-  mutation DeleteClinic(
-    $input: DeleteClinicInput!
-    $condition: ModelClinicConditionInput
-  ) {
+  mutation DeleteClinic($input: DeleteClinicInput!, $condition: ModelClinicConditionInput) {
     deleteClinic(input: $input, condition: $condition) {
       id
       name
@@ -63,10 +54,7 @@ export const deleteClinic = /* GraphQL */ `
   }
 `;
 export const createOrder = /* GraphQL */ `
-  mutation CreateOrder(
-    $input: CreateOrderInput!
-    $condition: ModelOrderConditionInput
-  ) {
+  mutation CreateOrder($input: CreateOrderInput!, $condition: ModelOrderConditionInput) {
     createOrder(input: $input, condition: $condition) {
       id
       products {
@@ -121,10 +109,7 @@ export const createOrder = /* GraphQL */ `
   }
 `;
 export const updateOrder = /* GraphQL */ `
-  mutation UpdateOrder(
-    $input: UpdateOrderInput!
-    $condition: ModelOrderConditionInput
-  ) {
+  mutation UpdateOrder($input: UpdateOrderInput!, $condition: ModelOrderConditionInput) {
     updateOrder(input: $input, condition: $condition) {
       id
       products {
@@ -179,10 +164,7 @@ export const updateOrder = /* GraphQL */ `
   }
 `;
 export const deleteOrder = /* GraphQL */ `
-  mutation DeleteOrder(
-    $input: DeleteOrderInput!
-    $condition: ModelOrderConditionInput
-  ) {
+  mutation DeleteOrder($input: DeleteOrderInput!, $condition: ModelOrderConditionInput) {
     deleteOrder(input: $input, condition: $condition) {
       id
       products {
@@ -237,10 +219,7 @@ export const deleteOrder = /* GraphQL */ `
   }
 `;
 export const createOrderProduct = /* GraphQL */ `
-  mutation CreateOrderProduct(
-    $input: CreateOrderProductInput!
-    $condition: ModelOrderProductConditionInput
-  ) {
+  mutation CreateOrderProduct($input: CreateOrderProductInput!, $condition: ModelOrderProductConditionInput) {
     createOrderProduct(input: $input, condition: $condition) {
       id
       orderID
@@ -255,10 +234,7 @@ export const createOrderProduct = /* GraphQL */ `
   }
 `;
 export const updateOrderProduct = /* GraphQL */ `
-  mutation UpdateOrderProduct(
-    $input: UpdateOrderProductInput!
-    $condition: ModelOrderProductConditionInput
-  ) {
+  mutation UpdateOrderProduct($input: UpdateOrderProductInput!, $condition: ModelOrderProductConditionInput) {
     updateOrderProduct(input: $input, condition: $condition) {
       id
       orderID
@@ -273,10 +249,7 @@ export const updateOrderProduct = /* GraphQL */ `
   }
 `;
 export const deleteOrderProduct = /* GraphQL */ `
-  mutation DeleteOrderProduct(
-    $input: DeleteOrderProductInput!
-    $condition: ModelOrderProductConditionInput
-  ) {
+  mutation DeleteOrderProduct($input: DeleteOrderProductInput!, $condition: ModelOrderProductConditionInput) {
     deleteOrderProduct(input: $input, condition: $condition) {
       id
       orderID
@@ -540,10 +513,7 @@ export const deleteSubscriptionOrderProduct = /* GraphQL */ `
   }
 `;
 export const createProduct = /* GraphQL */ `
-  mutation CreateProduct(
-    $input: CreateProductInput!
-    $condition: ModelProductConditionInput
-  ) {
+  mutation CreateProduct($input: CreateProductInput!, $condition: ModelProductConditionInput) {
     createProduct(input: $input, condition: $condition) {
       id
       name
@@ -559,10 +529,7 @@ export const createProduct = /* GraphQL */ `
   }
 `;
 export const updateProduct = /* GraphQL */ `
-  mutation UpdateProduct(
-    $input: UpdateProductInput!
-    $condition: ModelProductConditionInput
-  ) {
+  mutation UpdateProduct($input: UpdateProductInput!, $condition: ModelProductConditionInput) {
     updateProduct(input: $input, condition: $condition) {
       id
       name
@@ -578,10 +545,7 @@ export const updateProduct = /* GraphQL */ `
   }
 `;
 export const deleteProduct = /* GraphQL */ `
-  mutation DeleteProduct(
-    $input: DeleteProductInput!
-    $condition: ModelProductConditionInput
-  ) {
+  mutation DeleteProduct($input: DeleteProductInput!, $condition: ModelProductConditionInput) {
     deleteProduct(input: $input, condition: $condition) {
       id
       name
@@ -597,10 +561,7 @@ export const deleteProduct = /* GraphQL */ `
   }
 `;
 export const createStaff = /* GraphQL */ `
-  mutation CreateStaff(
-    $input: CreateStaffInput!
-    $condition: ModelStaffConditionInput
-  ) {
+  mutation CreateStaff($input: CreateStaffInput!, $condition: ModelStaffConditionInput) {
     createStaff(input: $input, condition: $condition) {
       id
       firstName
@@ -615,10 +576,7 @@ export const createStaff = /* GraphQL */ `
   }
 `;
 export const updateStaff = /* GraphQL */ `
-  mutation UpdateStaff(
-    $input: UpdateStaffInput!
-    $condition: ModelStaffConditionInput
-  ) {
+  mutation UpdateStaff($input: UpdateStaffInput!, $condition: ModelStaffConditionInput) {
     updateStaff(input: $input, condition: $condition) {
       id
       firstName
@@ -633,10 +591,7 @@ export const updateStaff = /* GraphQL */ `
   }
 `;
 export const deleteStaff = /* GraphQL */ `
-  mutation DeleteStaff(
-    $input: DeleteStaffInput!
-    $condition: ModelStaffConditionInput
-  ) {
+  mutation DeleteStaff($input: DeleteStaffInput!, $condition: ModelStaffConditionInput) {
     deleteStaff(input: $input, condition: $condition) {
       id
       firstName

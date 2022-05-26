@@ -19,11 +19,7 @@ export const getClinic = /* GraphQL */ `
   }
 `;
 export const listClinics = /* GraphQL */ `
-  query ListClinics(
-    $filter: ModelClinicFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListClinics($filter: ModelClinicFilterInput, $limit: Int, $nextToken: String) {
     listClinics(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -98,11 +94,7 @@ export const getOrder = /* GraphQL */ `
   }
 `;
 export const listOrders = /* GraphQL */ `
-  query ListOrders(
-    $filter: ModelOrderFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListOrders($filter: ModelOrderFilterInput, $limit: Int, $nextToken: String) {
     listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -262,16 +254,8 @@ export const getSubscriptionOrder = /* GraphQL */ `
   }
 `;
 export const listSubscriptionOrders = /* GraphQL */ `
-  query ListSubscriptionOrders(
-    $filter: ModelSubscriptionOrderFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listSubscriptionOrders(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
+  query ListSubscriptionOrders($filter: ModelSubscriptionOrderFilterInput, $limit: Int, $nextToken: String) {
+    listSubscriptionOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         products {
@@ -392,11 +376,7 @@ export const getProduct = /* GraphQL */ `
   }
 `;
 export const listProducts = /* GraphQL */ `
-  query ListProducts(
-    $filter: ModelProductFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListProducts($filter: ModelProductFilterInput, $limit: Int, $nextToken: String) {
     listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
@@ -463,11 +443,7 @@ export const getStaff = /* GraphQL */ `
   }
 `;
 export const listStaff = /* GraphQL */ `
-  query ListStaff(
-    $filter: ModelStaffFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
+  query ListStaff($filter: ModelStaffFilterInput, $limit: Int, $nextToken: String) {
     listStaff(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
