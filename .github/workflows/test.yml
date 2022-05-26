@@ -6,7 +6,7 @@ on:
   pull_request:
     types: [opened, reopened]
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,21 +35,23 @@ jobs:
           install: false
           # to run component tests we need to use "cypress run-ct"
           command: npm run cy:run:ct
-      - name: Slack notification success
+      - name: Slack notification
+        if: always()
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: Github
           SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-          SLACK_TITLE: 'Success to Deploy to GitHub Pages :rocket:'
-          SLACK_MESSAGE: ':closed_book: ${{ github.repository }}'
-      - name: Slack notification failure
-        if: failure()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: Github
-          SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-          SLACK_COLOR: '#dc143c'
-          SLACK_TITLE: 'Failure to Deploy to GitHub Pages :boom:'
-          SLACK_MESSAGE: ':closed_book: ${{ github.repository }}'
+          SLACK_TITLE: "${{ job.status }} === 'success' ? 'Success tests' : 'Failure tests'"
+          SLACK_COLOR: "${{ job.status }} === 'success' ? '#5cb85c' : '#dc143c'"
+          # SLACK_TITLE: 'Success to Deploy to GitHub Pages :rocket:'
+      # - name: Slack notification failure
+      #   if: failure()
+      #   uses: rtCamp/action-slack-notify@v2
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      #     SLACK_USERNAME: Github
+      #     SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+      #     SLACK_COLOR: '#dc143c'
+      #     SLACK_TITLE: 'Failure to Deploy to GitHub Pages :boom:'
+      #     SLACK_MESSAGE: ':closed_book: ${{ github.repository }}'
