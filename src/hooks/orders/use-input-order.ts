@@ -83,7 +83,7 @@ export const useUpsertOrderButton = (id?: string, products?: NormalizedProduct[]
 //   return { buttonLabel, onButtonClick };
 // };
 
-export const useOrderForm = () => {
+export const useInputOrder = () => {
   const router = useRouter();
   const { data, mutate, orderType } = useOrderFormParam();
   const { data: productList } = useFetchProductList();

@@ -13,8 +13,8 @@ export type FetchResponse<Data = any> = {
 export const useFetch = <Data = any>(
   key: Key,
   fetcher: BareFetcher<Data> | null,
-  mockResponse?: FetchResponse<Data>,
   config?: Partial<PublicConfiguration<Data, any, BareFetcher<Data>>> | undefined,
+  mockResponse?: FetchResponse<Data>,
 ): FetchResponse<Data> => {
   const { data, error, mutate } = useSWR<Data>(key, mockResponse ? null : fetcher, config);
   return mockResponse

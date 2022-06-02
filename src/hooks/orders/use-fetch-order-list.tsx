@@ -75,9 +75,10 @@ export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, childr
   const fetchResponse = useFetch<ExtendedOrder<Order>[]>(
     SWRKey.orderList,
     fetcher,
-    mockResponse,
     // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
     // { revalidateOnFocus: false },
+    {},
+    mockResponse,
   );
 
   return <OrderListContext.Provider value={fetchResponse}>{children}</OrderListContext.Provider>;

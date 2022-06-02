@@ -1,7 +1,7 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { OrderType } from 'API';
 import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
-import { orderFormDefaultValues } from 'hooks/orders/use-upsert-order-form';
+import { orderFormDefaultValues } from 'hooks/orders/use-input-order';
 import { clinicMock } from 'mocks/clinic.mock';
 import { productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';

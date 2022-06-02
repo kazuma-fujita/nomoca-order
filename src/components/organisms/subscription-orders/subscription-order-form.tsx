@@ -1,6 +1,6 @@
 import { Box, FormHelperText, MenuItem, TextField, Typography } from '@mui/material';
 import { OrderForm } from 'components/organisms/orders/order-form';
-import { useOrderForm } from 'hooks/orders/use-upsert-order-form';
+import { useInputOrder } from 'hooks/orders/use-input-order';
 import { useState } from 'react';
 import { Controller, UseFieldArrayReturn } from 'react-hook-form';
 import { useNowDate } from 'stores/use-now-date';
@@ -15,7 +15,7 @@ const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth
   selectMonth <= nowMonth ? nowYear + 1 : nowYear;
 
 export const SubscriptionOrderForm = () => {
-  const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useOrderForm();
+  const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useInputOrder();
   const { data } = useOrderFormParam();
   const { now } = useNowDate();
   // 現在年、月を取得。現在月はgetMonthの値に+1をして取得

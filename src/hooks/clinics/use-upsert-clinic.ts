@@ -22,12 +22,16 @@ export const useUpsertClinic = () => {
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onUpsertClinic =
     (param: Clinic) =>
-    async (data: Clinic): Promise<Clinic> => {
+    // async (data: Clinic): Promise<Clinic> => {
+    async (): Promise<Clinic> => {
       setIsLoading(true);
       try {
         let ret;
         if (!param.id) {
-          const input: CreateClinicInput = { ...param };
+          // 入力フォームのオブジェクトからidプロパティを削除
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { id, ...rest } = param;
+          const input: CreateClinicInput = { ...rest };
           const variables: CreateClinicMutationVariables = { input: input };
           const result = (await API.graphql(
             graphqlOperation(createClinicMutation, variables),

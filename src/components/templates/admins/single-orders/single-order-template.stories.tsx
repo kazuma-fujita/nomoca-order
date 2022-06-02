@@ -1,8 +1,7 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
-import { clinicMock } from 'mocks/clinic.mock';
+import { OrderListContextProvider } from 'hooks/orders/use-fetch-order-list';
+import { FetchResponse } from 'hooks/swr/use-fetch';
 import { adminOrderListMock } from 'mocks/order-list.mock';
-import { graphql } from 'msw';
 import { SingleOrderTemplate } from './single-order-template';
 
 const description = `
@@ -20,59 +19,77 @@ description
 
 `;
 
-type Story = ComponentStoryObj<typeof SingleOrderTemplate>;
+const Wrapper: React.FC<FetchResponse> = (props) => (
+  <OrderListContextProvider mockResponse={props}>
+    <SingleOrderTemplate />
+  </OrderListContextProvider>
+);
 
-export default { component: SingleOrderTemplate };
+type Story = ComponentStoryObj<typeof Wrapper>;
+
+export default { component: Wrapper };
 
 export const Default: Story = {
-  decorators: [
-    (StoryComponent) => (
-      <ClinicContextProvider>
-        <StoryComponent />
-      </ClinicContextProvider>
-    ),
-  ],
-};
-
-Default.parameters = {
-  docs: {
-    description: {
-      component: description,
+  args: {
+    data: adminOrderListMock,
+    error: null,
+    isLoading: false,
+    isEmptyList: false,
+    mutate: async () => undefined,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: description,
+      },
     },
   },
-  msw: {
-    handlers: [
-      graphql.query('ListOrdersSortedByCreatedAt', (req, res, ctx) => {
-        const response = {
-          listOrdersSortedByCreatedAt: {
-            items: adminOrderListMock,
-          },
-        };
-        return res(ctx.data(response));
-      }),
-      graphql.query('ListClinics', (req, res, ctx) => {
-        const response = {
-          listClinics: {
-            items: [clinicMock],
-          },
-        };
-        return res(ctx.data(response));
-      }),
-    ],
-  },
 };
 
-// export const Loading: Story = {
-//   ...Default,
-//   args: { isLoading: true },
+export const Loading: Story = { args: { ...Default.args, data: null, isLoading: true } };
+
+export const FetchError: Story = { args: { ...Default.args, data: null, error: Error('Occurred data fetch error') } };
+
+export const EmptyData: Story = { args: { ...Default.args, data: [] } };
+
+// type Story = ComponentStoryObj<typeof SingleOrderTemplate>;
+
+// export default { component: SingleOrderTemplate };
+
+// export const Default: Story = {
+//   decorators: [
+//     (StoryComponent) => (
+//       <ClinicContextProvider>
+//         <StoryComponent />
+//       </ClinicContextProvider>
+//     ),
+//   ],
 // };
 
-// export const Empty: Story = {
-//   ...Default,
-//   args: { isEmptyList: true },
-// };
-
-// export const FetchError: Story = {
-//   ...Default,
-//   args: { error: Error('The API fetched data but it returned null.') },
+// Default.parameters = {
+//   docs: {
+//     description: {
+//       component: description,
+//     },
+//   },
+//   msw: {
+//     handlers: [
+//       graphql.query('ListOrdersSortedByCreatedAt', (req, res, ctx) => {
+//         const response = {
+//           listOrdersSortedByCreatedAt: {
+//             items: adminOrderListMock,
+//           },
+//         };
+//         return res(ctx.data(response));
+//       }),
+//       graphql.query('ListClinics', (req, res, ctx) => {
+//         const response = {
+//           listClinics: {
+//             items: [clinicMock],
+//           },
+//         };
+//         return res(ctx.data(response));
+//       }),
+//     ],
+//   },
 // };

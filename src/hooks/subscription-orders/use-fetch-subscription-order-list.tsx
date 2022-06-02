@@ -87,9 +87,10 @@ export const SubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResp
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
     SWRKey.orderList,
     fetcher,
-    mockResponse,
     // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
     // { revalidateOnFocus: false },
+    {},
+    mockResponse,
   );
 
   return (
@@ -110,8 +111,8 @@ export const AdminSubscriptionOrderListContextProvider: React.FC<Props> = ({ moc
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
     SWRKey.AdminSubscriptionOrderList,
     fetcher,
-    mockResponse,
     { revalidateOnFocus: false },
+    mockResponse,
   );
 
   const { data } = fetchResponse;
