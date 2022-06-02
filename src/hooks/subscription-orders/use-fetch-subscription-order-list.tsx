@@ -72,8 +72,30 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   return extendedItems;
 };
 
-export const useFetchSubscriptionOrderList = (): FetchResponse<ExtendedOrder<SubscriptionOrder>[]> =>
-  useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.subscriptionOrderList, fetcher);
+// export const useFetchSubscriptionOrderList = (): FetchResponse<ExtendedOrder<SubscriptionOrder>[]> =>
+//   useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.subscriptionOrderList, fetcher);
+
+const SubscriptionOrderListContext = createContext({} as FetchResponse<ExtendedOrder<SubscriptionOrder>[]>);
+
+export const useFetchSubscriptionOrderList = () => useContext(SubscriptionOrderListContext);
+
+type Props = {
+  mockResponse?: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>;
+};
+
+export const SubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
+  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
+    SWRKey.orderList,
+    fetcher,
+    mockResponse,
+    // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
+    // { revalidateOnFocus: false },
+  );
+
+  return (
+    <SubscriptionOrderListContext.Provider value={fetchResponse}>{children}</SubscriptionOrderListContext.Provider>
+  );
+};
 
 export type AdminSubscriptionOrderResponse = FetchResponse<ExtendedOrder<SubscriptionOrder>[]> & {
   allData: ExtendedOrder<SubscriptionOrder>[] | null;
@@ -83,17 +105,13 @@ const AdminSubscriptionOrderListContext = createContext({} as AdminSubscriptionO
 
 export const useAdminSubscriptionOrderList = () => useContext(AdminSubscriptionOrderListContext);
 
-type Props = {
-  mockResponse?: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>;
-};
-
 export const AdminSubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
   // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
     SWRKey.AdminSubscriptionOrderList,
     fetcher,
-    { revalidateOnFocus: false },
     mockResponse,
+    { revalidateOnFocus: false },
   );
 
   const { data } = fetchResponse;

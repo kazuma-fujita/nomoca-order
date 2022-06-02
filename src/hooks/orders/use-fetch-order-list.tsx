@@ -12,8 +12,9 @@ import { SWRKey } from 'constants/swr-key';
 import { listOrdersSortedByCreatedAt } from 'graphql/queries';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
+import { createContext, useContext } from 'react';
 
-const createNormalizedProduct = (orderProduct: OrderProduct): NormalizedProduct =>
+const createNormalizedProduct = (orderProduct: OrderProduct | null): NormalizedProduct =>
   ({
     relationID: orderProduct?.id,
     productID: orderProduct?.orderID,
@@ -23,7 +24,7 @@ const createNormalizedProduct = (orderProduct: OrderProduct): NormalizedProduct 
   } as NormalizedProduct);
 
 const createNormalizedProducts = (order: Order): NormalizedProduct[] =>
-  order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct!)) as NormalizedProduct[];
+  order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct)) as NormalizedProduct[];
 
 const fetcher = async (): Promise<ExtendedOrder<Order>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
@@ -59,5 +60,25 @@ const fetcher = async (): Promise<ExtendedOrder<Order>[]> => {
   return extendedItems;
 };
 
-export const useFetchOrderList = (): FetchResponse<ExtendedOrder<Order>[]> =>
-  useFetch<ExtendedOrder<Order>[]>(SWRKey.orderList, fetcher);
+// export const useFetchOrderList = (): FetchResponse<ExtendedOrder<Order>[]> =>
+//   useFetch<ExtendedOrder<Order>[]>(SWRKey.orderList, fetcher);
+
+const OrderListContext = createContext({} as FetchResponse<ExtendedOrder<Order>[]>);
+
+export const useFetchOrderList = () => useContext(OrderListContext);
+
+type Props = {
+  mockResponse?: FetchResponse<ExtendedOrder<Order>[]>;
+};
+
+export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
+  const fetchResponse = useFetch<ExtendedOrder<Order>[]>(
+    SWRKey.orderList,
+    fetcher,
+    mockResponse,
+    // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
+    // { revalidateOnFocus: false },
+  );
+
+  return <OrderListContext.Provider value={fetchResponse}>{children}</OrderListContext.Provider>;
+};
