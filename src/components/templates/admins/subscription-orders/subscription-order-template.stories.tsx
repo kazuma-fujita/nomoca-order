@@ -1,61 +1,34 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { graphql } from 'msw';
 import { SubscriptionOrderTemplate } from 'components/templates/admins/subscription-orders/subscription-order-template';
-import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
 import { AdminSubscriptionOrderListContextProvider } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import { clinicMock } from 'mocks/clinic.mock';
 import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';
+import { FetchResponse } from 'hooks/swr/use-fetch';
 
-type Story = ComponentStoryObj<typeof SubscriptionOrderTemplate>;
+const Wrapper: React.FC<FetchResponse> = (props) => (
+  <AdminSubscriptionOrderListContextProvider mockResponse={props}>
+    <NowDateContextProvider now={new Date(2023, 0, 1, 9)}>
+      <SubscriptionOrderTemplate />
+    </NowDateContextProvider>
+  </AdminSubscriptionOrderListContextProvider>
+);
 
-export default { component: SubscriptionOrderTemplate };
+type Story = ComponentStoryObj<typeof Wrapper>;
+
+export default { component: Wrapper };
 
 export const Default: Story = {
-  decorators: [
-    (StoryComponent) => (
-      <AdminSubscriptionOrderListContextProvider>
-        <NowDateContextProvider now={new Date(2023, 0, 1, 9)}>
-          <ClinicContextProvider>
-            <StoryComponent />
-          </ClinicContextProvider>
-        </NowDateContextProvider>
-      </AdminSubscriptionOrderListContextProvider>
-    ),
-  ],
-};
-
-Default.parameters = {
-  msw: {
-    handlers: [
-      graphql.query('ListSubscriptionOrdersSortedByCreatedAt', (req, res, ctx) => {
-        const response = {
-          listSubscriptionOrdersSortedByCreatedAt: {
-            items: subscriptionOrderListMock,
-          },
-        };
-        return res(ctx.data(response));
-      }),
-      graphql.query('ListClinics', (req, res, ctx) => {
-        const response = {
-          listClinics: {
-            items: [clinicMock],
-          },
-        };
-        return res(ctx.data(response));
-      }),
-    ],
+  args: {
+    data: subscriptionOrderListMock,
+    error: null,
+    isLoading: false,
+    isEmptyList: false,
+    mutate: async () => undefined,
   },
 };
 
-// export const Loading: Story = {
-//   args: { isLoading: true },
-// };
+export const Loading: Story = { args: { ...Default.args, data: null, isLoading: true } };
 
-// export const Empty: Story = {
-//   args: { isEmptyList: true },
-// };
+export const FetchError: Story = { args: { ...Default.args, data: null, error: Error('Occurred data fetch error') } };
 
-// export const FetchError: Story = {
-//   args: { error: Error('The API fetched data but it returned null.') },
-// };
+export const EmptyData: Story = { args: { ...Default.args, data: [] } };

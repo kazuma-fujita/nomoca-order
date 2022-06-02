@@ -5,13 +5,13 @@ import {
   ModelSortDirection,
   SubscriptionOrder,
   SubscriptionOrderProduct,
+  Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { Type } from 'API';
 
 export type NormalizedProduct = {
   relationID: string;
@@ -26,7 +26,7 @@ export type ExtendedOrder<T> = T & {
   normalizedProducts: NormalizedProduct[];
 };
 
-const createNormalizedProduct = (orderProduct: SubscriptionOrderProduct): NormalizedProduct =>
+const createNormalizedProduct = (orderProduct: SubscriptionOrderProduct | null): NormalizedProduct =>
   ({
     relationID: orderProduct?.id,
     productID: orderProduct?.productID,
@@ -36,7 +36,7 @@ const createNormalizedProduct = (orderProduct: SubscriptionOrderProduct): Normal
   } as NormalizedProduct);
 
 const createNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] =>
-  order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct!)) as NormalizedProduct[];
+  order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct)) as NormalizedProduct[];
 
 const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
@@ -68,6 +68,7 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
     ...item,
     normalizedProducts: createNormalizedProducts(item),
   }));
+
   return extendedItems;
 };
 
@@ -82,23 +83,30 @@ const AdminSubscriptionOrderListContext = createContext({} as AdminSubscriptionO
 
 export const useAdminSubscriptionOrderList = () => useContext(AdminSubscriptionOrderListContext);
 
-export const AdminSubscriptionOrderListContextProvider: React.FC = ({ children }) => {
+type Props = {
+  mockResponse?: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>;
+};
+
+export const AdminSubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
   // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
-  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.AdminSubscriptionOrderList, fetcher, {
-    revalidateOnFocus: false,
-  });
+  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
+    SWRKey.AdminSubscriptionOrderList,
+    fetcher,
+    { revalidateOnFocus: false },
+    mockResponse,
+  );
+
   const { data } = fetchResponse;
   // メモリ上に全件データ保存するstate生成
-  const { data: allData, mutate } = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
-    SWRKey.AdminAllSubscriptionOrderList,
-    null,
-  );
+  // const { data: allData, mutate } = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
+  // const { data: allData } = useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.AdminAllSubscriptionOrderList, null);
   // 全件データstateが存在しない(初回アクセス)、かつAPIからデータ取得成功時
-  if (!allData && data) {
-    // 全件データ保存
-    mutate(data, false);
-  }
-  const responseData = { ...fetchResponse, allData: allData };
+  // if (!allData && data) {
+  //   // 全件データ保存
+  //   mutate(data, false);
+  // }
+  // const responseData = { ...fetchResponse, allData: allData };
+  const responseData = { ...fetchResponse, allData: data };
   return (
     <AdminSubscriptionOrderListContext.Provider value={responseData}>
       {children}

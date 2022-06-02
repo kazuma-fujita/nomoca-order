@@ -31,8 +31,7 @@ type Props = {
 };
 
 export const OrderFormParamContextProvider: React.FC<Props> = ({ orderType, initialOrderFormParam, ...rest }) => {
-  const swrKey = SWRKey.orderFormParam;
-  const response = useFetch<OrderFormParam>(swrKey, null);
+  const response = useFetch<OrderFormParam>(SWRKey.orderFormParam, null);
   const result = initialOrderFormParam ? { ...response, data: initialOrderFormParam } : response;
   return <OrderFormParamContext.Provider value={{ ...result, orderType }} {...rest} />;
 };
