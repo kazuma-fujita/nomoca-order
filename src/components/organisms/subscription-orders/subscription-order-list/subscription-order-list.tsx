@@ -21,23 +21,23 @@ const header: TableHeader[] = [
   },
   {
     label: '配送開始月',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '配送頻度',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '次回配送予定月',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '申し込み日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '更新日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '注文内容変更',

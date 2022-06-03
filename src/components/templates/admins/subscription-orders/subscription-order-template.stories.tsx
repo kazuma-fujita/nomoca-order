@@ -4,6 +4,7 @@ import { AdminSubscriptionOrderListContextProvider } from 'hooks/subscription-or
 import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import { FetchResponse } from 'hooks/swr/use-fetch';
+import { ScreenName } from 'constants/screen-name';
 
 const description = `
 
@@ -30,7 +31,7 @@ const Wrapper: React.FC<FetchResponse> = (props) => (
 
 type Story = ComponentStoryObj<typeof Wrapper>;
 
-export default { component: Wrapper };
+export default { title: ScreenName.adminsSubscriptionOrder, component: Wrapper };
 
 export const Default: Story = {
   args: {

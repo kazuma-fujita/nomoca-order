@@ -1,53 +1,61 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { OrderType } from 'API';
+import { ScreenName } from 'constants/screen-name';
+import { SubscriptionOrderListContextProvider } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { FetchResponse } from 'hooks/swr/use-fetch';
 import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
-import { graphql } from 'msw';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { OrderListTemplate } from './order-list-template';
 
-type Story = ComponentStoryObj<typeof OrderListTemplate>;
+const description = `
 
-export default { component: OrderListTemplate };
+## Use Case
+
+description
+
+	dummy
+	dummy
+
+## Specs
+
+## Back Office Ops
+
+`;
+
+const Wrapper: React.FC<FetchResponse> = (props) => (
+  <SubscriptionOrderListContextProvider mockResponse={props}>
+    <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder}>
+      <NowDateContextProvider now={new Date(2023, 0, 1, 9)}>
+        <OrderListTemplate />
+      </NowDateContextProvider>
+    </OrderFormParamContextProvider>
+  </SubscriptionOrderListContextProvider>
+);
+
+type Story = ComponentStoryObj<typeof Wrapper>;
+
+export default { title: ScreenName.subscriptionOrder, component: Wrapper };
 
 export const Default: Story = {
-  decorators: [
-    (StoryComponent) => (
-      <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder}>
-        <NowDateContextProvider now={new Date(2023, 0, 1, 9)}>
-          <StoryComponent />
-        </NowDateContextProvider>
-      </OrderFormParamContextProvider>
-    ),
-  ],
-};
-
-Default.parameters = {
-  msw: {
-    handlers: [
-      graphql.query('ListSubscriptionOrdersSortedByCreatedAt', (req, res, ctx) => {
-        const response = {
-          listSubscriptionOrdersSortedByCreatedAt: {
-            items: subscriptionOrderListMock,
-          },
-        };
-        return res(ctx.data(response));
-      }),
-    ],
+  args: {
+    data: subscriptionOrderListMock,
+    error: null,
+    isLoading: false,
+    isEmptyList: false,
+    mutate: async () => undefined,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: description,
+      },
+    },
   },
 };
 
-// export const Loading: Story = {
-//   ...Default,
-//   args: { isLoading: true },
-// };
+export const Loading: Story = { args: { ...Default.args, data: null, isLoading: true } };
 
-// export const Empty: Story = {
-//   ...Default,
-//   args: { isEmptyList: true },
-// };
+export const FetchError: Story = { args: { ...Default.args, data: null, error: Error('Occurred data fetch error') } };
 
-// export const FetchError: Story = {
-//   ...Default,
-//   args: { error: Error('The API fetched data but it returned null.') },
-// };
+export const EmptyData: Story = { args: { ...Default.args, data: [], isEmptyList: true } };

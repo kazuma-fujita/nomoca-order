@@ -3,6 +3,7 @@ import { OrderListContextProvider } from 'hooks/orders/use-fetch-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import { adminOrderListMock } from 'mocks/order-list.mock';
 import { SingleOrderTemplate } from './single-order-template';
+import { ScreenName } from 'constants/screen-name';
 
 const description = `
 
@@ -27,8 +28,7 @@ const Wrapper: React.FC<FetchResponse> = (props) => (
 
 type Story = ComponentStoryObj<typeof Wrapper>;
 
-export default { title: '注文管理', component: Wrapper };
-// export default { component: Wrapper };
+export default { title: ScreenName.adminsSingleOrder, component: Wrapper };
 
 export const Default: Story = {
   args: {
