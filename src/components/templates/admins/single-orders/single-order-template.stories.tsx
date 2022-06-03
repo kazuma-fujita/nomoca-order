@@ -27,7 +27,8 @@ const Wrapper: React.FC<FetchResponse> = (props) => (
 
 type Story = ComponentStoryObj<typeof Wrapper>;
 
-export default { component: Wrapper };
+export default { title: '注文管理', component: Wrapper };
+// export default { component: Wrapper };
 
 export const Default: Story = {
   args: {

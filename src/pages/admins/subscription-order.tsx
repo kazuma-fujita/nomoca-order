@@ -33,7 +33,7 @@ export default SubscriptionOrderPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.SubscriptionOrder + TitleSuffix,
+      pageTitle: ScreenName.subscriptionOrder + TitleSuffix,
     },
   };
 };

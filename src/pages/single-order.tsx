@@ -47,7 +47,7 @@ export default SingleOrderPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.SingleOrder + TitleSuffix,
+      pageTitle: ScreenName.singleOrder + TitleSuffix,
     },
   };
 };
