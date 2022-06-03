@@ -13,8 +13,9 @@ import theme from 'styles/theme';
 import createEmotionCache from 'utilities/create-emotion-cache';
 import { L10n } from 'utilities/l10n';
 
-I18n.setLanguage('ja'); // Add
-I18n.putVocabularies(L10n); // Add
+// localized Amplify-UI
+I18n.setLanguage('ja');
+I18n.putVocabularies(L10n);
 
 Amplify.configure(awsconfig);
 

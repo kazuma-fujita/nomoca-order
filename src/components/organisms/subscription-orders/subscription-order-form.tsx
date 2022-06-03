@@ -48,7 +48,7 @@ export const SubscriptionOrderForm = () => {
       cancelHandler={cancelHandler}
       initialReceiptProducts={data?.products}
     >
-      <Box mt={2} mb={2} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
+      <Box mt={2} mb={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
         <TextField
           id='deliveryStartYear'
           variant='standard'
@@ -106,8 +106,9 @@ export const SubscriptionOrderForm = () => {
           )}
         />
       </Box>
-      <FormHelperText>定期便の新規申し込み、または注文内容変更後の配送開始月は翌月から承ります</FormHelperText>
-      <Box mb={8} />
+      <Box mb={8} ml={4}>
+        <FormHelperText>定期便の新規申し込み、または注文内容変更後の配送開始月は翌月から承ります</FormHelperText>
+      </Box>
     </OrderForm>
   );
 };

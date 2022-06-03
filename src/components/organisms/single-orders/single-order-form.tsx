@@ -16,7 +16,7 @@ export const SingleOrderForm = () => {
       cancelHandler={cancelHandler}
       initialReceiptProducts={data?.products}
     >
-      <Box mt={8} mb={8} mr={2} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
+      <Box mt={8} mb={8} mr={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
         <Controller
           name='deliveryType'
           control={formReturn.control}
