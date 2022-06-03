@@ -64,12 +64,23 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
   const fetchReturn = useFetchOrderList();
   const { data } = fetchReturn;
   const [isSelectedAll, setIsSelectedAll] = useToggle(false);
-  const handleAllSelectItem = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!data) return;
-    const isChecked = event.target.checked;
-    setSelectedItems(data);
-    setIsSelectedAll(isChecked);
-  };
+  // ヘッダーの注文全件選択/解除チェックボックス
+  const handleAllSelectItem = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (!data) return;
+      const isChecked = event.target.checked;
+      if (isChecked) {
+        // 全件チェックされたら注文全件行にチェックを入れる
+        setSelectedItems(data);
+        setIsSelectedAll(true);
+      } else {
+        // 全件チェックが外されたら注文全件行のチェックを外す
+        setSelectedItems([]);
+        setIsSelectedAll(false);
+      }
+    },
+    [data, setIsSelectedAll, setSelectedItems],
+  );
 
   return (
     <CommonTableContainer
@@ -77,6 +88,7 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
       tableHeaders={header}
       emptyListDescription='現在注文の商品はありません'
       selectAllCheckbox={
+        // 注文全件選択/解除チェックボックス
         <Checkbox
           color='primary'
           indeterminate={selectedItems.length > 0 ? (data ? selectedItems.length !== data.length : false) : false}
@@ -122,6 +134,7 @@ const Row = ({ rowItem, selectedItems, orderItemsLength, setSelectedItems, setIs
     },
     [rowItem, orderItemsLength, selectedItems, setIsSelectedAll, setSelectedItems],
   );
+
   return (
     <CommonTableRow key={rowItem.id} colSpan={header.length} products={rowItem.normalizedProducts}>
       <TableCell padding='checkbox' align='center'>
