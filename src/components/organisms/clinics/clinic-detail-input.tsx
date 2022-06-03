@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { useFetchClinic } from 'hooks/clinics/use-fetch-clinic';
 import { useEffect } from 'react';
@@ -36,11 +36,11 @@ export const ClinicDetailOrderFormInput = ({ setValue, control }: UseFormReturn<
 };
 
 export const ClinicDetailInput = () => {
-  const { data, error } = useFetchClinic();
-  // if (error) return <ErrorAlert>{error}</ErrorAlert>;
+  const { data, isLoading, error } = useFetchClinic();
+  if (isLoading) return <CircularProgress aria-label='Now loading' />;
+  if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <>
-      {error && <ErrorAlert>{error}</ErrorAlert>}
       {data ? (
         <Box display='flex' alignItems='center'>
           <ClinicDetail />
