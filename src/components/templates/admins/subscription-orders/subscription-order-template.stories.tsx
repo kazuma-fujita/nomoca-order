@@ -5,6 +5,21 @@ import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 
+const description = `
+
+## Use Case
+
+description
+
+	dummy
+	dummy
+
+## Specs
+
+## Back Office Ops
+
+`;
+
 const Wrapper: React.FC<FetchResponse> = (props) => (
   <AdminSubscriptionOrderListContextProvider mockResponse={props}>
     <NowDateContextProvider now={new Date(2023, 0, 1, 9)}>
@@ -25,10 +40,17 @@ export const Default: Story = {
     isEmptyList: false,
     mutate: async () => undefined,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: description,
+      },
+    },
+  },
 };
 
 export const Loading: Story = { args: { ...Default.args, data: null, isLoading: true } };
 
 export const FetchError: Story = { args: { ...Default.args, data: null, error: Error('Occurred data fetch error') } };
 
-export const EmptyData: Story = { args: { ...Default.args, data: [] } };
+export const EmptyData: Story = { args: { ...Default.args, data: [], isEmptyList: true } };

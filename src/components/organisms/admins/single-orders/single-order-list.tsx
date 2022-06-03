@@ -27,27 +27,27 @@ const header: TableHeader[] = [
   },
   {
     label: '電話番号',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '配送先',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '注文日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '配送方法',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '発送状況',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '発送日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '発注担当者',

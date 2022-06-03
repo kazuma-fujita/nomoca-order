@@ -1,7 +1,8 @@
+import { TableCell } from '@mui/material';
 import { SubscriptionOrder } from 'API';
-import { StyledTableCell } from 'components/atoms/tables/styled-table-cell';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
 import { CommonTableRow } from 'components/molecules/common-table-row';
+import { ClinicDetailButton } from 'components/organisms/clinics/clinic-detail-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { generateFormattedNextDeliveryYearMonth } from 'functions/delivery-dates/generate-next-delivery-year-month';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
@@ -21,30 +22,34 @@ const header: TableHeader[] = [
   },
   {
     label: '電話番号',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
-    label: '発注担当者',
-    minWidth: 160,
+    label: '配送先',
+    minWidth: 80,
   },
   {
     label: '配送開始月',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '配送頻度',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '次回配送予定月',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '申し込み日時',
-    minWidth: 160,
+    minWidth: 80,
   },
+  // {
+  //   label: '更新日時',
+  //   minWidth: 160,
+  // },
   {
-    label: '更新日時',
+    label: '発注担当者',
     minWidth: 160,
   },
 ];
@@ -78,14 +83,17 @@ const Row = ({ item, now }: RowProps) => {
   );
   return (
     <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
-      <StyledTableCell align='center'>{item.clinic.name}</StyledTableCell>
-      <StyledTableCell align='center'>{item.clinic.phoneNumber}</StyledTableCell>
-      <StyledTableCell align='center'>{`${item.staff.lastName}  ${item.staff.firstName}`}</StyledTableCell>
-      <StyledTableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</StyledTableCell>
-      <StyledTableCell align='center'>{`${item.deliveryInterval}ヶ月`}</StyledTableCell>
-      <StyledTableCell align='center'>{formattedNextDeliveryDate}</StyledTableCell>
-      <StyledTableCell align='center'>{formatDateHourMinute(item.createdAt)}</StyledTableCell>
-      <StyledTableCell align='center'>{formatDateHourMinute(item.updatedAt)}</StyledTableCell>
+      <TableCell align='center'>{item.clinic.name}</TableCell>
+      <TableCell align='center'>{item.clinic.phoneNumber}</TableCell>
+      <TableCell align='center'>
+        <ClinicDetailButton {...item.clinic} />
+      </TableCell>
+      <TableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</TableCell>
+      <TableCell align='center'>{`${item.deliveryInterval}ヶ月`}</TableCell>
+      <TableCell align='center'>{formattedNextDeliveryDate}</TableCell>
+      <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+      {/* <TableCell align='center'>{formatDateHourMinute(item.updatedAt)}</TableCell> */}
+      <TableCell align='center'>{`${item.staff.lastName}  ${item.staff.firstName}`}</TableCell>
     </CommonTableRow>
   );
 };

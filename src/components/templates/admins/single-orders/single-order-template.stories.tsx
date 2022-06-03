@@ -50,46 +50,4 @@ export const Loading: Story = { args: { ...Default.args, data: null, isLoading: 
 
 export const FetchError: Story = { args: { ...Default.args, data: null, error: Error('Occurred data fetch error') } };
 
-export const EmptyData: Story = { args: { ...Default.args, data: [] } };
-
-// type Story = ComponentStoryObj<typeof SingleOrderTemplate>;
-
-// export default { component: SingleOrderTemplate };
-
-// export const Default: Story = {
-//   decorators: [
-//     (StoryComponent) => (
-//       <ClinicContextProvider>
-//         <StoryComponent />
-//       </ClinicContextProvider>
-//     ),
-//   ],
-// };
-
-// Default.parameters = {
-//   docs: {
-//     description: {
-//       component: description,
-//     },
-//   },
-//   msw: {
-//     handlers: [
-//       graphql.query('ListOrdersSortedByCreatedAt', (req, res, ctx) => {
-//         const response = {
-//           listOrdersSortedByCreatedAt: {
-//             items: adminOrderListMock,
-//           },
-//         };
-//         return res(ctx.data(response));
-//       }),
-//       graphql.query('ListClinics', (req, res, ctx) => {
-//         const response = {
-//           listClinics: {
-//             items: [clinicMock],
-//           },
-//         };
-//         return res(ctx.data(response));
-//       }),
-//     ],
-//   },
-// };
+export const EmptyData: Story = { args: { ...Default.args, data: [], isEmptyList: true } };
