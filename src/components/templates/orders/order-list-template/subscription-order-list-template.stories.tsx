@@ -39,7 +39,7 @@ export default { title: ScreenName.subscriptionOrder, component: Wrapper };
 
 export const Default: Story = {
   args: {
-    data: subscriptionOrderListMock,
+    data: [subscriptionOrderListMock[0]],
     error: null,
     isLoading: false,
     isEmptyList: false,
