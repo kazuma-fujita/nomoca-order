@@ -1,47 +1,91 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { staffListMock } from 'mocks/staff.mock';
-import { graphql } from 'msw';
+import { ScreenName } from 'constants/screen-name';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
+import { FetchResponse } from 'hooks/swr/use-fetch';
+import { staffListMock } from 'mocks/staff.mock';
 import { StaffTemplate } from './staff-template';
-import awsconfig from 'aws-exports';
-import { Amplify } from 'aws-amplify';
 
-// Cognito認証でAppSyncを実行するとNo current user errorが発生する為、API_KEY認証に切り替え
-Amplify.configure({ ...awsconfig, aws_appsync_authenticationType: 'API_KEY' });
+const description = `
 
-type Story = ComponentStoryObj<typeof StaffTemplate>;
+## Use Case
 
-export default { component: StaffTemplate };
+description
+
+	dummy
+	dummy
+
+## Specs
+
+## Back Office Ops
+
+`;
+
+const Wrapper: React.FC<FetchResponse> = (props) => (
+  <StaffListContextProvider isFilterByActiveStaff={false} mockResponse={props}>
+    <StaffTemplate />
+  </StaffListContextProvider>
+);
+
+type Story = ComponentStoryObj<typeof Wrapper>;
+
+export default { title: ScreenName.staff, component: Wrapper };
 
 export const Default: Story = {
-  decorators: [
-    (StoryComponent) => (
-      <StaffListContextProvider isFilterByActiveStaff={false}>
-        <StoryComponent />
-      </StaffListContextProvider>
-    ),
-  ],
-};
-
-Default.parameters = {
-  // docs: {
-  //   description: {
-  //     component: description,
-  //   },
-  // },
-  msw: {
-    handlers: [
-      graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => {
-        const response = {
-          listStaffSortedByViewOrder: {
-            items: staffListMock,
-          },
-        };
-        return res(ctx.data(response));
-      }),
-    ],
+  args: {
+    data: staffListMock,
+    error: null,
+    isLoading: false,
+    isEmptyList: false,
+    mutate: async () => undefined,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: description,
+      },
+    },
   },
 };
+
+export const Loading: Story = { args: { ...Default.args, data: null, isLoading: true } };
+
+export const FetchError: Story = { args: { ...Default.args, data: null, error: Error('Occurred data fetch error') } };
+
+export const EmptyData: Story = { args: { ...Default.args, data: [], isEmptyList: true } };
+
+// type Story = ComponentStoryObj<typeof StaffTemplate>;
+
+// export default { component: StaffTemplate };
+
+// export const Default: Story = {
+//   decorators: [
+//     (StoryComponent) => (
+//       <StaffListContextProvider isFilterByActiveStaff={false}>
+//         <StoryComponent />
+//       </StaffListContextProvider>
+//     ),
+//   ],
+// };
+
+// Default.parameters = {
+//   // docs: {
+//   //   description: {
+//   //     component: description,
+//   //   },
+//   // },
+//   msw: {
+//     handlers: [
+//       graphql.query('ListStaffSortedByViewOrder', (req, res, ctx) => {
+//         const response = {
+//           listStaffSortedByViewOrder: {
+//             items: staffListMock,
+//           },
+//         };
+//         return res(ctx.data(response));
+//       }),
+//     ],
+//   },
+// };
 
 // export const Loading: Story = {
 //   args: { isLoading: true },
