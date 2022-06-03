@@ -1,15 +1,15 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { Clinic, OrderType, Product, Staff } from 'API';
+import { OrderType } from 'API';
 import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
 import { orderFormDefaultValues } from 'hooks/orders/use-input-order';
 import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
-import { FetchResponse } from 'hooks/swr/use-fetch';
 import { clinicMock } from 'mocks/clinic.mock';
 import { productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
+import { OrderFormStorybookProps } from 'types/storybook-types';
 import { OrderFormTemplate } from './order-form-template';
 
 const description = `
@@ -27,13 +27,7 @@ description
 
 `;
 
-type Props = {
-  products: FetchResponse<Product[]>;
-  staff: FetchResponse<Staff[]>;
-  clinic: FetchResponse<Clinic | null>;
-};
-
-const Wrapper: React.FC<Props> = ({ products, staff, clinic }) => (
+const Wrapper: React.FC<OrderFormStorybookProps> = ({ products, staff, clinic }) => (
   <ProductListContextProvider
     orderType={OrderType.subscriptionOrder}
     isFilterByActiveProduct={true}

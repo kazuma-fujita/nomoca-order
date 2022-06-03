@@ -5,7 +5,7 @@ import { CompleteOrderTemplate } from './complete-order-template';
 
 type Story = ComponentStoryObj<typeof CompleteOrderTemplate>;
 
-export default { component: CompleteOrderTemplate };
+export default { title: '注文入力完了', component: CompleteOrderTemplate };
 
 export const Default: Story = {};
 
