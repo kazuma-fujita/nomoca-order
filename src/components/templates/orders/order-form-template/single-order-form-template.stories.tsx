@@ -36,7 +36,23 @@ const description = `
 
 # Specs
 
-## 商品
+### 商品
+
+| 項目 | 値 |
+| ---: | :--- |
+| 必須 | ◯ |
+| 種類 | SelectBox |
+| 型 | All types of characters |
+| 最大桁 | 256 |
+
+### 数量
+
+| 項目 | 値 |
+| ---: | :--- |
+| 必須 | ◯ |
+| 種類 | SelectBox |
+| 型 | Numeric |
+| 最大桁 | 256 |
 
 `;
 
