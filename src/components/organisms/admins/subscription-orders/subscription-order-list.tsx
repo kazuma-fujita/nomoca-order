@@ -44,14 +44,6 @@ const header: TableHeader[] = [
     label: '申し込み日時',
     minWidth: 80,
   },
-  // {
-  //   label: '更新日時',
-  //   minWidth: 160,
-  // },
-  {
-    label: '発注担当者',
-    minWidth: 160,
-  },
 ];
 
 export const SubscriptionOrderList = (props: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>) => {
@@ -86,14 +78,12 @@ const Row = ({ item, now }: RowProps) => {
       <TableCell align='center'>{item.clinic.name}</TableCell>
       <TableCell align='center'>{item.clinic.phoneNumber}</TableCell>
       <TableCell align='center'>
-        <ClinicDetailButton {...item.clinic} />
+        <ClinicDetailButton staffName={`${item.staff.lastName}  ${item.staff.firstName}`} clinic={item.clinic} />
       </TableCell>
       <TableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</TableCell>
       <TableCell align='center'>{`${item.deliveryInterval}ヶ月`}</TableCell>
       <TableCell align='center'>{formattedNextDeliveryDate}</TableCell>
       <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
-      {/* <TableCell align='center'>{formatDateHourMinute(item.updatedAt)}</TableCell> */}
-      <TableCell align='center'>{`${item.staff.lastName}  ${item.staff.firstName}`}</TableCell>
     </CommonTableRow>
   );
 };

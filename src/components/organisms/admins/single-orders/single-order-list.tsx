@@ -49,10 +49,6 @@ const header: TableHeader[] = [
     label: '発送日時',
     minWidth: 80,
   },
-  {
-    label: '発注担当者',
-    minWidth: 160,
-  },
 ];
 
 type Props = {
@@ -147,7 +143,10 @@ const Row = ({ rowItem, selectedItems, orderItemsLength, setSelectedItems, setIs
       <TableCell align='center'>{rowItem.clinic.name}</TableCell>
       <TableCell align='center'>{rowItem.clinic.phoneNumber}</TableCell>
       <TableCell align='center'>
-        <ClinicDetailButton {...rowItem.clinic} />
+        <ClinicDetailButton
+          staffName={`${rowItem.staff.lastName}  ${rowItem.staff.firstName}`}
+          clinic={rowItem.clinic}
+        />
       </TableCell>
       <TableCell align='center'>{formatDateHourMinute(rowItem.createdAt)}</TableCell>
       <TableCell align='center'>
@@ -157,7 +156,6 @@ const Row = ({ rowItem, selectedItems, orderItemsLength, setSelectedItems, setIs
         <DeliveryStatusChip status={rowItem.deliveryStatus} />
       </TableCell>
       <TableCell align='center'>{rowItem.deliveredAt ? formatDateHourMinute(rowItem.deliveredAt) : '-'}</TableCell>
-      <TableCell align='center'>{`${rowItem.staff.lastName}  ${rowItem.staff.firstName}`}</TableCell>
     </CommonTableRow>
   );
 };
