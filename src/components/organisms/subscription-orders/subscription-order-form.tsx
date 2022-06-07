@@ -107,7 +107,7 @@ export const SubscriptionOrderForm = () => {
         />
       </Box>
       <Box mb={8} ml={4}>
-        <FormHelperText>定期便の新規申し込み、または注文内容変更後の配送開始月は翌月から承ります</FormHelperText>
+        <FormHelperText>定期便の新規申し込み、または注文内容変更の配送開始月は翌月から承ります</FormHelperText>
       </Box>
     </OrderForm>
   );

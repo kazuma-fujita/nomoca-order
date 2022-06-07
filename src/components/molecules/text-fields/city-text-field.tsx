@@ -30,7 +30,7 @@ export const CityTextField = ({ formState, register, disabled }: Props) => (
       maxLength: { value: MAX_LENGTH, message: '市区町村は' + MAX_LENGTH + '桁で入力してください' },
       pattern: {
         value: /^[^!"#$%&'()*+.\-,/:;<=>?@[\\\]^_`{|}~\s\p{Symbol}]+$/u, // 半角記号、空白、数学記号、通貨記号、音声記号、絵文字、機種依存文字を除外
-        message: '市区町村市区町村で使用できない文字が含まれています',
+        message: '市区町村で使用できない文字が含まれています',
       },
     })}
   />

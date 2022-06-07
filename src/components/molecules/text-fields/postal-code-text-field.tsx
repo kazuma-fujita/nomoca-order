@@ -23,7 +23,7 @@ export const PostalCodeTextField = ({ formState, register, handleOnChange, disab
     // 郵便番号検索で動的にtrim処理をする為valueに値をセット
     // value={postalCode}
     error={Boolean(formState.errors.postalCode)}
-    helperText={formState.errors.postalCode ? formState.errors.postalCode.message : '例 1234567'}
+    helperText={formState.errors.postalCode ? formState.errors.postalCode.message : 'ハイフンを除く 例 1234567'}
     inputProps={{
       maxLength: MAX_LENGTH,
     }}

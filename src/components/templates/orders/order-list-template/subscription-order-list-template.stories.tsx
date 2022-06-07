@@ -10,16 +10,22 @@ import { OrderListTemplate } from './order-list-template';
 
 const description = `
 
-## Use Case
+# Use Case
 
-description
+## 顧客ユースケース
 
-	dummy
-	dummy
+- 顧客は本画面上で定期便申し込み、変更、解約をする
+  - 定期便申し込み、変更、解約完了時、完了メールをログインメールアドレス宛に受信
+  - 定期便内容変更・解約は任意のタイミングで可能
+- 配送予定月に発送通知メールを受信
+- メール受信と共に注文画面から発送履歴を閲覧可能
+  - 注文画面一覧に定期便商品が追加され、発送日時列に発送日時が表示される
 
-## Specs
+# Specs
 
-## Back Office Ops
+## 一覧画面
+
+- 定期便申し込み日時降順で一覧表示
 
 `;
 

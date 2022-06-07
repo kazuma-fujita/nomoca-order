@@ -14,16 +14,42 @@ import { OrderFormTemplate } from './order-form-template';
 
 const description = `
 
-## Use Case
+# Use Case
 
-description
+## 顧客ユースケース
 
-	dummy
-	dummy
+- 顧客は本画面上で定期便商品を入力する
+  - 任意の商品、個数を選択可能
+	- 数量は1〜25個の範囲で選択
+	- 選択した商品、個数を計算し単価・金額・税・合計金額をプレビュー表示
+  - 商品追加・削除ボタンで購入商品の追加・削除が可能
+  - 複数の商品プルダウンで同一商品を選択した場合、確認画面では個数を合算した1商品のみ表示
+- 配送開始月を選択する
+	- 翌月以降、6ヶ月先まで選択可能
+- 配送頻度
+  - 1〜6ヶ月の範囲で選択可能
+- 配送先を作成、または編集する
+  - 1アカウント1配送先のみ登録可能
+  - 配送先登録が無ければ \`配送先を作成する\` ボタンを表示
+	- 配送先登録済みの場合 \`配送先を編集する\` ボタンを表示
+- 発注担当者を選択、または追加する
+  - 発注担当者登録が無ければ  \`発注担当者を追加する\` ボタンを表示
+  - 発注担当者登録済みの場合、発注担当者プルダウンと \`発注担当者を追加する\` ボタンを表示
+- 確認ボタンを押下し注文確認画面へ遷移する
 
-## Specs
+# Specs
 
-## Back Office Ops
+## 一覧画面
+
+- 注文日時降順で一覧表示
+
+## 当月発送定期便をCSV出力して顧客に発送通知をするボタン
+
+- 当月発送分定期便商品の一覧CSVを出力
+- CSV出力後、顧客へ発送通知メールを送信
+- CSV出力後、DBに発送履歴を作成。顧客は発送履歴を注文画面で閲覧可
+- 当月発送分のCSVは一度のみ出力可能。CSV出力後は翌月1日までボタンクリック不可
+
 
 `;
 
@@ -40,7 +66,7 @@ const Wrapper: React.FC<OrderFormStorybookProps> = ({ products, staff, clinic })
           orderType={OrderType.subscriptionOrder}
           initialOrderFormParam={orderFormDefaultValues}
         >
-          <NowDateContextProvider now={new Date(2022, 3, 1, 9)}>
+          <NowDateContextProvider now={new Date(2022, 5, 1, 9)}>
             <OrderFormTemplate />
           </NowDateContextProvider>
         </OrderFormParamContextProvider>
