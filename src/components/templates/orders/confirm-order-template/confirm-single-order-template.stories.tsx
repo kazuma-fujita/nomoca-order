@@ -27,9 +27,9 @@ const description = `
 `;
 
 const defaultValues: OrderFormParam = {
-  products: createNormalizedProductsMock(3),
+  products: createNormalizedProductsMock(2),
   staffID: 'dummyStaffID-1',
-  deliveryType: DeliveryType.regular,
+  deliveryType: DeliveryType.express,
 };
 
 const Wrapper: React.FC<OrderFormStorybookProps> = ({ products, staff, clinic }) => (
