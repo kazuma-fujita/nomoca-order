@@ -110,17 +110,17 @@ export const Default: Story = {
 //   },
 // };
 
-// export const EmptyData: Story = {
-//   args: {
-//     ...Default.args,
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     products: { ...Default.args!.products!, data: [], isEmptyList: true },
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     staff: { ...Default.args!.staff!, data: [], isEmptyList: true },
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     clinic: { ...Default.args!.clinic!, data: null, isEmptyList: true },
-//   },
-// };
+export const EmptyData: Story = {
+  args: {
+    ...Default.args,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    products: { ...Default.args!.products!, data: [], isEmptyList: true },
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    staff: { ...Default.args!.staff!, data: [], isEmptyList: true },
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    clinic: { ...Default.args!.clinic!, data: null, isEmptyList: true },
+  },
+};
 
 // type Story = ComponentStoryObj<typeof ConfirmOrderTemplate>;
 

@@ -19,11 +19,15 @@ const description = `
 - 顧客は本画面上で入力商品情報を確認する
   - 入力した商品の数量、単価、金額、小計、税、合計金額を表示
   - 入力画面の複数の商品プルダウンで同一商品を選択した場合、本画面では個数を合算した1商品のみ表示
-  - TODO: 合計1万円未満に対して1000円手数料は必要か確認
 - 配送開始月、配送頻度、配送先、発注担当者を確認する
 - 注文ボタンを押下し注文完了画面へ遷移する
 
-`;
+
+	ユースケースとして定期便に1万円未満商品は存在しない前提。
+	よって、入力画面の計1万円未満注文に対して1,000円の配送手数料の注記、確認画面の手数料追加処理は不要。
+	2022/06/08 SH野口さんに上記仕様で問題無いことを確認済み
+
+	`;
 
 const defaultValues: OrderFormParam = {
   products: createNormalizedProductsMock(3),
@@ -111,17 +115,17 @@ export const Default: Story = {
 //   },
 // };
 
-// export const EmptyData: Story = {
-//   args: {
-//     ...Default.args,
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     products: { ...Default.args!.products!, data: [], isEmptyList: true },
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     staff: { ...Default.args!.staff!, data: [], isEmptyList: true },
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     clinic: { ...Default.args!.clinic!, data: null, isEmptyList: true },
-//   },
-// };
+export const EmptyData: Story = {
+  args: {
+    ...Default.args,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    products: { ...Default.args!.products!, data: [], isEmptyList: true },
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    staff: { ...Default.args!.staff!, data: [], isEmptyList: true },
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    clinic: { ...Default.args!.clinic!, data: null, isEmptyList: true },
+  },
+};
 
 // type Story = ComponentStoryObj<typeof ConfirmOrderTemplate>;
 

@@ -5,7 +5,7 @@ import { ProductSelectBox } from 'components/molecules/select-boxes/product-sele
 import { StaffSelectBox } from 'components/molecules/select-boxes/staff-select-box';
 import { BaseSyntheticEvent } from 'react';
 import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
-import { OrderFormParam } from 'stores/use-order-form-param';
+import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { ClinicDetailOrderFormInput } from '../clinics/clinic-detail-input';
 
 type Props = {
@@ -22,6 +22,7 @@ export const OrderForm: React.FC<Props> = ({
   fieldArrayReturn,
   children,
 }) => {
+  const { data: formParam } = useOrderFormParam();
   return (
     <>
       {/* 配送先と担当者の入力formがネストしている為、配送先と担当者を登録しようとすると注文画面のformも送信されてしまう。
@@ -47,9 +48,18 @@ export const OrderForm: React.FC<Props> = ({
         </Box>
       </Box>
       <Box mt={8} mb={8} width='auto' display='flex' justifyContent='center'>
-        <Button onClick={cancelHandler}>キャンセル</Button>
+        {/* URL直叩き対応の為、formの初期値が無ければ(formParamが無ければ)各ボタンdisabled */}
+        <Button onClick={cancelHandler} disabled={!formParam}>
+          キャンセル
+        </Button>
         <Box mr={18} />
-        <Button type='submit' variant='contained' startIcon={<ArrowForwardIosIcon />} form='order-form'>
+        <Button
+          type='submit'
+          variant='contained'
+          startIcon={<ArrowForwardIosIcon />}
+          form='order-form'
+          disabled={!formParam}
+        >
           確認する
         </Button>
       </Box>

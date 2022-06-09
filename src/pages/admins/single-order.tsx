@@ -6,6 +6,7 @@ import { OrderListContextProvider } from 'hooks/orders/use-fetch-order-list';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
+import { NowDateContextProvider } from 'stores/use-now-date';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();
@@ -17,7 +18,9 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       </Head>
       <Main>
         <OrderListContextProvider>
-          <SingleOrderTemplate />
+          <NowDateContextProvider now={new Date()}>
+            <SingleOrderTemplate />
+          </NowDateContextProvider>
         </OrderListContextProvider>
       </Main>
     </>

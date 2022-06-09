@@ -4,6 +4,7 @@ import { FetchResponse } from 'hooks/swr/use-fetch';
 import { adminOrderListMock } from 'mocks/order-list.mock';
 import { SingleOrderTemplate } from './single-order-template';
 import { ScreenName } from 'constants/screen-name';
+import { NowDateContextProvider } from 'stores/use-now-date';
 
 const description = `
 
@@ -22,7 +23,7 @@ const description = `
   - 一度 \`発送済\` に変更した商品は \`未発送\` 状態に差し戻し不可
 
 
-	CSV出力項目にチェックが入っていない商品のみの注文の場合、
+	CSV出力項目にチェックが入っていな商品のみの注文の場合、
 	CSV出力ボタン押下時、その注文はCSV出力対象外とし、顧客への発送通知と発送履歴のDB登録のみ実行する
 
 
@@ -87,7 +88,9 @@ const description = `
 
 const Wrapper: React.FC<FetchResponse> = (props) => (
   <OrderListContextProvider mockResponse={props}>
-    <SingleOrderTemplate />
+    <NowDateContextProvider now={new Date()}>
+      <SingleOrderTemplate />
+    </NowDateContextProvider>
   </OrderListContextProvider>
 );
 

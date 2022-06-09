@@ -46,7 +46,6 @@ export const SubscriptionOrderForm = () => {
       fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
       submitHandler={submitHandler}
       cancelHandler={cancelHandler}
-      // initialReceiptProducts={data?.products}
     >
       <Box mt={2} mb={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
         <TextField
