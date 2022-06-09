@@ -93,8 +93,8 @@ export const getOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -142,8 +142,8 @@ export const listOrders = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        updatedAt
         owner
+        updatedAt
       }
       nextToken
     }
@@ -385,8 +385,8 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        updatedAt
         owner
+        updatedAt
       }
       nextToken
     }

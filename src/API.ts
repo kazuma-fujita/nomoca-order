@@ -106,6 +106,7 @@ export type CreateOrderInput = {
   deliveredAt?: string | null,
   createdAt?: string | null,
   type: Type,
+  owner?: string | null,
 };
 
 export enum OrderType {
@@ -146,6 +147,7 @@ export type ModelOrderConditionInput = {
   deliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelTypeInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelOrderConditionInput | null > | null,
   or?: Array< ModelOrderConditionInput | null > | null,
   not?: ModelOrderConditionInput | null,
@@ -201,8 +203,8 @@ export type Order = {
   deliveredAt?: string | null,
   createdAt: string,
   type: Type,
-  updatedAt: string,
   owner?: string | null,
+  updatedAt: string,
 };
 
 export type ModelOrderProductConnection = {
@@ -247,6 +249,7 @@ export type UpdateOrderInput = {
   deliveredAt?: string | null,
   createdAt?: string | null,
   type?: Type | null,
+  owner?: string | null,
 };
 
 export type DeleteOrderInput = {
@@ -522,6 +525,7 @@ export type ModelOrderFilterInput = {
   deliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelTypeInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelOrderFilterInput | null > | null,
   or?: Array< ModelOrderFilterInput | null > | null,
   not?: ModelOrderFilterInput | null,
@@ -741,8 +745,8 @@ export type CreateOrderMutation = {
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -805,8 +809,8 @@ export type UpdateOrderMutation = {
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -869,8 +873,8 @@ export type DeleteOrderMutation = {
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -1439,8 +1443,8 @@ export type GetOrderQuery = {
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -1494,8 +1498,8 @@ export type ListOrdersQuery = {
       deliveredAt?: string | null,
       createdAt: string,
       type: Type,
-      updatedAt: string,
       owner?: string | null,
+      updatedAt: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1760,8 +1764,8 @@ export type ListOrdersSortedByCreatedAtQuery = {
       deliveredAt?: string | null,
       createdAt: string,
       type: Type,
-      updatedAt: string,
       owner?: string | null,
+      updatedAt: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -2004,8 +2008,8 @@ export type OnCreateOrderSubscription = {
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -2067,8 +2071,8 @@ export type OnUpdateOrderSubscription = {
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -2130,8 +2134,8 @@ export type OnDeleteOrderSubscription = {
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 

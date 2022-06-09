@@ -26,7 +26,7 @@ export const useUpdateSingleOrderDeliveryStatus = () => {
         if (order.deliveryStatus !== DeliveryStatus.ordered) {
           continue;
         }
-        // deliveryStatusを発送済みに設定
+        // deliveryStatusを発送済み、発送日時に現在日時を設定
         const input: UpdateOrderInput = {
           id: order.id,
           deliveryStatus: DeliveryStatus.delivered,
@@ -45,6 +45,7 @@ export const useUpdateSingleOrderDeliveryStatus = () => {
       }
       setIsLoading(false);
       setError(null);
+      // deliveryStatusの変更を一覧に反映
       mutate(SWRKey.orderList);
     } catch (error) {
       setIsLoading(false);

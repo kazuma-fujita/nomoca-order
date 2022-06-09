@@ -103,8 +103,8 @@ export const onCreateOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -158,8 +158,8 @@ export const onUpdateOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -213,8 +213,8 @@ export const onDeleteOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;

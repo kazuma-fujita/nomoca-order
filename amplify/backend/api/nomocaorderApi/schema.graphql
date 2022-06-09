@@ -36,7 +36,7 @@ type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Op
 
 type Order
   @model
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, update] }]) {
+  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, create, update] }]) {
   id: ID!
   products: [OrderProduct] @hasMany(indexName: "byOrder", fields: ["id"])
   clinicID: ID!
@@ -49,6 +49,7 @@ type Order
   deliveredAt: AWSDateTime
   createdAt: AWSDateTime!
   type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
+  owner: String
 }
 
 type OrderProduct
