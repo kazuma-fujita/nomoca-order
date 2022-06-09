@@ -3,7 +3,6 @@ import { Box, Button, Chip, Divider } from '@mui/material';
 import Form from 'components/atoms/form';
 import { ProductSelectBox } from 'components/molecules/select-boxes/product-select-box';
 import { StaffSelectBox } from 'components/molecules/select-boxes/staff-select-box';
-import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { BaseSyntheticEvent } from 'react';
 import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam } from 'stores/use-order-form-param';
@@ -14,7 +13,6 @@ type Props = {
   cancelHandler: () => void;
   formReturn: UseFormReturn<OrderFormParam, object>;
   fieldArrayReturn: UseFieldArrayReturn;
-  initialReceiptProducts?: NormalizedProduct[] | null;
 };
 
 export const OrderForm: React.FC<Props> = ({
@@ -22,7 +20,6 @@ export const OrderForm: React.FC<Props> = ({
   cancelHandler,
   formReturn,
   fieldArrayReturn,
-  initialReceiptProducts,
   children,
 }) => {
   return (
@@ -30,11 +27,7 @@ export const OrderForm: React.FC<Props> = ({
       {/* 配送先と担当者の入力formがネストしている為、配送先と担当者を登録しようとすると注文画面のformも送信されてしまう。
 			form二重送信を回避する為、formのid属性とsubmit buttonのform属性に同じidを設定する。かつ、submit buttonをformタグの外に出す */}
       <Form id='order-form' onSubmit={submitHandler}></Form>
-      <ProductSelectBox
-        fieldArrayReturn={fieldArrayReturn}
-        initialReceiptProducts={initialReceiptProducts}
-        {...formReturn}
-      />
+      <ProductSelectBox fieldArrayReturn={fieldArrayReturn} {...formReturn} />
       {children}
       {/* 配送先と担当者componentsはそれぞれ入力formがあるので、注文画面のformタグの外に配置する */}
       <Box mb={8}>

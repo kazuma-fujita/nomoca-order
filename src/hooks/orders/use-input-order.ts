@@ -36,78 +36,41 @@ export const useUpsertOrderButton = (id?: string, products?: NormalizedProduct[]
   // ボタン押下時処理
   const onButtonClick = useCallback(() => {
     mutate(defaultValues, false);
+    // 以下各画面遷移時に shallow=true を指定すると画面リロードが走らず、SPAの挙動となる
+    // order-template.tsx のuseRouterで変更後のクエリを取得、コンポーネントを切り替える
     router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
   }, [basePath, defaultValues, mutate, router]);
 
   return { buttonLabel, onButtonClick };
 };
 
-// export const useUpdateOrderButton = (id: string, products: NormalizedProduct[], staffID: string) => {
-//   const router = useRouter();
-//   const { mutate, orderType } = useOrderFormParam();
-//   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
-//   const buttonLabel = '変更する';
-//   // 入力フォーム初期値
-//   const defaultValues: OrderFormParam = useMemo(
-//     () => ({
-//       id: id,
-//       products: products,
-//       deleteProducts: products,
-//       staffID: staffID,
-//     }),
-//     [id, products, staffID],
-//   );
-
-//   // ボタン押下時処理
-//   const onButtonClick = useCallback(() => {
-//     mutate(defaultValues, false);
-//     router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
-//   }, [basePath, defaultValues, mutate, router]);
-
-//   return { buttonLabel, onButtonClick };
-// };
-
-// export const useCreateOrderButton = () => {
-//   const router = useRouter();
-//   const { mutate, orderType } = useOrderFormParam();
-//   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
-//   const buttonLabel = orderType === OrderType.singleOrder ? '商品を注文する' : '定期便を申し込む';
-
-//   // 注文する、申し込むボタン押下時処理
-//   const onButtonClick = useCallback(() => {
-//     // useOrderFormで入力フォーム初期値が無ければ一覧画面に遷移させる為、このタイミングでStateを保存
-//     mutate(orderFormDefaultValues, false);
-//     router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
-//   }, [basePath, mutate, router]);
-
-//   return { buttonLabel, onButtonClick };
-// };
-
 export const useInputOrder = () => {
   const router = useRouter();
-  const { data, mutate, orderType } = useOrderFormParam();
-  const { data: productList } = useFetchProductList();
+  const { data: defaultValues, mutate, orderType } = useOrderFormParam();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
 
-  if (!data || !productList) {
-    router.push(basePath);
-  }
-
-  const formReturn = useForm<OrderFormParam>({ defaultValues: data! });
+  const formReturn = useForm<OrderFormParam>({ defaultValues: defaultValues ?? {} });
   const { handleSubmit, control } = formReturn;
   const fieldArrayReturn = useFieldArray({ control, name: 'products' });
 
   const cancelHandler = useCallback(() => {
     mutate(undefined, false);
+    // 以下各画面遷移時に shallow=true を指定すると画面リロードが走らず、SPAの挙動となる
+    // order-template.tsx のuseRouterで変更後のクエリを取得、コンポーネントを切り替える
     router.push(basePath, undefined, { shallow: true });
   }, [mutate, router, basePath]);
+
+  const { data: productList } = useFetchProductList();
 
   // 確認するボタン押下時処理
   const submitHandler = handleSubmit(
     useCallback(
       (data: OrderFormParam) => {
+        if (!data.products || !productList || !productList.length) {
+          throw Error('Input form values are not found.');
+        }
         // 入力された商品配列データをviewOrder順に並び替え、重複商品はquantityを合計してmergeし重複削除。
-        const mergedProducts = mergeOrderFormProductList(data.products!, productList!);
+        const mergedProducts = mergeOrderFormProductList(data.products, productList);
         // 確認画面に表示する為Stateに保存。確認画面から修正するボタン押下時も入力画面にmerge済み商品を表示する為、このタイミングで重複商品mergeを実行する
         mutate({ ...data, products: mergedProducts }, false);
         router.push(`${basePath}?${FormScreenQuery.confirm}`, undefined, { shallow: true });
