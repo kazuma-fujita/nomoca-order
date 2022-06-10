@@ -36,7 +36,12 @@ type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Op
 
 type Order
   @model
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, create, update] }]) {
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "owner" }
+      { allow: groups, groups: ["Operators"], operations: [read, create, update] }
+    ]
+  ) {
   id: ID!
   products: [OrderProduct] @hasMany(indexName: "byOrder", fields: ["id"])
   clinicID: ID!

@@ -5,7 +5,7 @@ import { mergeOrderFormProductList } from 'functions/orders/merge-order-form-pro
 import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 
@@ -52,6 +52,13 @@ export const useInputOrder = () => {
   const formReturn = useForm<OrderFormParam>({ defaultValues: defaultValues ?? {} });
   const { handleSubmit, control } = formReturn;
   const fieldArrayReturn = useFieldArray({ control, name: 'products' });
+
+  // URL直叩き対応。入力フォームの初期値が無ければ一覧画面へ遷移
+  useEffect(() => {
+    if (!defaultValues) {
+      router.push(basePath);
+    }
+  }, [basePath, defaultValues, router]);
 
   const cancelHandler = useCallback(() => {
     mutate(undefined, false);

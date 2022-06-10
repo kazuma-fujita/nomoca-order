@@ -108,6 +108,17 @@ export const listOrders = /* GraphQL */ `
       items {
         id
         products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         clinicID
@@ -158,6 +169,18 @@ export const getSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -215,6 +238,27 @@ export const listSubscriptionOrders = /* GraphQL */ `
       items {
         id
         products {
+          items {
+            id
+            subscriptionOrderID
+            productID
+            product {
+              id
+              name
+              unitPrice
+              orderType
+              viewOrder
+              isExportCSV
+              disabled
+              type
+              createdAt
+              updatedAt
+            }
+            quantity
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         clinicID
@@ -351,6 +395,17 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
       items {
         id
         products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         clinicID
@@ -412,6 +467,27 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
       items {
         id
         products {
+          items {
+            id
+            subscriptionOrderID
+            productID
+            product {
+              id
+              name
+              unitPrice
+              orderType
+              viewOrder
+              isExportCSV
+              disabled
+              type
+              createdAt
+              updatedAt
+            }
+            quantity
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         clinicID

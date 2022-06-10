@@ -4,6 +4,7 @@ import { Path } from 'constants/path';
 import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
 import { useCreateOrder } from 'hooks/orders/use-upsert-order';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useOrderFormParam } from 'stores/use-order-form-param';
 
 export const useConfirmOrder = () => {
@@ -11,6 +12,13 @@ export const useConfirmOrder = () => {
   const { data: formParam, orderType } = useOrderFormParam();
   const { createOrder, isLoading, error } = useCreateOrder();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
+
+  // URL直叩き対応。入力フォームの値が無ければ一覧画面へ遷移
+  useEffect(() => {
+    if (!formParam) {
+      router.push(basePath);
+    }
+  }, [basePath, formParam, router]);
 
   // 注文ボタン押下処
   const submitHandler = async () => {

@@ -58,9 +58,10 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   }
 
   const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
+  console.log('items', items);
   for (const item of items) {
     if (!item || !item.products || !item.products.items) {
-      throw Error('The API fetched a data element but it returned null.');
+      throw Error('The API fetched products but it returned null.');
     }
   }
 

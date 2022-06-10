@@ -302,6 +302,18 @@ export const createSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -357,6 +369,18 @@ export const updateSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -412,6 +436,18 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
