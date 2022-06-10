@@ -39,6 +39,7 @@ export const useCreateSubscriptionOrderHistory = () => {
         viewOrder: item.product.viewOrder,
       };
 
+      console.log('newOrderID', newOrderID, 'name', item.product.name);
       // データ新規登録実行
       const variables: CreateOrderProductMutationVariables = { input: input };
       const result = (await API.graphql(
@@ -65,18 +66,15 @@ export const useCreateSubscriptionOrderHistory = () => {
         }
 
         // SubscriptionOrderからOrderデータ作成
-        // deliveryTypeを定期便に設定
-        // deliveryStatusを発送済み、発送日時に現在日時を設定
-        // orderedAtは定期便申し込み日時
         const input: CreateOrderInput = {
           type: Type.order,
-          deliveryType: DeliveryType.subscription,
-          deliveryStatus: DeliveryStatus.delivered,
-          orderedAt: order.createdAt,
-          deliveredAt: now.toISOString(),
+          deliveryType: DeliveryType.subscription, // 発送方法を定期便に設定
+          deliveryStatus: DeliveryStatus.delivered, // 発送状況を発送済みに設定
+          orderedAt: order.createdAt, // orderedAtは定期便申し込み日時
+          deliveredAt: now.toISOString(), // 発送日時は現在日時
           clinicID: order.clinicID,
           staffID: order.staffID,
-          owner: order.owner,
+          owner: order.owner, // Owner権限定期便作成者が注文履歴を見れるようにSubscriptionOrderのownerをOrderのownerコピー
         };
 
         // データ作成実行

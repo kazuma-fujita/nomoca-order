@@ -54,7 +54,7 @@ type Order
   deliveredAt: AWSDateTime
   createdAt: AWSDateTime!
   type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
-  owner: String
+  owner: String # Operators権限者が定期便CSVを出力する時に注文履歴を作成する。Owner権限の定期便作成者が注文履歴を見れるようにSubscriptionOrderのownerをOrderのownerコピーするフィールド
 }
 
 type OrderProduct

@@ -60,9 +60,6 @@ const fetcher = async (): Promise<ExtendedOrder<Order>[]> => {
   return extendedItems;
 };
 
-// export const useFetchOrderList = (): FetchResponse<ExtendedOrder<Order>[]> =>
-//   useFetch<ExtendedOrder<Order>[]>(SWRKey.orderList, fetcher);
-
 const OrderListContext = createContext({} as FetchResponse<ExtendedOrder<Order>[]>);
 
 export const useFetchOrderList = () => useContext(OrderListContext);

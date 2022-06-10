@@ -11,6 +11,7 @@ import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { OrderListContextProvider } from 'hooks/orders/use-fetch-order-list';
+import { NowDateContextProvider } from 'stores/use-now-date';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();
@@ -29,9 +30,11 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
           <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
             <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
               <ClinicContextProvider>
-                <Main>
-                  <OrderTemplate />
-                </Main>
+                <NowDateContextProvider now={new Date()}>
+                  <Main>
+                    <OrderTemplate />
+                  </Main>
+                </NowDateContextProvider>
               </ClinicContextProvider>
             </OrderFormParamContextProvider>
           </StaffListContextProvider>
