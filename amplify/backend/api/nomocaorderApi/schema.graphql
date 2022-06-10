@@ -48,9 +48,9 @@ type Order
   clinic: Clinic! @hasOne(fields: ["clinicID"])
   staffID: ID!
   staff: Staff! @hasOne(fields: ["staffID"])
-  orderType: OrderType!
   deliveryStatus: DeliveryStatus!
   deliveryType: DeliveryType!
+  orderedAt: AWSDateTime!
   deliveredAt: AWSDateTime
   createdAt: AWSDateTime!
   type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])

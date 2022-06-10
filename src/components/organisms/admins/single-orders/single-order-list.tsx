@@ -148,7 +148,7 @@ const Row = ({ rowItem, selectedItems, orderItemsLength, setSelectedItems, setIs
           clinic={rowItem.clinic}
         />
       </TableCell>
-      <TableCell align='center'>{formatDateHourMinute(rowItem.createdAt)}</TableCell>
+      <TableCell align='center'>{formatDateHourMinute(rowItem.orderedAt)}</TableCell>
       <TableCell align='center'>
         <DeliveryTypeChip deliveryType={rowItem.deliveryType} />
       </TableCell>

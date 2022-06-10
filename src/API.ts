@@ -100,20 +100,14 @@ export type CreateOrderInput = {
   id?: string | null,
   clinicID: string,
   staffID: string,
-  orderType: OrderType,
   deliveryStatus: DeliveryStatus,
   deliveryType: DeliveryType,
+  orderedAt: string,
   deliveredAt?: string | null,
   createdAt?: string | null,
   type: Type,
   owner?: string | null,
 };
-
-export enum OrderType {
-  singleOrder = "singleOrder",
-  subscriptionOrder = "subscriptionOrder",
-}
-
 
 export enum DeliveryStatus {
   ordered = "ordered",
@@ -141,9 +135,9 @@ export enum Type {
 export type ModelOrderConditionInput = {
   clinicID?: ModelIDInput | null,
   staffID?: ModelIDInput | null,
-  orderType?: ModelOrderTypeInput | null,
   deliveryStatus?: ModelDeliveryStatusInput | null,
   deliveryType?: ModelDeliveryTypeInput | null,
+  orderedAt?: ModelStringInput | null,
   deliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelTypeInput | null,
@@ -169,11 +163,6 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type ModelOrderTypeInput = {
-  eq?: OrderType | null,
-  ne?: OrderType | null,
-};
-
 export type ModelDeliveryStatusInput = {
   eq?: DeliveryStatus | null,
   ne?: DeliveryStatus | null,
@@ -197,9 +186,9 @@ export type Order = {
   clinic: Clinic,
   staffID: string,
   staff: Staff,
-  orderType: OrderType,
   deliveryStatus: DeliveryStatus,
   deliveryType: DeliveryType,
+  orderedAt: string,
   deliveredAt?: string | null,
   createdAt: string,
   type: Type,
@@ -243,9 +232,9 @@ export type UpdateOrderInput = {
   id: string,
   clinicID?: string | null,
   staffID?: string | null,
-  orderType?: OrderType | null,
   deliveryStatus?: DeliveryStatus | null,
   deliveryType?: DeliveryType | null,
+  orderedAt?: string | null,
   deliveredAt?: string | null,
   createdAt?: string | null,
   type?: Type | null,
@@ -374,6 +363,12 @@ export type Product = {
   updatedAt: string,
 };
 
+export enum OrderType {
+  singleOrder = "singleOrder",
+  subscriptionOrder = "subscriptionOrder",
+}
+
+
 export type UpdateSubscriptionOrderInput = {
   id: string,
   clinicID?: string | null,
@@ -438,6 +433,11 @@ export type ModelProductConditionInput = {
   and?: Array< ModelProductConditionInput | null > | null,
   or?: Array< ModelProductConditionInput | null > | null,
   not?: ModelProductConditionInput | null,
+};
+
+export type ModelOrderTypeInput = {
+  eq?: OrderType | null,
+  ne?: OrderType | null,
 };
 
 export type ModelBooleanInput = {
@@ -519,9 +519,9 @@ export type ModelOrderFilterInput = {
   id?: ModelIDInput | null,
   clinicID?: ModelIDInput | null,
   staffID?: ModelIDInput | null,
-  orderType?: ModelOrderTypeInput | null,
   deliveryStatus?: ModelDeliveryStatusInput | null,
   deliveryType?: ModelDeliveryTypeInput | null,
+  orderedAt?: ModelStringInput | null,
   deliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelTypeInput | null,
@@ -739,9 +739,9 @@ export type CreateOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
+    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -803,9 +803,9 @@ export type UpdateOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
+    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -867,9 +867,9 @@ export type DeleteOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
+    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -1476,9 +1476,9 @@ export type GetOrderQuery = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
+    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -1543,9 +1543,9 @@ export type ListOrdersQuery = {
         updatedAt: string,
         owner?: string | null,
       },
-      orderType: OrderType,
       deliveryStatus: DeliveryStatus,
       deliveryType: DeliveryType,
+      orderedAt: string,
       deliveredAt?: string | null,
       createdAt: string,
       type: Type,
@@ -1857,9 +1857,9 @@ export type ListOrdersSortedByCreatedAtQuery = {
         updatedAt: string,
         owner?: string | null,
       },
-      orderType: OrderType,
       deliveryStatus: DeliveryStatus,
       deliveryType: DeliveryType,
+      orderedAt: string,
       deliveredAt?: string | null,
       createdAt: string,
       type: Type,
@@ -2124,9 +2124,9 @@ export type OnCreateOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
+    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -2187,9 +2187,9 @@ export type OnUpdateOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
+    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -2250,9 +2250,9 @@ export type OnDeleteOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
+    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,

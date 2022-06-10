@@ -1,6 +1,7 @@
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Button from '@mui/material/Button';
 import { SubscriptionOrder } from 'API';
+import { useExportSubscriptionOrderCSVAndCreateOrderHistory } from 'hooks/admins/subscription-orders/use-export-subscription-order-csv-and-create-order-history';
 import { useExportOrderCSV } from 'hooks/admins/use-export-order-csv';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback } from 'react';
@@ -12,7 +13,8 @@ type props = {
 };
 
 export const ExportSubscriptionOrderCSVButton = ({ orders }: props) => {
-  const { exportCSV, isLoading, error, resetState } = useExportOrderCSV();
+  const { exportSubscriptionOrderCSVAndCreateOrderHistory, isLoading, error, resetState } =
+    useExportSubscriptionOrderCSVAndCreateOrderHistory();
   const [on, toggle] = useToggle(false);
 
   const cancelHandler = useCallback(() => {
@@ -23,10 +25,10 @@ export const ExportSubscriptionOrderCSVButton = ({ orders }: props) => {
   const submitHandler = useCallback(async () => {
     if (!orders) return;
     try {
-      await exportCSV(orders);
+      await exportSubscriptionOrderCSVAndCreateOrderHistory(orders);
       cancelHandler();
     } catch (error) {}
-  }, [orders, exportCSV, cancelHandler]);
+  }, [orders, exportSubscriptionOrderCSVAndCreateOrderHistory, cancelHandler]);
 
   return (
     <>
