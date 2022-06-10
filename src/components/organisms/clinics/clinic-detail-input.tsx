@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { useFetchClinic } from 'hooks/clinics/use-fetch-clinic';
 import { useEffect } from 'react';

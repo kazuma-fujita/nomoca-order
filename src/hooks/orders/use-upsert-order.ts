@@ -78,8 +78,9 @@ const createSubscriptionOrderProducts = async (newSubscriptionOrderID: string, c
       productID: item.productID,
       quantity: item.quantity,
     };
-    const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
+
     // データ新規登録実行
+    const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
     const result = (await API.graphql(
       graphqlOperation(createSubscriptionOrderProduct, variables),
     )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;
@@ -100,7 +101,7 @@ const updateOrderProducts = async (
     if (!item.relationID) {
       throw Error('It is null that an id which relations an order and a product.');
     }
-    const input: DeleteOrderProductInput = { id: item.relationID! };
+    const input: DeleteOrderProductInput = { id: item.relationID };
     const variables: DeleteOrderProductMutationVariables = { input: input };
     // データ削除実行
     const result = (await API.graphql(
@@ -118,12 +119,15 @@ const updateOrderProducts = async (
 const createOrderProducts = async (newOrderID: string, productRelations: NormalizedProduct[]) => {
   // Order と Product のリレーション作成
   for (const item of productRelations) {
+    if (!item.viewOrder) {
+      throw Error('The view order of products is not found.');
+    }
     const input: CreateOrderProductInput = {
       orderID: newOrderID,
       name: item.name,
       unitPrice: item.unitPrice,
-      quantity: item.quantity!,
-      viewOrder: item.viewOrder!,
+      quantity: item.quantity,
+      viewOrder: item.viewOrder,
     };
     const variables: CreateOrderProductMutationVariables = { input: input };
     // データ新規登録実行
