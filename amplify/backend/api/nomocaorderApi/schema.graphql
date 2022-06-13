@@ -37,10 +37,7 @@ type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Op
 type Order
   @model
   @auth(
-    rules: [
-      { allow: owner, ownerField: "owner" }
-      { allow: groups, groups: ["Operators"], operations: [read, create, update] }
-    ]
+    rules: [{ allow: owner, ownerField: "owner" }, { allow: groups, groups: ["Operators"], operations: [read, create] }]
   ) {
   id: ID!
   products: [OrderProduct] @hasMany(indexName: "byOrder", fields: ["id"])
@@ -59,13 +56,16 @@ type Order
 
 type OrderProduct
   @model(queries: null)
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+  @auth(
+    rules: [{ allow: owner, ownerField: "owner" }, { allow: groups, groups: ["Operators"], operations: [read, create] }]
+  ) {
   id: ID!
   orderID: ID! @index(name: "byOrder", sortKeyFields: ["viewOrder"])
   name: String!
   unitPrice: Int!
   quantity: Int!
   viewOrder: Int!
+  owner: String # Order同様ownerField追加。Nullableにすると登録時に自動でログインしているownerが登録される
 }
 
 type SubscriptionOrder

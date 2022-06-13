@@ -84,10 +84,8 @@ type Props = {
 
 export const SubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
-    SWRKey.orderList,
+    SWRKey.subscriptionOrderList,
     fetcher,
-    // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
-    // { revalidateOnFocus: false },
     {},
     mockResponse,
   );

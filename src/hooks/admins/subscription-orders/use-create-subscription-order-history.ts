@@ -24,7 +24,11 @@ export const useCreateSubscriptionOrderHistory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const createOrderProducts = async (newOrderID: string, products: ModelSubscriptionOrderProductConnection) => {
+  const createOrderProducts = async (
+    newOrderID: string,
+    products: ModelSubscriptionOrderProductConnection,
+    owner: string,
+  ) => {
     // Order と Product のリレーション作成
     for (const item of products.items) {
       if (!item) {
@@ -37,6 +41,7 @@ export const useCreateSubscriptionOrderHistory = () => {
         unitPrice: item.product.unitPrice,
         quantity: item.quantity,
         viewOrder: item.product.viewOrder,
+        owner: owner,
       };
 
       console.log('newOrderID', newOrderID, 'name', item.product.name);
@@ -61,7 +66,7 @@ export const useCreateSubscriptionOrderHistory = () => {
       }
 
       for (const order of orders) {
-        if (!order.products) {
+        if (!order.products || !order.owner) {
           throw Error('It is null that product items which create a order history.');
         }
 
@@ -89,7 +94,7 @@ export const useCreateSubscriptionOrderHistory = () => {
         const newOrder = result.data.createOrder;
         console.log('create new order', newOrder);
         // SubscriptionOrder と Product のリレーション作成
-        await createOrderProducts(newOrder.id, order.products);
+        await createOrderProducts(newOrder.id, order.products, order.owner);
       }
       setIsLoading(false);
       setError(null);

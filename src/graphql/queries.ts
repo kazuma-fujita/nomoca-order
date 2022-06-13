@@ -55,9 +55,9 @@ export const getOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -115,9 +115,9 @@ export const listOrders = /* GraphQL */ `
             unitPrice
             quantity
             viewOrder
+            owner
             createdAt
             updatedAt
-            owner
           }
           nextToken
         }
@@ -402,9 +402,9 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
             unitPrice
             quantity
             viewOrder
+            owner
             createdAt
             updatedAt
-            owner
           }
           nextToken
         }

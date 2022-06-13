@@ -210,9 +210,9 @@ export type OrderProduct = {
   unitPrice: number,
   quantity: number,
   viewOrder: number,
+  owner?: string | null,
   createdAt: string,
   updatedAt: string,
-  owner?: string | null,
 };
 
 export type Staff = {
@@ -252,6 +252,7 @@ export type CreateOrderProductInput = {
   unitPrice: number,
   quantity: number,
   viewOrder: number,
+  owner?: string | null,
 };
 
 export type ModelOrderProductConditionInput = {
@@ -260,6 +261,7 @@ export type ModelOrderProductConditionInput = {
   unitPrice?: ModelIntInput | null,
   quantity?: ModelIntInput | null,
   viewOrder?: ModelIntInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelOrderProductConditionInput | null > | null,
   or?: Array< ModelOrderProductConditionInput | null > | null,
   not?: ModelOrderProductConditionInput | null,
@@ -284,6 +286,7 @@ export type UpdateOrderProductInput = {
   unitPrice?: number | null,
   quantity?: number | null,
   viewOrder?: number | null,
+  owner?: string | null,
 };
 
 export type DeleteOrderProductInput = {
@@ -705,9 +708,9 @@ export type CreateOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -769,9 +772,9 @@ export type UpdateOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -833,9 +836,9 @@ export type DeleteOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -892,9 +895,9 @@ export type CreateOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -912,9 +915,9 @@ export type UpdateOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -932,9 +935,9 @@ export type DeleteOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -1442,9 +1445,9 @@ export type GetOrderQuery = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1509,9 +1512,9 @@ export type ListOrdersQuery = {
           unitPrice: number,
           quantity: number,
           viewOrder: number,
+          owner?: string | null,
           createdAt: string,
           updatedAt: string,
-          owner?: string | null,
         } | null >,
         nextToken?: string | null,
       } | null,
@@ -1823,9 +1826,9 @@ export type ListOrdersSortedByCreatedAtQuery = {
           unitPrice: number,
           quantity: number,
           viewOrder: number,
+          owner?: string | null,
           createdAt: string,
           updatedAt: string,
-          owner?: string | null,
         } | null >,
         nextToken?: string | null,
       } | null,
@@ -2090,9 +2093,9 @@ export type OnCreateOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2153,9 +2156,9 @@ export type OnUpdateOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2216,9 +2219,9 @@ export type OnDeleteOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2274,9 +2277,9 @@ export type OnCreateOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -2293,9 +2296,9 @@ export type OnUpdateOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -2312,9 +2315,9 @@ export type OnDeleteOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
