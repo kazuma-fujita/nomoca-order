@@ -37,9 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.handler = void 0;
+var aws_appsync_1 = require("aws-appsync");
 var AWS = require("aws-sdk");
 var graphql_tag_1 = require("graphql-tag");
-var aws_appsync_1 = require("aws-appsync");
 global.fetch = require('node-fetch');
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -47,37 +47,38 @@ global.fetch = require('node-fetch');
 // export const handler = async (event) => {
 //   console.log(`EVENT: ${JSON.stringify(event)}`);
 var handler = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var endpoint, graphqlClient, statusCode, body, result, err_1, error;
+    var credentials, graphqlClient, result, err_1, error, body;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                endpoint = process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT;
-                console.log('AWS_EXECUTION_ENV:', process.env.AWS_EXECUTION_ENV);
-                if ('AWS_EXECUTION_ENV' in process.env && process.env.AWS_EXECUTION_ENV === 'AWS_Lambda_amplify-mock') {
-                    endpoint = 'http://192.168.1.6:20002/graphql';
+                credentials = AWS.config.credentials;
+                // mock
+                if ('AWS_EXECUTION_ENV' in process.env && process.env.AWS_EXECUTION_ENV.endsWith('-mock')) {
+                    // mock credentials。なぜか以下の識別子じゃないとamplify mock function 実行時 unauthorizedとなる
+                    credentials = {
+                        accessKeyId: 'ASIAVJKIAM-AuthRole',
+                        secretAccessKey: 'fake'
+                    };
+                    // credentials: {
+                    // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                    // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+                    // sessionToken: process.env.AWS_SESSION_TOKEN,
+                    // },
                 }
                 console.log('env:', process.env);
-                console.log('endpoint:', endpoint);
-                console.log('REGION:', process.env.REGION);
                 console.log('Credentials:', AWS.config.credentials);
                 graphqlClient = new aws_appsync_1["default"]({
-                    url: endpoint,
+                    url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT,
                     region: process.env.REGION,
                     auth: {
                         type: 'AWS_IAM',
-                        // credentials: AWS.config.credentials ?? null,
-                        credentials: {
-                            accessKeyId: 'mock',
-                            secretAccessKey: 'mock',
-                            sessionToken: 'mock'
-                        }
+                        credentials: credentials
                     },
                     disableOffline: true
                 });
-                statusCode = 200;
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 4, , 5]);
+                _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, graphqlClient.query({
                         query: (0, graphql_tag_1.gql)(query),
                         fetchPolicy: 'network-only',
@@ -86,35 +87,48 @@ var handler = function () { return __awaiter(void 0, void 0, void 0, function ()
             case 2:
                 result = _a.sent();
                 console.log('result', result);
-                return [4 /*yield*/, result.data];
+                if (result.errors) {
+                    throw result.errors;
+                }
+                return [2 /*return*/, {
+                        statusCode: 200,
+                        body: JSON.stringify(result.data)
+                    }];
             case 3:
-                body = _a.sent();
-                console.log('body', body);
-                return [3 /*break*/, 5];
-            case 4:
                 err_1 = _a.sent();
-                error = err_1;
+                error = parseResponseError(err_1);
                 console.error('error:', error);
-                statusCode = 400;
                 body = {
                     errors: [
                         {
-                            // status: response.status,
-                            status: statusCode,
+                            status: 400,
                             message: error.message,
                             stack: error.stack
                         },
                     ]
                 };
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/, {
-                    statusCode: statusCode,
-                    body: JSON.stringify(body)
-                }];
+                return [2 /*return*/, {
+                        statusCode: 400,
+                        body: JSON.stringify(body)
+                    }];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
 exports.handler = handler;
+var parseResponseError = function (error) {
+    if (!error)
+        return null;
+    var errorResult = error;
+    if (errorResult.message) {
+        return Error(errorResult.message);
+    }
+    var graphqlResult = error;
+    if (graphqlResult.message) {
+        return Error(graphqlResult.message);
+    }
+    return null;
+};
 // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
 var sortVariables = {
     type: 'subscriptionOrder',

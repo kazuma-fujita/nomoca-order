@@ -23,15 +23,7 @@ enum DeliveryType {
   subscription
 }
 
-type Clinic
-  @model
-  @auth(
-    rules: [
-      { allow: owner }
-      { allow: groups, groups: ["Operators"], operations: [read] }
-      { allow: private, provider: iam }
-    ]
-  ) {
+type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
   id: ID!
   name: String!
   phoneNumber: String!
@@ -82,7 +74,7 @@ type SubscriptionOrder
     rules: [
       { allow: owner }
       { allow: groups, groups: ["Operators"], operations: [read] }
-      { allow: private, provider: iam } # Lambdaから参照する為 iam 認証追加
+      { allow: private, provider: iam, operations: [read] } # Lambdaから参照する為 iam 認証追加
     ]
   ) {
   id: ID!
@@ -101,13 +93,7 @@ type SubscriptionOrder
 
 type SubscriptionOrderProduct
   @model(queries: null)
-  @auth(
-    rules: [
-      { allow: owner }
-      { allow: groups, groups: ["Operators"], operations: [read] }
-      { allow: private, provider: iam }
-    ]
-  ) {
+  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
   id: ID!
   subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["productID"])
   productID: ID!
@@ -115,15 +101,7 @@ type SubscriptionOrderProduct
   quantity: Int!
 }
 
-type Product
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["Operators"] }
-      { allow: private, operations: [read] }
-      { allow: private, provider: iam }
-    ]
-  ) {
+type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { allow: private, operations: [read] }]) {
   id: ID!
   name: String!
   unitPrice: Int!
@@ -134,15 +112,7 @@ type Product
   type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }
 
-type Staff
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["Operators"], operations: [read] }
-      { allow: owner }
-      { allow: private, provider: iam }
-    ]
-  ) {
+type Staff @model @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
   id: ID!
   firstName: String!
   lastName: String!

@@ -1,45 +1,41 @@
+import AWSAppSyncClient from 'aws-appsync';
 import * as AWS from 'aws-sdk';
 import { gql } from 'graphql-tag';
-import { print } from 'graphql';
-import AWSAppSyncClient from 'aws-appsync';
 global.fetch = require('node-fetch');
-
+import { GraphQLError } from 'graphql';
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 // export const handler = async (event) => {
 //   console.log(`EVENT: ${JSON.stringify(event)}`);
 export const handler = async () => {
-  let endpoint = process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT as string;
-  console.log('AWS_EXECUTION_ENV:', process.env.AWS_EXECUTION_ENV);
-  if ('AWS_EXECUTION_ENV' in process.env && process.env.AWS_EXECUTION_ENV === 'AWS_Lambda_amplify-mock') {
-    endpoint = 'http://192.168.1.6:20002/graphql';
+  let credentials = AWS.config.credentials;
+  // mock
+  if ('AWS_EXECUTION_ENV' in process.env && process.env.AWS_EXECUTION_ENV.endsWith('-mock')) {
+    // mock credentials。なぜか以下の識別子じゃないとamplify mock function 実行時 unauthorizedとなる
+    credentials = {
+      accessKeyId: 'ASIAVJKIAM-AuthRole',
+      secretAccessKey: 'fake',
+    };
+    // credentials: {
+    // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    // sessionToken: process.env.AWS_SESSION_TOKEN,
+    // },
   }
 
   console.log('env:', process.env);
-  console.log('endpoint:', endpoint);
-  console.log('REGION:', process.env.REGION);
   console.log('Credentials:', AWS.config.credentials);
+
   const graphqlClient = new AWSAppSyncClient({
-    url: endpoint,
+    url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT as string,
     region: process.env.REGION,
     auth: {
       type: 'AWS_IAM',
-      // credentials: AWS.config.credentials ?? null,
-      credentials: {
-        accessKeyId: 'mock',
-        secretAccessKey: 'mock',
-        sessionToken: 'mock',
-        // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        // sessionToken: process.env.AWS_SESSION_TOKEN,
-      },
+      credentials: credentials,
     },
     disableOffline: true,
   });
-
-  let statusCode = 200;
-  let body;
 
   try {
     const result = await graphqlClient.query({
@@ -48,29 +44,46 @@ export const handler = async () => {
       variables: sortVariables,
     });
     console.log('result', result);
-    body = await result.data;
-    console.log('body', body);
-    // if (body.errors) statusCode = 400;
+    if (result.errors) {
+      throw result.errors;
+    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.data),
+    };
   } catch (err) {
-    const error = err as Error;
+    const error = parseResponseError(err);
     console.error('error:', error);
-    statusCode = 400;
-    body = {
+    const body = {
       errors: [
         {
-          // status: response.status,
-          status: statusCode,
+          status: 400,
           message: error.message,
           stack: error.stack,
         },
       ],
     };
+    return {
+      statusCode: 400,
+      body: JSON.stringify(body),
+    };
+  }
+};
+
+const parseResponseError = (error: any): Error | null => {
+  if (!error) return null;
+
+  const errorResult = error as Error;
+  if (errorResult.message) {
+    return Error(errorResult.message);
   }
 
-  return {
-    statusCode,
-    body: JSON.stringify(body),
-  };
+  const graphqlResult = error as GraphQLError;
+  if (graphqlResult.message) {
+    return Error(graphqlResult.message);
+  }
+
+  return null;
 };
 
 // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
