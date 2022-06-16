@@ -25,7 +25,7 @@ export const handler = async () => {
   }
 
   console.log('env:', process.env);
-  console.log('Credentials:', AWS.config.credentials);
+  console.log('Credentials:', credentials);
 
   const graphqlClient = new AWSAppSyncClient({
     url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT as string,

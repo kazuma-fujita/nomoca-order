@@ -121,8 +121,12 @@ type Staff @model @auth(rules: [{ allow: groups, groups: ["Operators"], operatio
   type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }
 
+type SubscriptionOrdersResponse {
+  items: [SubscriptionOrder]
+}
+
 type Query {
-  listAdminSubscriptionOrders: String
+  listAdminSubscriptionOrders: SubscriptionOrdersResponse
     @function(name: "adminSubscriptionOrderList-${env}")
     @auth(rules: [{ allow: private, provider: userPools }])
 }
