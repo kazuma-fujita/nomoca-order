@@ -10,7 +10,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useToggle } from 'react-use';
 
 type Props = {
-  key?: Key | null | undefined;
+  key: Key;
   colSpan: number;
   products: NormalizedProduct[];
 };

@@ -23,7 +23,15 @@ enum DeliveryType {
   subscription
 }
 
-type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+type Clinic
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: private, provider: iam }
+    ]
+  ) {
   id: ID!
   name: String!
   phoneNumber: String!
@@ -70,7 +78,13 @@ type OrderProduct
 
 type SubscriptionOrder
   @model
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: private, provider: iam } # Lambdaから参照する為 iam 認証追加
+    ]
+  ) {
   id: ID!
   products: [SubscriptionOrderProduct] @hasMany(indexName: "bySubscriptionOrder", fields: ["id"])
   clinicID: ID!
@@ -87,7 +101,13 @@ type SubscriptionOrder
 
 type SubscriptionOrderProduct
   @model(queries: null)
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: private, provider: iam }
+    ]
+  ) {
   id: ID!
   subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["productID"])
   productID: ID!
@@ -95,7 +115,15 @@ type SubscriptionOrderProduct
   quantity: Int!
 }
 
-type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { allow: private, operations: [read] }]) {
+type Product
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Operators"] }
+      { allow: private, operations: [read] }
+      { allow: private, provider: iam }
+    ]
+  ) {
   id: ID!
   name: String!
   unitPrice: Int!
@@ -106,11 +134,25 @@ type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { al
   type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }
 
-type Staff @model @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
+type Staff
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: owner }
+      { allow: private, provider: iam }
+    ]
+  ) {
   id: ID!
   firstName: String!
   lastName: String!
   viewOrder: Int!
   disabled: Boolean!
   type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])
+}
+
+type Query {
+  listAdminSubscriptionOrders: String
+    @function(name: "adminSubscriptionOrderList-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
 }

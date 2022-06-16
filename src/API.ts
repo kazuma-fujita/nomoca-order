@@ -540,6 +540,22 @@ export type ModelOrderConnection = {
   nextToken?: string | null,
 };
 
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelSubscriptionOrderFilterInput = {
   id?: ModelIDInput | null,
   clinicID?: ModelIDInput | null,
@@ -580,6 +596,15 @@ export type ModelProductConnection = {
   nextToken?: string | null,
 };
 
+export type ModelIntKeyConditionInput = {
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+};
+
 export type ModelStaffFilterInput = {
   id?: ModelIDInput | null,
   firstName?: ModelStringInput | null,
@@ -596,31 +621,6 @@ export type ModelStaffConnection = {
   __typename: "ModelStaffConnection",
   items:  Array<Staff | null >,
   nextToken?: string | null,
-};
-
-export type ModelStringKeyConditionInput = {
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-};
-
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
-
-export type ModelIntKeyConditionInput = {
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
 };
 
 export type CreateClinicMutationVariables = {
@@ -1559,6 +1559,78 @@ export type ListOrdersQuery = {
   } | null,
 };
 
+export type ListOrdersSortedByCreatedAtQueryVariables = {
+  type: Type,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOrdersSortedByCreatedAtQuery = {
+  listOrdersSortedByCreatedAt?:  {
+    __typename: "ModelOrderConnection",
+    items:  Array< {
+      __typename: "Order",
+      id: string,
+      products?:  {
+        __typename: "ModelOrderProductConnection",
+        items:  Array< {
+          __typename: "OrderProduct",
+          id: string,
+          orderID: string,
+          name: string,
+          unitPrice: number,
+          quantity: number,
+          viewOrder: number,
+          owner?: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
+      clinicID: string,
+      clinic:  {
+        __typename: "Clinic",
+        id: string,
+        name: string,
+        phoneNumber: string,
+        postalCode: string,
+        state: string,
+        city: string,
+        address: string,
+        building?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      staffID: string,
+      staff:  {
+        __typename: "Staff",
+        id: string,
+        firstName: string,
+        lastName: string,
+        viewOrder: number,
+        disabled: boolean,
+        type: Type,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      deliveryStatus: DeliveryStatus,
+      deliveryType: DeliveryType,
+      orderedAt: string,
+      deliveredAt?: string | null,
+      createdAt: string,
+      type: Type,
+      owner?: string | null,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetSubscriptionOrderQueryVariables = {
   id: string,
 };
@@ -1711,168 +1783,6 @@ export type ListSubscriptionOrdersQuery = {
   } | null,
 };
 
-export type GetProductQueryVariables = {
-  id: string,
-};
-
-export type GetProductQuery = {
-  getProduct?:  {
-    __typename: "Product",
-    id: string,
-    name: string,
-    unitPrice: number,
-    orderType: OrderType,
-    viewOrder: number,
-    isExportCSV: boolean,
-    disabled: boolean,
-    type: Type,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListProductsQueryVariables = {
-  filter?: ModelProductFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListProductsQuery = {
-  listProducts?:  {
-    __typename: "ModelProductConnection",
-    items:  Array< {
-      __typename: "Product",
-      id: string,
-      name: string,
-      unitPrice: number,
-      orderType: OrderType,
-      viewOrder: number,
-      isExportCSV: boolean,
-      disabled: boolean,
-      type: Type,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetStaffQueryVariables = {
-  id: string,
-};
-
-export type GetStaffQuery = {
-  getStaff?:  {
-    __typename: "Staff",
-    id: string,
-    firstName: string,
-    lastName: string,
-    viewOrder: number,
-    disabled: boolean,
-    type: Type,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type ListStaffQueryVariables = {
-  filter?: ModelStaffFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListStaffQuery = {
-  listStaff?:  {
-    __typename: "ModelStaffConnection",
-    items:  Array< {
-      __typename: "Staff",
-      id: string,
-      firstName: string,
-      lastName: string,
-      viewOrder: number,
-      disabled: boolean,
-      type: Type,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type ListOrdersSortedByCreatedAtQueryVariables = {
-  type: Type,
-  createdAt?: ModelStringKeyConditionInput | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelOrderFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListOrdersSortedByCreatedAtQuery = {
-  listOrdersSortedByCreatedAt?:  {
-    __typename: "ModelOrderConnection",
-    items:  Array< {
-      __typename: "Order",
-      id: string,
-      products?:  {
-        __typename: "ModelOrderProductConnection",
-        items:  Array< {
-          __typename: "OrderProduct",
-          id: string,
-          orderID: string,
-          name: string,
-          unitPrice: number,
-          quantity: number,
-          viewOrder: number,
-          owner?: string | null,
-          createdAt: string,
-          updatedAt: string,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-      clinicID: string,
-      clinic:  {
-        __typename: "Clinic",
-        id: string,
-        name: string,
-        phoneNumber: string,
-        postalCode: string,
-        state: string,
-        city: string,
-        address: string,
-        building?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      },
-      staffID: string,
-      staff:  {
-        __typename: "Staff",
-        id: string,
-        firstName: string,
-        lastName: string,
-        viewOrder: number,
-        disabled: boolean,
-        type: Type,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      },
-      deliveryStatus: DeliveryStatus,
-      deliveryType: DeliveryType,
-      orderedAt: string,
-      deliveredAt?: string | null,
-      createdAt: string,
-      type: Type,
-      owner?: string | null,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
 export type ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
   type: string,
   createdAt?: ModelStringKeyConditionInput | null,
@@ -1955,6 +1865,52 @@ export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
   } | null,
 };
 
+export type GetProductQueryVariables = {
+  id: string,
+};
+
+export type GetProductQuery = {
+  getProduct?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    unitPrice: number,
+    orderType: OrderType,
+    viewOrder: number,
+    isExportCSV: boolean,
+    disabled: boolean,
+    type: Type,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListProductsQueryVariables = {
+  filter?: ModelProductFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListProductsQuery = {
+  listProducts?:  {
+    __typename: "ModelProductConnection",
+    items:  Array< {
+      __typename: "Product",
+      id: string,
+      name: string,
+      unitPrice: number,
+      orderType: OrderType,
+      viewOrder: number,
+      isExportCSV: boolean,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type ListProductsSortedByViewOrderQueryVariables = {
   type: Type,
   viewOrder?: ModelIntKeyConditionInput | null,
@@ -1979,6 +1935,50 @@ export type ListProductsSortedByViewOrderQuery = {
       type: Type,
       createdAt: string,
       updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetStaffQueryVariables = {
+  id: string,
+};
+
+export type GetStaffQuery = {
+  getStaff?:  {
+    __typename: "Staff",
+    id: string,
+    firstName: string,
+    lastName: string,
+    viewOrder: number,
+    disabled: boolean,
+    type: Type,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListStaffQueryVariables = {
+  filter?: ModelStaffFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListStaffQuery = {
+  listStaff?:  {
+    __typename: "ModelStaffConnection",
+    items:  Array< {
+      __typename: "Staff",
+      id: string,
+      firstName: string,
+      lastName: string,
+      viewOrder: number,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -2010,6 +2010,10 @@ export type ListStaffSortedByViewOrderQuery = {
     } | null >,
     nextToken?: string | null,
   } | null,
+};
+
+export type ListAdminSubscriptionOrdersQuery = {
+  listAdminSubscriptionOrders?: string | null,
 };
 
 export type OnCreateClinicSubscriptionVariables = {

@@ -47,7 +47,23 @@
       }
     }
   },
-  "function": {},
+  "function": {
+    "adminSubscriptionOrderList": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "nomocaorderApi",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    }
+  },
   "api": {
     "nomocaorderApi": {
       "service": "AppSync",
@@ -69,7 +85,11 @@
               "userPoolId": "authnomocaorder6482d3326482d332"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
         }
       }
     }
