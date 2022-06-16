@@ -66,7 +66,7 @@ var handler = function () { return __awaiter(void 0, void 0, void 0, function ()
                     // },
                 }
                 console.log('env:', process.env);
-                console.log('Credentials:', AWS.config.credentials);
+                console.log('Credentials:', credentials);
                 graphqlClient = new aws_appsync_1["default"]({
                     url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT,
                     region: process.env.REGION,

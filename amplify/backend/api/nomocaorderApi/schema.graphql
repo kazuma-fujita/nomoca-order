@@ -23,7 +23,15 @@ enum DeliveryType {
   subscription
 }
 
-type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+type Clinic
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  ) {
   id: ID!
   name: String!
   phoneNumber: String!
@@ -93,7 +101,13 @@ type SubscriptionOrder
 
 type SubscriptionOrderProduct
   @model(queries: null)
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  ) {
   id: ID!
   subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["productID"])
   productID: ID!
@@ -101,7 +115,15 @@ type SubscriptionOrderProduct
   quantity: Int!
 }
 
-type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { allow: private, operations: [read] }]) {
+type Product
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Operators"] }
+      { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  ) {
   id: ID!
   name: String!
   unitPrice: Int!
@@ -112,7 +134,15 @@ type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { al
   type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }
 
-type Staff @model @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
+type Staff
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: owner }
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  ) {
   id: ID!
   firstName: String!
   lastName: String!
