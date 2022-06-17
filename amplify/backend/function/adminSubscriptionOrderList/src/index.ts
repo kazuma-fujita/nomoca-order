@@ -47,6 +47,7 @@ export const handler = async () => {
     if (result.errors) {
       throw result.errors;
     }
+    // responseの返し方不明。要調査
     return {
       statusCode: 200,
       body: JSON.stringify(result.data),

@@ -6,11 +6,10 @@ import {
   SubscriptionOrder,
   SubscriptionOrderProduct,
   Type,
-  SubscriptionOrdersResponse,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
-import { listAdminSubscriptionOrders, listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
+import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 
@@ -100,41 +99,6 @@ export type AdminSubscriptionOrderResponse = FetchResponse<ExtendedOrder<Subscri
   allData: ExtendedOrder<SubscriptionOrder>[] | null;
 };
 
-const adminFetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
-  // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
-  // const sortVariables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
-  //   type: Type.subscriptionOrder,
-  //   sortDirection: ModelSortDirection.DESC,
-  // };
-  console.log('here');
-
-  const result = (await API.graphql(
-    // graphqlOperation(listSubscriptionOrders, sortVariables),
-    graphqlOperation(listAdminSubscriptionOrders),
-  )) as GraphQLResult<SubscriptionOrdersResponse>;
-
-  console.log('result', result);
-  if (!result.data || !result.data.items) {
-    throw Error('The API fetched data but it returned null.');
-  }
-
-  const items = result.data.items as SubscriptionOrder[];
-  console.log('items', items);
-  for (const item of items) {
-    console.log('item', item.products);
-    if (!item || !item.products || !item.products.items) {
-      throw Error('The API fetched products but it returned null.');
-    }
-  }
-
-  const extendedItems: ExtendedOrder<SubscriptionOrder>[] = items.map((item) => ({
-    ...item,
-    normalizedProducts: createNormalizedProducts(item),
-  }));
-
-  return extendedItems;
-};
-
 const AdminSubscriptionOrderListContext = createContext({} as AdminSubscriptionOrderResponse);
 
 export const useAdminSubscriptionOrderList = () => useContext(AdminSubscriptionOrderListContext);
@@ -144,7 +108,7 @@ export const AdminSubscriptionOrderListContextProvider: React.FC<Props> = ({ moc
   // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
     SWRKey.AdminSubscriptionOrderList,
-    adminFetcher,
+    fetcher,
     { revalidateOnFocus: false },
     mockResponse,
   );
