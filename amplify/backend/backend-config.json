@@ -47,23 +47,7 @@
       }
     }
   },
-  "function": {
-    "adminSubscriptionOrderList": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "nomocaorderApi",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
-        }
-      ]
-    }
-  },
+  "function": {},
   "api": {
     "nomocaorderApi": {
       "service": "AppSync",
