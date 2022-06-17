@@ -6,6 +6,7 @@ import {
   SubscriptionOrder,
   SubscriptionOrderProduct,
   Type,
+  SubscriptionOrdersResponse,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
@@ -105,22 +106,19 @@ const adminFetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   //   type: Type.subscriptionOrder,
   //   sortDirection: ModelSortDirection.DESC,
   // };
+  console.log('here');
 
   const result = (await API.graphql(
     // graphqlOperation(listSubscriptionOrders, sortVariables),
     graphqlOperation(listAdminSubscriptionOrders),
-  )) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
+  )) as GraphQLResult<SubscriptionOrdersResponse>;
 
   console.log('result', result);
-  if (
-    !result.data ||
-    !result.data.listSubscriptionOrdersSortedByCreatedAt ||
-    !result.data.listSubscriptionOrdersSortedByCreatedAt.items
-  ) {
+  if (!result.data || !result.data.items) {
     throw Error('The API fetched data but it returned null.');
   }
 
-  const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
+  const items = result.data.items as SubscriptionOrder[];
   console.log('items', items);
   for (const item of items) {
     console.log('item', item.products);
