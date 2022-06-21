@@ -25,6 +25,8 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import '@testing-library/cypress/add-commands';
+import 'cypress-wait-until';
+import { DynamoDB } from 'aws-sdk';
 
 const selectors = {
   usernameInput: '[data-test="sign-in-username-input"]',
@@ -45,4 +47,41 @@ Cypress.Commands.add('mockQuery', (operationName, fixture) => {
     req.alias = operationName;
     req.reply(fixture);
   });
+});
+
+const db = new DynamoDB({
+  endpoint: 'http://localhost:62224',
+  region: 'us-fake-1',
+  accessKeyId: 'fake',
+  secretAccessKey: 'fake',
+});
+
+const listTables = async () => {
+  try {
+    return await db.listTables({ Limit: 20 }).promise();
+  } catch (err) {
+    throw err;
+  }
+};
+
+Cypress.Commands.add('clearAllData', async () => {
+  try {
+    const list = await listTables();
+    list.TableNames.map(async (tableName) => {
+      const scan = await db.scan({ TableName: tableName }).promise();
+      scan.Items.map(async (item) => {
+        const params = {
+          TableName: tableName,
+          Key: {
+            id: item.id,
+          },
+          ReturnValues: 'ALL_OLD', // 削除されたアイテムの内容を戻り値で取得
+        };
+        const deletedItem = await db.deleteItem(params).promise();
+        console.log('deleteItem', deletedItem);
+      });
+    });
+  } catch (err) {
+    console.error(err);
+  }
 });
