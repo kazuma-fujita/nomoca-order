@@ -27,6 +27,7 @@
 import '@testing-library/cypress/add-commands';
 import 'cypress-wait-until';
 import { DynamoDB } from 'aws-sdk';
+import { seedProducts } from '../seeds/products';
 
 const selectors = {
   usernameInput: '[data-test="sign-in-username-input"]',
@@ -64,23 +65,114 @@ const listTables = async () => {
   }
 };
 
-Cypress.Commands.add('clearAllData', async () => {
+const flatMapWithCount = (arr, size) =>
+  arr.reduce((previous, _, i) => (i % size ? previous : [...previous, arr.slice(i, i + size)]), []);
+
+const createParamsToPutProductRecords = (putItems) => {
+  return {
+    RequestItems: {
+      ProductTable: putItems.map((item) => ({
+        PutRequest: { Item: item },
+      })),
+    },
+  };
+};
+
+const createParamsToDeleteRecords = (tableName, deleteItems) => {
+  return {
+    RequestItems: {
+      [tableName]: deleteItems.map((item) => ({
+        DeleteRequest: { Key: { id: item.id } },
+      })),
+    },
+  };
+};
+
+Cypress.Commands.add('putProducts', () => {
+  return new Cypress.Promise(async (resolve, reject) => {
+    try {
+      const list = await listTables();
+      console.log(list.TableNames);
+      const params = createParamsToPutProductRecords(seedProducts);
+      console.log('products params', params);
+      await db.batchWriteItem(params).promise();
+      resolve();
+    } catch (err) {
+      console.error(err);
+      reject();
+    }
+  });
+});
+
+const batchWriteLimit = 25;
+
+Cypress.Commands.add('clearAllData', () => {
+  try {
+    clearAllRecords();
+  } catch (err) {
+    console.error(err);
+  }
+  //   return new Cypress.Promise(async (resolve, reject) => {
+  //     try {
+  //       const list = await listTables();
+  //       list.TableNames.map(async (tableName) => {
+  //         const scan = await db.scan({ TableName: tableName }).promise();
+  //         // BatchDelete処理上限25件づつの多次元配列生成
+  //         const deleteItemsList = flatMapWithCount(scan.Items, batchWriteLimit);
+  //         console.log('deleteItemsList', deleteItemsList);
+  //         deleteItemsList.map(async (deleteItems) => {
+  //           console.log('deleteItems', deleteItems);
+  //           const params = createParamsToDeleteRecords(tableName, deleteItems);
+  //           console.log('delete params', params);
+  //           await db.batchWriteItem(params).promise();
+  //         });
+  //       });
+  //       resolve('finish');
+  //     } catch (err) {
+  //       console.error(err);
+  //       reject(error);
+  //     }
+  //   });
+});
+
+const putProducts = async () => {
+  try {
+    const list = await listTables();
+    console.log(list.TableNames);
+    const params = createParamsToPutProductRecords(seedProducts);
+    console.log('products params', params);
+    await db.batchWriteItem(params).promise();
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+const clearAllRecords = async () => {
   try {
     const list = await listTables();
     list.TableNames.map(async (tableName) => {
       const scan = await db.scan({ TableName: tableName }).promise();
-      scan.Items.map(async (item) => {
-        const params = {
-          TableName: tableName,
-          Key: {
-            id: item.id,
-          },
-          ReturnValues: 'ALL_OLD', // 削除されたアイテムの内容を戻り値で取得
-        };
-        const deletedItem = await db.deleteItem(params).promise();
-        console.log('deleteItem', deletedItem);
+      // BatchDelete処理上限25件づつの多次元配列生成
+      const deleteItemsList = flatMapWithCount(scan.Items, batchWriteLimit);
+      console.log('deleteItemsList', deleteItemsList);
+      deleteItemsList.map(async (deleteItems) => {
+        console.log('deleteItems', deleteItems);
+        const params = createParamsToDeleteRecords(tableName, deleteItems);
+        console.log('delete params', params);
+        await db.batchWriteItem(params).promise();
       });
     });
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+Cypress.Commands.add('initializeDynamoDB', async () => {
+  try {
+    await clearAllRecords();
+    await putProducts();
   } catch (err) {
     console.error(err);
   }
