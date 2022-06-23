@@ -2,5 +2,9 @@
   "baseUrl": "http://localhost:3000",
   "includeShadowDom": true,
   "viewportWidth": 1000,
-  "viewportHeight": 1000
+  "viewportHeight": 1000,
+  "env": {
+    "userPoolId": "ap-northeast-1_YUuIwVXfK",
+    "clientId": "69mvsjv0or2djhg7id7gerbo0r"
+  }
 }

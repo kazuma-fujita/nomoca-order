@@ -2,11 +2,21 @@ import { Box, CircularProgress, MenuItem, TextField } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { UpsertStaffButton } from 'components/organisms/staffs/upsert-staff-button';
 import { Controller, UseFormReturn } from 'react-hook-form';
-import { OrderFormParam } from 'stores/use-order-form-param';
+import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
+import { useEffect } from 'react';
 
-const StaffSelectInput = ({ control }: UseFormReturn<OrderFormParam>) => {
+const StaffSelectInput = ({ setValue, control }: UseFormReturn<OrderFormParam>) => {
   const { data: staffList, isLoading } = useFetchStaffList();
+  const { data: defaultValues } = useOrderFormParam();
+  useEffect(() => {
+    const staffID =
+      (defaultValues && defaultValues.staffID) ?? (staffList && staffList.length > 0 ? staffList[0].id : null);
+    if (staffID) {
+      setValue('staffID', staffID);
+    }
+  }, [staffList, setValue, defaultValues]);
+
   return (
     <Controller
       name='staffID'

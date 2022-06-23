@@ -9,13 +9,18 @@ context('SubscriptionOrder', () => {
     cy.wait(1000);
     cy.putProducts();
     cy.fixture('customer-user.json').then((loginInfo: LoginInfo) => {
-      cy.login(loginInfo.username, loginInfo.password);
+      cy.cognitoLogin(loginInfo.username, loginInfo.password);
     });
+  });
+
+  after(() => {
+    cy.clearLocalStorage();
   });
 
   describe('It creates subscription order items.', () => {
     it('It views a subscription order list.', () => {
       // 注文画面表示
+      cy.visit(Path.singleOrder);
       cy.waitUntil(() => cy.url().then(($url: string) => $url.includes(Path.singleOrder)));
       cy.clock(new Date(2023, 0));
       cy.get('header').contains(ScreenName.singleOrder).should('exist');

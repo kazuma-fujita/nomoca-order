@@ -5,10 +5,9 @@ import { mergeOrderFormProductList } from 'functions/orders/merge-order-form-pro
 import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
-import { useFetchStaffList } from '../staffs/use-fetch-staff-list';
 
 // order-form/confirm-template-stories のOrderFormParamContextProvider 初期値として利用
 export const orderFormDefaultValues: OrderFormParam = {
@@ -21,19 +20,17 @@ export const orderFormDefaultValues: OrderFormParam = {
 export const useUpsertOrderButton = (id?: string, products?: NormalizedProduct[], staffID?: string) => {
   const router = useRouter();
   const { mutate, orderType } = useOrderFormParam();
-  const { data: staffList } = useFetchStaffList();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
   const buttonLabel = id ? '変更する' : orderType === OrderType.singleOrder ? '商品を注文する' : '定期便を申し込む';
-  console.log('here staff list', staffList, 'staffID', staffID);
   // 入力フォーム初期値
   const defaultValues: OrderFormParam = useMemo(
     () => ({
       id: id ?? '',
       products: products ?? [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
       deleteProducts: products ?? [],
-      staffID: staffID ?? (staffList && staffList.length > 0 ? staffList[0].id : ''),
+      staffID: staffID ?? '',
     }),
-    [id, products, staffID, staffList],
+    [id, products, staffID],
   );
 
   // ボタン押下時処理
