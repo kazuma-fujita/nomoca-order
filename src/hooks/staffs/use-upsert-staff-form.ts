@@ -29,12 +29,10 @@ export const useUpsertStaffForm = (staff?: Staff) => {
     useCallback(
       async (param: Staff) => {
         try {
-          // await upsertStaff(staff ? { ...param, id: staff.id } : { ...param, id: '' });
           await upsertStaff(param);
           cancelHandler();
         } catch (error) {}
       },
-      // [cancelHandler, staff, upsertStaff],
       [cancelHandler, upsertStaff],
     ),
   );

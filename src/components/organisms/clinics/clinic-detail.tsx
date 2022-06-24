@@ -10,13 +10,13 @@ export const ClinicDetail = ({ clinic }: Props) => {
   const { data } = useFetchClinic();
   const result = clinic ?? data;
   return (
-    <Box sx={{ typography: 'body2' }}>
+    <Box sx={{ typography: 'body2' }} data-cy='clinic-detail'>
       {result ? (
         <>
-          {result.name} <br />
-          {`〒  ${result.postalCode}`} <br />
-          {`${result.state}${result.city}${result.address}  ${result.building ?? ''}`} <br />
-          {`電話番号  ${result.phoneNumber}`}
+          <div>{result.name} </div>
+          <div>{`〒  ${result.postalCode}`} </div>
+          <div>{`${result.state}${result.city}${result.address}  ${result.building ?? ''}`} </div>
+          <div>{`電話番号  ${result.phoneNumber}`}</div>
         </>
       ) : (
         '配送先を作成してください'

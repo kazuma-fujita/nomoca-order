@@ -26,12 +26,17 @@ context('SubscriptionOrder', () => {
       cy.get('header').contains(ScreenName.singleOrder).should('exist');
       cy.get('[data-cy="menu-icon"]').click();
       cy.get(`[data-cy="${Path.subscriptionOrder}"]`).click();
-      // 定期便画面表示
+      // 定期便一覧画面表示
       cy.waitUntil(() => cy.url().then(($url: string) => $url.includes(Path.subscriptionOrder)));
       cy.get('header').contains(ScreenName.subscriptionOrder).should('exist');
       cy.findByRole('button', { name: '定期便を申し込む' }).click();
+      // 定期便入力画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.input}`);
+      // 画面要素確認
       cy.findByRole('button', { name: '定期便注文を入力する' });
+      cy.findByRole('button', { name: '配送先を作成する' }).should('exist');
+      cy.findByRole('button', { name: '発注担当者を追加する' }).should('exist');
+      cy.findByRole('button', { name: '確認する' }).should('exist');
       // 商品プルダウン表示確認
       cy.findByLabelText('Now loading').should('exist');
       cy.findByLabelText('Now loading').should('not.exist');
@@ -39,18 +44,40 @@ context('SubscriptionOrder', () => {
       // 商品プルダウン選択
       cy.get('[name="products.0.productID"]').parent().click();
       cy.findByRole('option', { name: '定期便商品A' }).click();
+      // 画面下部のボタンまでScroll
+      cy.findByRole('button', { name: '確認する' }).scrollIntoView().should('be.visible');
+      // 配送先入力
+      cy.findByRole('button', { name: '配送先を作成する' }).click({ force: true });
+      cy.intercept('POST', 'http://192.168.1.6:20002/graphql').as('createClinic');
+      cy.findByRole('dialog').within(() => {
+        cy.findByRole('heading', { name: '配送先を作成する' });
+        cy.findByRole('textbox', { name: '医院名' }).type('渋谷クリニック');
+        cy.findByRole('textbox', { name: '郵便番号' }).type('1234567');
+        cy.findByRole('textbox', { name: '都道府県' }).type('東京都');
+        cy.findByRole('textbox', { name: '市区町村' }).type('渋谷区渋谷');
+        cy.findByRole('textbox', { name: '番地' }).type('1-2-3');
+        cy.findByRole('textbox', { name: '建物名・部屋番号' }).type('渋谷ビル203');
+        cy.findByRole('textbox', { name: '電話番号' }).type('0312345678');
+        cy.findByRole('button', { name: '作成する' }).click();
+      });
+      cy.wait('@createClinic');
+      cy.get('[data-cy="clinic-detail"]').within(() => {
+        cy.findByText('渋谷クリニック');
+        cy.findByText('〒 1234567');
+        cy.findByText('東京都渋谷区渋谷1-2-3 渋谷ビル203');
+        cy.findByText('電話番号 0312345678');
+      });
       // 担当者入力
       cy.findByRole('button', { name: '発注担当者を追加する' }).click({ force: true });
-      cy.findByRole('dialog');
-      cy.findByRole('heading', { name: '発注担当者を追加する' });
-      cy.findByRole('textbox', { name: '性' }).type('佐藤');
-      cy.findByRole('textbox', { name: '名' }).type('太郎');
-      cy.findByRole('button', { name: '追加する' }).click();
-      cy.findByRole('heading', { name: '発注担当者を追加する' }).should('not.exist');
-      // cy.findByRole('dialog').should('not.exist');
-      // cy.get('[name="staffID"]').parent().should('have.value', '佐藤  太郎');
-      // 配送先入力
-      cy.findByRole('button', { name: '配送先を作成する' }).click();
+      cy.intercept('POST', 'http://192.168.1.6:20002/graphql').as('createStaff');
+      cy.findByRole('dialog').within(() => {
+        cy.findByRole('heading', { name: '発注担当者を追加する' });
+        cy.findByRole('textbox', { name: '性' }).type('佐藤');
+        cy.findByRole('textbox', { name: '名' }).type('太郎');
+        cy.findByRole('button', { name: '追加する' }).click();
+      });
+      cy.wait('@createStaff');
+      cy.findByRole('button', { name: '確認する' }).click({ force: true });
     });
 
     // it('It fills down the order form.', () => {
