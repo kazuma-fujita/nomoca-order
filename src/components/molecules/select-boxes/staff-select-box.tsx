@@ -10,9 +10,18 @@ const StaffSelectInput = ({ setValue, control }: UseFormReturn<OrderFormParam>) 
   const { data: staffList, isLoading } = useFetchStaffList();
   const { data: defaultValues } = useOrderFormParam();
   useEffect(() => {
+    // 定期便更新時はdefaultValuesのstaffIDを最優先にしてプルダウン設定
+    // 定期便・通常注文新規作成時にStaffデータがあれば先頭の値をプルダウン設定
+    // Staffデータが無い状態で入力画面上でStaffデータを作成した場合、新規作成staffIDを動的にプルダウン設定
     const staffID =
-      (defaultValues && defaultValues.staffID) ?? (staffList && staffList.length > 0 ? staffList[0].id : null);
+      defaultValues && defaultValues.staffID
+        ? defaultValues.staffID
+        : staffList && staffList.length > 0
+        ? staffList[0].id
+        : null;
+
     if (staffID) {
+      // 動的にstaffIDをプルダウン設定
       setValue('staffID', staffID);
     }
   }, [staffList, setValue, defaultValues]);
@@ -46,26 +55,14 @@ const StaffSelectInput = ({ setValue, control }: UseFormReturn<OrderFormParam>) 
 };
 
 export const StaffSelectBox = (props: UseFormReturn<OrderFormParam>) => {
-  // const { isLoading, error, isEmptyList } = useFetchStaffList();
   const { isLoading, error } = useFetchStaffList();
   if (isLoading) return <CircularProgress aria-label='Now loading' />;
   if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
-    <>
-      <Box display='flex' alignItems='center'>
-        <StaffSelectInput {...props} />
-        <Box ml={4} />
-        <UpsertStaffButton />
-      </Box>
-      {/* {!isEmptyList ? (
-        <Box display='flex' alignItems='center'>
-          <StaffSelectInput {...props} />
-          <Box ml={4} />
-          <UpsertStaffButton />
-        </Box>
-      ) : (
-        <UpsertStaffButton />
-      )} */}
-    </>
+    <Box display='flex' alignItems='center'>
+      <StaffSelectInput {...props} />
+      <Box ml={4} />
+      <UpsertStaffButton />
+    </Box>
   );
 };
