@@ -77,7 +77,23 @@ context('SubscriptionOrder', () => {
         cy.findByRole('button', { name: '追加する' }).click();
       });
       cy.wait('@createStaff');
-      cy.findByRole('button', { name: '確認する' }).click({ force: true });
+      // waitしてもStaffDialogがアクティブなDomとして認識される為、findByRoleで確認するボタンが認識できない
+      // 以下cy.getだとHTML表示中要素全てにアクセス可能。念の為be.visibleでDialogが閉じてボタンが表示されているか確認
+      cy.get('[data-cy="order-input-form-button"]').should('be.visible').click({ force: true });
+      // 定期便入力確認画面表示
+      cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.confirm}`);
+      cy.findByRole('button', { name: '注文する' }).click();
+      // 定期便入力完了画面表示
+      cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.complete}`);
+      cy.findByRole('button', { name: 'Topへ戻る' }).click();
+      // 定期便一覧画面表示
+      cy.url().should('include', `${Path.subscriptionOrder}`);
+      cy.findByRole('table').within(() => {
+        cy.findAllByRole('cell', { name: '2023/2月' }).should('have.length', 2);
+        // 商品表示
+        cy.findByRole('button', { name: 'expand row' }).click();
+        cy.findByRole('cell', { name: '定期便商品A' });
+      });
     });
 
     // it('It fills down the order form.', () => {

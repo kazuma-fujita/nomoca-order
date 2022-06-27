@@ -15,7 +15,7 @@ type Props = {
   fieldArrayReturn: UseFieldArrayReturn;
 };
 
-export const OrderForm: React.FC<Props> = ({
+export const OrderInputForm: React.FC<Props> = ({
   submitHandler,
   cancelHandler,
   formReturn,
@@ -60,6 +60,7 @@ export const OrderForm: React.FC<Props> = ({
           startIcon={<ArrowForwardIosIcon />}
           form='order-form'
           disabled={!formParam}
+          data-cy='order-input-form-button'
         >
           確認する
         </Button>

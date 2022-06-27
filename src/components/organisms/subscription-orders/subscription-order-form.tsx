@@ -1,5 +1,5 @@
 import { Box, FormHelperText, MenuItem, TextField, Typography } from '@mui/material';
-import { OrderForm } from 'components/organisms/orders/order-form';
+import { OrderInputForm } from 'components/organisms/orders/order-input-form';
 import { useInputOrder } from 'hooks/orders/use-input-order';
 import { useState } from 'react';
 import { Controller, UseFieldArrayReturn } from 'react-hook-form';
@@ -41,7 +41,7 @@ export const SubscriptionOrderForm = () => {
   };
 
   return (
-    <OrderForm
+    <OrderInputForm
       formReturn={formReturn}
       fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
       submitHandler={submitHandler}
@@ -108,6 +108,6 @@ export const SubscriptionOrderForm = () => {
       <Box mb={8} ml={4}>
         <FormHelperText>定期便の新規申し込み、または注文内容変更の配送開始月は翌月から承ります</FormHelperText>
       </Box>
-    </OrderForm>
+    </OrderInputForm>
   );
 };

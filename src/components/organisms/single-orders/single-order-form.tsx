@@ -1,13 +1,13 @@
 import { Box, FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { DeliveryType } from 'API';
-import { OrderForm } from 'components/organisms/orders/order-form';
+import { OrderInputForm } from 'components/organisms/orders/order-input-form';
 import { useInputOrder } from 'hooks/orders/use-input-order';
 import { Controller, UseFieldArrayReturn } from 'react-hook-form';
 
 export const SingleOrderForm = () => {
   const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useInputOrder();
   return (
-    <OrderForm
+    <OrderInputForm
       formReturn={formReturn}
       fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
       submitHandler={submitHandler}
@@ -40,6 +40,6 @@ export const SingleOrderForm = () => {
           )}
         />
       </Box>
-    </OrderForm>
+    </OrderInputForm>
   );
 };

@@ -119,60 +119,27 @@ const createParamsToDeleteRecords = (tableName, deleteItems) => {
 };
 
 Cypress.Commands.add('putProducts', () => {
-  return new Cypress.Promise(async (resolve, reject) => {
-    try {
-      const params = createParamsToPutProductRecords(seedProducts);
-      console.log('insert params', params);
-      await db.batchWriteItem(params).promise();
-      resolve(true);
-    } catch (err) {
-      console.error(err);
-      reject(false);
-    }
-  });
+  try {
+    putProducts();
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 const batchWriteLimit = 25;
 
 Cypress.Commands.add('clearAllRecords', () => {
-  // try {
-  //   clearAllRecords();
-  // } catch (err) {
-  //   console.error(err);
-  // }
-  return new Cypress.Promise(async (resolve, reject) => {
-    try {
-      const list = await listTables();
-      list.TableNames.map(async (tableName) => {
-        const scan = await db.scan({ TableName: tableName }).promise();
-        if (scan.Items && scan.Items.length > 0) {
-          // BatchDelete処理上限25件づつの多次元配列生成
-          const deleteItemsList = flatMapWithCount(scan.Items, batchWriteLimit);
-          console.log('tableName', tableName);
-          deleteItemsList.map(async (deleteItems) => {
-            console.log('deleteItems', deleteItems);
-            const params = createParamsToDeleteRecords(tableName, deleteItems);
-            console.log('delete params', params);
-            await db.batchWriteItem(params).promise();
-          });
-        }
-      });
-      // resolve('finish');
-      resolve(true);
-    } catch (err) {
-      console.error(err);
-      // reject(error);
-      reject(false);
-    }
-  });
+  try {
+    clearAllRecords();
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 const putProducts = async () => {
   try {
-    const list = await listTables();
-    console.log(list.TableNames);
     const params = createParamsToPutProductRecords(seedProducts);
-    console.log('products params', params);
+    console.log('insert params', params);
     await db.batchWriteItem(params).promise();
   } catch (err) {
     console.error(err);
@@ -185,15 +152,17 @@ const clearAllRecords = async () => {
     const list = await listTables();
     list.TableNames.map(async (tableName) => {
       const scan = await db.scan({ TableName: tableName }).promise();
-      // BatchDelete処理上限25件づつの多次元配列生成
-      const deleteItemsList = flatMapWithCount(scan.Items, batchWriteLimit);
-      console.log('deleteItemsList', deleteItemsList);
-      deleteItemsList.map(async (deleteItems) => {
-        console.log('deleteItems', deleteItems);
-        const params = createParamsToDeleteRecords(tableName, deleteItems);
-        console.log('delete params', params);
-        await db.batchWriteItem(params).promise();
-      });
+      if (scan.Items && scan.Items.length > 0) {
+        // BatchDelete処理上限25件づつの多次元配列生成
+        const deleteItemsList = flatMapWithCount(scan.Items, batchWriteLimit);
+        console.log('tableName', tableName);
+        deleteItemsList.map(async (deleteItems) => {
+          console.log('deleteItems', deleteItems);
+          const params = createParamsToDeleteRecords(tableName, deleteItems);
+          console.log('delete params', params);
+          await db.batchWriteItem(params).promise();
+        });
+      }
     });
   } catch (err) {
     console.error(err);
