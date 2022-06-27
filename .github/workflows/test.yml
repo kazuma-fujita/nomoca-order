@@ -16,7 +16,7 @@ jobs:
         uses: ./.github/actions/export
       - name: Install modules
         run: npm ci
-      # test
+      # Jest test
       - name: Run format with Prettier
         run: npm run fmt
       - name: Run lint
@@ -25,12 +25,13 @@ jobs:
         run: npm run test
         env:
           TZ: 'Asia/Tokyo'
-      # e2e
+      # Cypress e2e
       - name: Run E2E tests 🧪
         uses: cypress-io/github-action@v2
         with:
           build: npm run build
           start: npm start
+      # Cypress component testing
       - name: Run Component tests with Cypress 🧪
         uses: cypress-io/github-action@v2
         with:
