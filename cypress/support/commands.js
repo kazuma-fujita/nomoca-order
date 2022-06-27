@@ -118,34 +118,7 @@ const createParamsToDeleteRecords = (tableName, deleteItems) => {
   };
 };
 
-Cypress.Commands.add('putProducts', () => {
-  try {
-    putProducts();
-  } catch (err) {
-    console.error(err);
-  }
-});
-
 const batchWriteLimit = 25;
-
-Cypress.Commands.add('clearAllRecords', () => {
-  try {
-    clearAllRecords();
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-const putProducts = async () => {
-  try {
-    const params = createParamsToPutProductRecords(seedProducts);
-    console.log('insert params', params);
-    await db.batchWriteItem(params).promise();
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-};
 
 const clearAllRecords = async () => {
   try {
@@ -169,6 +142,33 @@ const clearAllRecords = async () => {
     throw err;
   }
 };
+
+const putProducts = async () => {
+  try {
+    const params = createParamsToPutProductRecords(seedProducts);
+    console.log('insert params', params);
+    await db.batchWriteItem(params).promise();
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+Cypress.Commands.add('clearAllRecords', () => {
+  try {
+    clearAllRecords();
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+Cypress.Commands.add('putProducts', () => {
+  try {
+    putProducts();
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 Cypress.Commands.add('initializeDynamoDB', async () => {
   try {
