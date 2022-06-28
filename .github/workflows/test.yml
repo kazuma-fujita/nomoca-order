@@ -8,6 +8,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       # build
       - name: Checkout
@@ -38,6 +39,7 @@ jobs:
           TZ: 'Asia/Tokyo'
       # Run Amplify mock
       - name: Amplify pull
+        run: amplify -v && ls -la .
         run: amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName develop -y
       - name: Amplify mocking
         run: npm run mock
