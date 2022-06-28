@@ -12,7 +12,7 @@ jobs:
     steps:
       # build
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Install JAVA
       - name: Export dummy build.gradle
         uses: ./.github/actions/gradle
@@ -49,7 +49,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
       - name: Amplify mocking
-        run: npm run mock
+        run: npm run mock -y
       # Install js packages
       - name: Install modules
         run: npm ci
@@ -64,13 +64,13 @@ jobs:
           TZ: 'Asia/Tokyo'
       # Cypress e2e
       - name: Run E2E tests 🧪
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           build: npm run build
           start: npm start
       # Cypress component testing
       - name: Run Component tests with Cypress 🧪
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           install: false
           command: npm run cy:run:ct
