@@ -22,12 +22,31 @@ jobs:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '11'
           cache: 'gradle'
-      - name: Install Amplify CLI
-        run: npm install -g @aws-amplify/cli
       - name: Install modules
         run: npm ci
+      # We need to AWS CLI to configure the account and profile credentials.
+      # Note: The --profile {default} needs to be the same that the profileName in the init.sh
+      - name: Install AWS CLI & Configuring Profile Credentials
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile default
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile default
+          aws configure set default.region $AWS_REGION
+      # Run Amplify mock
       - name: Export dummy aws-exports.js
         uses: ./.github/actions/export
+      - name: Install Amplify CLI
+        run: npm install -g @aws-amplify/cli
+      - name: Amplify pull
+        run: amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName develop -y
+      - name: Amplify mocking
+        run: npm run mock
       # Jest test
       - name: Run format with Prettier
         run: npm run fmt
@@ -37,15 +56,6 @@ jobs:
         run: npm run test
         env:
           TZ: 'Asia/Tokyo'
-      # Run Amplify mock
-      - name: Amplify pull
-        run: amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName develop -y
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-      - name: Amplify mocking
-        run: npm run mock
       # Cypress e2e
       - name: Run E2E tests 🧪
         uses: cypress-io/github-action@v2
