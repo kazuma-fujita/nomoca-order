@@ -13,6 +13,7 @@ jobs:
       # build
       - name: Checkout
         uses: actions/checkout@v2
+      # Install JAVA
       - name: Export dummy build.gradle
         uses: ./.github/actions/gradle
       - name: Java Install
@@ -22,10 +23,7 @@ jobs:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '11'
           cache: 'gradle'
-      - name: Install modules
-        run: npm ci
       # We need to AWS CLI to configure the account and profile credentials.
-      # Note: The --profile {default} needs to be the same that the profileName in the init.sh
       - name: Install AWS CLI & Configuring Profile Credentials
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -34,7 +32,7 @@ jobs:
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
-          sudo ./aws/install
+          sudo ./aws/install --update
           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile default
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile default
           aws configure set default.region $AWS_REGION
@@ -47,6 +45,9 @@ jobs:
         run: amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName develop -y
       - name: Amplify mocking
         run: npm run mock
+      # Install js packages
+      - name: Install modules
+        run: npm ci
       # Jest test
       - name: Run format with Prettier
         run: npm run fmt
