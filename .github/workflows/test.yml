@@ -44,6 +44,10 @@ jobs:
           npm install -g @aws-amplify/cli
           bash -x ./.github/commands/amplify_init.sh
           echo n | amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName develop
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
       - name: Amplify mocking
         run: npm run mock
       # Install js packages
