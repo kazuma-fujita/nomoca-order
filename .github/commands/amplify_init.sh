@@ -1,12 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 # IFS=’|’
 
 REACTCONFIG=”{\
 \”SourceDir\”:\”src\”,\
 \”DistributionDir\”:\”out\”,\
-\”BuildCommand\”:\”npm run-script build\”,\
-\”StartCommand\”:\”npm run-script start\”\
+\”BuildCommand\”:\”npm\ run-script\ build\”,\
+\”StartCommand\”:\”npm\ run-script\ start\”\
 }”
 
 AWSCLOUDFORMATIONCONFIG=”{\
@@ -33,8 +33,8 @@ FRONTEND=”{\
 PROVIDERS=”{\
 \”awscloudformation\”:$AWSCLOUDFORMATIONCONFIG\
 }”
-amplify init \
+
+echo n | amplify init \
 —- amplify $AMPLIFY \
 -- frontend $FRONTEND \
--- providers $PROVIDERS \
--- yes
+-- providers $PROVIDERS
