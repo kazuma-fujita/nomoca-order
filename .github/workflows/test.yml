@@ -39,10 +39,11 @@ jobs:
       # Run Amplify mock
       - name: Export dummy aws-exports.js
         uses: ./.github/actions/export
-      - name: Install Amplify CLI
-        run: npm install -g @aws-amplify/cli
-      - name: Amplify pull
-        run: amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName develop -y
+      - name: Install Amplify CLI & Amplify init / pull
+        run: |
+          npm install -g @aws-amplify/cli
+          bash amplify_init.sh
+          amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName develop -y
       - name: Amplify mocking
         run: npm run mock
       # Install js packages
