@@ -12,13 +12,15 @@ jobs:
       # build
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Export dummy build.gradle
+        uses: ./.github/actions/gradle
       - name: Java Install
-        run: sudo yum install -y java-11-amazon-corretto-headless
-        # uses: actions/setup-java@v3
-        # with:
-        #   distribution: 'zulu' # See 'Supported distributions' for available options
-        #   java-version: '11'
-        # cache: 'gradle'
+        # run: sudo yum install -y java-11-amazon-corretto-headless
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '11'
+          cache: 'gradle'
       - name: Install Amplify CLI
         run: npm install -g @aws-amplify/cli
       - name: Install modules

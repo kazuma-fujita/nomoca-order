@@ -1,0 +1,9 @@
+runs:
+  using: 'composite'
+  steps:
+    - name: Output dummy build.gradle
+      run: |
+        cat <<EOS > build.gradle
+        apply plugin: 'java'
+        EOS
+      shell: bash
