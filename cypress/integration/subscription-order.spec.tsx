@@ -48,7 +48,8 @@ context('SubscriptionOrder', () => {
       cy.findByRole('button', { name: '確認する' }).scrollIntoView().should('be.visible');
       // 配送先入力
       cy.findByRole('button', { name: '配送先を作成する' }).click({ force: true });
-      cy.intercept('POST', 'http://192.168.1.6:20002/graphql').as('createClinic');
+      // cy.intercept('POST', 'http://localhost:20002/graphql').as('createClinic');
+      cy.intercept('POST', '/graphql').as('createClinic');
       cy.findByRole('dialog').within(() => {
         cy.findByRole('heading', { name: '配送先を作成する' });
         cy.findByRole('textbox', { name: '医院名' }).type('渋谷クリニック');
@@ -69,7 +70,8 @@ context('SubscriptionOrder', () => {
       });
       // 担当者入力
       cy.findByRole('button', { name: '発注担当者を追加する' }).click({ force: true });
-      cy.intercept('POST', 'http://192.168.1.6:20002/graphql').as('createStaff');
+      // cy.intercept('POST', 'http://localhost:20002/graphql').as('createStaff');
+      cy.intercept('POST', '/graphql').as('createStaff');
       cy.findByRole('dialog').within(() => {
         cy.findByRole('heading', { name: '発注担当者を追加する' });
         cy.findByRole('textbox', { name: '性' }).type('佐藤');

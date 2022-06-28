@@ -42,8 +42,8 @@ jobs:
       - name: Install Amplify CLI & Amplify init / pull
         run: |
           npm install -g @aws-amplify/cli
-          sh -x ./.github/commands/amplify_init.sh
-          amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName develop -y
+          bash -x ./.github/commands/amplify_init.sh
+          echo n | amplify pull --appId ${{ secrets.AMPLIFY_APP_ID }} --envName develop
       - name: Amplify mocking
         run: npm run mock
       # Install js packages
