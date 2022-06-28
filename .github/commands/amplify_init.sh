@@ -40,8 +40,10 @@ PROVIDERS="{\
 # --providers ${PROVIDERS} \
 # --yes
 
-echo n | amplify pull \
+# echo n | amplify pull \
+amplify pull \
 --appId ${AMPLIFY_APP_ID} \
 --amplify ${AMPLIFY} \
 --frontend ${FRONTEND} \
---providers ${PROVIDERS}
+--providers ${PROVIDERS} \
+--yes
