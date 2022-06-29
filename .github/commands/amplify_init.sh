@@ -20,7 +20,7 @@ AWSCLOUDFORMATIONCONFIG="{\
 
 AMPLIFY="{\
 \"projectName\":\"nomocaorder\",\
-\"envName\":\"devlop\",\
+\"envName\":\"develop\",\
 \"defaultEditor\":\"code\"\
 }"
 
