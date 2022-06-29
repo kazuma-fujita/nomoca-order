@@ -41,7 +41,7 @@ jobs:
         uses: ./.github/actions/export
       - name: Install Amplify CLI & Amplify init / pull
         run: |
-          npm install -g @aws-amplify/cli
+          npm install -g @aws-amplify/cli pm2 wait-on
           bash -x ./.github/commands/amplify_init.sh
         env:
           AMPLIFY_APP_ID: ${{ secrets.AMPLIFY_APP_ID}}
@@ -49,7 +49,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
       - name: Amplify mocking
-        run: amplify mock --yes
+        run: |
+          pm2 start amplify mock
+          wait-on http://localhost:20002
       # Install js packages
       - name: Install modules
         run: npm ci
