@@ -31,13 +31,6 @@ PROVIDERS="{\
 \"awscloudformation\":${AWSCLOUDFORMATIONCONFIG}\
 }"
 
-# amplify init \
-# --amplify ${AMPLIFY} \
-# --frontend ${FRONTEND} \
-# --providers ${PROVIDERS} \
-# --yes
-
-# echo n | amplify pull \
 amplify pull \
 --appId ${AMPLIFY_APP_ID} \
 --amplify ${AMPLIFY} \
