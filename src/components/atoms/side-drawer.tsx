@@ -45,7 +45,7 @@ export const SideDrawer = (props: Props) => {
                 key={item.path}
                 component={Link}
                 href={item.path}
-                data-cy={item.path}
+                data-testid={item.path}
               >
                 <ListItemIcon>
                   <SvgIcon component={item.icon} />

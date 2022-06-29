@@ -60,7 +60,7 @@ export const OrderInputForm: React.FC<Props> = ({
           startIcon={<ArrowForwardIosIcon />}
           form='order-form'
           disabled={!formParam}
-          data-cy='order-input-form-button'
+          data-testid='order-input-form-button'
         >
           確認する
         </Button>

@@ -8,9 +8,9 @@ context('SubscriptionOrder', () => {
     cy.clearAllRecords();
     cy.wait(1000);
     cy.putProducts();
-    cy.fixture('customer-user.json').then((loginInfo: LoginInfo) => {
-      cy.cognitoLogin(loginInfo.username, loginInfo.password);
-    });
+    // cy.fixture('customer-user.json').then((loginInfo: LoginInfo) => {
+    //   cy.cognitoLogin(loginInfo.username, loginInfo.password);
+    // });
   });
 
   after(() => {
@@ -18,14 +18,20 @@ context('SubscriptionOrder', () => {
   });
 
   describe('It creates subscription order items.', () => {
-    it('It views a subscription order list.', () => {
+    before(() => {
+      cy.fixture('customer-user.json').then((loginInfo: LoginInfo) => {
+        cy.cognitoLogin(loginInfo.username, loginInfo.password);
+      });
+    });
+
+    it('It creates a subscription order items.', () => {
       // 注文画面表示
       cy.visit(Path.singleOrder);
       cy.waitUntil(() => cy.url().then(($url: string) => $url.includes(Path.singleOrder)));
       cy.clock(new Date(2023, 0));
       cy.get('header').contains(ScreenName.singleOrder).should('exist');
-      cy.get('[data-cy="menu-icon"]').click();
-      cy.get(`[data-cy="${Path.subscriptionOrder}"]`).click();
+      cy.findByTestId('menu-icon').click();
+      cy.findByTestId(Path.subscriptionOrder).click();
       // 定期便一覧画面表示
       cy.waitUntil(() => cy.url().then(($url: string) => $url.includes(Path.subscriptionOrder)));
       cy.get('header').contains(ScreenName.subscriptionOrder).should('exist');
@@ -48,7 +54,6 @@ context('SubscriptionOrder', () => {
       cy.findByRole('button', { name: '確認する' }).scrollIntoView().should('be.visible');
       // 配送先入力
       cy.findByRole('button', { name: '配送先を作成する' }).click({ force: true });
-      // cy.intercept('POST', 'http://localhost:20002/graphql').as('createClinic');
       cy.intercept('POST', '/graphql').as('createClinic');
       cy.findByRole('dialog').within(() => {
         cy.findByRole('heading', { name: '配送先を作成する' });
@@ -62,7 +67,7 @@ context('SubscriptionOrder', () => {
         cy.findByRole('button', { name: '作成する' }).click();
       });
       cy.wait('@createClinic');
-      cy.get('[data-cy="clinic-detail"]').within(() => {
+      cy.findByTestId('clinic-detail').within(() => {
         cy.findByText('渋谷クリニック');
         cy.findByText('〒 1234567');
         cy.findByText('東京都渋谷区渋谷1-2-3 渋谷ビル203');
@@ -70,7 +75,6 @@ context('SubscriptionOrder', () => {
       });
       // 担当者入力
       cy.findByRole('button', { name: '発注担当者を追加する' }).click({ force: true });
-      // cy.intercept('POST', 'http://localhost:20002/graphql').as('createStaff');
       cy.intercept('POST', '/graphql').as('createStaff');
       cy.findByRole('dialog').within(() => {
         cy.findByRole('heading', { name: '発注担当者を追加する' });
@@ -81,9 +85,21 @@ context('SubscriptionOrder', () => {
       cy.wait('@createStaff');
       // waitしてもStaffDialogがアクティブなDomとして認識される為、findByRoleで確認するボタンが認識できない
       // 以下cy.getだとHTML表示中要素全てにアクセス可能。念の為be.visibleでDialogが閉じてボタンが表示されているか確認
-      cy.get('[data-cy="order-input-form-button"]').should('be.visible').click({ force: true });
+      cy.findByTestId('order-input-form-button').should('be.visible').click({ force: true });
       // 定期便入力確認画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.confirm}`);
+      cy.findByRole('table').within(() => {
+        cy.findByRole('cell', { name: '定期便商品A' });
+      });
+      cy.findByLabelText('配送開始月').should('have.text', '2023 / 2月');
+      cy.findByLabelText('配送頻度').should('have.text', '1ヶ月');
+      cy.findByTestId('clinic-detail').within(() => {
+        cy.findByText('渋谷クリニック');
+        cy.findByText('〒 1234567');
+        cy.findByText('東京都渋谷区渋谷1-2-3 渋谷ビル203');
+        cy.findByText('電話番号 0312345678');
+      });
+      cy.findByLabelText('発注担当者').should('have.text', '佐藤  太郎');
       cy.findByRole('button', { name: '注文する' }).click();
       // 定期便入力完了画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.complete}`);
@@ -97,22 +113,5 @@ context('SubscriptionOrder', () => {
         cy.findByRole('cell', { name: '定期便商品A' });
       });
     });
-
-    // it('It fills down the order form.', () => {
-    //   // 商品プルダウン選択
-    //   cy.get('[name="products.0.productID"]').parent().click();
-    //   cy.findByRole('option', { name: '定期便商品A' }).click();
-    //   // 担当者入力
-    //   cy.findByRole('button', { name: '発注担当者を追加する' }).click();
-    //   cy.findByRole('dialog');
-    //   cy.findByRole('heading', { name: '発注担当者を追加する' });
-    //   cy.findByRole('textbox', { name: '性' }).type('佐藤');
-    //   cy.findByRole('textbox', { name: '名' }).type('太郎');
-    //   cy.findByRole('button', { name: '追加する' }).click();
-    //   cy.findByRole('dialog').should('not.exist');
-    //   cy.get('[name="staffID"]').parent().should('have.value', '佐藤  太郎');
-    // 配送先入力
-    // cy.findByRole('button', { name: '配送先を作成する' }).click();
-    // });
   });
 });

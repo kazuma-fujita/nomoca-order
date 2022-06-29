@@ -88,7 +88,7 @@ const StaffNameLabel = () => {
   const staff = staffList.find((staff) => staff.id === formParam.staffID);
   if (!staff) return <ErrorAlert>A staff name was not found on a staff list.</ErrorAlert>;
   return (
-    <Typography variant='body2'>
+    <Typography variant='body2' aria-label='発注担当者'>
       {staff.lastName}&nbsp;&nbsp;{staff.firstName}
     </Typography>
   );
@@ -103,7 +103,7 @@ const DeliveryStartMonthAndIntervalLabel = () => {
       </Divider>
       <Box mt={2} mb={4} ml={4}>
         {formParam && formParam.deliveryStartYear && formParam.deliveryStartMonth ? (
-          <Typography variant='body2'>
+          <Typography variant='body2' aria-label='配送開始月'>
             {formParam.deliveryStartYear} / {formParam.deliveryStartMonth}月
           </Typography>
         ) : (
@@ -115,7 +115,9 @@ const DeliveryStartMonthAndIntervalLabel = () => {
       </Divider>
       <Box mt={2} mb={4} ml={4}>
         {formParam && formParam.deliveryInterval ? (
-          <Typography variant='body2'>{formParam.deliveryInterval}ヶ月</Typography>
+          <Typography variant='body2' aria-label='配送頻度'>
+            {formParam.deliveryInterval}ヶ月
+          </Typography>
         ) : (
           <ErrorAlert>Form values and delivery interval are not found.</ErrorAlert>
         )}

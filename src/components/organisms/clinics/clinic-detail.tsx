@@ -10,7 +10,7 @@ export const ClinicDetail = ({ clinic }: Props) => {
   const { data } = useFetchClinic();
   const result = clinic ?? data;
   return (
-    <Box sx={{ typography: 'body2' }} data-cy='clinic-detail'>
+    <Box sx={{ typography: 'body2' }} data-testid='clinic-detail'>
       {result ? (
         <>
           <div>{result.name} </div>

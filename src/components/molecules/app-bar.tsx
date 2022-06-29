@@ -22,7 +22,7 @@ export const AppBar = (props: Props) => {
           aria-label='menu'
           sx={{ mr: 2 }}
           onClick={props.toggle}
-          data-cy='menu-icon'
+          data-testid='menu-icon'
         >
           <MenuIcon />
         </IconButton>
