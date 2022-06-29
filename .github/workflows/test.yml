@@ -50,7 +50,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
       - name: Amplify mocking
         run: |
-          pm2 start amplify mock
+          pm2 start ./.github/commands/amplify_mock.sh
           wait-on http://localhost:20002
       # Install js packages
       - name: Install modules
