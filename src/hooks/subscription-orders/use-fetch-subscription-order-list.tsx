@@ -4,7 +4,6 @@ import {
   ListSubscriptionOrdersSortedByCreatedAtQueryVariables,
   ModelSortDirection,
   SubscriptionOrder,
-  SubscriptionOrderProduct,
   Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -24,19 +23,26 @@ export type NormalizedProduct = {
 
 export type ExtendedOrder<T> = T & {
   normalizedProducts: NormalizedProduct[];
+  // nextDeliveryYearMonth?: string | null; // 次回配送予定月。定期便画面のみ使用
 };
 
-const createNormalizedProduct = (orderProduct: SubscriptionOrderProduct | null): NormalizedProduct =>
-  ({
-    relationID: orderProduct?.id,
-    productID: orderProduct?.productID,
-    name: orderProduct?.product.name,
-    unitPrice: orderProduct?.product.unitPrice,
-    quantity: orderProduct?.quantity,
-  } as NormalizedProduct);
-
-const createNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] =>
-  order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct)) as NormalizedProduct[];
+const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] => {
+  if (!order.products) {
+    throw Error('Subscription order products is null.');
+  }
+  return order.products.items.map((orderProduct) => {
+    if (!orderProduct) {
+      throw Error('Subscription order products is null.');
+    }
+    return {
+      relationID: orderProduct.id,
+      productID: orderProduct.productID,
+      name: orderProduct.product.name,
+      unitPrice: orderProduct.product.unitPrice,
+      quantity: orderProduct.quantity,
+    };
+  });
+};
 
 const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
@@ -58,9 +64,7 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   }
 
   const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
-  console.log('items', items);
   for (const item of items) {
-    console.log('item', item.products);
     if (!item || !item.products || !item.products.items) {
       throw Error('The API fetched products but it returned null.');
     }
@@ -68,7 +72,14 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
 
   const extendedItems: ExtendedOrder<SubscriptionOrder>[] = items.map((item) => ({
     ...item,
-    normalizedProducts: createNormalizedProducts(item),
+    normalizedProducts: generateNormalizedProducts(item),
+    // nextDeliveryYearMonth: generateFormattedNextDeliveryYearMonth(
+    //   item.deliveryStartYear,
+    //   item.deliveryStartMonth,
+    //   item.deliveryInterval,
+    //   now.getFullYear(),
+    //   now.getMonth() + 1,
+    // ),
   }));
 
   return extendedItems;
@@ -83,8 +94,11 @@ type Props = {
 };
 
 export const SubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
+  // const { now } = useNowDate();
+  // const swrKey = [SWRKey.subscriptionOrderList, now];
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
     SWRKey.subscriptionOrderList,
+    // swrKey,
     fetcher,
     {},
     mockResponse,
@@ -105,9 +119,12 @@ export const useAdminSubscriptionOrderList = () => useContext(AdminSubscriptionO
 
 // TODO: 一覧生成ロジックをバックエンドに移したらSubscriptionOrderListContextProviderと統合すること
 export const AdminSubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
+  // const { now } = useNowDate();
+  // const swrKey = [SWRKey.subscriptionOrderList, now];
   // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
     SWRKey.AdminSubscriptionOrderList,
+    // swrKey,
     fetcher,
     { revalidateOnFocus: false },
     mockResponse,

@@ -8,9 +8,6 @@ context('SubscriptionOrder', () => {
     cy.clearAllRecords();
     cy.wait(1000);
     cy.putProducts();
-    // cy.fixture('customer-user.json').then((loginInfo: LoginInfo) => {
-    //   cy.cognitoLogin(loginInfo.username, loginInfo.password);
-    // });
   });
 
   after(() => {
@@ -48,7 +45,6 @@ context('SubscriptionOrder', () => {
       cy.findByRole('button', { name: '発注担当者を追加する' }).should('exist');
       cy.findByRole('button', { name: '確認する' }).should('exist');
       // 商品プルダウン表示確認
-      // cy.findByLabelText('Now loading').should('exist');
       cy.findByLabelText('Now loading').should('not.exist');
       cy.findByRole('button', { name: '商品追加' }).should('exist');
       // 商品プルダウン選択
@@ -103,8 +99,6 @@ context('SubscriptionOrder', () => {
         cy.findByText('東京都渋谷区渋谷1-2-3 渋谷ビル203');
         cy.findByText('電話番号 0312345678');
       });
-      // cy.findByLabelText('発注担当者').contains('p', '佐藤  太郎');
-      // cy.findByLabelText('発注担当者').should('have.text', '佐藤  太郎');
       cy.findByRole('button', { name: '注文する' }).click();
       // 定期便入力完了画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.complete}`);

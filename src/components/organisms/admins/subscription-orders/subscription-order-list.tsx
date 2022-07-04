@@ -83,6 +83,7 @@ const Row = ({ item, now }: RowProps) => {
       <TableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</TableCell>
       <TableCell align='center'>{`${item.deliveryInterval}ヶ月`}</TableCell>
       <TableCell align='center'>{formattedNextDeliveryDate}</TableCell>
+      {/* <TableCell align='center'>{item.nextDeliveryYearMonth}</TableCell> */}
       <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
     </CommonTableRow>
   );
