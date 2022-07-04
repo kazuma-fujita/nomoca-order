@@ -64,9 +64,9 @@ export const onCreateOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -119,9 +119,9 @@ export const onUpdateOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -174,9 +174,9 @@ export const onDeleteOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -226,9 +226,9 @@ export const onCreateOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -241,9 +241,9 @@ export const onUpdateOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -256,9 +256,9 @@ export const onDeleteOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;

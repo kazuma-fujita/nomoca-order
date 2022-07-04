@@ -498,6 +498,11 @@ export type DeleteStaffInput = {
   id: string,
 };
 
+export type SubscriptionOrdersResponse = {
+  __typename: "SubscriptionOrdersResponse",
+  items?:  Array<SubscriptionOrder | null > | null,
+};
+
 export type ModelClinicFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -1379,6 +1384,78 @@ export type DeleteStaffMutation = {
   } | null,
 };
 
+export type ListAdminSubscriptionOrdersQuery = {
+  listAdminSubscriptionOrders?:  {
+    __typename: "SubscriptionOrdersResponse",
+    items?:  Array< {
+      __typename: "SubscriptionOrder",
+      id: string,
+      products?:  {
+        __typename: "ModelSubscriptionOrderProductConnection",
+        items:  Array< {
+          __typename: "SubscriptionOrderProduct",
+          id: string,
+          subscriptionOrderID: string,
+          productID: string,
+          product:  {
+            __typename: "Product",
+            id: string,
+            name: string,
+            unitPrice: number,
+            orderType: OrderType,
+            viewOrder: number,
+            isExportCSV: boolean,
+            disabled: boolean,
+            type: Type,
+            createdAt: string,
+            updatedAt: string,
+          },
+          quantity: number,
+          createdAt: string,
+          updatedAt: string,
+          owner?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
+      clinicID: string,
+      clinic:  {
+        __typename: "Clinic",
+        id: string,
+        name: string,
+        phoneNumber: string,
+        postalCode: string,
+        state: string,
+        city: string,
+        address: string,
+        building?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      staffID: string,
+      staff:  {
+        __typename: "Staff",
+        id: string,
+        firstName: string,
+        lastName: string,
+        viewOrder: number,
+        disabled: boolean,
+        type: Type,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      deliveryStartYear: number,
+      deliveryStartMonth: number,
+      deliveryInterval: number,
+      createdAt: string,
+      type: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null > | null,
+  } | null,
+};
+
 export type GetClinicQueryVariables = {
   id: string,
 };
@@ -2010,75 +2087,6 @@ export type ListStaffSortedByViewOrderQuery = {
     } | null >,
     nextToken?: string | null,
   } | null,
-};
-
-export type ListAdminSubscriptionOrdersQuery = {
-  listAdminSubscriptionOrders?:  Array< {
-    __typename: "SubscriptionOrder",
-    id: string,
-    products?:  {
-      __typename: "ModelSubscriptionOrderProductConnection",
-      items:  Array< {
-        __typename: "SubscriptionOrderProduct",
-        id: string,
-        subscriptionOrderID: string,
-        productID: string,
-        product:  {
-          __typename: "Product",
-          id: string,
-          name: string,
-          unitPrice: number,
-          orderType: OrderType,
-          viewOrder: number,
-          isExportCSV: boolean,
-          disabled: boolean,
-          type: Type,
-          createdAt: string,
-          updatedAt: string,
-        },
-        quantity: number,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    clinicID: string,
-    clinic:  {
-      __typename: "Clinic",
-      id: string,
-      name: string,
-      phoneNumber: string,
-      postalCode: string,
-      state: string,
-      city: string,
-      address: string,
-      building?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    },
-    staffID: string,
-    staff:  {
-      __typename: "Staff",
-      id: string,
-      firstName: string,
-      lastName: string,
-      viewOrder: number,
-      disabled: boolean,
-      type: Type,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    },
-    deliveryStartYear: number,
-    deliveryStartMonth: number,
-    deliveryInterval: number,
-    createdAt: string,
-    type: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null > | null,
 };
 
 export type OnCreateClinicSubscriptionVariables = {

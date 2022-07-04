@@ -29,7 +29,7 @@ type Clinic
     rules: [
       { allow: owner }
       { allow: groups, groups: ["Operators"], operations: [read] }
-      # { allow: private, provider: iam, operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
     ]
   ) {
   id: ID!
@@ -82,7 +82,7 @@ type SubscriptionOrder
     rules: [
       { allow: owner }
       { allow: groups, groups: ["Operators"], operations: [read] }
-      # { allow: private, provider: iam, operations: [read] } # Lambdaから参照する為 iam 認証追加
+      { allow: private, provider: iam, operations: [read] } # Lambdaから参照する為 iam 認証追加
     ]
   ) {
   id: ID!
@@ -105,7 +105,7 @@ type SubscriptionOrderProduct
     rules: [
       { allow: owner }
       { allow: groups, groups: ["Operators"], operations: [read] }
-      # { allow: private, provider: iam, operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
     ]
   ) {
   id: ID!
@@ -121,7 +121,7 @@ type Product
     rules: [
       { allow: groups, groups: ["Operators"] }
       { allow: private, operations: [read] }
-      # { allow: private, provider: iam, operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
     ]
   ) {
   id: ID!
@@ -140,7 +140,7 @@ type Staff
     rules: [
       { allow: groups, groups: ["Operators"], operations: [read] }
       { allow: owner }
-      # { allow: private, provider: iam, operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
     ]
   ) {
   id: ID!
@@ -155,8 +155,8 @@ type Staff
 #   items: [SubscriptionOrder]
 # }
 
-# type Query {
-#   listAdminSubscriptionOrders: SubscriptionOrdersResponse
-#     @function(name: "adminSubscriptionOrderList-${env}")
-#     @auth(rules: [{ allow: private, provider: userPools }])
-# }
+type Query {
+  listAdminSubscriptionOrders: [SubscriptionOrder]
+    @function(name: "adminSubscriptionOrderList-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
+}
