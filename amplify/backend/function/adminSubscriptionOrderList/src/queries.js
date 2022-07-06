@@ -3,73 +3,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listStaffSortedByViewOrder = exports.listStaff = exports.getStaff = exports.listProductsSortedByViewOrder = exports.listProducts = exports.getProduct = exports.listSubscriptionOrdersSortedByCreatedAt = exports.listSubscriptionOrders = exports.getSubscriptionOrder = exports.listOrdersSortedByCreatedAt = exports.listOrders = exports.getOrder = exports.listClinics = exports.getClinic = exports.listAdminSubscriptionOrders = void 0;
-exports.listAdminSubscriptionOrders = `
-  query ListAdminSubscriptionOrders {
-    listAdminSubscriptionOrders {
-      items {
-        id
-        products {
-          items {
-            id
-            subscriptionOrderID
-            productID
-            product {
-              id
-              name
-              unitPrice
-              orderType
-              viewOrder
-              isExportCSV
-              disabled
-              type
-              createdAt
-              updatedAt
-            }
-            quantity
-            createdAt
-            updatedAt
-            owner
-          }
-          nextToken
-        }
-        clinicID
-        clinic {
-          id
-          name
-          phoneNumber
-          postalCode
-          state
-          city
-          address
-          building
-          createdAt
-          updatedAt
-          owner
-        }
-        staffID
-        staff {
-          id
-          firstName
-          lastName
-          viewOrder
-          disabled
-          type
-          createdAt
-          updatedAt
-          owner
-        }
-        deliveryStartYear
-        deliveryStartMonth
-        deliveryInterval
-        createdAt
-        type
-        updatedAt
-        owner
-      }
-    }
-  }
-`;
+exports.listAdminSubscriptionOrders = exports.listStaffSortedByViewOrder = exports.listStaff = exports.getStaff = exports.listProductsSortedByViewOrder = exports.listProducts = exports.getProduct = exports.listSubscriptionOrdersSortedByCreatedAt = exports.listSubscriptionOrders = exports.getSubscriptionOrder = exports.listOrdersSortedByCreatedAt = exports.listOrders = exports.getOrder = exports.listClinics = exports.getClinic = void 0;
 exports.getClinic = `
   query GetClinic($id: ID!) {
     getClinic(id: $id) {
@@ -357,6 +291,8 @@ exports.getSubscriptionOrder = `
       deliveryStartYear
       deliveryStartMonth
       deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
       createdAt
       type
       updatedAt
@@ -430,6 +366,8 @@ exports.listSubscriptionOrders = `
         deliveryStartYear
         deliveryStartMonth
         deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
         createdAt
         type
         updatedAt
@@ -511,6 +449,8 @@ exports.listSubscriptionOrdersSortedByCreatedAt = `
         deliveryStartYear
         deliveryStartMonth
         deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
         createdAt
         type
         updatedAt
@@ -658,6 +598,72 @@ exports.listStaffSortedByViewOrder = `
         owner
       }
       nextToken
+    }
+  }
+`;
+exports.listAdminSubscriptionOrders = `
+  query ListAdminSubscriptionOrders {
+    listAdminSubscriptionOrders {
+      id
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
+          quantity
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      updatedAt
+      owner
     }
   }
 `;

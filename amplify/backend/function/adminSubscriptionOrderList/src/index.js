@@ -40,12 +40,13 @@ const aws_appsync_1 = __importDefault(require("aws-appsync"));
 const AWS = __importStar(require("aws-sdk"));
 const graphql_tag_1 = require("graphql-tag");
 const queries_1 = require("./queries");
+const generate_next_delivery_year_month_1 = require("./generate-next-delivery-year-month");
 global.fetch = require('node-fetch');
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(`EVENT: ${JSON.stringify(event)}`);
+    console.log('EVENT', event);
     // export const handler = async () => {
     let credentials = AWS.config.credentials;
     // mock
@@ -61,7 +62,7 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
         // sessionToken: process.env.AWS_SESSION_TOKEN,
         // },
     }
-    console.log('env:', process.env);
+    // console.log('env:', process.env);
     console.log('Credentials:', credentials);
     const graphqlClient = new aws_appsync_1.default({
         url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT,
@@ -74,39 +75,47 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     });
     try {
         const result = (yield graphqlClient.query({
-            query: (0, graphql_tag_1.gql)(queries_1.listSubscriptionOrders),
-            // variables: {
-            //   type: 'subscriptionOrder',
-            //   sortDirection: 'DESC',
-            // },
+            query: (0, graphql_tag_1.gql)(queries_1.listSubscriptionOrdersSortedByCreatedAt),
+            variables: {
+                type: 'subscriptionOrder',
+                sortDirection: 'DESC',
+            },
         }));
         console.log('result', result);
         if (result.errors) {
             throw result.errors;
         }
-        if (!result.data || !result.data.listSubscriptionOrders || !result.data.listSubscriptionOrders.items) {
+        if (!result.data ||
+            !result.data.listSubscriptionOrdersSortedByCreatedAt ||
+            !result.data.listSubscriptionOrdersSortedByCreatedAt.items) {
             throw Error('The API fetched data but it returned null.');
         }
-        const items = result.data.listSubscriptionOrders.items;
+        const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items;
         for (const item of items) {
             if (!item || !item.products || !item.products.items) {
                 throw Error('The API fetched products but it returned null.');
             }
         }
-        console.log('items', items);
-        // responseの返し方不明。要調査
-        // const response = JSON.stringify({
-        //   listAdminSubscriptionOrders: { __typename: 'SubscriptionOrdersResponse', items: items },
-        // });
-        const response = JSON.stringify({ __typename: 'SubscriptionOrdersResponse', items: items });
-        console.log('response', response);
-        return items;
+        // console.log('items', items);
+        // TODO: 引数でもらう
+        const now = new Date();
+        const nowYear = now.getFullYear();
+        const nowMonth = now.getMonth() + 1;
+        console.log('nowYear', nowYear, 'nowMonth', nowMonth);
+        const responseItems = items
+            .map((item) => {
+            // 次回発送予定年月を計算した値
+            const nextDeliveryYearMonth = (0, generate_next_delivery_year_month_1.generateNextDeliveryYearMonth)(item.deliveryStartYear, item.deliveryStartMonth, item.deliveryInterval, nowYear, nowMonth);
+            // 次回配送予定年月をセット
+            return Object.assign(Object.assign({}, item), { nextDeliveryYear: nextDeliveryYearMonth.nextDeliveryYear, nextDeliveryMonth: nextDeliveryYearMonth.nextDeliveryMonth });
+        }) // 配送予定月が現在年月であればAPIレスポンスとして返却
+            .filter((item) => item.nextDeliveryYear === nowYear && item.nextDeliveryMonth === nowMonth);
+        console.log('responseItems', responseItems);
+        return responseItems;
         // return {
         //   statusCode: 200,
         //   body: JSON.stringify(items),
-        //   headers: {
-        //     'Access-Control-Allow-Origin': '*',
-        //   },
+        //   headers: { 'Access-Control-Allow-Origin': '*', },
         // };
     }
     catch (err) {
@@ -141,84 +150,3 @@ const parseResponseError = (error) => {
     }
     return null;
 };
-// const query = /* GraphQL */ `
-//   query ListSubscriptionOrdersSortedByCreatedAt(
-//     $type: String!
-//     $createdAt: ModelStringKeyConditionInput
-//     $sortDirection: ModelSortDirection
-//     $filter: ModelSubscriptionOrderFilterInput
-//     $limit: Int
-//     $nextToken: String
-//   ) {
-//     listSubscriptionOrdersSortedByCreatedAt(
-//       type: $type
-//       createdAt: $createdAt
-//       sortDirection: $sortDirection
-//       filter: $filter
-//       limit: $limit
-//       nextToken: $nextToken
-//     ) {
-//       items {
-//         id
-//         products {
-//           items {
-//             id
-//             subscriptionOrderID
-//             productID
-//             product {
-//               id
-//               name
-//               unitPrice
-//               orderType
-//               viewOrder
-//               isExportCSV
-//               disabled
-//               type
-//               createdAt
-//               updatedAt
-//             }
-//             quantity
-//             createdAt
-//             updatedAt
-//             owner
-//           }
-//           nextToken
-//         }
-//         clinicID
-//         clinic {
-//           id
-//           name
-//           phoneNumber
-//           postalCode
-//           state
-//           city
-//           address
-//           building
-//           createdAt
-//           updatedAt
-//           owner
-//         }
-//         staffID
-//         staff {
-//           id
-//           firstName
-//           lastName
-//           viewOrder
-//           disabled
-//           type
-//           createdAt
-//           updatedAt
-//           owner
-//         }
-//         deliveryStartYear
-//         deliveryStartMonth
-//         deliveryInterval
-//         createdAt
-//         type
-//         updatedAt
-//         owner
-//       }
-//       nextToken
-//     }
-//   }
-// `;

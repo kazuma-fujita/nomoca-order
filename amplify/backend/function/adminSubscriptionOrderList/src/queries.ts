@@ -2,72 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const listAdminSubscriptionOrders = /* GraphQL */ `
-  query ListAdminSubscriptionOrders {
-    listAdminSubscriptionOrders {
-      items {
-        id
-        products {
-          items {
-            id
-            subscriptionOrderID
-            productID
-            product {
-              id
-              name
-              unitPrice
-              orderType
-              viewOrder
-              isExportCSV
-              disabled
-              type
-              createdAt
-              updatedAt
-            }
-            quantity
-            createdAt
-            updatedAt
-            owner
-          }
-          nextToken
-        }
-        clinicID
-        clinic {
-          id
-          name
-          phoneNumber
-          postalCode
-          state
-          city
-          address
-          building
-          createdAt
-          updatedAt
-          owner
-        }
-        staffID
-        staff {
-          id
-          firstName
-          lastName
-          viewOrder
-          disabled
-          type
-          createdAt
-          updatedAt
-          owner
-        }
-        deliveryStartYear
-        deliveryStartMonth
-        deliveryInterval
-        createdAt
-        type
-        updatedAt
-        owner
-      }
-    }
-  }
-`;
 export const getClinic = /* GraphQL */ `
   query GetClinic($id: ID!) {
     getClinic(id: $id) {
@@ -355,6 +289,8 @@ export const getSubscriptionOrder = /* GraphQL */ `
       deliveryStartYear
       deliveryStartMonth
       deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
       createdAt
       type
       updatedAt
@@ -428,6 +364,8 @@ export const listSubscriptionOrders = /* GraphQL */ `
         deliveryStartYear
         deliveryStartMonth
         deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
         createdAt
         type
         updatedAt
@@ -509,6 +447,8 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
         deliveryStartYear
         deliveryStartMonth
         deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
         createdAt
         type
         updatedAt
@@ -656,6 +596,72 @@ export const listStaffSortedByViewOrder = /* GraphQL */ `
         owner
       }
       nextToken
+    }
+  }
+`;
+export const listAdminSubscriptionOrders = /* GraphQL */ `
+  query ListAdminSubscriptionOrders {
+    listAdminSubscriptionOrders {
+      id
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
+          quantity
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      updatedAt
+      owner
     }
   }
 `;

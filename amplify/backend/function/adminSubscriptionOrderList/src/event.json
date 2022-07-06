@@ -1,3 +1,4 @@
 {
-  "authorizedToken": "custom-authorized"
+  "authorizedToken": "custom-authorized",
+  "arguments": { "key": "value" }
 }

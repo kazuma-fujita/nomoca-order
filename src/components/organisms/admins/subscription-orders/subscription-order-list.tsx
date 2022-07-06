@@ -4,11 +4,8 @@ import { CommonTableContainer } from 'components/molecules/common-table-containe
 import { CommonTableRow } from 'components/molecules/common-table-row';
 import { ClinicDetailButton } from 'components/organisms/clinics/clinic-detail-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
-import { generateFormattedNextDeliveryYearMonth } from 'functions/delivery-dates/generate-next-delivery-year-month';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
-import React, { useMemo } from 'react';
-import { useNowDate } from 'stores/use-now-date';
 import { TableHeader } from 'types/table-header';
 
 const header: TableHeader[] = [
@@ -48,31 +45,18 @@ const header: TableHeader[] = [
 
 export const SubscriptionOrderList = (props: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>) => {
   const { data } = props;
-  const { now } = useNowDate();
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
-      {data && data.map((item) => <Row key={item.id} item={item} now={now} />)}
+      {data && data.map((item) => <Row key={item.id} item={item} />)}
     </CommonTableContainer>
   );
 };
 
 type RowProps = {
   item: ExtendedOrder<SubscriptionOrder>;
-  now: Date;
 };
 
-const Row = ({ item, now }: RowProps) => {
-  const formattedNextDeliveryDate = useMemo(
-    () =>
-      generateFormattedNextDeliveryYearMonth(
-        item.deliveryStartYear,
-        item.deliveryStartMonth,
-        item.deliveryInterval,
-        now.getFullYear(),
-        now.getMonth() + 1,
-      ),
-    [item.deliveryInterval, item.deliveryStartMonth, item.deliveryStartYear, now],
-  );
+const Row = ({ item }: RowProps) => {
   return (
     <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
       <TableCell align='center'>{item.clinic.name}</TableCell>
@@ -82,7 +66,7 @@ const Row = ({ item, now }: RowProps) => {
       </TableCell>
       <TableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</TableCell>
       <TableCell align='center'>{`${item.deliveryInterval}ヶ月`}</TableCell>
-      <TableCell align='center'>{formattedNextDeliveryDate}</TableCell>
+      <TableCell align='center'>{`${item.nextDeliveryYear}/${item.nextDeliveryMonth}月`}</TableCell>
       {/* <TableCell align='center'>{item.nextDeliveryYearMonth}</TableCell> */}
       <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
     </CommonTableRow>

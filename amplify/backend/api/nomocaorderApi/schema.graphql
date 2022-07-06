@@ -94,6 +94,8 @@ type SubscriptionOrder
   deliveryStartYear: Int!
   deliveryStartMonth: Int!
   deliveryInterval: Int!
+  nextDeliveryYear: Int
+  nextDeliveryMonth: Int
   createdAt: AWSDateTime!
   type: String!
     @index(name: "sortByCreatedAt", queryField: "listSubscriptionOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
@@ -150,10 +152,6 @@ type Staff
   disabled: Boolean!
   type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }
-
-# type SubscriptionOrdersResponse {
-#   items: [SubscriptionOrder]
-# }
 
 type Query {
   listAdminSubscriptionOrders: [SubscriptionOrder]
