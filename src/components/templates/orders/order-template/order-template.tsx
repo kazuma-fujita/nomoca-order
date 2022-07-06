@@ -10,8 +10,11 @@ import { useOrderFormParam } from 'stores/use-order-form-param';
 import { OrderType } from 'API';
 
 export const OrderTemplate = () => {
-  const { orderType } = useOrderFormParam();
+  // 以下各画面遷移時に shallow=true を指定すると画面リロードが走らず、SPAの挙動となる
+  // router.push('/order?screen=input, undefined, { shallow: true });
+  // router.push時に遷移後の screen=name を指定し、useRouterで変更後のクエリを取得、コンポーネントを切り替える
   const router = useRouter();
+  const { orderType } = useOrderFormParam();
   const steps =
     orderType === OrderType.singleOrder
       ? ['注文を入力する', '注文内容を確認する', '注文完了']

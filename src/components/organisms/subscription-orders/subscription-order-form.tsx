@@ -1,6 +1,6 @@
 import { Box, FormHelperText, MenuItem, TextField, Typography } from '@mui/material';
-import { OrderForm } from 'components/organisms/orders/order-form';
-import { useOrderForm } from 'hooks/orders/use-upsert-order-form';
+import { OrderInputForm } from 'components/organisms/orders/order-input-form';
+import { useInputOrder } from 'hooks/orders/use-input-order';
 import { useState } from 'react';
 import { Controller, UseFieldArrayReturn } from 'react-hook-form';
 import { useNowDate } from 'stores/use-now-date';
@@ -15,7 +15,7 @@ const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth
   selectMonth <= nowMonth ? nowYear + 1 : nowYear;
 
 export const SubscriptionOrderForm = () => {
-  const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useOrderForm();
+  const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useInputOrder();
   const { data } = useOrderFormParam();
   const { now } = useNowDate();
   // 現在年、月を取得。現在月はgetMonthの値に+1をして取得
@@ -41,14 +41,13 @@ export const SubscriptionOrderForm = () => {
   };
 
   return (
-    <OrderForm
+    <OrderInputForm
       formReturn={formReturn}
       fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
       submitHandler={submitHandler}
       cancelHandler={cancelHandler}
-      initialReceiptProducts={data?.products}
     >
-      <Box mt={2} mb={2} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
+      <Box mt={2} mb={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
         <TextField
           id='deliveryStartYear'
           variant='standard'
@@ -106,8 +105,9 @@ export const SubscriptionOrderForm = () => {
           )}
         />
       </Box>
-      <FormHelperText>定期便の新規申し込み、または注文内容変更後の配送開始月は翌月から承ります</FormHelperText>
-      <Box mb={8} />
-    </OrderForm>
+      <Box mb={8} ml={4}>
+        <FormHelperText>定期便の新規申し込み、または注文内容変更の配送開始月は翌月から承ります</FormHelperText>
+      </Box>
+    </OrderInputForm>
   );
 };

@@ -40,25 +40,25 @@ export const Header = () => {
           },
         ],
         [
-          { path: Path.singleOrderProduct, icon: CategoryIcon, label: ScreenName.SingleOrderProduct },
-          { path: Path.subscriptionOrderProduct, icon: CategoryIcon, label: ScreenName.SubscriptionOrderProduct },
-          { path: Path.term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
+          { path: Path.singleOrderProduct, icon: CategoryIcon, label: ScreenName.singleOrderProduct },
+          { path: Path.subscriptionOrderProduct, icon: CategoryIcon, label: ScreenName.subscriptionOrderProduct },
+          { path: Path.term, icon: FormatAlignLeftIcon, label: ScreenName.term },
         ],
       ]
     : [
         [
-          { path: Path.singleOrder, icon: ShoppingCartIcon, label: ScreenName.SingleOrder },
-          { path: Path.subscriptionOrder, icon: WifiProtectedSetupIcon, label: ScreenName.SubscriptionOrder },
+          { path: Path.singleOrder, icon: ShoppingCartIcon, label: ScreenName.singleOrder },
+          { path: Path.subscriptionOrder, icon: WifiProtectedSetupIcon, label: ScreenName.subscriptionOrder },
         ],
         [
-          { path: Path.staff, icon: PeopleIcon, label: ScreenName.Staff },
+          { path: Path.staff, icon: PeopleIcon, label: ScreenName.staff },
           { path: Path.clinic, icon: LocalShippingIcon, label: ScreenName.clinic },
-          { path: Path.term, icon: FormatAlignLeftIcon, label: ScreenName.Term },
+          { path: Path.term, icon: FormatAlignLeftIcon, label: ScreenName.term },
         ],
       ];
   const menuItems: HeaderItem[][] = [
-    [{ path: Path.changePassword, icon: LockIcon, label: ScreenName.ChangePassword }],
-    [{ path: Path.signOut, icon: LogoutIcon, label: ScreenName.SignOut }],
+    [{ path: Path.changePassword, icon: LockIcon, label: ScreenName.changePassword }],
+    [{ path: Path.signOut, icon: LogoutIcon, label: ScreenName.signOut }],
   ];
   // findItemsが無かった場合401画面へ遷移
   let findItems = drawerItems

@@ -4,14 +4,13 @@ import {
   ListSubscriptionOrdersSortedByCreatedAtQueryVariables,
   ModelSortDirection,
   SubscriptionOrder,
-  SubscriptionOrderProduct,
+  Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
-import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
+import { listAdminSubscriptionOrders, listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { Type } from 'API';
 
 export type NormalizedProduct = {
   relationID: string;
@@ -24,19 +23,26 @@ export type NormalizedProduct = {
 
 export type ExtendedOrder<T> = T & {
   normalizedProducts: NormalizedProduct[];
+  // nextDeliveryYearMonth?: string | null; // 次回配送予定月。定期便画面のみ使用
 };
 
-const createNormalizedProduct = (orderProduct: SubscriptionOrderProduct): NormalizedProduct =>
-  ({
-    relationID: orderProduct?.id,
-    productID: orderProduct?.productID,
-    name: orderProduct?.product.name,
-    unitPrice: orderProduct?.product.unitPrice,
-    quantity: orderProduct?.quantity,
-  } as NormalizedProduct);
-
-const createNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] =>
-  order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct!)) as NormalizedProduct[];
+const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] => {
+  if (!order.products) {
+    throw Error('Subscription order products is null.');
+  }
+  return order.products.items.map((orderProduct) => {
+    if (!orderProduct) {
+      throw Error('Subscription order products is null.');
+    }
+    return {
+      relationID: orderProduct.id,
+      productID: orderProduct.productID,
+      name: orderProduct.product.name,
+      unitPrice: orderProduct.product.unitPrice,
+      quantity: orderProduct.quantity,
+    };
+  });
+};
 
 const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
@@ -60,19 +66,38 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
   for (const item of items) {
     if (!item || !item.products || !item.products.items) {
-      throw Error('The API fetched a data element but it returned null.');
+      throw Error('The API fetched products but it returned null.');
     }
   }
 
   const extendedItems: ExtendedOrder<SubscriptionOrder>[] = items.map((item) => ({
     ...item,
-    normalizedProducts: createNormalizedProducts(item),
+    normalizedProducts: generateNormalizedProducts(item),
   }));
+
   return extendedItems;
 };
 
-export const useFetchSubscriptionOrderList = (): FetchResponse<ExtendedOrder<SubscriptionOrder>[]> =>
-  useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.subscriptionOrderList, fetcher);
+const SubscriptionOrderListContext = createContext({} as FetchResponse<ExtendedOrder<SubscriptionOrder>[]>);
+
+export const useFetchSubscriptionOrderList = () => useContext(SubscriptionOrderListContext);
+
+type Props = {
+  mockResponse?: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>;
+};
+
+export const SubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
+  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
+    SWRKey.subscriptionOrderList,
+    fetcher,
+    {},
+    mockResponse,
+  );
+
+  return (
+    <SubscriptionOrderListContext.Provider value={fetchResponse}>{children}</SubscriptionOrderListContext.Provider>
+  );
+};
 
 export type AdminSubscriptionOrderResponse = FetchResponse<ExtendedOrder<SubscriptionOrder>[]> & {
   allData: ExtendedOrder<SubscriptionOrder>[] | null;
@@ -80,25 +105,55 @@ export type AdminSubscriptionOrderResponse = FetchResponse<ExtendedOrder<Subscri
 
 const AdminSubscriptionOrderListContext = createContext({} as AdminSubscriptionOrderResponse);
 
+const adminFetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
+  const result = (await API.graphql(graphqlOperation(listAdminSubscriptionOrders))) as GraphQLResult<{
+    listAdminSubscriptionOrders: [SubscriptionOrder];
+  }>;
+
+  if (!result.data) {
+    throw Error('The API fetched data but it returned null.');
+  }
+
+  console.log('API result', result.data);
+
+  const items = result.data.listAdminSubscriptionOrders as SubscriptionOrder[];
+  for (const item of items) {
+    if (!item || !item.products || !item.products.items) {
+      throw Error('The API fetched products but it returned null.');
+    }
+  }
+
+  const extendedItems: ExtendedOrder<SubscriptionOrder>[] = items.map((item) => ({
+    ...item,
+    normalizedProducts: generateNormalizedProducts(item),
+  }));
+
+  return extendedItems;
+};
+
 export const useAdminSubscriptionOrderList = () => useContext(AdminSubscriptionOrderListContext);
 
-export const AdminSubscriptionOrderListContextProvider: React.FC = ({ children }) => {
+// TODO: 一覧生成ロジックをバックエンドに移したらSubscriptionOrderListContextProviderと統合すること
+export const AdminSubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
   // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
-  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.AdminSubscriptionOrderList, fetcher, {
-    revalidateOnFocus: false,
-  });
+  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
+    SWRKey.AdminSubscriptionOrderList,
+    adminFetcher,
+    { revalidateOnFocus: false },
+    mockResponse,
+  );
+
   const { data } = fetchResponse;
   // メモリ上に全件データ保存するstate生成
-  const { data: allData, mutate } = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
-    SWRKey.AdminAllSubscriptionOrderList,
-    null,
-  );
+  // const { data: allData, mutate } = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
+  // const { data: allData } = useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.AdminAllSubscriptionOrderList, null);
   // 全件データstateが存在しない(初回アクセス)、かつAPIからデータ取得成功時
-  if (!allData && data) {
-    // 全件データ保存
-    mutate(data, false);
-  }
-  const responseData = { ...fetchResponse, allData: allData };
+  // if (!allData && data) {
+  //   // 全件データ保存
+  //   mutate(data, false);
+  // }
+  // const responseData = { ...fetchResponse, allData: allData };
+  const responseData = { ...fetchResponse, allData: data };
   return (
     <AdminSubscriptionOrderListContext.Provider value={responseData}>
       {children}

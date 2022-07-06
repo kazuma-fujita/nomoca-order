@@ -1,22 +1,19 @@
 import { Box, FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { DeliveryType } from 'API';
-import { OrderForm } from 'components/organisms/orders/order-form';
-import { useOrderForm } from 'hooks/orders/use-upsert-order-form';
+import { OrderInputForm } from 'components/organisms/orders/order-input-form';
+import { useInputOrder } from 'hooks/orders/use-input-order';
 import { Controller, UseFieldArrayReturn } from 'react-hook-form';
-import { useOrderFormParam } from 'stores/use-order-form-param';
 
 export const SingleOrderForm = () => {
-  const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useOrderForm();
-  const { data } = useOrderFormParam();
+  const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useInputOrder();
   return (
-    <OrderForm
+    <OrderInputForm
       formReturn={formReturn}
       fieldArrayReturn={fieldArrayReturn as UseFieldArrayReturn}
       submitHandler={submitHandler}
       cancelHandler={cancelHandler}
-      initialReceiptProducts={data?.products}
     >
-      <Box mt={8} mb={8} mr={2} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
+      <Box mt={8} mb={8} mr={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
         <Controller
           name='deliveryType'
           control={formReturn.control}
@@ -43,6 +40,6 @@ export const SingleOrderForm = () => {
           )}
         />
       </Box>
-    </OrderForm>
+    </OrderInputForm>
   );
 };

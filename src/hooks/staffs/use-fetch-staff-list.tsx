@@ -41,6 +41,7 @@ const fetcher = async (_: string, isFilterByActiveStaff: boolean): Promise<Staff
 type Props = {
   isFilterByActiveStaff: boolean;
   isRevalidateOnFocus?: boolean;
+  mockResponse?: FetchResponse<Staff[]>;
 };
 
 // 発注担当者一覧画面の他、各画面の発注担当者プルダウンのマスターデータとなる為、
@@ -48,10 +49,11 @@ type Props = {
 export const StaffListContextProvider: React.FC<Props> = ({
   isFilterByActiveStaff,
   isRevalidateOnFocus = true,
+  mockResponse,
   ...rest
 }) => {
   // SWRKeyは [SWRKeyString, boolean] の配列を指定
   const swrKey = [SWRKey.staffList, isFilterByActiveStaff];
-  const response = useFetch<Staff[]>(swrKey, fetcher, { revalidateOnFocus: isRevalidateOnFocus });
+  const response = useFetch<Staff[]>(swrKey, fetcher, { revalidateOnFocus: isRevalidateOnFocus }, mockResponse);
   return <StaffListContext.Provider value={{ ...response, swrKey }} {...rest} />;
 };

@@ -25,7 +25,7 @@ export default ChangePasswordPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.ChangePassword + TitleSuffix,
+      pageTitle: ScreenName.changePassword + TitleSuffix,
     },
   };
 };

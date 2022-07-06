@@ -4,6 +4,7 @@ import { InputDialog } from 'components/molecules/dialogs/input-dialog';
 import { useClinicForm } from 'hooks/clinics/use-clinic-form';
 import { ClinicForm } from './clinic-form';
 import { useFetchClinic } from 'hooks/clinics/use-fetch-clinic';
+import { useCallback } from 'react';
 
 export const UpsertClinicButton = () => {
   const {
@@ -18,11 +19,20 @@ export const UpsertClinicButton = () => {
     cancelHandler,
     handleOnChangePostalCode,
   } = useClinicForm();
+
   const { data } = useFetchClinic();
   const startIcon = data ? <Edit /> : <Add />;
+  const onButtonClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      toggle();
+      // buttonのフォーカスを外す
+      e.currentTarget.blur();
+    },
+    [toggle],
+  );
   return (
     <>
-      <Button onClick={toggle} variant='outlined' startIcon={startIcon}>
+      <Button onClick={onButtonClick} variant='outlined' startIcon={startIcon}>
         {dialogTitle}
       </Button>
       <InputDialog

@@ -40,15 +40,17 @@ type Props = {
   orderType: OrderType;
   isFilterByActiveProduct: boolean; // 有効なproductでfilter実行可否フラグ
   isRevalidateOnFocus?: boolean; // Windowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse
+  mockResponse?: FetchResponse<Product[]>;
 };
 
 export const ProductListContextProvider: React.FC<Props> = ({
   orderType,
   isFilterByActiveProduct,
   isRevalidateOnFocus = true,
+  mockResponse,
   ...rest
 }) => {
   const swrKey = [SWRKey.productList, orderType, isFilterByActiveProduct];
-  const response = useFetch<Product[]>(swrKey, fetcher, { revalidateOnFocus: isRevalidateOnFocus });
+  const response = useFetch<Product[]>(swrKey, fetcher, { revalidateOnFocus: isRevalidateOnFocus }, mockResponse);
   return <ProductListContext.Provider value={{ ...response, swrKey, orderType }} {...rest} />;
 };

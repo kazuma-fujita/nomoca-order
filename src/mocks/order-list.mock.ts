@@ -27,12 +27,12 @@ const orderItem: Order = {
   clinicID: '',
   staffID: '',
   type: Type.order,
-  orderType: OrderType.singleOrder,
   products: orderProductConnection,
   clinic: clinicMock,
   staff: staffMock,
   deliveryStatus: DeliveryStatus.ordered,
   deliveryType: DeliveryType.regular,
+  orderedAt: '2021-01-20T09:32:55Z',
   deliveredAt: '2021-01-25T09:32:55Z',
   createdAt: '2022-01-25T09:32:55Z',
   updatedAt: '2022-01-25T14:32:55Z',
@@ -56,7 +56,7 @@ export const orderListMock: ExtendedOrder<Order>[] = [...Array(12)].map((_, i) =
     items: createProductConnections(i + 1),
   },
   normalizedProducts: createNormalizedProductsMock(i + 1),
-  staff: { ...orderItem.staff, id: `dummyStaffID-${i + 1}`, name: `発注担当者${i + 1}` },
+  staff: { ...orderItem.staff, id: `dummyStaffID-${i + 1}`, lastName: `佐藤`, firstName: `太郎${i + 1}` },
   deliveryType:
     (i + 1) % 3 === 0 ? DeliveryType.regular : (i + 1) % 3 === 1 ? DeliveryType.subscription : DeliveryType.express,
   deliveryStatus:

@@ -1,65 +1,103 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import {
+  CreateOrderInput,
+  CreateOrderMutation,
+  CreateOrderMutationVariables,
+  CreateOrderProductInput,
+  CreateOrderProductMutation,
+  CreateOrderProductMutationVariables,
   DeliveryStatus,
-  GetOrderQuery,
-  UpdateOrderInput,
-  UpdateOrderMutation,
-  UpdateOrderMutationVariables,
+  DeliveryType,
+  ModelSubscriptionOrderProductConnection,
+  SubscriptionOrder,
+  Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { updateOrder } from 'graphql/mutations';
+import { createOrder, createOrderProduct } from 'graphql/mutations';
+import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
-import { parseResponseError } from 'utilities/parse-response-error';
 import { useNowDate } from 'stores/use-now-date';
-import { getOrder } from 'graphql/queries';
-import { SWRKey } from 'constants/swr-key';
-import { useSWRConfig } from 'swr';
+import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useCreateSubscriptionOrderHistory = () => {
   const { now } = useNowDate();
-  const { mutate } = useSWRConfig();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const updateOrderStatus = async (updateOrderIDs: string[]) => {
+  const createOrderProducts = async (
+    newOrderID: string,
+    products: ModelSubscriptionOrderProductConnection,
+    owner: string,
+  ) => {
+    // Order と Product のリレーション作成
+    for (const item of products.items) {
+      if (!item) {
+        throw Error('It is null that product items which create a order history.');
+      }
+
+      const input: CreateOrderProductInput = {
+        orderID: newOrderID,
+        name: item.product.name,
+        unitPrice: item.product.unitPrice,
+        quantity: item.quantity,
+        viewOrder: item.product.viewOrder,
+        owner: owner,
+      };
+
+      console.log('newOrderID', newOrderID, 'name', item.product.name);
+      // データ新規登録実行
+      const variables: CreateOrderProductMutationVariables = { input: input };
+      const result = (await API.graphql(
+        graphqlOperation(createOrderProduct, variables),
+      )) as GraphQLResult<CreateOrderProductMutation>;
+
+      if (!result.data || !result.data.createOrderProduct) {
+        throw Error('It returned null that an API witch executed to create an order and a product relation data.');
+      }
+      console.log('newOrderProduct', result.data.createOrderProduct);
+    }
+  };
+
+  const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[]) => {
     setIsLoading(true);
     try {
-      if (updateOrderIDs.length === 0) {
-        throw Error('It is empty that an ID list which update a delivery status.');
+      if (orders.length === 0) {
+        throw Error('It is empty that an ID list which create a order history.');
       }
-      for (const updateOrderID of updateOrderIDs) {
-        // deliveryStatus判別の為、order取得
-        const getResult = (await API.graphql(
-          graphqlOperation(getOrder, { id: updateOrderID }),
-        )) as GraphQLResult<GetOrderQuery>;
 
-        if (!getResult.data || !getResult.data.getOrder) {
-          throw Error('It returned null that an API which gets order data.');
+      for (const order of orders) {
+        if (!order.products || !order.owner) {
+          throw Error('It is null that product items which create a order history.');
         }
-        // deliveryStatusが発送前以外はcontinue
-        if (getResult.data.getOrder.deliveryStatus !== DeliveryStatus.ordered) {
-          continue;
-        }
-        // deliveryStatusを発送済みに設定
-        const input: UpdateOrderInput = {
-          id: updateOrderID,
-          deliveryStatus: DeliveryStatus.delivered,
-          deliveredAt: now.toISOString(),
+
+        // SubscriptionOrderからOrderデータ作成
+        const input: CreateOrderInput = {
+          type: Type.order,
+          deliveryType: DeliveryType.subscription, // 発送方法を定期便に設定
+          deliveryStatus: DeliveryStatus.delivered, // 発送状況を発送済みに設定
+          orderedAt: order.createdAt, // orderedAtは定期便申し込み日時
+          deliveredAt: now.toISOString(), // 発送日時は現在日時
+          clinicID: order.clinicID,
+          staffID: order.staffID,
+          owner: order.owner, // Owner権限定期便作成者が注文履歴を見れるようにSubscriptionOrderのownerをOrderのownerコピー
         };
-        const variables: UpdateOrderMutationVariables = { input: input };
-        // データ更新実行
-        const result = (await API.graphql(
-          graphqlOperation(updateOrder, variables),
-        )) as GraphQLResult<UpdateOrderMutation>;
 
-        if (!result.data || !result.data.updateOrder) {
-          throw Error('It returned null that an API which executed to update order data.');
+        // データ作成実行
+        const variables: CreateOrderMutationVariables = { input: input };
+        const result = (await API.graphql(
+          graphqlOperation(createOrder, variables),
+        )) as GraphQLResult<CreateOrderMutation>;
+
+        if (!result.data || !result.data.createOrder) {
+          throw Error('It returned null that an API which executed to create order data.');
         }
-        console.log('updatedOrder:', result.data.updateOrder);
+        const newOrder = result.data.createOrder;
+        console.log('create new order', newOrder);
+        // SubscriptionOrder と Product のリレーション作成
+        await createOrderProducts(newOrder.id, order.products, order.owner);
       }
       setIsLoading(false);
       setError(null);
-      mutate(SWRKey.orderList);
     } catch (error) {
       setIsLoading(false);
       const parsedError = parseResponseError(error);
@@ -73,5 +111,5 @@ export const useCreateSubscriptionOrderHistory = () => {
     setError(null);
   }, []);
 
-  return { updateOrderStatus, isLoading, error, resetState };
+  return { createOrderHistory, isLoading, error, resetState };
 };

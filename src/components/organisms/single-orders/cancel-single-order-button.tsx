@@ -40,7 +40,7 @@ export const CancelSingleOrderButton = ({ id, products, disabled }: Props) => {
         size='small'
         disabled={disabled}
       >
-        キャンセルする
+        注文キャンセル
       </Button>
       <CancelSingleOrderDialog
         label={label}

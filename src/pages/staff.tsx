@@ -32,7 +32,7 @@ export default StaffPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.Staff + TitleSuffix,
+      pageTitle: ScreenName.staff + TitleSuffix,
     },
   };
 };

@@ -33,7 +33,7 @@ export default SingleOrderProductPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.SingleOrderProduct + TitleSuffix,
+      pageTitle: ScreenName.singleOrderProduct + TitleSuffix,
     },
   };
 };

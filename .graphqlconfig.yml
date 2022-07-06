@@ -1,6 +1,6 @@
 projects:
   nomocaorderApi:
-    schemaPath: src/graphql/schema.json
+    schemaPath: amplify/backend/api/nomocaorderApi/build/schema.graphql
     includes:
       - src/graphql/**/*.ts
     excludes:
@@ -10,7 +10,7 @@ projects:
         codeGenTarget: typescript
         generatedFileName: src/API.ts
         docsFilePath: src/graphql
-        maxDepth: 3
+        maxDepth: 5
 extensions:
   amplify:
     version: 3

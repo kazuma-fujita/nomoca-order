@@ -69,7 +69,7 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
     id: `"${order.id}"`,
     empty1: '',
     empty2: '',
-    orderedAt: `"${format(now, DateFormat.Date)}"`,
+    orderedAt: `"${format(now, DateFormat.date)}"`,
     empty3: '',
     empty4: '',
     empty5: '',
@@ -145,7 +145,7 @@ export const useExportOrderCSV = () => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'sampleData.csv';
+      a.download = `order_${format(now, DateFormat.simpleDateHourMinute)}.csv`;
       a.click();
       a.remove();
 

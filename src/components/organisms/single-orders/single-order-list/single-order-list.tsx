@@ -17,19 +17,19 @@ const header: TableHeader[] = [
   },
   {
     label: '注文日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '配送方法',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '発送状況',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '発送日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '',
@@ -53,7 +53,7 @@ type RowProps = {
 const Row = ({ item }: RowProps) => {
   return (
     <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
-      <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+      <TableCell align='center'>{formatDateHourMinute(item.orderedAt)}</TableCell>
       <TableCell align='center'>
         <DeliveryTypeChip deliveryType={item.deliveryType} />
       </TableCell>

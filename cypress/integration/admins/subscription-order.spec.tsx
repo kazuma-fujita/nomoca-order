@@ -1,6 +1,6 @@
 import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 
-context('SubscriptionOrder', () => {
+context.skip('SubscriptionOrder', () => {
   before(() => {
     cy.fixture('operation-user.json').then((loginInfo) => {
       cy.login(loginInfo.username, loginInfo.password);

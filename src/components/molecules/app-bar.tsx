@@ -15,7 +15,15 @@ export const AppBar = (props: Props) => {
   return (
     <MuiAppBar>
       <Toolbar>
-        <IconButton size='large' edge='start' color='inherit' aria-label='menu' sx={{ mr: 2 }} onClick={props.toggle}>
+        <IconButton
+          size='large'
+          edge='start'
+          color='inherit'
+          aria-label='menu'
+          sx={{ mr: 2 }}
+          onClick={props.toggle}
+          data-testid='menu-icon'
+        >
           <MenuIcon />
         </IconButton>
         <Typography variant='h5' component='div' sx={{ flexGrow: 1 }}>

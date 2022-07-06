@@ -27,31 +27,27 @@ const header: TableHeader[] = [
   },
   {
     label: '電話番号',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '配送先',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '注文日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '配送方法',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '発送状況',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '発送日時',
-    minWidth: 160,
-  },
-  {
-    label: '発注担当者',
-    minWidth: 160,
+    minWidth: 80,
   },
 ];
 
@@ -64,12 +60,23 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
   const fetchReturn = useFetchOrderList();
   const { data } = fetchReturn;
   const [isSelectedAll, setIsSelectedAll] = useToggle(false);
-  const handleAllSelectItem = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!data) return;
-    const isChecked = event.target.checked;
-    setSelectedItems(data);
-    setIsSelectedAll(isChecked);
-  };
+  // ヘッダーの注文全件選択/解除チェックボックス
+  const handleAllSelectItem = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (!data) return;
+      const isChecked = event.target.checked;
+      if (isChecked) {
+        // 全件チェックされたら注文全件行にチェックを入れる
+        setSelectedItems(data);
+        setIsSelectedAll(true);
+      } else {
+        // 全件チェックが外されたら注文全件行のチェックを外す
+        setSelectedItems([]);
+        setIsSelectedAll(false);
+      }
+    },
+    [data, setIsSelectedAll, setSelectedItems],
+  );
 
   return (
     <CommonTableContainer
@@ -77,6 +84,7 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
       tableHeaders={header}
       emptyListDescription='現在注文の商品はありません'
       selectAllCheckbox={
+        // 注文全件選択/解除チェックボックス
         <Checkbox
           color='primary'
           indeterminate={selectedItems.length > 0 ? (data ? selectedItems.length !== data.length : false) : false}
@@ -122,6 +130,7 @@ const Row = ({ rowItem, selectedItems, orderItemsLength, setSelectedItems, setIs
     },
     [rowItem, orderItemsLength, selectedItems, setIsSelectedAll, setSelectedItems],
   );
+
   return (
     <CommonTableRow key={rowItem.id} colSpan={header.length} products={rowItem.normalizedProducts}>
       <TableCell padding='checkbox' align='center'>
@@ -134,9 +143,12 @@ const Row = ({ rowItem, selectedItems, orderItemsLength, setSelectedItems, setIs
       <TableCell align='center'>{rowItem.clinic.name}</TableCell>
       <TableCell align='center'>{rowItem.clinic.phoneNumber}</TableCell>
       <TableCell align='center'>
-        <ClinicDetailButton {...rowItem.clinic} />
+        <ClinicDetailButton
+          staffName={`${rowItem.staff.lastName}  ${rowItem.staff.firstName}`}
+          clinic={rowItem.clinic}
+        />
       </TableCell>
-      <TableCell align='center'>{formatDateHourMinute(rowItem.createdAt)}</TableCell>
+      <TableCell align='center'>{formatDateHourMinute(rowItem.orderedAt)}</TableCell>
       <TableCell align='center'>
         <DeliveryTypeChip deliveryType={rowItem.deliveryType} />
       </TableCell>
@@ -144,7 +156,6 @@ const Row = ({ rowItem, selectedItems, orderItemsLength, setSelectedItems, setIs
         <DeliveryStatusChip status={rowItem.deliveryStatus} />
       </TableCell>
       <TableCell align='center'>{rowItem.deliveredAt ? formatDateHourMinute(rowItem.deliveredAt) : '-'}</TableCell>
-      <TableCell align='center'>{`${rowItem.staff.lastName}  ${rowItem.staff.firstName}`}</TableCell>
     </CommonTableRow>
   );
 };

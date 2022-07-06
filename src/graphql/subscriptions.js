@@ -64,9 +64,9 @@ export const onCreateOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -96,14 +96,14 @@ export const onCreateOrder = /* GraphQL */ `
         updatedAt
         owner
       }
-      orderType
       deliveryStatus
       deliveryType
+      orderedAt
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -119,9 +119,9 @@ export const onUpdateOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -151,14 +151,14 @@ export const onUpdateOrder = /* GraphQL */ `
         updatedAt
         owner
       }
-      orderType
       deliveryStatus
       deliveryType
+      orderedAt
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -174,9 +174,9 @@ export const onDeleteOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -206,14 +206,14 @@ export const onDeleteOrder = /* GraphQL */ `
         updatedAt
         owner
       }
-      orderType
       deliveryStatus
       deliveryType
+      orderedAt
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -226,9 +226,9 @@ export const onCreateOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -241,9 +241,9 @@ export const onUpdateOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -256,9 +256,9 @@ export const onDeleteOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -271,6 +271,18 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -307,6 +319,8 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
       deliveryStartYear
       deliveryStartMonth
       deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
       createdAt
       type
       updatedAt
@@ -323,6 +337,18 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -359,6 +385,8 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
       deliveryStartYear
       deliveryStartMonth
       deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
       createdAt
       type
       updatedAt
@@ -375,6 +403,18 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -411,6 +451,8 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
       deliveryStartYear
       deliveryStartMonth
       deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
       createdAt
       type
       updatedAt
