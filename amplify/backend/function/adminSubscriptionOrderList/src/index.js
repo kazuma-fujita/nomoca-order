@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const aws_appsync_1 = __importDefault(require("aws-appsync"));
-const AWS = __importStar(require("aws-sdk"));
 const graphql_tag_1 = require("graphql-tag");
 const queries_1 = require("./queries");
 const generate_next_delivery_year_month_1 = require("./generate-next-delivery-year-month");
@@ -47,14 +23,19 @@ global.fetch = require('node-fetch');
  */
 const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('EVENT', event);
-    // export const handler = async () => {
-    let credentials = AWS.config.credentials;
+    // let credentials = AWS.config.credentials;
+    let credentials = {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        sessionToken: process.env.AWS_SESSION_TOKEN,
+    };
     // mock
     if ('AWS_EXECUTION_ENV' in process.env && process.env.AWS_EXECUTION_ENV.endsWith('-mock')) {
         // mock credentials。なぜか以下の識別子じゃないとamplify mock function 実行時 unauthorizedとなる
         credentials = {
             accessKeyId: 'ASIAVJKIAM-AuthRole',
             secretAccessKey: 'fake',
+            sessionToken: 'fake',
         };
         // credentials: {
         // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -81,7 +62,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
                 sortDirection: 'DESC',
             },
         }));
-        console.log('result', result);
         if (result.errors) {
             throw result.errors;
         }
@@ -96,8 +76,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
                 throw Error('The API fetched products but it returned null.');
             }
         }
-        // console.log('items', items);
-        // TODO: 引数でもらう
         const now = new Date();
         const nowYear = now.getFullYear();
         const nowMonth = now.getMonth() + 1;

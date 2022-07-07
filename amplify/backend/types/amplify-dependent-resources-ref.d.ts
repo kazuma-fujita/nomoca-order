@@ -13,6 +13,14 @@ export type AmplifyDependentResourcesAttributes = {
             "AppClientID": "string"
         }
     },
+    "function": {
+        "adminSubscriptionOrderList": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
+        }
+    },
     "api": {
         "nomocaorderApi": {
             "GraphQLAPIIdOutput": "string",

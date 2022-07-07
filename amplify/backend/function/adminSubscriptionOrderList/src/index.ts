@@ -12,13 +12,20 @@ global.fetch = require('node-fetch');
  */
 export const handler = async (event: any) => {
   console.log('EVENT', event);
-  let credentials = AWS.config.credentials;
+  // let credentials = AWS.config.credentials;
+  let credentials = {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    sessionToken: process.env.AWS_SESSION_TOKEN,
+  };
+
   // mock
   if ('AWS_EXECUTION_ENV' in process.env && process.env.AWS_EXECUTION_ENV.endsWith('-mock')) {
     // mock credentials。なぜか以下の識別子じゃないとamplify mock function 実行時 unauthorizedとなる
     credentials = {
       accessKeyId: 'ASIAVJKIAM-AuthRole',
       secretAccessKey: 'fake',
+      sessionToken: 'fake',
     };
 
     // credentials: {

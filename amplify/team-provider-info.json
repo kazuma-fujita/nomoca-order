@@ -20,6 +20,12 @@
           "appId": "d37kyr3s00ujyn",
           "type": "cicd"
         }
+      },
+      "function": {
+        "adminSubscriptionOrderList": {
+          "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
+          "s3Key": "amplify-builds/adminSubscriptionOrderList-42707a71464d4a364f6e-build.zip"
+        }
       }
     }
   },
