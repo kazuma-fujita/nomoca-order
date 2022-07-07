@@ -37,11 +37,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
             secretAccessKey: 'fake',
             sessionToken: 'fake',
         };
-        // credentials: {
-        // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        // sessionToken: process.env.AWS_SESSION_TOKEN,
-        // },
     }
     // console.log('env:', process.env);
     console.log('Credentials:', credentials);
