@@ -17,10 +17,11 @@ const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth
 export const SubscriptionOrderForm = () => {
   const { formReturn, fieldArrayReturn, submitHandler, cancelHandler } = useInputOrder();
   const { data } = useOrderFormParam();
-  const { now } = useNowDate();
+  const { data: now } = useNowDate();
+  const currentDate = now ?? new Date();
   // 現在年、月を取得。現在月はgetMonthの値に+1をして取得
-  const nowYear = now.getFullYear();
-  const nowMonth = now.getMonth() + 1;
+  const nowYear = currentDate.getFullYear();
+  const nowMonth = currentDate.getMonth() + 1;
   // 配送開始月SelectField初期値。初期値として翌月を設定
   const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
   // 配送開始月SelectFieldプルダウン月配列生成。翌月から〜lengthの数値で配送開始月の上限を設定

@@ -1,13 +1,34 @@
 import { createContext, useContext } from 'react';
+import { getCurrentDate } from 'graphql/queries';
+import { API, graphqlOperation } from 'aws-amplify';
+import { GraphQLResult } from '@aws-amplify/api';
+import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
+import { GetCurrentDateQuery } from 'API';
 
-type Props = {
-  now: Date;
-};
-
-const NowDateContext = createContext({} as Props);
+const NowDateContext = createContext({} as FetchResponse<Date>);
 
 export const useNowDate = () => useContext(NowDateContext);
 
-export const NowDateContextProvider: React.FC<Props> = ({ now, ...rest }) => (
-  <NowDateContext.Provider value={{ now }} {...rest} />
-);
+const fetcher = async () => {
+  // currentDate lambda関数を実行しサーバ現在時刻を取得
+  const result = (await API.graphql(graphqlOperation(getCurrentDate))) as GraphQLResult<GetCurrentDateQuery>;
+  if (!result.data || !result.data.getCurrentDate || !result.data.getCurrentDate.currentDate) {
+    throw Error('It was returned null after the API had fetched data.');
+  }
+  // 文字列型をDate型に変換
+  const now = new Date(result.data.getCurrentDate.currentDate);
+  console.log('server time', now);
+  return now;
+};
+
+type Props = {
+  now?: Date;
+};
+
+export const NowDateContextProvider: React.FC<Props> = ({ now, ...rest }) => {
+  // nowはjest、storybookで使用するmock date。nowがあれば型を合わせる為にFetchResponseに変換
+  const mockDate = now && ({ data: now } as FetchResponse<Date>);
+  // useFetchは内部的にnow Propsが無いmockDateがundefinedの場合fetcherを呼ぶ
+  const response = useFetch<Date>('currentDate', fetcher, { revalidateOnFocus: false }, mockDate);
+  return <NowDateContext.Provider value={response} {...rest} />;
+};

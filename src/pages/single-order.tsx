@@ -30,7 +30,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
           <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
             <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
               <ClinicContextProvider>
-                <NowDateContextProvider now={new Date()}>
+                <NowDateContextProvider>
                   <Main>
                     <OrderTemplate />
                   </Main>

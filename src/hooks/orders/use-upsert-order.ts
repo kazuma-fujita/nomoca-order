@@ -37,7 +37,7 @@ import { useCallback, useState } from 'react';
 import { OrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { useNowDate } from '../../stores/use-now-date';
+import { useNowDate } from 'stores/use-now-date';
 
 const updateSubscriptionOrderProducts = async (
   updateOrderID: string,
@@ -205,7 +205,11 @@ export const useCreateOrder = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
-  const { now } = useNowDate();
+  const { data: now } = useNowDate();
+
+  if (!now) {
+    throw Error('A current date is not found.');
+  }
 
   const createOrder = async (orderType: OrderType, param: OrderFormParam) => {
     setIsLoading(true);

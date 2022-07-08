@@ -506,6 +506,11 @@ export type DeleteStaffInput = {
   id: string,
 };
 
+export type CurrentDate = {
+  __typename: "CurrentDate",
+  currentDate?: string | null,
+};
+
 export type ModelClinicFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -1392,6 +1397,13 @@ export type DeleteStaffMutation = {
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+  } | null,
+};
+
+export type GetCurrentDateQuery = {
+  getCurrentDate?:  {
+    __typename: "CurrentDate",
+    currentDate?: string | null,
   } | null,
 };
 

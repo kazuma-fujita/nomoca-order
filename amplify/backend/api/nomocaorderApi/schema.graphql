@@ -153,8 +153,14 @@ type Staff
   type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }
 
+type CurrentDate {
+  currentDate: AWSDateTime
+}
+
 type Query {
   listAdminSubscriptionOrders: [SubscriptionOrder]
     @function(name: "adminSubscriptionOrderList-${env}")
     @auth(rules: [{ allow: private, provider: userPools }])
+
+  getCurrentDate: CurrentDate @function(name: "currentDate-${env}")
 }

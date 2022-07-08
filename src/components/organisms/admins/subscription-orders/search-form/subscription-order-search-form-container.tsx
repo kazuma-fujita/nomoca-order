@@ -12,11 +12,14 @@ export type SubscriptionOrderSearchParams = {
 export const SubscriptionOrderSearchFormContainer = () => {
   const { handleSubmit, control } = useForm<SubscriptionOrderSearchParams>();
   const { search, isLoading, error, resetState } = useSearchSubscriptionOrders();
-  const { now } = useNowDate();
+  const { data: now } = useNowDate();
 
   const submitHandler = handleSubmit(
     useCallback(
       async (data: SubscriptionOrderSearchParams) => {
+        if (!now) {
+          throw Error('A current date is not found.');
+        }
         try {
           await search(data.searchDeliveryYear, data.searchDeliveryMonth, now.getFullYear(), now.getMonth() + 1);
           resetState();

@@ -20,9 +20,13 @@ import { useNowDate } from 'stores/use-now-date';
 import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useCreateSubscriptionOrderHistory = () => {
-  const { now } = useNowDate();
+  const { data: now } = useNowDate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  if (!now) {
+    throw Error('A current date is not found.');
+  }
 
   const createOrderProducts = async (
     newOrderID: string,

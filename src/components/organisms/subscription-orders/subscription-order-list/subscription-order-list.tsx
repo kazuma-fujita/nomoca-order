@@ -51,10 +51,11 @@ const header: TableHeader[] = [
 
 export const SubscriptionOrderList = () => {
   const fetchReturn = useFetchSubscriptionOrderList();
-  const { now } = useNowDate();
+  const { data: now } = useNowDate();
+  const currentDate = now ?? new Date();
   return (
     <CommonTableContainer {...fetchReturn} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
-      {fetchReturn.data && fetchReturn.data.map((item) => <Row key={item.id} item={item} now={now} />)}
+      {fetchReturn.data && fetchReturn.data.map((item) => <Row key={item.id} item={item} now={currentDate} />)}
     </CommonTableContainer>
   );
 };

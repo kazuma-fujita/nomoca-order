@@ -121,9 +121,13 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
 };
 
 export const useExportOrderCSV = () => {
-  const { now } = useNowDate();
+  const { data: now } = useNowDate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  if (!now) {
+    throw Error('A current date is not found.');
+  }
 
   const exportCSV = async (orders: ExtendedOrder<SubscriptionOrder | Order>[]) => {
     setIsLoading(true);

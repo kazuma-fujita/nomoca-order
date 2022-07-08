@@ -10,10 +10,14 @@ import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useUpdateSingleOrderDeliveryStatus = () => {
-  const { now } = useNowDate();
+  const { data: now } = useNowDate();
   const { mutate } = useSWRConfig();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  if (!now) {
+    throw Error('A current date is not found.');
+  }
 
   const updateOrderDeliveryStatus = async (orders: ExtendedOrder<Order>[]) => {
     setIsLoading(true);

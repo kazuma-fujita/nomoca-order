@@ -17,7 +17,7 @@ const SubscriptionOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof get
         <title>{pageTitle}</title>
       </Head>
       <AdminSubscriptionOrderListContextProvider>
-        <NowDateContextProvider now={new Date()}>
+        <NowDateContextProvider>
           <Main>
             <SubscriptionOrderTemplate />
           </Main>

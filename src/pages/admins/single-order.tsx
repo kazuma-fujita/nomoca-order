@@ -18,7 +18,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       </Head>
       <Main>
         <OrderListContextProvider>
-          <NowDateContextProvider now={new Date()}>
+          <NowDateContextProvider>
             <SingleOrderTemplate />
           </NowDateContextProvider>
         </OrderListContextProvider>
