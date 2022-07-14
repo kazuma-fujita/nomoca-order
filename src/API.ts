@@ -506,11 +506,6 @@ export type DeleteStaffInput = {
   id: string,
 };
 
-export type CurrentDate = {
-  __typename: "CurrentDate",
-  currentDate?: string | null,
-};
-
 export type ModelClinicFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -637,6 +632,22 @@ export type ModelStaffConnection = {
   items:  Array<Staff | null >,
   nextToken?: string | null,
 };
+
+export type CurrentDate = {
+  __typename: "CurrentDate",
+  currentDate?: string | null,
+};
+
+export enum SendMailType {
+  orderedSingleOrder = "orderedSingleOrder",
+  orderedSubscriptionOrder = "orderedSubscriptionOrder",
+  updatedSubscriptionOrder = "updatedSubscriptionOrder",
+  canceledSingleOrder = "canceledSingleOrder",
+  canceledSubscriptionOrder = "canceledSubscriptionOrder",
+  deliveredSingleOrder = "deliveredSingleOrder",
+  deliveredSubscriptionOrder = "deliveredSubscriptionOrder",
+}
+
 
 export type CreateClinicMutationVariables = {
   input: CreateClinicInput,
@@ -1400,13 +1411,6 @@ export type DeleteStaffMutation = {
   } | null,
 };
 
-export type GetCurrentDateQuery = {
-  getCurrentDate?:  {
-    __typename: "CurrentDate",
-    currentDate?: string | null,
-  } | null,
-};
-
 export type GetClinicQueryVariables = {
   id: string,
 };
@@ -2115,6 +2119,22 @@ export type ListAdminSubscriptionOrdersQuery = {
     updatedAt: string,
     owner?: string | null,
   } | null > | null,
+};
+
+export type GetCurrentDateQuery = {
+  getCurrentDate?:  {
+    __typename: "CurrentDate",
+    currentDate?: string | null,
+  } | null,
+};
+
+export type SendOrderMailQueryVariables = {
+  sendMailType: SendMailType,
+  clinicName: string,
+};
+
+export type SendOrderMailQuery = {
+  sendOrderMail?: string | null,
 };
 
 export type OnCreateClinicSubscriptionVariables = {

@@ -153,6 +153,16 @@ type Staff
   type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }
 
+enum SendMailType {
+  orderedSingleOrder
+  orderedSubscriptionOrder
+  updatedSubscriptionOrder
+  canceledSingleOrder
+  canceledSubscriptionOrder
+  deliveredSingleOrder
+  deliveredSubscriptionOrder
+}
+
 type CurrentDate {
   currentDate: AWSDateTime
 }
@@ -162,5 +172,14 @@ type Query {
     @function(name: "adminSubscriptionOrderList-${env}")
     @auth(rules: [{ allow: private, provider: userPools }])
 
-  getCurrentDate: CurrentDate @function(name: "currentDate-${env}")
+  getCurrentDate: CurrentDate
+    @function(name: "currentDate-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
+
+  sendOrderMail(
+    sendMailType: SendMailType!
+    clinicName: String!
+    toAddresses: [String]!
+    bccAddresses: [String]!
+  ): String @function(name: "sendOrderMail-${env}") @auth(rules: [{ allow: private, provider: userPools }])
 }

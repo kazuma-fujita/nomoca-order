@@ -6,6 +6,8 @@ import {
   Order,
   OrderProduct,
   Type,
+  SendOrderMailQueryVariables,
+  SendMailType,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
@@ -13,6 +15,7 @@ import { listOrdersSortedByCreatedAt } from 'graphql/queries';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
+import { sendOrderMail } from '../../graphql/queries';
 
 const createNormalizedProduct = (orderProduct: OrderProduct | null): NormalizedProduct =>
   ({
@@ -56,6 +59,16 @@ const fetcher = async (): Promise<ExtendedOrder<Order>[]> => {
     ...item,
     normalizedProducts: createNormalizedProducts(item),
   }));
+
+  const sendMailVariables: SendOrderMailQueryVariables = {
+    sendMailType: SendMailType.orderedSingleOrder,
+    clinicName: 'テスト医院',
+  };
+  const sendMailResult = (await API.graphql(
+    graphqlOperation(sendOrderMail, sendMailVariables),
+  )) as GraphQLResult<string>;
+
+  console.log('sendMailResult', sendMailResult);
 
   return extendedItems;
 };

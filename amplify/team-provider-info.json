@@ -25,6 +25,14 @@
         "adminSubscriptionOrderList": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
           "s3Key": "amplify-builds/adminSubscriptionOrderList-42707a71464d4a364f6e-build.zip"
+        },
+        "currentDate": {
+          "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
+          "s3Key": "amplify-builds/currentDate-36745635706c63436564-build.zip"
+        },
+        "sendOrderMail": {
+          "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
+          "s3Key": "amplify-builds/sendOrderMail-516e774f56724f663877-build.zip"
         }
       }
     }

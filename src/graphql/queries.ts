@@ -2,13 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getCurrentDate = /* GraphQL */ `
-  query GetCurrentDate {
-    getCurrentDate {
-      currentDate
-    }
-  }
-`;
 export const getClinic = /* GraphQL */ `
   query GetClinic($id: ID!) {
     getClinic(id: $id) {
@@ -670,5 +663,17 @@ export const listAdminSubscriptionOrders = /* GraphQL */ `
       updatedAt
       owner
     }
+  }
+`;
+export const getCurrentDate = /* GraphQL */ `
+  query GetCurrentDate {
+    getCurrentDate {
+      currentDate
+    }
+  }
+`;
+export const sendOrderMail = /* GraphQL */ `
+  query SendOrderMail($sendMailType: SendMailType!, $clinicName: String!) {
+    sendOrderMail(sendMailType: $sendMailType, clinicName: $clinicName)
   }
 `;

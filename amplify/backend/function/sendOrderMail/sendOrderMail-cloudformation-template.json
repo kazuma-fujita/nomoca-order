@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "currentDate",
+            "sendOrderMail",
             {
               "Fn::Join": [
                 "",
                 [
-                  "currentDate",
+                  "sendOrderMail",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "nomocaorderLambdaRole77f1bef8",
+            "nomocaorderLambdaRole1c3539a5",
             {
               "Fn::Join": [
                 "",
                 [
-                  "nomocaorderLambdaRole77f1bef8",
+                  "nomocaorderLambdaRole1c3539a5",
                   "-",
                   {
                     "Ref": "env"
@@ -142,7 +142,9 @@
               "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
-                "logs:PutLogEvents"
+                "logs:PutLogEvents",
+                "ses:SendEmail",
+                "ses:SendRawEmail"
               ],
               "Resource": {
                 "Fn::Sub": [
