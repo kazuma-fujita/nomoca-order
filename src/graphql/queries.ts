@@ -673,7 +673,43 @@ export const getCurrentDate = /* GraphQL */ `
   }
 `;
 export const sendOrderMail = /* GraphQL */ `
-  query SendOrderMail($sendMailType: SendMailType!, $clinicName: String!) {
-    sendOrderMail(sendMailType: $sendMailType, clinicName: $clinicName)
+  query SendOrderMail(
+    $sendMailType: SendMailType!
+    $products: [String!]!
+    $subtotal: Int!
+    $tax: Int!
+    $total: Int!
+    $clinicName: String!
+    $phoneNumber: String!
+    $postalCode: String!
+    $state: String!
+    $city: String!
+    $address: String!
+    $building: String
+    $staffName: String!
+    $deliveryType: DeliveryType
+    $deliveryStartYear: Int
+    $deliveryStartMonth: Int
+    $deliveryInterval: Int
+  ) {
+    sendOrderMail(
+      sendMailType: $sendMailType
+      products: $products
+      subtotal: $subtotal
+      tax: $tax
+      total: $total
+      clinicName: $clinicName
+      phoneNumber: $phoneNumber
+      postalCode: $postalCode
+      state: $state
+      city: $city
+      address: $address
+      building: $building
+      staffName: $staffName
+      deliveryType: $deliveryType
+      deliveryStartYear: $deliveryStartYear
+      deliveryStartMonth: $deliveryStartMonth
+      deliveryInterval: $deliveryInterval
+    )
   }
 `;

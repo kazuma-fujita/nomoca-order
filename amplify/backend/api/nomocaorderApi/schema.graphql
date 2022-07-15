@@ -177,9 +177,23 @@ type Query {
     @auth(rules: [{ allow: private, provider: userPools }])
 
   sendOrderMail(
+    # toAddresses: [String!]! # bccAddresses: [String!]!
     sendMailType: SendMailType!
+    products: [String!]!
+    subtotal: Int!
+    tax: Int!
+    total: Int!
     clinicName: String!
-    toAddresses: [String]!
-    bccAddresses: [String]!
+    phoneNumber: String!
+    postalCode: String!
+    state: String!
+    city: String!
+    address: String!
+    building: String
+    staffName: String!
+    deliveryType: DeliveryType
+    deliveryStartYear: Int
+    deliveryStartMonth: Int
+    deliveryInterval: Int
   ): String @function(name: "sendOrderMail-${env}") @auth(rules: [{ allow: private, provider: userPools }])
 }

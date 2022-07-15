@@ -1,0 +1,22 @@
+{
+  "arguments": {
+    "sendMailType": "canceledSingleOrder",
+    "products": [
+      "高保存ロール紙 100m(卓上プリンタ/KIOSK筐体用) 1個 19,800円",
+      "配送手数料  1個 1,000円",
+      "速達配送料  1個 1,000円"
+    ],
+    "subtotal": 21800,
+    "tax": 2180,
+    "total": 23980,
+    "clinicName": "渋谷ヒカリエクリニック",
+    "postalCode": "1508510",
+    "state": "東京都",
+    "city": "渋谷区渋谷",
+    "address": "2-21-1",
+    "building": "渋谷ヒカリエ34階",
+    "phoneNumber": "0120811009",
+    "staffName": "佐藤 太郎",
+    "deliveryType": "express"
+  }
+}

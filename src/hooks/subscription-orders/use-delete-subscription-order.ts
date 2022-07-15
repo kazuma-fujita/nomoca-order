@@ -6,7 +6,7 @@ import {
   DeleteSubscriptionOrderProductInput,
   DeleteSubscriptionOrderProductMutation,
   DeleteSubscriptionOrderProductMutationVariables,
-  SubscriptionOrder,
+  ModelSubscriptionOrderProductConnection,
   SubscriptionOrderProduct,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -18,7 +18,6 @@ import {
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { ModelSubscriptionOrderProductConnection } from 'API';
 
 const deleteSubscriptionOrderProducts = async (productRelations: SubscriptionOrderProduct[]) => {
   // SubscriptionOrder と Product のリレーション削除

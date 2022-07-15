@@ -16,7 +16,11 @@ import {
   DeleteSubscriptionOrderProductMutation,
   DeleteSubscriptionOrderProductMutationVariables,
   DeliveryStatus,
+  GetClinicQuery,
+  GetStaffQuery,
   OrderType,
+  SendMailType,
+  SendOrderMailQueryVariables,
   Type,
   UpdateSubscriptionOrderInput,
   UpdateSubscriptionOrderMutation,
@@ -24,6 +28,7 @@ import {
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
+import { calcTotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 import {
   createOrder as createOrderMutation,
   createOrderProduct,
@@ -32,12 +37,13 @@ import {
   deleteOrderProduct,
   updateSubscriptionOrder as updateSubscriptionOrderMutation,
 } from 'graphql/mutations';
+import { getStaff, getClinic, sendOrderMail } from 'graphql/queries';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
+import { useNowDate } from 'stores/use-now-date';
 import { OrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { useNowDate } from 'stores/use-now-date';
 
 const updateSubscriptionOrderProducts = async (
   updateOrderID: string,
@@ -226,6 +232,15 @@ export const useCreateOrder = () => {
       setError(parsedError);
       throw parsedError;
     }
+
+    // メール送信は補助的な機能なので失敗してもDB登録処理をrollbackしない
+    try {
+      await executeSendingOrderMail(orderType, param);
+    } catch (err) {
+      const error = err as Error;
+      // TODO: Slack or CloudWatch通知
+      console.error('It failed sending an email after ordering a single order item', error);
+    }
   };
 
   const resetState = useCallback(() => {
@@ -234,4 +249,68 @@ export const useCreateOrder = () => {
   }, []);
 
   return { createOrder, isLoading, error, resetState };
+};
+
+const executeSendingOrderMail = async (orderType: OrderType, param: OrderFormParam) => {
+  // staff情報取得
+  const staffResult = (await API.graphql(
+    graphqlOperation(getStaff, { id: param.staffID }),
+  )) as GraphQLResult<GetStaffQuery>;
+  if (!staffResult.data || !staffResult.data.getStaff) {
+    throw Error('A staff fetching result is not found.');
+  }
+  const staff = staffResult.data.getStaff;
+  // clinic情報取得
+  const clinicResult = (await API.graphql(
+    graphqlOperation(getClinic, { id: param.clinicID }),
+  )) as GraphQLResult<GetClinicQuery>;
+  if (!clinicResult.data || !clinicResult.data.getClinic) {
+    throw Error('A clinic fetching result is not found.');
+  }
+  const clinicOrigin = clinicResult.data.getClinic;
+  // DBから取得した値から不要な要素を削除
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { name, id, __typename, createdAt, updatedAt, owner, ...clinic } = clinicOrigin;
+  // sendMailType生成
+  let sendMailType;
+  if (orderType === OrderType.singleOrder) {
+    // 通常注文メール
+    sendMailType = SendMailType.orderedSingleOrder;
+  } else if (orderType === OrderType.subscriptionOrder && param.id) {
+    // 定期便内容変更メール
+    sendMailType = SendMailType.updatedSubscriptionOrder;
+  } else {
+    // 定期便申し込みメール
+    sendMailType = SendMailType.orderedSubscriptionOrder;
+  }
+  // product情報生成
+  if (!param.products) {
+    throw Error('A products param is not found.');
+  }
+  // 小計、税、合計を計算
+  const { total, taxes, subtotal } = calcTotalFromProductList(param.products);
+  //////////////////////
+  // 注文完了メール送信
+  const sendMailVariables: SendOrderMailQueryVariables = {
+    sendMailType: sendMailType,
+    products: param.products.map(
+      (product) => `${product.name} ${product.quantity}個 ${(product.unitPrice * product.quantity).toLocaleString()}円`,
+    ),
+    subtotal: subtotal,
+    tax: taxes,
+    total: total,
+    clinicName: name,
+    staffName: `${staff.lastName} ${staff.firstName}`,
+    deliveryType: param.deliveryType,
+    deliveryStartYear: param.deliveryStartYear,
+    deliveryStartMonth: param.deliveryStartMonth,
+    deliveryInterval: param.deliveryInterval,
+    ...clinic,
+  };
+  console.table(sendMailVariables);
+  const sendMailResult = (await API.graphql(
+    graphqlOperation(sendOrderMail, sendMailVariables),
+  )) as GraphQLResult<string>;
+  console.log('sendMailResult', sendMailResult);
+  //////////////////////
 };

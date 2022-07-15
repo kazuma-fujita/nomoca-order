@@ -2130,7 +2130,22 @@ export type GetCurrentDateQuery = {
 
 export type SendOrderMailQueryVariables = {
   sendMailType: SendMailType,
+  products: Array< string >,
+  subtotal: number,
+  tax: number,
+  total: number,
   clinicName: string,
+  phoneNumber: string,
+  postalCode: string,
+  state: string,
+  city: string,
+  address: string,
+  building?: string | null,
+  staffName: string,
+  deliveryType?: DeliveryType | null,
+  deliveryStartYear?: number | null,
+  deliveryStartMonth?: number | null,
+  deliveryInterval?: number | null,
 };
 
 export type SendOrderMailQuery = {
