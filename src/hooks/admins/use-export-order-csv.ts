@@ -125,13 +125,13 @@ export const useExportOrderCSV = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  if (!now) {
-    throw Error('A current date is not found.');
-  }
-
   const exportCSV = async (orders: ExtendedOrder<SubscriptionOrder | Order>[]) => {
     setIsLoading(true);
     try {
+      if (!now) {
+        throw Error('A current date is not found.');
+      }
+
       if (!orders.length) {
         throw Error('It is empty that an ID list which export a csv file.');
       }
