@@ -34,16 +34,16 @@ import {
   createOrderProduct,
   createSubscriptionOrder as createSubscriptionOrderMutation,
   createSubscriptionOrderProduct,
-  deleteOrderProduct,
   updateSubscriptionOrder as updateSubscriptionOrderMutation,
 } from 'graphql/mutations';
-import { getStaff, getClinic, sendOrderMail } from 'graphql/queries';
+import { getClinic, getStaff, sendOrderMail } from 'graphql/queries';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { useNowDate } from 'stores/use-now-date';
 import { OrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { deleteSubscriptionOrderProduct } from '../../graphql/mutations';
 
 const updateSubscriptionOrderProducts = async (
   updateOrderID: string,
@@ -57,10 +57,12 @@ const updateSubscriptionOrderProducts = async (
     }
     const input: DeleteSubscriptionOrderProductInput = { id: item.relationID };
     const variables: DeleteSubscriptionOrderProductMutationVariables = { input: input };
+    console.table(variables);
     // データ削除実行
     const result = (await API.graphql(
-      graphqlOperation(deleteOrderProduct, variables),
+      graphqlOperation(deleteSubscriptionOrderProduct, variables),
     )) as GraphQLResult<DeleteSubscriptionOrderProductMutation>;
+
     if (!result.data || !result.data.deleteSubscriptionOrderProduct) {
       throw Error('It returned null that an API which executed to delete an order and a product relation data.');
     }
@@ -81,9 +83,11 @@ const createSubscriptionOrderProducts = async (newSubscriptionOrderID: string, c
 
     // データ新規登録実行
     const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
+    console.table(variables);
     const result = (await API.graphql(
       graphqlOperation(createSubscriptionOrderProduct, variables),
     )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;
+
     if (!result.data || !result.data.createSubscriptionOrderProduct) {
       throw Error('The API created connection data but it returned null.');
     }
@@ -148,6 +152,7 @@ const createSingleOrder = async (param: OrderFormParam, now: Date) => {
   await createOrderProducts(newOrder.id, param.products);
 };
 
+// 定期便作成・更新
 const createSubscriptionOrder = async (param: OrderFormParam) => {
   if (
     !param.deliveryStartYear ||
@@ -192,6 +197,7 @@ const createSubscriptionOrder = async (param: OrderFormParam) => {
       id: param.id,
       ...inputParam,
     };
+    console.table(input);
     const variables: UpdateSubscriptionOrderMutationVariables = { input: input };
     // データ更新実行
     const result = (await API.graphql(
@@ -213,13 +219,12 @@ export const useCreateOrder = () => {
   const { mutate } = useSWRConfig();
   const { data: now } = useNowDate();
 
-  if (!now) {
-    throw Error('A current date is not found.');
-  }
-
   const createOrder = async (orderType: OrderType, param: OrderFormParam) => {
     setIsLoading(true);
     try {
+      if (!now) {
+        throw Error('A current date is not found.');
+      }
       // OrderTypeはpagesでContextに保存している値
       orderType === OrderType.singleOrder ? await createSingleOrder(param, now) : await createSubscriptionOrder(param);
       setIsLoading(false);
@@ -230,6 +235,7 @@ export const useCreateOrder = () => {
       setIsLoading(false);
       const parsedError = parseResponseError(error);
       setError(parsedError);
+      console.error(parsedError);
       throw parsedError;
     }
 

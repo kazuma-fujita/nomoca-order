@@ -216,7 +216,7 @@ const createMailBody = (
     case SendMailType.orderedSubscriptionOrder:
       return mailBodyTemplate('定期便', '定期便の申し込みを受付しました', dear, contentsMailBody);
     case SendMailType.updatedSubscriptionOrder:
-      return mailBodyTemplate('定期便', 'の内容変更を受付しました', dear, contentsMailBody);
+      return mailBodyTemplate('定期便', '定期便の内容変更を受付しました', dear, contentsMailBody);
     case SendMailType.canceledSingleOrder:
       return cancelMailBodyTemplate('注文キャンセル', 'の注文キャンセルを受付しました', dear, contentsMailBody);
     case SendMailType.canceledSubscriptionOrder:
