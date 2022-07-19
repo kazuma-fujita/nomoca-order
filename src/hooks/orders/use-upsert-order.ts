@@ -20,7 +20,6 @@ import {
   GetStaffQuery,
   OrderType,
   SendMailType,
-  SendOrderMailQueryVariables,
   Type,
   UpdateSubscriptionOrderInput,
   UpdateSubscriptionOrderMutation,
@@ -28,7 +27,6 @@ import {
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
-import { calcTotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 import {
   createOrder as createOrderMutation,
   createOrderProduct,
@@ -36,7 +34,8 @@ import {
   createSubscriptionOrderProduct,
   updateSubscriptionOrder as updateSubscriptionOrderMutation,
 } from 'graphql/mutations';
-import { getClinic, getStaff, sendOrderMail } from 'graphql/queries';
+import { getClinic, getStaff } from 'graphql/queries';
+import { useSendMail } from 'hooks/commons/use-send-mail';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { useNowDate } from 'stores/use-now-date';
@@ -218,6 +217,7 @@ export const useCreateOrder = () => {
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
   const { data: now } = useNowDate();
+  const { sendMail } = useSendMail();
 
   const createOrder = async (orderType: OrderType, param: OrderFormParam) => {
     setIsLoading(true);
@@ -225,6 +225,7 @@ export const useCreateOrder = () => {
       if (!now) {
         throw Error('A current date is not found.');
       }
+
       // OrderTypeはpagesでContextに保存している値
       orderType === OrderType.singleOrder ? await createSingleOrder(param, now) : await createSubscriptionOrder(param);
       setIsLoading(false);
@@ -241,7 +242,24 @@ export const useCreateOrder = () => {
 
     // メール送信は補助的な機能なので失敗してもDB登録処理をrollbackしない
     try {
-      await executeSendingOrderMail(orderType, param);
+      if (!param.products) {
+        throw Error('A products param is not found.');
+      }
+
+      // メール送信に必要な情報をDBから取得
+      const { sendMailType, clinic, staff } = await fetchSendMailRequestParams(orderType, param);
+
+      // 注文 or 定期便申し込み or 定期便更新メール送信
+      await sendMail({
+        sendMailType: sendMailType,
+        products: param.products,
+        clinic: clinic,
+        staff: staff,
+        deliveryType: param.deliveryType,
+        deliveryStartYear: param.deliveryStartYear,
+        deliveryStartMonth: param.deliveryStartMonth,
+        deliveryInterval: param.deliveryInterval,
+      });
     } catch (err) {
       const error = err as Error;
       // TODO: Slack or CloudWatch通知
@@ -257,26 +275,7 @@ export const useCreateOrder = () => {
   return { createOrder, isLoading, error, resetState };
 };
 
-const executeSendingOrderMail = async (orderType: OrderType, param: OrderFormParam) => {
-  // staff情報取得
-  const staffResult = (await API.graphql(
-    graphqlOperation(getStaff, { id: param.staffID }),
-  )) as GraphQLResult<GetStaffQuery>;
-  if (!staffResult.data || !staffResult.data.getStaff) {
-    throw Error('A staff fetching result is not found.');
-  }
-  const staff = staffResult.data.getStaff;
-  // clinic情報取得
-  const clinicResult = (await API.graphql(
-    graphqlOperation(getClinic, { id: param.clinicID }),
-  )) as GraphQLResult<GetClinicQuery>;
-  if (!clinicResult.data || !clinicResult.data.getClinic) {
-    throw Error('A clinic fetching result is not found.');
-  }
-  const clinicOrigin = clinicResult.data.getClinic;
-  // DBから取得した値から不要な要素を削除
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { name, id, __typename, createdAt, updatedAt, owner, ...clinic } = clinicOrigin;
+const fetchSendMailRequestParams = async (orderType: OrderType, param: OrderFormParam) => {
   // sendMailType生成
   let sendMailType;
   if (orderType === OrderType.singleOrder) {
@@ -289,34 +288,30 @@ const executeSendingOrderMail = async (orderType: OrderType, param: OrderFormPar
     // 定期便申し込みメール
     sendMailType = SendMailType.orderedSubscriptionOrder;
   }
-  // product情報生成
-  if (!param.products) {
-    throw Error('A products param is not found.');
+
+  // staff情報取得
+  const staffResult = (await API.graphql(
+    graphqlOperation(getStaff, { id: param.staffID }),
+  )) as GraphQLResult<GetStaffQuery>;
+
+  if (!staffResult.data || !staffResult.data.getStaff) {
+    throw Error('A staff fetching result is not found.');
   }
-  // 小計、税、合計を計算
-  const { total, taxes, subtotal } = calcTotalFromProductList(param.products);
-  //////////////////////
-  // 注文完了メール送信
-  const sendMailVariables: SendOrderMailQueryVariables = {
-    sendMailType: sendMailType,
-    products: param.products.map(
-      (product) => `${product.name} ${product.quantity}個 ${(product.unitPrice * product.quantity).toLocaleString()}円`,
-    ),
-    subtotal: subtotal,
-    tax: taxes,
-    total: total,
-    clinicName: name,
-    staffName: `${staff.lastName} ${staff.firstName}`,
-    deliveryType: param.deliveryType,
-    deliveryStartYear: param.deliveryStartYear,
-    deliveryStartMonth: param.deliveryStartMonth,
-    deliveryInterval: param.deliveryInterval,
-    ...clinic,
+  const staff = staffResult.data.getStaff;
+
+  // clinic情報取得
+  const clinicResult = (await API.graphql(
+    graphqlOperation(getClinic, { id: param.clinicID }),
+  )) as GraphQLResult<GetClinicQuery>;
+
+  if (!clinicResult.data || !clinicResult.data.getClinic) {
+    throw Error('A clinic fetching result is not found.');
+  }
+  const clinic = clinicResult.data.getClinic;
+
+  return {
+    sendMailType,
+    clinic,
+    staff,
   };
-  console.table(sendMailVariables);
-  const sendMailResult = (await API.graphql(
-    graphqlOperation(sendOrderMail, sendMailVariables),
-  )) as GraphQLResult<string>;
-  console.log('sendMailResult', sendMailResult);
-  //////////////////////
 };

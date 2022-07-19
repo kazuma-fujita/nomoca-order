@@ -1,5 +1,5 @@
 import { TableCell } from '@mui/material';
-import { DeliveryStatus, Order } from 'API';
+import { Order } from 'API';
 import { DeliveryStatusChip } from 'components/atoms/delivery-status-chip';
 import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
@@ -63,11 +63,7 @@ const Row = ({ item }: RowProps) => {
       <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt) : '-'}</TableCell>
       {item.products && (
         <TableCell align='center'>
-          <CancelSingleOrderButton
-            id={item.id}
-            products={item.products}
-            disabled={item.deliveryStatus !== DeliveryStatus.ordered}
-          />
+          <CancelSingleOrderButton item={item} />
         </TableCell>
       )}
     </CommonTableRow>

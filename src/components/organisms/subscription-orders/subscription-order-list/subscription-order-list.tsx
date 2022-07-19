@@ -90,7 +90,7 @@ const Row = ({ item, now }: RowProps) => {
             <UpsertOrderButton id={item.id} products={item.normalizedProducts} staffID={item.staff.id} />
           </TableCell>
           <TableCell align='center'>
-            <DeleteSubscriptionOrderButton id={item.id} products={item.products} />
+            <DeleteSubscriptionOrderButton item={item} />
           </TableCell>
         </>
       )}

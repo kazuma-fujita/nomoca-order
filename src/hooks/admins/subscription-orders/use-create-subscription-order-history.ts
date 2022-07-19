@@ -24,10 +24,6 @@ export const useCreateSubscriptionOrderHistory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  if (!now) {
-    throw Error('A current date is not found.');
-  }
-
   const createOrderProducts = async (
     newOrderID: string,
     products: ModelSubscriptionOrderProductConnection,
@@ -65,6 +61,9 @@ export const useCreateSubscriptionOrderHistory = () => {
   const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[]) => {
     setIsLoading(true);
     try {
+      if (!now) {
+        throw Error('A current date is not found.');
+      }
       if (orders.length === 0) {
         throw Error('It is empty that an ID list which create a order history.');
       }

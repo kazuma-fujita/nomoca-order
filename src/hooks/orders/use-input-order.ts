@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 
-// order-form/confirm-template-stories のOrderFormParamContextProvider 初期値として利用
+// order-form/confirm-template-stories の OrderFormParamContextProvider 初期値としても利用
 export const orderFormDefaultValues: OrderFormParam = {
   id: '',
   products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
@@ -17,10 +17,13 @@ export const orderFormDefaultValues: OrderFormParam = {
   clinicID: '',
 };
 
+// 注文・定期便作成、定期便更新ボタン押下時処理
 export const useUpsertOrderButton = (id?: string, products?: NormalizedProduct[], staffID?: string) => {
   const router = useRouter();
   const { mutate, orderType } = useOrderFormParam();
+  // /single-order or /subscription-order 遷移先URL振り分け
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
+  // 一覧右上に表示する注文・定期便作成ボタン、一覧上に表示する定期便更新ラベル
   const buttonLabel = id ? '変更する' : orderType === OrderType.singleOrder ? '商品を注文する' : '定期便を申し込む';
   // 入力フォーム初期値
   const defaultValues: OrderFormParam = useMemo(
@@ -33,7 +36,7 @@ export const useUpsertOrderButton = (id?: string, products?: NormalizedProduct[]
     [id, products, staffID],
   );
 
-  // ボタン押下時処理
+  // ボタン押下時入力フォームへ遷移
   const onButtonClick = useCallback(() => {
     mutate(defaultValues, false);
     // 以下各画面遷移時に shallow=true を指定すると画面リロードが走らず、SPAの挙動となる

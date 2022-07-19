@@ -13,7 +13,7 @@ import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 
 export type NormalizedProduct = {
-  relationID: string;
+  relationID: string; // OrderProduct or SubscriptionOrderProduct の ID。定期便削除時はrelationIDでProductとのリレーションレコードであるSubscriptionOrderProductを削除
   productID: string; // use-hook-formで入力フォームにセットする商品ID。他、productのDBキャッシュからviewOrderなどの値を取得する為に使用
   name: string;
   unitPrice: number;
@@ -23,7 +23,6 @@ export type NormalizedProduct = {
 
 export type ExtendedOrder<T> = T & {
   normalizedProducts: NormalizedProduct[];
-  // nextDeliveryYearMonth?: string | null; // 次回配送予定月。定期便画面のみ使用
 };
 
 const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] => {
@@ -113,8 +112,6 @@ const adminFetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   if (!result.data) {
     throw Error('The API fetched data but it returned null.');
   }
-
-  console.log('API result', result.data);
 
   const items = result.data.listAdminSubscriptionOrders as SubscriptionOrder[];
   for (const item of items) {

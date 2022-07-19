@@ -1,19 +1,18 @@
 import { Delete } from '@mui/icons-material';
 import Button from '@mui/material/Button';
-import { ModelOrderProductConnection } from 'API';
-import { useDeleteOrder } from 'hooks/orders/use-delete-order';
+import { DeliveryStatus, Order } from 'API';
+import { useCancelOrder } from 'hooks/orders/use-cancel-order';
+import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
 import { CancelSingleOrderDialog } from './cancel-single-order-dialog';
 
 type Props = {
-  id: string;
-  products: ModelOrderProductConnection;
-  disabled: boolean;
+  item: ExtendedOrder<Order>;
 };
 
-export const CancelSingleOrderButton = ({ id, products, disabled }: Props) => {
-  const { deleteOrder, isLoading, error, resetState } = useDeleteOrder();
+export const CancelSingleOrderButton = ({ item }: Props) => {
+  const { cancelOrder, isLoading, error, resetState } = useCancelOrder();
   const [on, toggle] = useToggle(false);
 
   const cancelHandler = useCallback(() => {
@@ -22,11 +21,12 @@ export const CancelSingleOrderButton = ({ id, products, disabled }: Props) => {
   }, [resetState, toggle]);
 
   const submitHandler = useCallback(async () => {
-    const error = await deleteOrder(id, products);
+    // const error = await cancelOrder(id, products);
+    const error = await cancelOrder(item);
     if (!error) {
       toggle();
     }
-  }, [deleteOrder, id, products, toggle]);
+  }, [cancelOrder, item, toggle]);
 
   const label = 'キャンセル';
 
@@ -38,7 +38,7 @@ export const CancelSingleOrderButton = ({ id, products, disabled }: Props) => {
         color='error'
         startIcon={<Delete fontSize='small' />}
         size='small'
-        disabled={disabled}
+        disabled={item.deliveryStatus !== DeliveryStatus.ordered}
       >
         注文キャンセル
       </Button>
