@@ -5,6 +5,7 @@ import { calcTotalFromProductList } from 'functions/orders/calc-total-taxes-subt
 import { sendOrderMail } from 'graphql/queries';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
+// .envからBCC mailAddress取得
 const mailBccAddress = process.env.NEXT_PUBLIC_MAIL_BCC_ADDRESS as string;
 
 // 名前付き引数

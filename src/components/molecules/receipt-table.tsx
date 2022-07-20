@@ -16,7 +16,7 @@ export const ReceiptTable = ({ products }: Props) => {
   const { total, taxes, subtotal } = calcTotalFromProductList(products);
   return (
     <TableContainer>
-      <Table sx={{ minWidth: 700 }} aria-label='spanning table'>
+      <Table aria-label='spanning table'>
         <TableHead>
           <TableRow>
             <TableCell>商品</TableCell>

@@ -6,11 +6,17 @@ import { useOrderFormParam } from 'stores/use-order-form-param';
 
 export const ConfirmOrderTemplate = () => {
   const { isLoading, error, submitHandler, cancelHandler } = useConfirmOrder();
-  const { orderType } = useOrderFormParam();
+  const { orderType, data: formParam } = useOrderFormParam();
   return (
     <>
       <Typography variant='h5' textAlign='center'>
-        まだ{orderType === OrderType.singleOrder ? '注文' : '定期便の申し込み'}は確定していません
+        まだ
+        {orderType === OrderType.singleOrder
+          ? '注文'
+          : formParam && formParam.id
+          ? '定期便の内容変更'
+          : '定期便の申し込み'}
+        は確定していません
       </Typography>
       <Box mt={4} mb={4}>
         <Typography variant='body2' textAlign='center'>

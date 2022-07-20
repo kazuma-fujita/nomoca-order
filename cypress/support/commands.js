@@ -180,12 +180,3 @@ Cypress.Commands.add('putProducts', () => {
     console.error(err);
   }
 });
-
-Cypress.Commands.add('initializeDynamoDB', async () => {
-  try {
-    await clearAllRecords();
-    await putProducts();
-  } catch (err) {
-    console.error(err);
-  }
-});

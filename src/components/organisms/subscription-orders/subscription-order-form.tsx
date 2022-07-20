@@ -50,7 +50,6 @@ export const SubscriptionOrderForm = () => {
     >
       <Box mt={2} mb={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
         <TextField
-          id='deliveryStartYear'
           variant='standard'
           disabled
           label=''
