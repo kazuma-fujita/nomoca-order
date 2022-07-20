@@ -26,7 +26,6 @@ context('SubscriptionOrder', () => {
     });
 
     it('It creates subscription order items.', () => {
-      cy.log('here');
       // cy.intercept('POST', '/graphql', (req) => {
       //   cy.log('operationName', req.body.operationName);
       //   if (req.body.operationName === 'GetCurrentDate') {
@@ -45,7 +44,6 @@ context('SubscriptionOrder', () => {
       cy.findByTestId('menu-icon').click();
       cy.findByTestId(Path.subscriptionOrder).click();
       // 定期便一覧画面表示
-      // cy.clock(new Date(2022, 5));
       cy.waitUntil(() => cy.url().then(($url: string) => $url.includes(Path.subscriptionOrder)));
       cy.get('header').contains(ScreenName.subscriptionOrder).should('exist');
       cy.findByRole('button', { name: '定期便を申し込む' }).click();
@@ -98,12 +96,21 @@ context('SubscriptionOrder', () => {
       // waitしてもStaffDialogがアクティブなDomとして認識される為、findByRoleで確認するボタンが認識できない
       // 以下cy.getだとHTML表示中要素全てにアクセス可能。念の為be.visibleでDialogが閉じてボタンが表示されているか確認
       cy.findByTestId('order-input-form-button').should('be.visible').click({ force: true });
+      // まだプルダウンに作成した担当者名がセットされる前なのでvalidationが発生する
+      cy.findByText('発注担当者を選択してください');
+      // 改めて確認するボタンクリック
+      cy.findByTestId('order-input-form-button').should('be.visible').click({ force: true });
+      //////////////////////////////////////////////////
       // 定期便入力確認画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.confirm}`);
       cy.findByRole('table').within(() => {
         cy.findByRole('cell', { name: '定期便商品A' });
       });
-      cy.findByLabelText('配送開始月').should('have.text', '2022 / 7月');
+      const now = new Date();
+      const nextMonth = new Date(now.getFullYear(), now.getMonth() + 2);
+      const nextMonthLabel = `${nextMonth.getFullYear()} / ${nextMonth.getMonth()}月`;
+      cy.log(nextMonthLabel);
+      cy.findByLabelText('配送開始月').should('have.text', `${nextMonth.getFullYear()} / ${nextMonth.getMonth()}月`);
       cy.findByLabelText('配送頻度').should('have.text', '1ヶ月');
       cy.findByTestId('clinic-detail').within(() => {
         cy.findByText('渋谷クリニック');
@@ -112,17 +119,23 @@ context('SubscriptionOrder', () => {
         cy.findByText('電話番号 0312345678');
       });
       cy.findByRole('button', { name: '注文する' }).click();
+      //////////////////////////////////////////////////
       // 定期便入力完了画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.complete}`);
       cy.findByRole('button', { name: 'Topへ戻る' }).click();
+      //////////////////////////////////////////////////
       // 定期便一覧画面表示
       cy.url().should('include', `${Path.subscriptionOrder}`);
       cy.findByRole('table').within(() => {
-        cy.findAllByRole('cell', { name: '2022/7月' }).should('have.length', 2);
+        cy.findAllByRole('cell', { name: `${nextMonth.getFullYear()}/${nextMonth.getMonth()}月` }).should(
+          'have.length',
+          2,
+        );
         // 商品表示
         cy.findByRole('button', { name: 'expand row' }).click();
         cy.findByRole('cell', { name: '定期便商品A' });
       });
+      //////////////////////////////////////////////////
     });
   });
 

@@ -14,6 +14,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { createClinic as createClinicMutation, updateClinic as updateClinicMutation } from 'graphql/mutations';
 import { listClinics } from 'graphql/queries';
 import { useCallback, useState } from 'react';
+import { useCurrentUser } from 'stores/use-current-user';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 
@@ -21,27 +22,30 @@ export const useUpsertClinic = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
+  const { email } = useCurrentUser();
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onUpsertClinic = (param: Clinic) => async (): Promise<Clinic> => {
     setIsLoading(true);
     try {
+      console.log('singed in user mailAddress', email);
+      if (!email) {
+        throw Error('Signed in user mail address is not found.');
+      }
       const listResult = (await API.graphql(graphqlOperation(listClinics))) as GraphQLResult<ListClinicsQuery>;
+      if (!listResult.data || !listResult.data.listClinics || !listResult.data.listClinics.items) {
+        throw Error('The clinic list data is not null after fetching data from API.');
+      }
       let ret;
       if (!param.id) {
         // 1アカウントで保持出来るのは1医院レコードのみ
         // 新規登録時に既存レコードが存在したらエラー
-        if (
-          listResult.data &&
-          listResult.data.listClinics &&
-          listResult.data.listClinics.items &&
-          listResult.data.listClinics.items.length > 0
-        ) {
+        if (listResult.data.listClinics.items.length > 0) {
           throw Error('A clinic data is already found while creating a new clinic.');
         }
         // 入力フォームのオブジェクトからidプロパティを削除
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id, ...rest } = param;
-        const input: CreateClinicInput = { ...rest };
+        const input: CreateClinicInput = { ...rest, mailAddress: email };
         const variables: CreateClinicMutationVariables = { input: input };
         const result = (await API.graphql(
           graphqlOperation(createClinicMutation, variables),
@@ -53,12 +57,7 @@ export const useUpsertClinic = () => {
       } else {
         // 1アカウントで保持出来るのは1医院レコードのみ
         // 更新登録時にレコードが1件以外だったらエラー
-        if (
-          listResult.data &&
-          listResult.data.listClinics &&
-          listResult.data.listClinics.items &&
-          listResult.data.listClinics.items.length !== 1
-        ) {
+        if (listResult.data.listClinics.items.length !== 1) {
           throw Error('A clinic data is already found while creating a new clinic.');
         }
         const input: UpdateClinicInput = { ...param };

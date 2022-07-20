@@ -12,6 +12,7 @@ export const getClinic = /* GraphQL */ `
       city
       address
       building
+      mailAddress
       createdAt
       updatedAt
       owner
@@ -34,6 +35,7 @@ export const listClinics = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -70,6 +72,7 @@ export const getOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -130,6 +133,7 @@ export const listOrders = /* GraphQL */ `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -202,6 +206,7 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -269,6 +274,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -344,6 +350,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -427,6 +434,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -636,6 +644,7 @@ export const listAdminSubscriptionOrders = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -673,6 +682,8 @@ export const getCurrentDate = /* GraphQL */ `
 `;
 export const sendOrderMail = /* GraphQL */ `
   query SendOrderMail(
+    $toAddress: String!
+    $bccAddress: String
     $sendMailType: SendMailType!
     $products: [String!]!
     $subtotal: Int!
@@ -692,6 +703,8 @@ export const sendOrderMail = /* GraphQL */ `
     $deliveryInterval: Int
   ) {
     sendOrderMail(
+      toAddress: $toAddress
+      bccAddress: $bccAddress
       sendMailType: $sendMailType
       products: $products
       subtotal: $subtotal

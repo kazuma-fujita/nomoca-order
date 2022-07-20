@@ -16,6 +16,7 @@ export const createClinic = /* GraphQL */ `
       city
       address
       building
+      mailAddress
       createdAt
       updatedAt
       owner
@@ -36,6 +37,7 @@ export const updateClinic = /* GraphQL */ `
       city
       address
       building
+      mailAddress
       createdAt
       updatedAt
       owner
@@ -56,6 +58,7 @@ export const deleteClinic = /* GraphQL */ `
       city
       address
       building
+      mailAddress
       createdAt
       updatedAt
       owner
@@ -93,6 +96,7 @@ export const createOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -151,6 +155,7 @@ export const updateOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -209,6 +214,7 @@ export const deleteOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -331,6 +337,7 @@ export const createSubscriptionOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -400,6 +407,7 @@ export const updateSubscriptionOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -469,6 +477,7 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner

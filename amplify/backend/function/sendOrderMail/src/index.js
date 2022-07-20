@@ -237,6 +237,8 @@ const createMailBody = (
 exports.handler = async (event) => {
   console.log('EVENT', event);
   const {
+    toAddress,
+    bccAddress,
     sendMailType,
     products,
     subtotal,
@@ -281,11 +283,10 @@ exports.handler = async (event) => {
   console.log(mailSubject);
   console.log(mailBody);
   try {
-    // 1.送信するEmailのparamsを設定
+    // 送信するEmailのparamsを設定
     const params = {
       Destination: {
-        BccAddresses: ['kazuma.fujita@genova.co.jp'],
-        ToAddresses: ['nqh25110@gmail.com'],
+        ToAddresses: [toAddress],
       },
       Message: {
         Subject: {
@@ -301,11 +302,23 @@ exports.handler = async (event) => {
       },
       Source: fromAddress, // From・必須
     };
-    // 2.リージョンを設定
+    // bccAddressがあればパラメーターに追加
+    const requestParams = bccAddress
+      ? {
+          ...params,
+          Destination: {
+            BccAddresses: [bccAddress],
+            ToAddresses: [toAddress],
+          },
+        }
+      : params;
+
+    console.table(requestParams);
+    // リージョンを設定
     AWS.config.update({ region: 'us-east-1' });
-    // 3.送信処理
+    // 送信処理
     const ses = new AWS.SES();
-    await ses.sendEmail(params).promise();
+    await ses.sendEmail(requestParams).promise();
     console.log('Success to Send an Email');
     return;
   } catch (e) {

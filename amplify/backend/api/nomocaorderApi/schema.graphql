@@ -40,6 +40,7 @@ type Clinic
   city: String!
   address: String!
   building: String
+  mailAddress: String! # 注文・定期便メール送信のToAddress。医院情報登録時にログインユーザーのアドレスを登録
 }
 
 type Order
@@ -180,7 +181,8 @@ type Query {
     @auth(rules: [{ allow: private, provider: userPools }])
 
   sendOrderMail(
-    # toAddresses: [String!]! # bccAddresses: [String!]!
+    toAddress: String!
+    bccAddress: String
     sendMailType: SendMailType!
     products: [String!]!
     subtotal: Int!

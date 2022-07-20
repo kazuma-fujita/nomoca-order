@@ -5,6 +5,8 @@ import { calcTotalFromProductList } from 'functions/orders/calc-total-taxes-subt
 import { sendOrderMail } from 'graphql/queries';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
+const mailBccAddress = process.env.NEXT_PUBLIC_MAIL_BCC_ADDRESS as string;
+
 // 名前付き引数
 type Options = {
   sendMailType: SendMailType;
@@ -38,6 +40,8 @@ export const useSendMail = () => {
     //////////////////////
     // 注文完了メール送信
     const sendMailVariables: SendOrderMailQueryVariables = {
+      toAddress: clinic.mailAddress,
+      bccAddress: mailBccAddress,
       sendMailType: sendMailType,
       products: products.map(
         (product) =>

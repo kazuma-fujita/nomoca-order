@@ -1,5 +1,6 @@
 {
   "arguments": {
+    "toAddress": "kazuma.fujita@genova.co.jp",
     "sendMailType": "orderedSubscriptionOrder",
     "products": [
       "高保存ロール紙 100m(卓上プリンタ/KIOSK筐体用) 1個 19,800円",
