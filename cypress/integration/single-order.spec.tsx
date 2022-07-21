@@ -18,7 +18,7 @@ context('SingleOrder', () => {
   });
 
   describe('It executes to create single order items.', () => {
-    before(() => {
+    beforeEach(() => {
       // aws-sdkを直接実行しsign in
       cy.fixture('customer-user.json').then((loginInfo: LoginInfo) => {
         cy.cognitoLogin(loginInfo.username, loginInfo.password);
@@ -55,6 +55,7 @@ context('SingleOrder', () => {
       cy.findByRole('radio', { name: '速達配送 +1,000円(税抜)' }).should('not.be.checked');
       // 入力フォームの要素確認、値の入力、確認するボタン押下処理
       cy.expectInputOrderForm('注文');
+      cy.findByRole('button', { name: '確認する' }).click();
       //////////////////////////////////////////////////
       // 入力確認画面表示
       cy.url().should('include', `${Path.singleOrder}?${FormScreenQuery.confirm}`);
@@ -132,7 +133,7 @@ context('SingleOrder', () => {
     });
   });
 
-  describe.skip('It checks admin single order items.', () => {
+  describe('It checks admin single order items.', () => {
     before(() => {
       cy.fixture('operation-user.json').then((loginInfo: LoginInfo) => {
         cy.cognitoLogin(loginInfo.username, loginInfo.password);
@@ -149,14 +150,18 @@ context('SingleOrder', () => {
       cy.waitUntil(() => cy.url().then(($url: string) => $url.includes(Path.adminsSingleOrder)));
       cy.get('header').contains(ScreenName.adminsSingleOrder).should('exist');
       cy.findByRole('table').within(() => {
+        // 発送チェックボックス
+        cy.findByRole('checkbox', { name: '' });
+        // 医院名
+        cy.findByRole('cell', { name: '渋谷クリニック' });
+        // 電話番号
+        cy.findByRole('cell', { name: '0312345678' });
         // 配送方法
         cy.findByRole('cell', { name: '通常配送' });
         // 発送状況
         cy.findByRole('cell', { name: '未発送' });
         // 発送日時
         cy.findByRole('cell', { name: '-' });
-        // ボタン
-        cy.findByRole('button', { name: '注文キャンセル' });
         // 商品表示
         cy.findByRole('button', { name: 'expand row' }).click();
         cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
@@ -177,6 +182,25 @@ context('SingleOrder', () => {
         // 合計
         cy.findByRole('cell', { name: '合計' });
         cy.findByRole('cell', { name: '2,200' });
+      });
+      // 配送先ポップアップ表示
+      cy.findByRole('button', { name: '配送先' }).click();
+      // 配送先
+      cy.findByTestId('clinic-detail').within(() => {
+        cy.findByText('渋谷クリニック');
+        cy.findByText('〒 1234567');
+        cy.findByText('東京都渋谷区渋谷1-2-3 渋谷ビル203');
+        cy.findByText('電話番号 0312345678');
+        cy.findByText('発注担当者 佐藤 太郎');
+      });
+      // 配送先ポップアップ非表示
+      cy.get('body').click(0, 0);
+      // チェックボックス押下
+      cy.get('[type="checkbox"]').check({ force: true });
+      cy.findByRole('button', { name: '選択した注文をCSV出力して顧客に発送通知をする' }).click();
+      cy.findByRole('dialog').within(() => {
+        cy.findByRole('heading', { name: 'CSVを出力する前に必ず以下を確認してください' });
+        cy.findByRole('button', { name: '発送済みにする' }).click();
       });
     });
   });

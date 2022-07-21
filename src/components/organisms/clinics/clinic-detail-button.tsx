@@ -1,5 +1,5 @@
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import { Box, Popover, Typography } from '@mui/material';
+import { Box, Popover } from '@mui/material';
 import Button from '@mui/material/Button';
 import { Clinic } from 'API';
 import { MouseEvent, useState } from 'react';
@@ -38,8 +38,7 @@ export const ClinicDetailButton = ({ staffName, clinic }: Props) => {
         }}
       >
         <Box p={4}>
-          <ClinicDetail clinic={clinic} />
-          <Typography variant='body2'>発注担当者 {staffName}</Typography>
+          <ClinicDetail clinic={clinic} staffName={staffName} />
         </Box>
       </Popover>
     </>

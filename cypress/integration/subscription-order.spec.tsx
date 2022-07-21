@@ -20,9 +20,12 @@ context('SubscriptionOrder', () => {
   describe('It creates subscription order items.', () => {
     // 配送開始年月確認用
     const now = new Date();
+    // 翌月
     const nextMonth = new Date(now.getFullYear(), now.getMonth() + 2);
+    // 翌々月
+    const monthAfterNext = new Date(now.getFullYear(), now.getMonth() + 3);
 
-    before(() => {
+    beforeEach(() => {
       // aws-sdkを直接実行しsign in
       cy.fixture('customer-user.json').then((loginInfo: LoginInfo) => {
         cy.cognitoLogin(loginInfo.username, loginInfo.password);
@@ -51,6 +54,7 @@ context('SubscriptionOrder', () => {
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.input}`);
       // 入力フォームの要素確認、値の入力、確認するボタン押下処理。注文入力画面と共通処理。order-commands.js参照
       cy.expectInputOrderForm('定期便');
+      cy.findByRole('button', { name: '確認する' }).click();
       //////////////////////////////////////////////////
       // 定期便入力確認画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.confirm}`);
@@ -137,22 +141,14 @@ context('SubscriptionOrder', () => {
       //////////////////////////////////////////////////
       // 定期便入力画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.input}`);
-      // 配送開始月プルダウン
-      cy.findByRole('button', { name: `配送開始月 ${nextMonth.getMonth()}月` });
-      // 配送頻度プルダウン
-      cy.findByRole('button', { name: '配送頻度 1ヶ月' });
-      ////////////////////////////////////////////////////////////
       // 画面要素確認
       cy.findByRole('button', { name: '定期便注文を入力する' });
-      cy.findByRole('button', { name: '確認する' }).should('exist');
-      // 商品プルダウン(MUIのプルダウン系の値はbuttonで取得)
+      // 更新前商品プルダウン確認(MUIのプルダウン系の値はbuttonで取得)
       cy.findByLabelText('Now loading').should('not.exist');
       cy.findByRole('button', { name: '商品 定期便商品A' });
       cy.findByRole('button', { name: '数量 1' });
       cy.findByRole('button', { name: '商品追加' });
-      // 配送開始年(MUIのTextFieldを使用)
-      cy.findByRole('textbox', { name: '' }).should('have.value', nextMonth.getFullYear());
-      // 商品金額
+      // 変更前商品金額
       cy.findByRole('table').within(() => {
         cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
         // 商品
@@ -170,95 +166,136 @@ context('SubscriptionOrder', () => {
         cy.findByRole('cell', { name: '合計' });
         cy.findByRole('cell', { name: '1,100' });
       });
-      // 配送先
-      cy.findByRole('button', { name: '配送先を編集する' });
+      // 商品追加
+      cy.findByRole('button', { name: '商品追加' }).click();
+      cy.get('[name="products.1.productID"]').parent().click();
+      cy.findByRole('option', { name: '定期便商品B' }).click();
+      // 追加商品数量変更
+      cy.get('[name="products.1.quantity"]').parent().click();
+      cy.findByRole('option', { name: '2' }).click();
+      // 変更後商品金額
+      cy.findByRole('table').within(() => {
+        cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
+        // 商品
+        cy.findByRole('cell', { name: '定期便商品A' });
+        cy.findByRole('cell', { name: '定期便商品B' });
+        // 数量
+        cy.findByRole('cell', { name: '1' });
+        cy.findByRole('cell', { name: '2' });
+        // 単価 金額
+        cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 2);
+        cy.findByRole('cell', { name: '2,000' });
+        cy.findByRole('cell', { name: '4,000' });
+        // 小計
+        cy.findByRole('cell', { name: '小計' });
+        cy.findByRole('cell', { name: '5,000' });
+        // 税
+        cy.findByRole('cell', { name: '税' });
+        cy.findByRole('cell', { name: '10 %' });
+        cy.findByRole('cell', { name: '500' });
+        // 合計
+        cy.findByRole('cell', { name: '合計' });
+        cy.findByRole('cell', { name: '5,500' });
+      });
+      // 配送開始月プルダウン選択
+      cy.findByRole('button', { name: `配送開始月 ${nextMonth.getMonth()}月` }).click();
+      // 翌々月を選択
+      cy.findByRole('option', { name: `${monthAfterNext.getMonth()}月` }).click();
+      cy.findByRole('button', { name: `配送開始月 ${monthAfterNext.getMonth()}月` });
+      // 配送頻度プルダウン選択
+      cy.findByRole('button', { name: '配送頻度 1ヶ月' }).click();
+      // 半年後を選択
+      cy.findByRole('option', { name: '6ヶ月' }).click();
+      cy.findByRole('button', { name: '配送頻度 6ヶ月' });
+      // 更新前配送先確認
       cy.findByTestId('clinic-detail').within(() => {
         cy.findByText('渋谷クリニック');
         cy.findByText('〒 1234567');
         cy.findByText('東京都渋谷区渋谷1-2-3 渋谷ビル203');
         cy.findByText('電話番号 0312345678');
       });
-      // 発注担当者
-      cy.findByRole('button', { name: '発注担当者を追加する' });
-      cy.findByRole('button', { name: '発注担当者 佐藤 太郎' });
-      ////////////////////////////////////////////////////////////
-      // 商品プルダウン選択
-      cy.get('[name="products.0.productID"]').parent().click();
-      cy.findByRole('option', { name: '定期便商品A' }).click();
-      // 画面下部のボタンまでScroll
-      cy.findByRole('button', { name: '確認する' }).scrollIntoView().should('be.visible');
-      // 配送先入力
-      cy.findByRole('button', { name: '配送先を編集する' }).click({ force: true });
+      // 配送先編集
+      cy.findByRole('button', { name: '配送先を編集する' }).click();
       cy.findByRole('dialog').within(() => {
         cy.findByRole('heading', { name: '配送先を編集する' });
-        cy.findByRole('textbox', { name: '医院名' }).should('have.value', '渋谷クリニック');
-        cy.findByRole('textbox', { name: '郵便番号' }).should('have.value', '1234567');
-        cy.findByRole('textbox', { name: '都道府県' }).should('have.value', '東京都');
-        cy.findByRole('textbox', { name: '市区町村' }).should('have.value', '渋谷区渋谷');
-        cy.findByRole('textbox', { name: '番地' }).should('have.value', '1-2-3');
-        cy.findByRole('textbox', { name: '建物名・部屋番号' }).should('have.value', '渋谷ビル203');
-        cy.findByRole('textbox', { name: '電話番号' }).should('have.value', '0312345678');
-        // cy.findByRole('textbox', { name: '医院名' }).type('渋谷クリニック');
-        // cy.findByRole('textbox', { name: '郵便番号' }).type('1234567');
-        // cy.findByRole('textbox', { name: '都道府県' }).type('東京都');
-        // cy.findByRole('textbox', { name: '市区町村' }).type('渋谷区渋谷');
-        // cy.findByRole('textbox', { name: '番地' }).type('1-2-3');
-        // cy.findByRole('textbox', { name: '建物名・部屋番号' }).type('渋谷ビル203');
-        // cy.findByRole('textbox', { name: '電話番号' }).type('0312345678');
+        // textbox更新前の値存在を確認後、値クリア、更新後の値を入力
+        cy.findByRole('textbox', { name: '医院名' }).should('have.value', '渋谷クリニック').clear().type('虹の丘医院');
+        cy.findByRole('textbox', { name: '郵便番号' }).should('have.value', '1234567').clear().type('7654321');
+        cy.findByRole('textbox', { name: '都道府県' }).should('have.value', '東京都').clear().type('宮城県');
+        cy.findByRole('textbox', { name: '市区町村' })
+          .should('have.value', '渋谷区渋谷')
+          .clear()
+          .type('仙台市泉区虹の丘');
+        cy.findByRole('textbox', { name: '番地' }).should('have.value', '1-2-3').clear().type('4-15-10');
+        cy.findByRole('textbox', { name: '建物名・部屋番号' }).should('have.value', '渋谷ビル203').clear();
+        cy.findByRole('textbox', { name: '電話番号' }).should('have.value', '0312345678').clear().type('01207654321');
         cy.findByRole('button', { name: '編集する' }).click();
       });
       cy.findByTestId('clinic-detail').within(() => {
-        cy.findByText('渋谷クリニック');
-        cy.findByText('〒 1234567');
-        cy.findByText('東京都渋谷区渋谷1-2-3 渋谷ビル203');
-        cy.findByText('電話番号 0312345678');
+        cy.findByText('虹の丘医院');
+        cy.findByText('〒 7654321');
+        cy.findByText('宮城県仙台市泉区虹の丘4-15-10');
+        cy.findByText('電話番号 01207654321');
       });
-      // 担当者入力
-      cy.findByRole('button', { name: '発注担当者を追加する' }).click({ force: true });
+      // 更新前発注担当者確認
+      cy.findByRole('button', { name: '発注担当者 佐藤 太郎' });
+      // 担当者追加
+      cy.findByRole('button', { name: '発注担当者を追加する' }).click();
       cy.findByRole('dialog').within(() => {
         cy.findByRole('heading', { name: '発注担当者を追加する' });
         cy.findByRole('textbox', { name: '性' }).type('鈴木');
         cy.findByRole('textbox', { name: '名' }).type('花子');
         cy.findByRole('button', { name: '追加する' }).click();
       });
-      // waitしてもStaffDialogがアクティブなDomとして認識される為、findByRoleで確認するボタンが認識できない
-      // 以下cy.getだとHTML表示中要素全てにアクセス可能。念の為be.visibleでDialogが閉じてボタンが表示されているか確認
-      cy.findByTestId('order-input-form-button').should('be.visible').click({ force: true });
-      // まだプルダウンに作成した担当者名がセットされる前なのでvalidationが発生する
-      cy.findByText('発注担当者を選択してください');
-      // 改めて確認するボタンクリック
-      cy.findByTestId('order-input-form-button').should('be.visible').click({ force: true });
+      // 担当者プルダウンをクリックし作成した担当者を選択
+      cy.findByRole('button', { name: '発注担当者 佐藤 太郎' }).click();
+      cy.findByRole('option', { name: '鈴木 花子' }).click();
+      cy.findByRole('button', { name: '発注担当者 鈴木 花子' });
+      // 確認画面へ遷移
+      cy.findByRole('button', { name: '確認する' }).click();
       //////////////////////////////////////////////////
       // 定期便入力確認画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.confirm}`);
+      cy.findByRole('heading', { name: 'まだ定期便の内容変更は確定していません' });
       cy.findByRole('table').within(() => {
         cy.findByRole('cell', { name: '定期便商品A' });
       });
+      // 変更後商品金額
       cy.findByRole('table').within(() => {
         cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
         // 商品
         cy.findByRole('cell', { name: '定期便商品A' });
+        cy.findByRole('cell', { name: '定期便商品B' });
         // 数量
         cy.findByRole('cell', { name: '1' });
-        // 単価 金額 小計
+        cy.findByRole('cell', { name: '2' });
+        // 単価 金額
+        cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 2);
+        cy.findByRole('cell', { name: '2,000' });
+        cy.findByRole('cell', { name: '4,000' });
+        // 小計
         cy.findByRole('cell', { name: '小計' });
-        cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 3);
+        cy.findByRole('cell', { name: '5,000' });
         // 税
         cy.findByRole('cell', { name: '税' });
         cy.findByRole('cell', { name: '10 %' });
-        cy.findByRole('cell', { name: '100' });
+        cy.findByRole('cell', { name: '500' });
         // 合計
         cy.findByRole('cell', { name: '合計' });
-        cy.findByRole('cell', { name: '1,100' });
+        cy.findByRole('cell', { name: '5,500' });
       });
-      cy.findByLabelText('配送開始月').should('have.text', `${nextMonth.getFullYear()} / ${nextMonth.getMonth()}月`);
-      cy.findByLabelText('配送頻度').should('have.text', '1ヶ月');
+      cy.findByLabelText('配送開始月').should(
+        'have.text',
+        `${monthAfterNext.getFullYear()} / ${monthAfterNext.getMonth()}月`,
+      );
+      cy.findByLabelText('配送頻度').should('have.text', '6ヶ月');
       cy.findByTestId('clinic-detail').within(() => {
-        cy.findByText('渋谷クリニック');
-        cy.findByText('〒 1234567');
-        cy.findByText('東京都渋谷区渋谷1-2-3 渋谷ビル203');
-        cy.findByText('電話番号 0312345678');
+        cy.findByText('虹の丘医院');
+        cy.findByText('〒 7654321');
+        cy.findByText('宮城県仙台市泉区虹の丘4-15-10');
+        cy.findByText('電話番号 01207654321');
       });
+      cy.findByText('鈴木 花子');
       cy.findByRole('button', { name: '注文する' }).click();
       //////////////////////////////////////////////////
       // 定期便入力完了画面表示
@@ -269,12 +306,12 @@ context('SubscriptionOrder', () => {
       cy.url().should('include', `${Path.subscriptionOrder}`);
       cy.findByRole('table').within(() => {
         // 配送開始月 and 次回配送予定月
-        cy.findAllByRole('cell', { name: `${nextMonth.getFullYear()}/${nextMonth.getMonth()}月` }).should(
+        cy.findAllByRole('cell', { name: `${monthAfterNext.getFullYear()}/${monthAfterNext.getMonth()}月` }).should(
           'have.length',
           2,
         );
         // 配送頻度
-        cy.findByRole('cell', { name: '1ヶ月' });
+        cy.findByRole('cell', { name: '6ヶ月' });
         // ボタン
         cy.findByRole('cell', { name: '変更する' });
         cy.findByRole('cell', { name: '解約する' });
@@ -283,46 +320,41 @@ context('SubscriptionOrder', () => {
         cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
         // 商品
         cy.findByRole('cell', { name: '定期便商品A' });
+        cy.findByRole('cell', { name: '定期便商品B' });
         // 数量
         cy.findByRole('cell', { name: '1' });
-        // 単価 金額 小計
+        cy.findByRole('cell', { name: '2' });
+        // 単価 金額
+        cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 2);
+        cy.findByRole('cell', { name: '2,000' });
+        cy.findByRole('cell', { name: '4,000' });
+        // 小計
         cy.findByRole('cell', { name: '小計' });
-        cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 3);
+        cy.findByRole('cell', { name: '5,000' });
         // 税
         cy.findByRole('cell', { name: '税' });
         cy.findByRole('cell', { name: '10 %' });
-        cy.findByRole('cell', { name: '100' });
+        cy.findByRole('cell', { name: '500' });
         // 合計
         cy.findByRole('cell', { name: '合計' });
-        cy.findByRole('cell', { name: '1,100' });
+        cy.findByRole('cell', { name: '5,500' });
       });
       //////////////////////////////////////////////////
     });
-  });
 
-  describe.skip('It checks admin subscription order items.', () => {
-    before(() => {
-      cy.fixture('operation-user.json').then((loginInfo: LoginInfo) => {
-        cy.cognitoLogin(loginInfo.username, loginInfo.password);
+    it('It deletes subscription order items.', () => {
+      // 定期便一覧画面
+      cy.url().should('include', `${Path.subscriptionOrder}`);
+      // 解約するボタンクリック
+      cy.findByRole('cell', { name: '解約する' }).click();
+      // 解約ダイアログ
+      cy.findByRole('dialog').within(() => {
+        cy.findByRole('heading', { name: '定期便を解約する' });
+        cy.findByRole('button', { name: '解約する' }).click();
       });
-    });
-
-    after(() => {
-      cy.cognitoLogout();
-    });
-
-    it('It checks admin subscription order items.', () => {
-      // 定期便一覧画面表示
-      cy.visit(Path.adminsSubscriptionOrder);
-      cy.clock(new Date(2022, 5));
-      cy.waitUntil(() => cy.url().then(($url: string) => $url.includes(Path.adminsSubscriptionOrder)));
-      cy.get('header').contains(ScreenName.adminsSubscriptionOrder).should('exist');
+      // 一覧確認
       cy.findByRole('table').within(() => {
-        cy.findAllByRole('cell', { name: '渋谷クリニック' }).should('exist');
-        cy.findAllByRole('cell', { name: '2022/7月' }).should('have.length', 2);
-        // 商品表示
-        cy.findByRole('button', { name: 'expand row' }).click();
-        cy.findByRole('cell', { name: '定期便商品A' });
+        cy.findByRole('cell', { name: '現在定期便の商品はありません' }).click();
       });
     });
   });

@@ -19,7 +19,6 @@ export const PostalCodeTextField = ({ formState, register, handleOnChange, disab
     disabled={disabled}
     autoComplete='off'
     // autoComplete='postal-code'
-    // onChange={handleOnChange}
     // 郵便番号検索で動的にtrim処理をする為valueに値をセット
     // value={postalCode}
     error={Boolean(formState.errors.postalCode)}

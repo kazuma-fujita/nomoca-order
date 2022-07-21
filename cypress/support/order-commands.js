@@ -1,3 +1,5 @@
+import '@testing-library/cypress/add-commands';
+
 Cypress.Commands.add('expectInputOrderForm', (orderTypeLabel) => {
   // 商品プルダウン(MUIのプルダウン系の値はbuttonで取得)
   cy.findByLabelText('Now loading').should('not.exist');
@@ -60,8 +62,4 @@ Cypress.Commands.add('expectInputOrderForm', (orderTypeLabel) => {
   });
   // dialogが閉じて担当者がプルダウンにセットされていることを確認
   cy.findByRole('button', { name: '発注担当者 佐藤 太郎' });
-  // waitしてもStaffDialogがアクティブなDomとして認識される為、findByRoleで確認するボタンが認識できない
-  // 以下cy.getだとHTML表示中要素全てにアクセス可能。念の為be.visibleでDialogが閉じてボタンが表示されているか確認
-  cy.findByRole('button', { name: '確認する' });
-  cy.findByTestId('order-input-form-button').should('be.visible').click({ force: true });
 });
