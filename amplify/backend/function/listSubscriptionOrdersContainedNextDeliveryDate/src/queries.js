@@ -3,7 +3,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listAdminSubscriptionOrders = exports.listStaffSortedByViewOrder = exports.listStaff = exports.getStaff = exports.listProductsSortedByViewOrder = exports.listProducts = exports.getProduct = exports.listSubscriptionOrdersSortedByCreatedAt = exports.listSubscriptionOrders = exports.getSubscriptionOrder = exports.listOrdersSortedByCreatedAt = exports.listOrders = exports.getOrder = exports.listClinics = exports.getClinic = void 0;
+exports.sendOrderMail = exports.getCurrentDate = exports.listAdminSubscriptionOrders = exports.listSubscriptionOrdersContainedNextDeliveryDate = exports.listStaffSortedByViewOrder = exports.listStaff = exports.getStaff = exports.listProductsSortedByViewOrder = exports.listProducts = exports.getProduct = exports.listSubscriptionOrdersSortedByCreatedAt = exports.listSubscriptionOrders = exports.getSubscriptionOrder = exports.listOrdersSortedByCreatedAt = exports.listOrders = exports.getOrder = exports.listClinics = exports.getClinic = void 0;
 exports.getClinic = `
   query GetClinic($id: ID!) {
     getClinic(id: $id) {
@@ -15,6 +15,7 @@ exports.getClinic = `
       city
       address
       building
+      mailAddress
       createdAt
       updatedAt
       owner
@@ -37,6 +38,7 @@ exports.listClinics = `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -73,6 +75,7 @@ exports.getOrder = `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -133,6 +136,7 @@ exports.listOrders = `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -205,6 +209,7 @@ exports.listOrdersSortedByCreatedAt = `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -272,6 +277,7 @@ exports.getSubscriptionOrder = `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -295,8 +301,8 @@ exports.getSubscriptionOrder = `
       nextDeliveryMonth
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -347,6 +353,7 @@ exports.listSubscriptionOrders = `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -370,8 +377,8 @@ exports.listSubscriptionOrders = `
         nextDeliveryMonth
         createdAt
         type
-        updatedAt
         owner
+        updatedAt
       }
       nextToken
     }
@@ -430,6 +437,7 @@ exports.listSubscriptionOrdersSortedByCreatedAt = `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -453,8 +461,8 @@ exports.listSubscriptionOrdersSortedByCreatedAt = `
         nextDeliveryMonth
         createdAt
         type
-        updatedAt
         owner
+        updatedAt
       }
       nextToken
     }
@@ -601,6 +609,73 @@ exports.listStaffSortedByViewOrder = `
     }
   }
 `;
+exports.listSubscriptionOrdersContainedNextDeliveryDate = `
+  query ListSubscriptionOrdersContainedNextDeliveryDate {
+    listSubscriptionOrdersContainedNextDeliveryDate {
+      id
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
+          quantity
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
 exports.listAdminSubscriptionOrders = `
   query ListAdminSubscriptionOrders {
     listAdminSubscriptionOrders {
@@ -639,6 +714,7 @@ exports.listAdminSubscriptionOrders = `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -662,8 +738,60 @@ exports.listAdminSubscriptionOrders = `
       nextDeliveryMonth
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
+  }
+`;
+exports.getCurrentDate = `
+  query GetCurrentDate {
+    getCurrentDate {
+      currentDate
+    }
+  }
+`;
+exports.sendOrderMail = `
+  query SendOrderMail(
+    $toAddress: String!
+    $bccAddress: String
+    $sendMailType: SendMailType!
+    $products: [String!]!
+    $subtotal: Int!
+    $tax: Int!
+    $total: Int!
+    $clinicName: String!
+    $phoneNumber: String!
+    $postalCode: String!
+    $state: String!
+    $city: String!
+    $address: String!
+    $building: String
+    $staffName: String!
+    $deliveryType: DeliveryType
+    $deliveryStartYear: Int
+    $deliveryStartMonth: Int
+    $deliveryInterval: Int
+  ) {
+    sendOrderMail(
+      toAddress: $toAddress
+      bccAddress: $bccAddress
+      sendMailType: $sendMailType
+      products: $products
+      subtotal: $subtotal
+      tax: $tax
+      total: $total
+      clinicName: $clinicName
+      phoneNumber: $phoneNumber
+      postalCode: $postalCode
+      state: $state
+      city: $city
+      address: $address
+      building: $building
+      staffName: $staffName
+      deliveryType: $deliveryType
+      deliveryStartYear: $deliveryStartYear
+      deliveryStartMonth: $deliveryStartMonth
+      deliveryInterval: $deliveryInterval
+    )
   }
 `;

@@ -173,7 +173,7 @@ type CurrentDate {
 }
 
 type Query {
-  listSubscriptionOrdersContainedNextDeliveryDate(owner: String): [SubscriptionOrder]
+  listSubscriptionOrdersContainedNextDeliveryDate: [SubscriptionOrder]
     @function(name: "listSubscriptionOrdersContainedNextDeliveryDate-${env}")
     @auth(rules: [{ allow: private, provider: userPools }])
 

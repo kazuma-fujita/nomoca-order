@@ -11,9 +11,7 @@ import { SWRKey } from 'constants/swr-key';
 import { listAdminSubscriptionOrders, listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { useCurrentUser } from 'stores/use-current-user';
 import { listSubscriptionOrdersContainedNextDeliveryDate } from '../../graphql/queries';
-import { useOrderFormParam } from '../../stores/use-order-form-param';
 
 export type NormalizedProduct = {
   relationID: string; // OrderProduct or SubscriptionOrderProduct の ID。定期便削除時はrelationIDでProductとのリレーションレコードであるSubscriptionOrderProductを削除
@@ -46,18 +44,26 @@ const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct
   });
 };
 
-const fetcher = async (_: string, isOperator: boolean): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
-  const result = (await API.graphql(
-    graphqlOperation(listSubscriptionOrdersContainedNextDeliveryDate),
-  )) as GraphQLResult<{
-    listSubscriptionOrdersContainedNextDeliveryDate: [SubscriptionOrder];
-  }>;
+const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
+  // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
+  const sortVariables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
+    type: Type.subscriptionOrder,
+    sortDirection: ModelSortDirection.DESC,
+  };
 
-  if (!result.data) {
+  const result = (await API.graphql(
+    graphqlOperation(listSubscriptionOrdersContainedNextDeliveryDate, sortVariables),
+  )) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
+
+  if (
+    !result.data ||
+    !result.data.listSubscriptionOrdersSortedByCreatedAt ||
+    !result.data.listSubscriptionOrdersSortedByCreatedAt.items
+  ) {
     throw Error('The API fetched data but it returned null.');
   }
 
-  const items = result.data.listSubscriptionOrdersContainedNextDeliveryDate as SubscriptionOrder[];
+  const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
   for (const item of items) {
     if (!item || !item.products || !item.products.items) {
       throw Error('The API fetched products but it returned null.');
@@ -72,11 +78,7 @@ const fetcher = async (_: string, isOperator: boolean): Promise<ExtendedOrder<Su
   return extendedItems;
 };
 
-type ProviderProps = FetchResponse<ExtendedOrder<SubscriptionOrder>[]> & {
-  swrKey: (string | boolean)[];
-};
-
-const SubscriptionOrderListContext = createContext({} as ProviderProps);
+const SubscriptionOrderListContext = createContext({} as FetchResponse<ExtendedOrder<SubscriptionOrder>[]>);
 
 export const useFetchSubscriptionOrderList = () => useContext(SubscriptionOrderListContext);
 
@@ -85,15 +87,15 @@ type Props = {
 };
 
 export const SubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
-  const { isOperator, currentUser } = useCurrentUser();
-  currentUser?.username;
-  const swrKey = [SWRKey.subscriptionOrderList, isOperator];
-  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(swrKey, fetcher, {}, mockResponse);
+  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
+    SWRKey.subscriptionOrderList,
+    adminFetcher,
+    {},
+    mockResponse,
+  );
 
   return (
-    <SubscriptionOrderListContext.Provider value={{ ...fetchResponse, swrKey: swrKey }}>
-      {children}
-    </SubscriptionOrderListContext.Provider>
+    <SubscriptionOrderListContext.Provider value={fetchResponse}>{children}</SubscriptionOrderListContext.Provider>
   );
 };
 

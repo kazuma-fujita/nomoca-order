@@ -2076,10 +2076,6 @@ export type ListStaffSortedByViewOrderQuery = {
   } | null,
 };
 
-export type ListSubscriptionOrdersContainedNextDeliveryDateQueryVariables = {
-  owner?: string | null,
-};
-
 export type ListSubscriptionOrdersContainedNextDeliveryDateQuery = {
   listSubscriptionOrdersContainedNextDeliveryDate?:  Array< {
     __typename: "SubscriptionOrder",

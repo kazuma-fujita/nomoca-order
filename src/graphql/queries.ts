@@ -608,8 +608,8 @@ export const listStaffSortedByViewOrder = /* GraphQL */ `
   }
 `;
 export const listSubscriptionOrdersContainedNextDeliveryDate = /* GraphQL */ `
-  query ListSubscriptionOrdersContainedNextDeliveryDate($owner: String) {
-    listSubscriptionOrdersContainedNextDeliveryDate(owner: $owner) {
+  query ListSubscriptionOrdersContainedNextDeliveryDate {
+    listSubscriptionOrdersContainedNextDeliveryDate {
       id
       products {
         items {

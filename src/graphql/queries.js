@@ -298,8 +298,8 @@ export const getSubscriptionOrder = /* GraphQL */ `
       nextDeliveryMonth
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -374,8 +374,8 @@ export const listSubscriptionOrders = /* GraphQL */ `
         nextDeliveryMonth
         createdAt
         type
-        updatedAt
         owner
+        updatedAt
       }
       nextToken
     }
@@ -458,8 +458,8 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
         nextDeliveryMonth
         createdAt
         type
-        updatedAt
         owner
+        updatedAt
       }
       nextToken
     }
@@ -606,6 +606,73 @@ export const listStaffSortedByViewOrder = /* GraphQL */ `
     }
   }
 `;
+export const listSubscriptionOrdersContainedNextDeliveryDate = /* GraphQL */ `
+  query ListSubscriptionOrdersContainedNextDeliveryDate {
+    listSubscriptionOrdersContainedNextDeliveryDate {
+      id
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
+          quantity
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
 export const listAdminSubscriptionOrders = /* GraphQL */ `
   query ListAdminSubscriptionOrders {
     listAdminSubscriptionOrders {
@@ -668,8 +735,8 @@ export const listAdminSubscriptionOrders = /* GraphQL */ `
       nextDeliveryMonth
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;

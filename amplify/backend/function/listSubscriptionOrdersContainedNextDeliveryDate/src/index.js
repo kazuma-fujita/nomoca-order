@@ -24,8 +24,13 @@ global.fetch = require('node-fetch');
  */
 const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('EVENT', event);
-    const { owner } = event.arguments;
-    console.log('owner', owner);
+    const groups = event.identity.claims['cognito:groups'];
+    const username = event.identity.username;
+    const isOperator = groups && groups.length === 1 && groups[0] === 'Operators';
+    console.log('groups', groups);
+    console.log('isOperator', isOperator);
+    console.log('username', username);
+    console.log('process.env', process.env);
     // let credentials = AWS.config.credentials;
     let credentials = {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -47,6 +52,7 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const graphqlClient = new aws_appsync_1.default({
         url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT,
         region: process.env.REGION,
+        // region: 'ap-northeast-1',
         auth: {
             type: 'AWS_IAM',
             credentials: credentials,
@@ -61,7 +67,7 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
         const result = (yield graphqlClient.query({
             query: (0, graphql_tag_1.gql)(queries_1.listSubscriptionOrdersSortedByCreatedAt),
             // 顧客ユーザのリスト取得はowner fieldでfilter
-            variables: owner ? Object.assign(Object.assign({}, variables), { filter: { owner: owner } }) : variables,
+            variables: !isOperator ? Object.assign(Object.assign({}, variables), { filter: { owner: { eq: username } } }) : variables,
         }));
         if (result.errors) {
             throw result.errors;
@@ -88,8 +94,8 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
             // 次回配送予定年月をセット
             return Object.assign(Object.assign({}, item), { nextDeliveryYear: nextDeliveryYearMonth.nextDeliveryYear, nextDeliveryMonth: nextDeliveryYearMonth.nextDeliveryMonth });
         });
-        // requestにownerが無ければ業務ユーザのリスト取得
-        const responseItems = !owner
+        // 業務ユーザのリスト取得
+        const responseItems = isOperator
             ? nextDeliveryDateItems // 当月のみのリストに絞り込み。配送予定月が現在年月であればAPIレスポンスとして返却
                 .filter((item) => item.nextDeliveryYear === nowYear && item.nextDeliveryMonth === nowMonth)
             : nextDeliveryDateItems;
