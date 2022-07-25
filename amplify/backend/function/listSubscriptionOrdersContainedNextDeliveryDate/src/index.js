@@ -52,7 +52,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const graphqlClient = new aws_appsync_1.default({
         url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT,
         region: process.env.REGION,
-        // region: 'ap-northeast-1',
         auth: {
             type: 'AWS_IAM',
             credentials: credentials,
@@ -67,8 +66,13 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
         const result = (yield graphqlClient.query({
             query: (0, graphql_tag_1.gql)(queries_1.listSubscriptionOrdersSortedByCreatedAt),
             // 顧客ユーザのリスト取得はowner fieldでfilter
-            variables: !isOperator ? Object.assign(Object.assign({}, variables), { filter: { owner: { eq: username } } }) : variables,
+            variables: !isOperator ? Object.assign(Object.assign({}, variables), { filter: { owner: { contains: username } } }) : variables,
         }));
+        // const result = (await graphqlClient.query({
+        //   query: gql(listSubscriptionOrdersSortedByCreatedAt),
+        //   variables: variables,
+        // })) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
+        console.log('result', result);
         if (result.errors) {
             throw result.errors;
         }

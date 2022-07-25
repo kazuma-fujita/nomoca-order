@@ -50,7 +50,6 @@ export const handler = async (event: any) => {
   const graphqlClient = new AWSAppSyncClient({
     url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT as string,
     region: process.env.REGION,
-    // region: 'ap-northeast-1',
     auth: {
       type: 'AWS_IAM',
       credentials: credentials,
@@ -67,7 +66,7 @@ export const handler = async (event: any) => {
     const result = (await graphqlClient.query({
       query: gql(listSubscriptionOrdersSortedByCreatedAt),
       // 顧客ユーザのリスト取得はowner fieldでfilter
-      variables: !isOperator ? { ...variables, filter: { owner: { eq: username } } } : variables,
+      variables: !isOperator ? { ...variables, filter: { owner: { contains: username } } } : variables,
     })) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
 
     if (result.errors) {

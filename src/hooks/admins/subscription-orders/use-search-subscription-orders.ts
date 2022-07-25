@@ -1,12 +1,12 @@
 import { SubscriptionOrder } from 'API';
 import { SWRKey } from 'constants/swr-key';
-import { useAdminSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+// import { useFetchSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { isFilterWithDeliveryMonth, maxMonth, minMonth } from 'functions/delivery-dates/is-filter-with-delivery-month';
 
 export const useSearchSubscriptionOrders = () => {
-  const { allData } = useAdminSubscriptionOrderList();
+  // const { data } = useFetchSubscriptionOrderList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
@@ -16,16 +16,16 @@ export const useSearchSubscriptionOrders = () => {
     async (data: SubscriptionOrder[]): Promise<SubscriptionOrder[]> => {
       setIsLoading(true);
 
-      if (!allData) {
+      if (!data) {
         setIsLoading(false);
         setError(Error('All list data did not find.'));
         throw error;
       }
-      // searchDeliveryMonth=0は全件検索の為、allDataを返却
+      // searchDeliveryMonth=0は全件検索の為、dataを返却
       if (searchDeliveryMonth === 0) {
         setIsLoading(false);
         setError(null);
-        return allData;
+        return data;
       }
       if (searchDeliveryMonth < minMonth || maxMonth < searchDeliveryMonth) {
         setIsLoading(false);
@@ -33,7 +33,7 @@ export const useSearchSubscriptionOrders = () => {
         throw error;
       }
       // 全件dataを配送月でフィルタリング
-      const filteredData = allData.filter((item) =>
+      const filteredData = data.filter((item) =>
         isFilterWithDeliveryMonth(
           searchDeliveryYear,
           searchDeliveryMonth,

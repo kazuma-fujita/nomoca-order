@@ -139,9 +139,9 @@ const clearAllRecords = async () => {
       if (scan.Items && scan.Items.length > 0) {
         // BatchDelete処理上限25件づつの多次元配列生成
         const deleteItemsList = flatMapWithCount(scan.Items, batchWriteLimit);
-        console.log('tableName', tableName);
+        console.log('delete tableName', tableName);
         deleteItemsList.map(async (deleteItems) => {
-          console.log('deleteItems', deleteItems);
+          console.log('delete items', deleteItems);
           const params = createParamsToDeleteRecords(tableName, deleteItems);
           console.log('delete params', params);
           await db.batchWriteItem(params).promise();

@@ -1,10 +1,10 @@
 {
-  "lambdaLayers": [],
   "permissions": {
     "api": {
       "nomocaorderApi": [
         "Query"
       ]
     }
-  }
+  },
+  "lambdaLayers": []
 }

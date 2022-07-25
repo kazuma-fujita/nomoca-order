@@ -20,8 +20,7 @@
     "cy:run:ct": "cypress run-ct",
     "cy:open:ct:firefox": "cypress open-ct --browser firefox",
     "cy:run:ct:firefox": "cypress run-ct --browser firefox",
-    "amplify:listSubscriptionOrders": "cd amplify/backend/function/listSubscriptionOrdersContainedNextDeliveryDate/src && npx tsc && cd -",
-    "tsc:adminSubscriptionOrderList": "cd amplify/backend/function/adminSubscriptionOrderList/src && npx tsc && cd -"
+    "amplify:listSubscriptionOrders": "cd amplify/backend/function/listSubscriptionOrdersContainedNextDeliveryDate/src && npx tsc && cd -"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.20",
