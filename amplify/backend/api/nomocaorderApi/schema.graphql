@@ -103,6 +103,7 @@ type SubscriptionOrder
   createdAt: AWSDateTime!
   type: String!
     @index(name: "sortByCreatedAt", queryField: "listSubscriptionOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
+  owner: String # 顧客ユーザが実行するLambda functionのlistSubscriptionOrdersContainedNextDeliveryDateでログインユーザーlist取得時にownerで絞り込み。Nullableにすると登録時に自動でログインしているownerが登録される
 }
 
 type SubscriptionOrderProduct
@@ -172,6 +173,10 @@ type CurrentDate {
 }
 
 type Query {
+  listSubscriptionOrdersContainedNextDeliveryDate(owner: String): [SubscriptionOrder]
+    @function(name: "listSubscriptionOrdersContainedNextDeliveryDate-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
+
   listAdminSubscriptionOrders: [SubscriptionOrder]
     @function(name: "adminSubscriptionOrderList-${env}")
     @auth(rules: [{ allow: private, provider: userPools }])

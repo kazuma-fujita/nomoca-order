@@ -331,8 +331,8 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
       nextDeliveryMonth
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -398,8 +398,8 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
       nextDeliveryMonth
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -465,8 +465,8 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
       nextDeliveryMonth
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
