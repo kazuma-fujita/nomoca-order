@@ -28,7 +28,7 @@ export const CurrentUserContextProvider = ({ ...props }) => {
     data: currentUser,
     error,
     mutate: mutateUser,
-  } = useSWR<CognitoUserInterface, Error>(SWRKey.CurrentUser, null);
+  } = useSWR<CognitoUserInterface, Error>(SWRKey.currentUser, null);
   // cognito:groupsはUserGroup名配列が格納される
   // currentUserは存在していてpayloadからUserGroupが取得出来ない(どのUserGroupにも所属していない)場合undefinedが返却される
   const groups: string[] | undefined = currentUser

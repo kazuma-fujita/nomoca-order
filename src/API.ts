@@ -114,6 +114,7 @@ export type CreateOrderInput = {
 };
 
 export enum DeliveryStatus {
+  none = "none",
   ordered = "ordered",
   delivered = "delivered",
   canceled = "canceled",
@@ -2078,78 +2079,6 @@ export type ListStaffSortedByViewOrderQuery = {
 
 export type ListSubscriptionOrdersContainedNextDeliveryDateQuery = {
   listSubscriptionOrdersContainedNextDeliveryDate?:  Array< {
-    __typename: "SubscriptionOrder",
-    id: string,
-    products?:  {
-      __typename: "ModelSubscriptionOrderProductConnection",
-      items:  Array< {
-        __typename: "SubscriptionOrderProduct",
-        id: string,
-        subscriptionOrderID: string,
-        productID: string,
-        product:  {
-          __typename: "Product",
-          id: string,
-          name: string,
-          unitPrice: number,
-          orderType: OrderType,
-          viewOrder: number,
-          isExportCSV: boolean,
-          disabled: boolean,
-          type: Type,
-          createdAt: string,
-          updatedAt: string,
-        },
-        quantity: number,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    clinicID: string,
-    clinic:  {
-      __typename: "Clinic",
-      id: string,
-      name: string,
-      phoneNumber: string,
-      postalCode: string,
-      state: string,
-      city: string,
-      address: string,
-      building?: string | null,
-      mailAddress: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    },
-    staffID: string,
-    staff:  {
-      __typename: "Staff",
-      id: string,
-      firstName: string,
-      lastName: string,
-      viewOrder: number,
-      disabled: boolean,
-      type: Type,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    },
-    deliveryStartYear: number,
-    deliveryStartMonth: number,
-    deliveryInterval: number,
-    nextDeliveryYear?: number | null,
-    nextDeliveryMonth?: number | null,
-    createdAt: string,
-    type: string,
-    owner?: string | null,
-    updatedAt: string,
-  } | null > | null,
-};
-
-export type ListAdminSubscriptionOrdersQuery = {
-  listAdminSubscriptionOrders?:  Array< {
     __typename: "SubscriptionOrder",
     id: string,
     products?:  {

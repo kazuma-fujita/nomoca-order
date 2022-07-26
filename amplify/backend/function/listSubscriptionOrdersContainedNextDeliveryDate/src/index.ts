@@ -1,9 +1,7 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import AWSAppSyncClient from 'aws-appsync';
-import * as AWS from 'aws-sdk';
 import { GraphQLError } from 'graphql';
 import { gql } from 'graphql-tag';
-import { listSubscriptionOrdersSortedByCreatedAt } from './queries';
 import {
   ListSubscriptionOrdersSortedByCreatedAtQuery,
   ListSubscriptionOrdersSortedByCreatedAtQueryVariables,
@@ -12,6 +10,7 @@ import {
   Type,
 } from './API';
 import { generateNextDeliveryYearMonth } from './generate-next-delivery-year-month';
+import { listSubscriptionOrdersSortedByCreatedAt } from './queries';
 global.fetch = require('node-fetch');
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}

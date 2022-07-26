@@ -1,4 +1,5 @@
 import { GraphQLResult } from '@aws-amplify/api';
+import { transform } from '@babel/core';
 import {
   ListOrdersSortedByCreatedAtQuery,
   ListOrdersSortedByCreatedAtQueryVariables,
@@ -36,6 +37,31 @@ const fetcher = async (): Promise<ExtendedOrder<Order>[]> => {
     graphqlOperation(listOrdersSortedByCreatedAt, sortVariables),
   )) as GraphQLResult<ListOrdersSortedByCreatedAtQuery>;
 
+  // if (!result.data || !result.data.listOrdersSortedByCreatedAt || !result.data.listOrdersSortedByCreatedAt.items) {
+  //   throw Error('An API returned null.');
+  // }
+  // const items = result.data.listOrdersSortedByCreatedAt.items as Order[];
+
+  // for (const item of items) {
+  //   if (!item || !item.products || !item.products.items) {
+  //     throw Error('The API fetched product data but it returned null.');
+  //   }
+  //   for (const orderProduct of item.products.items) {
+  //     if (!orderProduct) {
+  //       throw Error('The API fetched order product data but it returned null.');
+  //     }
+  //   }
+  // }
+  // const extendedItems: ExtendedOrder<Order>[] = items.map((item) => ({
+  //   ...item,
+  //   normalizedProducts: createNormalizedProducts(item),
+  // }));
+  // return extendedItems;
+
+  return transformOrderListIntoExtendedList(result);
+};
+
+export const transformOrderListIntoExtendedList = (result: GraphQLResult<ListOrdersSortedByCreatedAtQuery>) => {
   if (!result.data || !result.data.listOrdersSortedByCreatedAt || !result.data.listOrdersSortedByCreatedAt.items) {
     throw Error('An API returned null.');
   }
