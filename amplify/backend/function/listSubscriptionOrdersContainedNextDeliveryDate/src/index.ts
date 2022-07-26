@@ -27,13 +27,14 @@ export const handler = async (event: any) => {
   console.log('process.env', process.env);
 
   let credentials = {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    sessionToken: process.env.AWS_SESSION_TOKEN,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+    sessionToken: process.env.AWS_SESSION_TOKEN as string,
   };
 
+  const awsExecutionEnv = process.env.AWS_EXECUTION_ENV as string;
   // mock
-  if ('AWS_EXECUTION_ENV' in process.env && process.env.AWS_EXECUTION_ENV.endsWith('-mock')) {
+  if (awsExecutionEnv.endsWith('-mock')) {
     // mock credentials。なぜか以下の識別子じゃないとamplify mock function 実行時 unauthorizedとなる
     credentials = {
       accessKeyId: 'ASIAVJKIAM-AuthRole',
@@ -47,7 +48,7 @@ export const handler = async (event: any) => {
   // AppSync接続クライアント生成。mock起動時、GRAPHQLAPIENDPOINはローカルURLに向く
   const graphqlClient = new AWSAppSyncClient({
     url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT as string,
-    region: process.env.REGION,
+    region: process.env.REGION as string,
     auth: {
       type: 'AWS_IAM',
       credentials: credentials,
@@ -119,7 +120,7 @@ export const handler = async (event: any) => {
 
     return responseItems;
   } catch (err) {
-    const error = parseResponseError(err);
+    const error: Error = parseResponseError(err);
     console.error('error:', error);
     const body = {
       errors: [
@@ -137,8 +138,8 @@ export const handler = async (event: any) => {
   }
 };
 
-const parseResponseError = (error: any): Error | null => {
-  if (!error) return null;
+const parseResponseError = (error: any): Error => {
+  if (!error) return Error('A error is undefined.');
 
   const errorResult = error as Error;
   if (errorResult.message) {
@@ -150,5 +151,5 @@ const parseResponseError = (error: any): Error | null => {
     return Error(graphqlResult.message);
   }
 
-  return null;
+  return Error('A error type is unknown.');
 };

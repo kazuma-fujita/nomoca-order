@@ -1,10 +1,14 @@
 import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Staff, Type } from 'API';
-import { API } from 'aws-amplify';
+import { API, Amplify } from 'aws-amplify';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { customRender } from 'utilities/tests/custom-render';
 import { StaffTemplate } from './staff-template';
+import awsconfig from 'aws-exports';
+
+// Cognito認証でAppSyncを実行するとNo current user errorが発生する為、API_KEY認証に切り替え
+Amplify.configure({ ...awsconfig, aws_appsync_authenticationType: 'API_KEY' });
 
 const item: Staff = {
   __typename: 'Staff',

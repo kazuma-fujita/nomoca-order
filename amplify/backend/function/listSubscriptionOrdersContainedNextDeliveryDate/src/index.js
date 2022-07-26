@@ -36,8 +36,9 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         sessionToken: process.env.AWS_SESSION_TOKEN,
     };
+    const awsExecutionEnv = process.env.AWS_EXECUTION_ENV;
     // mock
-    if ('AWS_EXECUTION_ENV' in process.env && process.env.AWS_EXECUTION_ENV.endsWith('-mock')) {
+    if (awsExecutionEnv.endsWith('-mock')) {
         // mock credentials。なぜか以下の識別子じゃないとamplify mock function 実行時 unauthorizedとなる
         credentials = {
             accessKeyId: 'ASIAVJKIAM-AuthRole',
@@ -120,7 +121,7 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
 exports.handler = handler;
 const parseResponseError = (error) => {
     if (!error)
-        return null;
+        return Error('A error is undefined.');
     const errorResult = error;
     if (errorResult.message) {
         return Error(errorResult.message);
@@ -129,5 +130,5 @@ const parseResponseError = (error) => {
     if (graphqlResult.message) {
         return Error(graphqlResult.message);
     }
-    return null;
+    return Error('A error type is unknown.');
 };
