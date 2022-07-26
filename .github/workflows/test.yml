@@ -68,8 +68,10 @@ jobs:
         run: npm run fmt
       - name: Run lint
         run: npm run lint
-      - name: Run tests ⚗️
+      - name: Run Jest tests ⚗️
         run: npm run test
+      - name: Run Lambda tests ⚗️
+        run: npm run test:listSubscriptionOrders
         env:
           TZ: 'Asia/Tokyo'
       # Cypress e2e

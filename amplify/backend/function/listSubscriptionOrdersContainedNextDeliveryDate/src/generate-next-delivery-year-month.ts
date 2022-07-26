@@ -1,7 +1,7 @@
 export type NextDeliveryYearMonth = {
   nextDeliveryYear: number;
   nextDeliveryMonth: number;
-} | null;
+};
 
 export const minMonth = 1;
 export const maxMonth = 12;
