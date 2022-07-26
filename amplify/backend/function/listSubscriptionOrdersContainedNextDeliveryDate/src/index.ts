@@ -26,7 +26,6 @@ export const handler = async (event: any) => {
   console.log('username', username);
   console.log('process.env', process.env);
 
-  // let credentials = AWS.config.credentials;
   let credentials = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -43,7 +42,6 @@ export const handler = async (event: any) => {
     };
   }
 
-  // console.log('env:', process.env);
   console.log('Credentials:', credentials);
 
   // AppSync接続クライアント生成。mock起動時、GRAPHQLAPIENDPOINはローカルURLに向く
@@ -120,11 +118,6 @@ export const handler = async (event: any) => {
     console.log('responseItems', responseItems);
 
     return responseItems;
-    // return {
-    //   statusCode: 200,
-    //   body: JSON.stringify(items),
-    //   headers: { 'Access-Control-Allow-Origin': '*', },
-    // };
   } catch (err) {
     const error = parseResponseError(err);
     console.error('error:', error);

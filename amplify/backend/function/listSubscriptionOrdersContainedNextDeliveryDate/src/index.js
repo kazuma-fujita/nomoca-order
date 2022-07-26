@@ -31,7 +31,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('isOperator', isOperator);
     console.log('username', username);
     console.log('process.env', process.env);
-    // let credentials = AWS.config.credentials;
     let credentials = {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -46,7 +45,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
             sessionToken: 'fake',
         };
     }
-    // console.log('env:', process.env);
     console.log('Credentials:', credentials);
     // AppSync接続クライアント生成。mock起動時、GRAPHQLAPIENDPOINはローカルURLに向く
     const graphqlClient = new aws_appsync_1.default({
@@ -68,11 +66,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
             // 顧客ユーザのリスト取得はowner fieldでfilter
             variables: !isOperator ? Object.assign(Object.assign({}, variables), { filter: { owner: { contains: username } } }) : variables,
         }));
-        // const result = (await graphqlClient.query({
-        //   query: gql(listSubscriptionOrdersSortedByCreatedAt),
-        //   variables: variables,
-        // })) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
-        console.log('result', result);
         if (result.errors) {
             throw result.errors;
         }
@@ -105,11 +98,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
             : nextDeliveryDateItems;
         console.log('responseItems', responseItems);
         return responseItems;
-        // return {
-        //   statusCode: 200,
-        //   body: JSON.stringify(items),
-        //   headers: { 'Access-Control-Allow-Origin': '*', },
-        // };
     }
     catch (err) {
         const error = parseResponseError(err);
