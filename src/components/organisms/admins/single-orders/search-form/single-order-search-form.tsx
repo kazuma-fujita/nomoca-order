@@ -3,6 +3,8 @@ import { DeliveryStatus } from 'API';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { SearchButton } from 'components/atoms/buttons/search-button';
 import Form from 'components/atoms/form';
+import { SearchClinicNameTextField } from 'components/molecules/text-fields/clinic-name-text-field';
+import { SearchPhoneNumberTextField } from 'components/molecules/text-fields/phone-number-text-field';
 import { useSearchSingleOrders } from 'hooks/admins/single-orders/use-search-single-orders';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,12 +12,13 @@ import { SearchDeliveryStatusSelectBox } from './search-delivery-status-select-b
 
 export type SingleOrderSearchParam = {
   deliveryStatus: DeliveryStatus;
-  clinicName: string;
+  name: string;
   phoneNumber: string;
 };
 
 export const SingleOrderSearchForm = () => {
-  const { handleSubmit, control } = useForm<SingleOrderSearchParam>();
+  const useFormReturn = useForm<SingleOrderSearchParam>();
+  const { handleSubmit, control } = useFormReturn;
   const { search, isLoading, error, resetState } = useSearchSingleOrders();
 
   const submitHandler = handleSubmit(
@@ -35,9 +38,12 @@ export const SingleOrderSearchForm = () => {
         <Grid item>
           <SearchDeliveryStatusSelectBox control={control} />
         </Grid>
-        {/* <Grid item>
-          <SearchDeliveryMonthSelectBox control={control} />
-        </Grid> */}
+        <Grid item>
+          <SearchClinicNameTextField {...useFormReturn} disabled={isLoading} />
+        </Grid>
+        <Grid item>
+          <SearchPhoneNumberTextField {...useFormReturn} disabled={isLoading} />
+        </Grid>
         <Grid item>
           <SearchButton isLoading={isLoading} />
         </Grid>
