@@ -13,11 +13,17 @@ jobs:
       # build
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Checkout
+      # Install Node
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
       # Install JAVA
       - name: Export dummy build.gradle
         uses: ./.github/actions/gradle
       - name: Java Install
-        # run: sudo yum install -y java-11-amazon-corretto-headless
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
@@ -50,16 +56,16 @@ jobs:
           pm2 start ./.github/commands/amplify_mock.sh
           wait-on http://localhost:20002
       # Cache node_modules
-      # - name: Cache node_modules
-      #   uses: actions/cache@v3
-      #   id: node_modules_cache_id
-      #   env:
-      #     cache-name: cache-node-modules
-      #   with:
-      #     path: ~/.npm
-      #     # path: '**/node_modules'
-      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-      #   if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: node_modules_cache_id
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          # path: '**/node_modules'
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
       # Install js packages
       - name: Install node_modules
         run: npm ci
