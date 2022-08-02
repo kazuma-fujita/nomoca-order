@@ -1,6 +1,6 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { SubscriptionOrderTemplate } from 'components/templates/admins/subscription-orders/subscription-order-template';
-import { AdminSubscriptionOrderListContextProvider } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { SubscriptionOrderListContextProvider } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { subscriptionOrderListMock } from 'mocks/subscription-order-list.mock';
 import { NowDateContextProvider } from 'stores/use-now-date';
 import { FetchResponse } from 'hooks/swr/use-fetch';
@@ -87,12 +87,11 @@ const description = `
 `;
 
 const Wrapper: React.FC<FetchResponse> = (props) => (
-  <AdminSubscriptionOrderListContextProvider mockResponse={props}>
-    {/* <NowDateContextProvider now={new Date(2023, 0, 1, 9)}> */}
+  <SubscriptionOrderListContextProvider mockResponse={props}>
     <NowDateContextProvider now={new Date()}>
       <SubscriptionOrderTemplate />
     </NowDateContextProvider>
-  </AdminSubscriptionOrderListContextProvider>
+  </SubscriptionOrderListContextProvider>
 );
 
 type Story = ComponentStoryObj<typeof Wrapper>;
