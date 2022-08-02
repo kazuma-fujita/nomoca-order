@@ -13,7 +13,6 @@ jobs:
       # build
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Checkout
       # Install Node
       - name: Install Node
         uses: actions/setup-node@v3
