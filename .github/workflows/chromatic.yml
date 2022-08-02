@@ -15,11 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       # Install Node
-      # - name: Install Node
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16
-      #     cache: 'npm'
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
       - run: npm ci
         #👇 Adds Chromatic as a step in the workflow
       - name: Export dummy aws-exports.js
