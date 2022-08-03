@@ -78,7 +78,7 @@ export const useCreateSubscriptionOrderHistory = () => {
           type: Type.order,
           deliveryType: DeliveryType.subscription, // 発送方法を定期便に設定
           deliveryStatus: DeliveryStatus.delivered, // 発送状況を発送済みに設定
-          orderedAt: order.createdAt, // orderedAtは定期便申し込み日時
+          orderedAt: order.createdAt, // orderedAtは定期便申し込み日時。注文一覧上の注文日時として表示される
           deliveredAt: now.toISOString(), // 発送日時は現在日時
           clinicID: order.clinicID,
           staffID: order.staffID,

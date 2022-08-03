@@ -20,7 +20,7 @@ export const useConfirmOrder = () => {
     }
   }, [basePath, formParam, router]);
 
-  // 注文ボタン押下処
+  // 注文するボタン押下処
   const submitHandler = async () => {
     try {
       if (!formParam || !formParam.products) {
@@ -33,13 +33,16 @@ export const useConfirmOrder = () => {
       }
       // 重複商品配列はuseOrderFormでmerge済み。更に速達、配送手数料を加えた商品配列を登録
       await createOrder(orderType, { ...formParam, products: products });
+      // 完了画面へ遷移
       router.push(`${basePath}?${FormScreenQuery.complete}`, undefined, { shallow: true });
     } catch (error) {}
   };
+
   // 修正するボタン押下時処理。shallow=true でSPA画面遷移
   const cancelHandler = () => {
     router.push(`${basePath}?${FormScreenQuery.input}`, undefined, { shallow: true });
   };
+
   return {
     isLoading,
     error,

@@ -68,7 +68,6 @@ export const useUpsertStaff = () => {
           const updatedStaff = result.data.updateStaff;
           ret = data.map((item) => (item.id === updatedStaff.id ? updatedStaff : item));
         }
-        setIsLoading(false);
         setError(null);
         return ret;
       } catch (error) {

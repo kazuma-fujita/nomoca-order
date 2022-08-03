@@ -21,7 +21,6 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-      # - run: npm install
       - run: npm ci
       #👇 Adds Chromatic as a step in the workflow
       - name: Export dummy aws-exports.js

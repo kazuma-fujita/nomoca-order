@@ -35,8 +35,6 @@ export const useCancelOrder = () => {
       if (!result.data || !result.data.updateOrder) {
         throw Error('The API deleted data but it returned null.');
       }
-
-      setIsLoading(false);
       setError(null);
       console.log('canceledOrder:', result.data.updateOrder);
       // 再フェッチ実行

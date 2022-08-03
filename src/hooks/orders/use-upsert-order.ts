@@ -136,6 +136,7 @@ const createSingleOrder = async (param: OrderFormParam, now: Date) => {
     deliveryType: param.deliveryType,
     clinicID: param.clinicID,
     staffID: param.staffID,
+    // 一覧の注文日時。createdAtを利用しない理由として、定期便csv出力時の履歴用orderデータ作成時に定期便申し込み日時をorderedAtに設定
     orderedAt: now.toISOString(),
   };
 
@@ -212,6 +213,7 @@ const createSubscriptionOrder = async (param: OrderFormParam) => {
   }
 };
 
+// 注文・定期便共通処理
 export const useCreateOrder = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -228,10 +230,9 @@ export const useCreateOrder = () => {
 
       // OrderTypeはpagesでContextに保存している値
       orderType === OrderType.singleOrder ? await createSingleOrder(param, now) : await createSubscriptionOrder(param);
-      setIsLoading(false);
-      setError(null);
       // 更新後データ再fetch実行
       mutate(orderType === OrderType.singleOrder ? SWRKey.orderList : SWRKey.subscriptionOrderList);
+      setError(null);
     } catch (error) {
       setIsLoading(false);
       const parsedError = parseResponseError(error);

@@ -71,7 +71,6 @@ export const useUpsertProduct = () => {
           const updatedProduct = result.data.updateProduct;
           ret = data.map((item) => (item.id === updatedProduct.id ? updatedProduct : item));
         }
-        setIsLoading(false);
         setError(null);
         return ret;
       } catch (error) {

@@ -70,7 +70,6 @@ export const useUpsertClinic = () => {
         }
         ret = result.data.updateClinic;
       }
-      setIsLoading(false);
       setError(null);
       return ret;
     } catch (error) {
