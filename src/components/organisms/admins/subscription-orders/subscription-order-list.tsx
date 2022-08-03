@@ -58,7 +58,7 @@ type RowProps = {
 
 const Row = ({ item }: RowProps) => {
   return (
-    <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
+    <CommonTableRow colSpan={header.length} products={item.normalizedProducts}>
       <TableCell align='center'>{item.clinic.name}</TableCell>
       <TableCell align='center'>{item.clinic.phoneNumber}</TableCell>
       <TableCell align='center'>

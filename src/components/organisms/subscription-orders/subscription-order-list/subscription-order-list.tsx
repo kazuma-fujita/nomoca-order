@@ -61,7 +61,7 @@ type RowProps = {
 
 const Row = ({ item }: RowProps) => {
   return (
-    <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
+    <CommonTableRow colSpan={header.length} products={item.normalizedProducts}>
       <TableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</TableCell>
       <TableCell align='center'>{`${item.deliveryInterval}ヶ月`}</TableCell>
       <TableCell align='center'>{`${item.nextDeliveryYear}/${item.nextDeliveryMonth}月`}</TableCell>

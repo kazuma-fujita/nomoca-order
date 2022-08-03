@@ -132,7 +132,7 @@ const Row = ({ rowItem, selectedItems, orderItemsLength, setSelectedItems, setIs
   );
 
   return (
-    <CommonTableRow key={rowItem.id} colSpan={header.length} products={rowItem.normalizedProducts}>
+    <CommonTableRow colSpan={header.length} products={rowItem.normalizedProducts}>
       <TableCell padding='checkbox' align='center'>
         <Checkbox
           color='primary'

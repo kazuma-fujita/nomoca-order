@@ -8,6 +8,7 @@ import { CancelSingleOrderButton } from 'components/organisms/single-orders/canc
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import React from 'react';
 import { TableHeader } from 'types/table-header';
 
 const header: TableHeader[] = [
@@ -52,7 +53,7 @@ type RowProps = {
 
 const Row = ({ item }: RowProps) => {
   return (
-    <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
+    <CommonTableRow colSpan={header.length} products={item.normalizedProducts}>
       <TableCell align='center'>{formatDateHourMinute(item.orderedAt)}</TableCell>
       <TableCell align='center'>
         <DeliveryTypeChip deliveryType={item.deliveryType} />

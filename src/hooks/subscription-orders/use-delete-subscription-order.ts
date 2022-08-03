@@ -21,22 +21,19 @@ import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ExtendedOrder, NormalizedProduct } from './use-fetch-subscription-order-list';
 
-// const deleteSubscriptionOrderProducts = async (productRelations: SubscriptionOrderProduct[]) => {
 const deleteSubscriptionOrderProducts = async (products: NormalizedProduct[]) => {
   // SubscriptionOrder と Product のリレーション削除
-  // for (const item of productRelations) {
   for (const product of products) {
     const input: DeleteSubscriptionOrderProductInput = { id: product.relationID };
     const variables: DeleteSubscriptionOrderProductMutationVariables = { input: input };
     const result = (await API.graphql(
       graphqlOperation(deleteSubscriptionOrderProduct, variables),
     )) as GraphQLResult<DeleteSubscriptionOrderProductMutation>;
-    if (result.data && result.data.deleteSubscriptionOrderProduct) {
-      const deleteSubscriptionOrderProduct = result.data.deleteSubscriptionOrderProduct;
-      console.log('deleteSubscriptionOrderProduct', deleteSubscriptionOrderProduct);
-    } else {
+
+    if (!result.data || !result.data.deleteSubscriptionOrderProduct) {
       throw Error('The API deleted connection data but it returned null.');
     }
+    console.log('deleteSubscriptionOrderProduct', result.data.deleteSubscriptionOrderProduct);
   }
 };
 
