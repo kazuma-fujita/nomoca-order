@@ -1,5 +1,6 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import {
+  DeliveryStatus,
   ListOrdersSortedByCreatedAtQuery,
   ListOrdersSortedByCreatedAtQueryVariables,
   ModelSortDirection,
@@ -13,6 +14,8 @@ import { listOrdersSortedByCreatedAt } from 'graphql/queries';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
+import { useSingleOrderSearchParam } from '../admins/single-orders/use-single-order-search-param';
+import { SingleOrderSearchParam } from 'components/organisms/admins/single-orders/search-form/single-order-search-form';
 
 const createNormalizedProduct = (orderProduct: OrderProduct | null): NormalizedProduct =>
   ({
@@ -26,21 +29,27 @@ const createNormalizedProduct = (orderProduct: OrderProduct | null): NormalizedP
 const createNormalizedProducts = (order: Order): NormalizedProduct[] =>
   order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct)) as NormalizedProduct[];
 
-const fetcher = async (): Promise<ExtendedOrder<Order>[]> => {
+const fetcher = async (_: string, searchState: SingleOrderSearchParam): Promise<ExtendedOrder<Order>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
   const sortVariables: ListOrdersSortedByCreatedAtQueryVariables = {
     type: Type.order,
     sortDirection: ModelSortDirection.DESC,
   };
+
+  // 全件検索以外はfilter指定
+  const variables =
+    searchState.deliveryStatus !== DeliveryStatus.none
+      ? { ...sortVariables, filter: { deliveryStatus: { eq: searchState.deliveryStatus } } }
+      : sortVariables;
+
   const result = (await API.graphql(
-    graphqlOperation(listOrdersSortedByCreatedAt, sortVariables),
+    graphqlOperation(listOrdersSortedByCreatedAt, variables),
   )) as GraphQLResult<ListOrdersSortedByCreatedAtQuery>;
 
   return transformOrderListIntoExtendedList(result);
 };
 
-// use-search-single-orders.tsの共通処理でも使用
-export const transformOrderListIntoExtendedList = (result: GraphQLResult<ListOrdersSortedByCreatedAtQuery>) => {
+const transformOrderListIntoExtendedList = (result: GraphQLResult<ListOrdersSortedByCreatedAtQuery>) => {
   if (!result.data || !result.data.listOrdersSortedByCreatedAt || !result.data.listOrdersSortedByCreatedAt.items) {
     throw Error('An API returned null.');
   }
@@ -65,7 +74,7 @@ export const transformOrderListIntoExtendedList = (result: GraphQLResult<ListOrd
   return extendedItems;
 };
 
-const OrderListContext = createContext({} as FetchResponse<ExtendedOrder<Order>[]>);
+const OrderListContext = createContext({} as ProviderProps);
 
 export const useFetchOrderList = () => useContext(OrderListContext);
 
@@ -73,8 +82,15 @@ type Props = {
   mockResponse?: FetchResponse<ExtendedOrder<Order>[]>;
 };
 
-export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
-  const fetchResponse = useFetch<ExtendedOrder<Order>[]>(SWRKey.orderList, fetcher, {}, mockResponse);
+type ProviderProps = FetchResponse<ExtendedOrder<Order>[]> & {
+  swrKey: (string | SingleOrderSearchParam)[];
+};
 
-  return <OrderListContext.Provider value={fetchResponse}>{children}</OrderListContext.Provider>;
+export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
+  // グローバルに保存された注文検索条件(admin管理画面用)
+  const { searchState } = useSingleOrderSearchParam();
+  const swrKey = [SWRKey.orderList, searchState];
+  const fetchResponse = useFetch<ExtendedOrder<Order>[]>(swrKey, fetcher, {}, mockResponse);
+
+  return <OrderListContext.Provider value={{ ...fetchResponse, swrKey }}>{children}</OrderListContext.Provider>;
 };

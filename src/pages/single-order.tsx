@@ -12,6 +12,7 @@ import { ProductListContextProvider } from 'hooks/products/use-fetch-product-lis
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { OrderListContextProvider } from 'hooks/orders/use-fetch-order-list';
 import { NowDateContextProvider } from 'stores/use-now-date';
+import { SingleOrderSearchParamContextProvider } from 'hooks/admins/single-orders/use-single-order-search-param';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();
@@ -20,26 +21,29 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <OrderListContextProvider>
-        {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
-        <ProductListContextProvider
-          orderType={OrderType.singleOrder}
-          isFilterByActiveProduct={true}
-          isRevalidateOnFocus={false}
-        >
-          <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
-            <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
-              <ClinicContextProvider>
-                <NowDateContextProvider>
-                  <Main>
-                    <OrderTemplate />
-                  </Main>
-                </NowDateContextProvider>
-              </ClinicContextProvider>
-            </OrderFormParamContextProvider>
-          </StaffListContextProvider>
-        </ProductListContextProvider>
-      </OrderListContextProvider>
+      {/* admin側の処理と統一する為、使用しないがsearchParamContextを定義 */}
+      <SingleOrderSearchParamContextProvider>
+        <OrderListContextProvider>
+          {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
+          <ProductListContextProvider
+            orderType={OrderType.singleOrder}
+            isFilterByActiveProduct={true}
+            isRevalidateOnFocus={false}
+          >
+            <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
+              <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
+                <ClinicContextProvider>
+                  <NowDateContextProvider>
+                    <Main>
+                      <OrderTemplate />
+                    </Main>
+                  </NowDateContextProvider>
+                </ClinicContextProvider>
+              </OrderFormParamContextProvider>
+            </StaffListContextProvider>
+          </ProductListContextProvider>
+        </OrderListContextProvider>
+      </SingleOrderSearchParamContextProvider>
     </>
   );
 };

@@ -22,7 +22,6 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
       await updateOrderDeliveryStatus(filteredOrders);
       //TODO: 登録成功したデータのみCSV出力する。エラーのデータは画面表示 & Slack、cloudWatch送信
       await exportCSV(filteredOrders);
-      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       const parsedError = parseResponseError(error);

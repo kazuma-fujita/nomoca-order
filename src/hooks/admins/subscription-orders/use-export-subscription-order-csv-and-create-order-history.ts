@@ -20,7 +20,6 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
       await createOrderHistory(orders);
       //TODO: 登録成功したデータのみCSV出力する。エラーのデータは画面表示 & Slack、cloudWatch送信
       await exportCSV(orders);
-      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       const parsedError = parseResponseError(error);

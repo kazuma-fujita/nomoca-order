@@ -1,8 +1,8 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import { DeliveryStatus, Order, UpdateOrderInput, UpdateOrderMutation, UpdateOrderMutationVariables } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SWRKey } from 'constants/swr-key';
 import { updateOrder } from 'graphql/mutations';
+import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { useNowDate } from 'stores/use-now-date';
@@ -12,6 +12,7 @@ import { parseResponseError } from 'utilities/parse-response-error';
 export const useUpdateSingleOrderDeliveryStatus = () => {
   const { data: now } = useNowDate();
   const { mutate } = useSWRConfig();
+  const { swrKey } = useFetchOrderList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -25,6 +26,7 @@ export const useUpdateSingleOrderDeliveryStatus = () => {
       if (orders.length === 0) {
         throw Error('It is empty that an ID list which update a delivery status.');
       }
+
       for (const order of orders) {
         // deliveryStatusが発送前以外はcontinue
         if (order.deliveryStatus !== DeliveryStatus.ordered) {
@@ -50,7 +52,7 @@ export const useUpdateSingleOrderDeliveryStatus = () => {
       setIsLoading(false);
       setError(null);
       // deliveryStatusの変更を一覧に反映
-      mutate(SWRKey.orderList);
+      mutate(swrKey);
     } catch (error) {
       setIsLoading(false);
       const parsedError = parseResponseError(error);

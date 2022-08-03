@@ -5,9 +5,11 @@ import { SearchButton } from 'components/atoms/buttons/search-button';
 import Form from 'components/atoms/form';
 // import { SearchClinicNameTextField } from 'components/molecules/text-fields/clinic-name-text-field';
 // import { SearchPhoneNumberTextField } from 'components/molecules/text-fields/phone-number-text-field';
-import { useSearchSingleOrders } from 'hooks/admins/single-orders/use-search-single-orders';
+import { useSingleOrderSearchParam } from 'hooks/admins/single-orders/use-single-order-search-param';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSWRConfig } from 'swr';
+import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { SearchDeliveryStatusSelectBox } from './search-delivery-status-select-box';
 
 export type SingleOrderSearchParam = {
@@ -19,17 +21,19 @@ export type SingleOrderSearchParam = {
 export const SingleOrderSearchForm = () => {
   const useFormReturn = useForm<SingleOrderSearchParam>();
   const { handleSubmit, control } = useFormReturn;
-  const { search, isLoading, error, resetState } = useSearchSingleOrders();
+  const { setSearchState } = useSingleOrderSearchParam();
+  const { mutate } = useSWRConfig();
+  const { swrKey, isLoading, error } = useFetchOrderList();
 
   const submitHandler = handleSubmit(
     useCallback(
-      async (param: SingleOrderSearchParam) => {
-        try {
-          await search(param);
-          resetState();
-        } catch (error) {}
+      (param: SingleOrderSearchParam) => {
+        // グローバルなcontextに検索条件保存
+        setSearchState(param);
+        // 保存した検索条件を元に再検索実行
+        mutate(swrKey);
       },
-      [resetState, search],
+      [mutate, setSearchState, swrKey],
     ),
   );
   return (
