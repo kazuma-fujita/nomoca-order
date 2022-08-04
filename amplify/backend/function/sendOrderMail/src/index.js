@@ -320,10 +320,10 @@ exports.handler = async (event) => {
     const ses = new AWS.SES();
     await ses.sendEmail(requestParams).promise();
     console.log('Success to Send an Email');
-    return;
+    return clinicName;
   } catch (e) {
     console.log(`Failed to Send an Email: ${e}`);
-    return;
+    return e;
   }
 
   // return {

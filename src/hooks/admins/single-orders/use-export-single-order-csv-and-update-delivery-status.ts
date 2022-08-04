@@ -19,6 +19,7 @@ import {
   filteredPromiseFulfilledResult,
   filteredPromiseRejectedResult,
 } from 'functions/filter-promise-settled-results';
+import { sendErrorMail } from 'functions/send-error-mail';
 
 export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
   const { data: now } = useNowDate();
@@ -94,7 +95,7 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
       await exportCSV(updatedSuccesses);
 
       // Promise.allSettledでメール送信処理を同時並列実行
-      const results = await Promise.allSettled(
+      const sendMailStatuses = await Promise.allSettled(
         updatedSuccesses.map(
           async (order) =>
             // 注文配送メール送信
@@ -108,8 +109,23 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
         ),
       );
 
-      // TODO: resultsを解析してエラー時はSlack通知 and CloudWatchに保存
-      console.log('send mail result', results);
+      const sendMailSuccesses = filteredPromiseFulfilledResult(sendMailStatuses);
+      const sendMailFails = filteredPromiseRejectedResult(sendMailStatuses);
+
+      const notificationMailSubject = 'Completed to export a single order csv and to update a delivery status';
+      const notificationMailBody = `
+Successful updates:\n${updatedSuccesses.map((order) => order.clinic.name).join('\n')}\ntotal: ${
+        updatedSuccesses.length
+      }\n
+Failed updates:\n${updatedFails.join('\n')}\ntotal: ${updatedFails.length}\n
+Successful email sending:\n${sendMailSuccesses.join('\n')}\ntotal: ${sendMailSuccesses.length}\n
+Failed email sending:\n${sendMailFails.join('\n')}\ntotal: ${sendMailFails.length}\n
+`;
+
+      sendErrorMail({
+        subject: notificationMailSubject,
+        body: notificationMailBody,
+      });
     } catch (error) {
       setIsLoading(false);
       const parsedError = parseResponseError(error);

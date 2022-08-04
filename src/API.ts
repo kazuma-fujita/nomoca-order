@@ -2182,6 +2182,16 @@ export type SendOrderMailQuery = {
   sendOrderMail?: string | null,
 };
 
+export type SendErrorMailQueryVariables = {
+  toAddress: string,
+  subject: string,
+  body: string,
+};
+
+export type SendErrorMailQuery = {
+  sendErrorMail?: string | null,
+};
+
 export type OnCreateClinicSubscriptionVariables = {
   owner?: string | null,
 };

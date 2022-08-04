@@ -1,9 +1,10 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { Clinic, DeliveryType, SendMailType, SendOrderMailQueryVariables, Staff } from 'API';
+import { Clinic, DeliveryType, SendMailType, SendOrderMailQueryVariables, Staff, SendOrderMailQuery } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { calcTotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 import { sendOrderMail } from 'graphql/queries';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { parseResponseError } from 'utilities/parse-response-error';
 
 // .envからBCC mailAddress取得
 const mailBccAddress = process.env.NEXT_PUBLIC_MAIL_BCC_ADDRESS as string;
@@ -38,8 +39,7 @@ export const useSendMail = () => {
     // 小計、税、合計を計算
     const { total, taxes, subtotal } = calcTotalFromProductList(products);
 
-    //////////////////////
-    // 注文完了メール送信
+    // requestパラメータ設定
     const sendMailVariables: SendOrderMailQueryVariables = {
       toAddress: clinic.mailAddress,
       bccAddress: mailBccAddress,
@@ -59,12 +59,24 @@ export const useSendMail = () => {
       deliveryInterval: deliveryInterval,
       ...restClinic,
     };
-    console.table(sendMailVariables);
-    const sendMailResult = (await API.graphql(
-      graphqlOperation(sendOrderMail, sendMailVariables),
-    )) as GraphQLResult<string>;
-    console.log('sendMailResult', sendMailResult);
-    //////////////////////
+
+    try {
+      // メール送信
+      const sendMailResult = (await API.graphql(
+        graphqlOperation(sendOrderMail, sendMailVariables),
+      )) as GraphQLResult<SendOrderMailQuery>;
+
+      if (!sendMailResult.data || !sendMailResult.data.sendOrderMail) {
+        throw Error('It returned null that an API which executed to send mail.');
+      }
+
+      console.log('order sendMailResult', sendMailResult.data.sendOrderMail);
+      return sendMailResult.data.sendOrderMail;
+    } catch (error) {
+      const parseError = parseResponseError(error);
+      console.error('To send order error mail was occurred', parseError);
+      throw parseError;
+    }
   };
   return { sendMail };
 };

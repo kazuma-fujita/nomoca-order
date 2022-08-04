@@ -203,4 +203,8 @@ type Query {
     deliveryStartMonth: Int
     deliveryInterval: Int
   ): String @function(name: "sendOrderMail-${env}") @auth(rules: [{ allow: private, provider: userPools }])
+
+  sendErrorMail(toAddress: String!, subject: String!, body: String!): String
+    @function(name: "sendErrorMail-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
 }

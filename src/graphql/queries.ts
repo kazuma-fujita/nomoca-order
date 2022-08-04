@@ -726,3 +726,8 @@ export const sendOrderMail = /* GraphQL */ `
     )
   }
 `;
+export const sendErrorMail = /* GraphQL */ `
+  query SendErrorMail($toAddress: String!, $subject: String!, $body: String!) {
+    sendErrorMail(toAddress: $toAddress, subject: $subject, body: $body)
+  }
+`;
