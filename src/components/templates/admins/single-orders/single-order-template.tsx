@@ -12,7 +12,7 @@ export const SingleOrderTemplate = () => {
   return (
     <>
       <Box width='auto' display='flex' justifyContent='flex-start' mb={4}>
-        <ExportSingleOrderCSVButton orders={selectedItems} />
+        <ExportSingleOrderCSVButton selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
       </Box>
       <Box width='auto' display='flex' justifyContent='center' mb={4}>
         <SingleOrderSearchForm />

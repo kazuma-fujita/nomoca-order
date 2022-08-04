@@ -8,10 +8,11 @@ import { useExportSingleOrderCSVAndUpdateDeliveryStatus } from 'hooks/admins/sin
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 type Props = {
-  orders: ExtendedOrder<Order>[];
+  selectedItems: ExtendedOrder<Order>[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<ExtendedOrder<Order>[]>>;
 };
 
-export const ExportSingleOrderCSVButton = ({ orders }: Props) => {
+export const ExportSingleOrderCSVButton = ({ selectedItems, setSelectedItems }: Props) => {
   const { exportSingleOrderCSVAndUpdateDeliveryStatus, isLoading, error, resetState } =
     useExportSingleOrderCSVAndUpdateDeliveryStatus();
   const [on, toggle] = useToggle(false);
@@ -23,10 +24,12 @@ export const ExportSingleOrderCSVButton = ({ orders }: Props) => {
 
   const submitHandler = useCallback(async () => {
     try {
-      await exportSingleOrderCSVAndUpdateDeliveryStatus(orders);
+      await exportSingleOrderCSVAndUpdateDeliveryStatus(selectedItems);
+      // CSVを出力したらチェックボックス選択を全て解除
+      setSelectedItems([]);
       cancelHandler();
     } catch (error) {}
-  }, [exportSingleOrderCSVAndUpdateDeliveryStatus, orders, cancelHandler]);
+  }, [exportSingleOrderCSVAndUpdateDeliveryStatus, selectedItems, setSelectedItems, cancelHandler]);
 
   return (
     <>
@@ -35,7 +38,7 @@ export const ExportSingleOrderCSVButton = ({ orders }: Props) => {
         variant='contained'
         color='info'
         startIcon={<FileDownloadIcon />}
-        disabled={orders.length === 0}
+        disabled={selectedItems.length === 0}
       >
         選択した注文をCSV出力して顧客に発送通知をする
       </Button>

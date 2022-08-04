@@ -11,13 +11,18 @@ const SingleOrderSearchParamContext = createContext({} as ProviderProps);
 
 export const useSingleOrderSearchParam = () => useContext(SingleOrderSearchParamContext);
 
+// admin画面の注文検索条件状態context
 export const SingleOrderSearchParamContextProvider: React.FC = ({ children }) => {
   // useStateの初期値。配送状況は全件が初期値
   const initialState: SingleOrderSearchParam = {
+    // 配送状況。デフォルト全件
     deliveryStatus: DeliveryStatus.none,
+    // clinic name, phoneNumber検索は未実装
     name: '',
     phoneNumber: '',
   };
+
+  // グローバルに持つ検索条件
   const [searchState, setSearchState] = useState<SingleOrderSearchParam>(initialState);
   return (
     <SingleOrderSearchParamContext.Provider value={{ searchState, setSearchState }}>

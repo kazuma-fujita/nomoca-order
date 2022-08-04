@@ -132,7 +132,7 @@ export const useExportOrderCSV = () => {
         throw Error('A current date is not found.');
       }
 
-      if (!orders.length) {
+      if (orders.length === 0) {
         throw Error('It is empty that an ID list which export a csv file.');
       }
       // orderとproductからCSVの行objectを生成。更にordersの多次元object配列をflatMapで1次元配列に加工。
@@ -146,6 +146,7 @@ export const useExportOrderCSV = () => {
       // UTF8 to Shift_JIS
       const outputSJIS = iconv.encode(outputUTF8, 'Shift_JIS');
       const blob = new Blob([outputSJIS], { type: 'application/octet-binary' });
+      // aタグ生成
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;

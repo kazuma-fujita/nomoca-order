@@ -1,51 +1,121 @@
-import { DeliveryStatus, Order, SendMailType } from 'API';
+import {
+  DeliveryStatus,
+  Order,
+  SendMailType,
+  UpdateOrderInput,
+  UpdateOrderMutation,
+  UpdateOrderMutationVariables,
+} from 'API';
+import { API, graphqlOperation } from 'aws-amplify';
+import { updateOrder } from 'graphql/mutations';
 import { useExportOrderCSV } from 'hooks/admins/use-export-order-csv';
 import { useSendMail } from 'hooks/commons/use-send-mail';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { useUpdateSingleOrderDeliveryStatus } from './use-update-single-order-delivery-status';
+import { GraphQLResult } from '@aws-amplify/api';
+import { useNowDate } from 'stores/use-now-date';
+import {
+  filteredPromiseFulfilledResult,
+  filteredPromiseRejectedResult,
+} from 'functions/filter-promise-settled-results';
 
 export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
+  const { data: now } = useNowDate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { exportCSV } = useExportOrderCSV();
-  const { updateOrderDeliveryStatus } = useUpdateSingleOrderDeliveryStatus();
   const { sendMail } = useSendMail();
 
   const exportSingleOrderCSVAndUpdateDeliveryStatus = async (orders: ExtendedOrder<Order>[]) => {
     setIsLoading(true);
-    // 未発送ステータスのorderのみステータス変更、CSV出力、メール送信実行。発送済、注文キャンセルステータスは除外
-    const filteredOrders = orders.filter((order) => order.deliveryStatus === DeliveryStatus.ordered);
     try {
-      // TODO:  内部実装にPromise.allSettledで並列処理を入れる
-      await updateOrderDeliveryStatus(filteredOrders);
-      //TODO: 登録成功したデータのみCSV出力する。エラーのデータは画面表示 & Slack、cloudWatch送信
-      await exportCSV(filteredOrders);
+      if (!now) {
+        throw Error('A current date is not found.');
+      }
+
+      if (orders.length === 0) {
+        throw Error('注文を選択してください');
+      }
+
+      // 未発送ステータスのorderのみステータス変更、CSV出力、メール送信実行。発送済、注文キャンセルステータスは除外
+      const filteredOrders = orders.filter((order) => order.deliveryStatus === DeliveryStatus.ordered);
+
+      if (filteredOrders.length === 0) {
+        throw Error('未発送の注文を選択してください');
+      }
+
+      // Promise.allSettledで並列処理。allSettledは途中でErrorが発生しても全ての処理を最後まで実行する
+      const updatedStatuses: PromiseSettledResult<ExtendedOrder<Order>>[] = await Promise.allSettled(
+        // mapはasync/awaitを使用するとpromiseを返却
+        filteredOrders.map(async (order) => {
+          // deliveryStatusを発送済み、発送日時に現在日時を設定
+          const input: UpdateOrderInput = {
+            id: order.id,
+            deliveryStatus: DeliveryStatus.delivered,
+            deliveredAt: now.toISOString(),
+          };
+          const variables: UpdateOrderMutationVariables = { input: input };
+
+          // データ更新実行
+          const result = (await API.graphql(
+            graphqlOperation(updateOrder, variables),
+          )) as GraphQLResult<UpdateOrderMutation>;
+
+          if (!result.data || !result.data.updateOrder) {
+            throw Error('It returned null that an API which executed to update order data.');
+          }
+          console.log('updatedOrder:', result.data.updateOrder);
+          // 処理成功時のresolveの値としてorderを返却
+          return order;
+        }),
+      );
+      console.table(updatedStatuses);
+
+      // 配送状況DB更新成功orderリスト抽出
+      const updatedSuccesses = filteredPromiseFulfilledResult(updatedStatuses);
+      // const updatedSuccesses = updatedStatuses
+      //   .filter((result) => result.status === 'fulfilled')
+      //   .map((result) => {
+      //     const fulfilled = result as PromiseFulfilledResult<ExtendedOrder<Order>>;
+      //     return fulfilled.value;
+      //   });
+
+      // 配送状況DB更新失敗orderリスト抽出
+      const updatedFails = filteredPromiseRejectedResult(updatedStatuses);
+      // const updatedFails = updatedStatuses
+      //   .filter((result) => result.status === 'rejected')
+      //   .map((result) => {
+      //     const fulfilled = result as PromiseRejectedResult;
+      //     return fulfilled.reason;
+      //   });
+
+      // 配送状況DB更新成功したデータのみCSV出力
+      await exportCSV(updatedSuccesses);
+
+      // Promise.allSettledでメール送信処理を同時並列実行
+      const results = await Promise.allSettled(
+        updatedSuccesses.map(
+          async (order) =>
+            // 注文配送メール送信
+            await sendMail({
+              sendMailType: SendMailType.deliveredSingleOrder,
+              products: order.normalizedProducts,
+              clinic: order.clinic,
+              staff: order.staff,
+              deliveryType: order.deliveryType,
+            }),
+        ),
+      );
+
+      // TODO: resultsを解析してエラー時はSlack通知 and CloudWatchに保存
+      console.log('send mail result', results);
     } catch (error) {
       setIsLoading(false);
       const parsedError = parseResponseError(error);
       setError(parsedError);
       throw parsedError;
     }
-
-    // メール送信は補助的な機能なので失敗してもDB登録処理をrollbackしない
-    // Promise.allSettledでメール送信処理を同時並列実行
-    const results = await Promise.allSettled(
-      filteredOrders.map(
-        async (order) =>
-          // 注文配送メール送信
-          await sendMail({
-            sendMailType: SendMailType.deliveredSingleOrder,
-            products: order.normalizedProducts,
-            clinic: order.clinic,
-            staff: order.staff,
-            deliveryType: order.deliveryType,
-          }),
-      ),
-    );
-    // TODO: resultsを解析してエラー時はSlack通知 and CloudWatchに保存
-    console.log('send mail result', results);
   };
 
   const resetState = useCallback(() => {

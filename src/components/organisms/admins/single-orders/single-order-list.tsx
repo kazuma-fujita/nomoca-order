@@ -9,7 +9,6 @@ import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import React, { useCallback } from 'react';
-import { useToggle } from 'react-use';
 import { TableHeader } from 'types/table-header';
 
 const header: TableHeader[] = [
@@ -59,8 +58,7 @@ type Props = {
 export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
   const fetchReturn = useFetchOrderList();
   const { data } = fetchReturn;
-  const [isSelectedAll, setIsSelectedAll] = useToggle(false);
-  // ヘッダーの注文全件選択/解除チェックボックス
+  // 注文全件選択/解除チェックボックス クリックハンドラー
   const handleAllSelectItem = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!data) return;
@@ -68,14 +66,12 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
       if (isChecked) {
         // 全件チェックされたら注文全件行にチェックを入れる
         setSelectedItems(data);
-        setIsSelectedAll(true);
       } else {
         // 全件チェックが外されたら注文全件行のチェックを外す
         setSelectedItems([]);
-        setIsSelectedAll(false);
       }
     },
-    [data, setIsSelectedAll, setSelectedItems],
+    [data, setSelectedItems],
   );
 
   return (
@@ -88,21 +84,14 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
         <Checkbox
           color='primary'
           indeterminate={selectedItems.length > 0 ? (data ? selectedItems.length !== data.length : false) : false}
-          checked={isSelectedAll}
+          checked={selectedItems.length > 0}
           onChange={handleAllSelectItem}
         />
       }
     >
       {data &&
         data.map((item) => (
-          <Row
-            key={item.id}
-            rowItem={item}
-            selectedItems={selectedItems}
-            orderItemsLength={data.length}
-            setSelectedItems={setSelectedItems}
-            setIsSelectedAll={setIsSelectedAll}
-          />
+          <Row key={item.id} rowItem={item} selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
         ))}
     </CommonTableContainer>
   );
@@ -111,24 +100,19 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
 type RowProps = {
   rowItem: ExtendedOrder<Order>;
   selectedItems: ExtendedOrder<Order>[];
-  orderItemsLength: number;
   setSelectedItems: React.Dispatch<React.SetStateAction<ExtendedOrder<Order>[]>>;
-  setIsSelectedAll: (nextValue?: any) => void;
 };
 
-const Row = ({ rowItem, selectedItems, orderItemsLength, setSelectedItems, setIsSelectedAll }: RowProps) => {
+const Row = ({ rowItem, selectedItems, setSelectedItems }: RowProps) => {
+  // 注文各行のチェックボックス クリックハンドラー
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const isChecked = event.target.checked;
+      // チェックされたら注文選択配列に追加。チェックが外されたら配列から除外
       const newItems = isChecked ? [...selectedItems, rowItem] : selectedItems.filter((item) => item.id !== rowItem.id);
       setSelectedItems(newItems);
-      if (!isChecked && newItems.length === 0) {
-        setIsSelectedAll(false);
-      } else if (isChecked && newItems.length === orderItemsLength) {
-        setIsSelectedAll(true);
-      }
     },
-    [rowItem, orderItemsLength, selectedItems, setIsSelectedAll, setSelectedItems],
+    [rowItem, selectedItems, setSelectedItems],
   );
 
   return (
