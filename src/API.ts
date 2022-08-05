@@ -212,6 +212,7 @@ export type OrderProduct = {
   unitPrice: number,
   quantity: number,
   viewOrder: number,
+  isExportCSV: boolean,
   owner?: string | null,
   createdAt: string,
   updatedAt: string,
@@ -253,6 +254,7 @@ export type CreateOrderProductInput = {
   unitPrice: number,
   quantity: number,
   viewOrder: number,
+  isExportCSV: boolean,
   owner?: string | null,
 };
 
@@ -262,6 +264,7 @@ export type ModelOrderProductConditionInput = {
   unitPrice?: ModelIntInput | null,
   quantity?: ModelIntInput | null,
   viewOrder?: ModelIntInput | null,
+  isExportCSV?: ModelBooleanInput | null,
   owner?: ModelStringInput | null,
   and?: Array< ModelOrderProductConditionInput | null > | null,
   or?: Array< ModelOrderProductConditionInput | null > | null,
@@ -280,6 +283,13 @@ export type ModelIntInput = {
   attributeType?: ModelAttributeTypes | null,
 };
 
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type UpdateOrderProductInput = {
   id: string,
   orderID?: string | null,
@@ -287,6 +297,7 @@ export type UpdateOrderProductInput = {
   unitPrice?: number | null,
   quantity?: number | null,
   viewOrder?: number | null,
+  isExportCSV?: boolean | null,
   owner?: string | null,
 };
 
@@ -453,13 +464,6 @@ export type ModelProductConditionInput = {
 export type ModelOrderTypeInput = {
   eq?: OrderType | null,
   ne?: OrderType | null,
-};
-
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateProductInput = {
@@ -742,6 +746,7 @@ export type CreateOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -806,6 +811,7 @@ export type UpdateOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -870,6 +876,7 @@ export type DeleteOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -929,6 +936,7 @@ export type CreateOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -949,6 +957,7 @@ export type UpdateOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -969,6 +978,7 @@ export type DeleteOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -1490,6 +1500,7 @@ export type GetOrderQuery = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -1557,6 +1568,7 @@ export type ListOrdersQuery = {
           unitPrice: number,
           quantity: number,
           viewOrder: number,
+          isExportCSV: boolean,
           owner?: string | null,
           createdAt: string,
           updatedAt: string,
@@ -1629,6 +1641,7 @@ export type ListOrdersSortedByCreatedAtQuery = {
           unitPrice: number,
           quantity: number,
           viewOrder: number,
+          isExportCSV: boolean,
           owner?: string | null,
           createdAt: string,
           updatedAt: string,
@@ -2265,6 +2278,7 @@ export type OnCreateOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -2328,6 +2342,7 @@ export type OnUpdateOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -2391,6 +2406,7 @@ export type OnDeleteOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -2449,6 +2465,7 @@ export type OnCreateOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -2468,6 +2485,7 @@ export type OnUpdateOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -2487,6 +2505,7 @@ export type OnDeleteOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,

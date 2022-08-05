@@ -57,6 +57,7 @@ export const getOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           owner
           createdAt
           updatedAt
@@ -117,6 +118,7 @@ export const listOrders = /* GraphQL */ `
             unitPrice
             quantity
             viewOrder
+            isExportCSV
             owner
             createdAt
             updatedAt
@@ -189,6 +191,7 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
             unitPrice
             quantity
             viewOrder
+            isExportCSV
             owner
             createdAt
             updatedAt

@@ -1,13 +1,12 @@
 import type { ComponentStoryObj } from '@storybook/react';
 import { OrderType } from 'API';
 import { ClinicContextProvider } from 'hooks/clinics/use-fetch-clinic';
-import { orderFormDefaultValues } from 'hooks/orders/use-input-order';
 import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { clinicMock } from 'mocks/clinic.mock';
 import { productListMock } from 'mocks/product.mock';
 import { staffListMock } from 'mocks/staff.mock';
-import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
+import { OrderFormParam, OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { OrderFormStorybookProps } from 'types/storybook-types';
 import { OrderFormTemplate } from './order-form-template';
 
@@ -108,6 +107,13 @@ const description = `
 | 遷移先 | 入力画面 |
 
 `;
+
+const orderFormDefaultValues: OrderFormParam = {
+  id: '',
+  products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1, isExportCSV: true }],
+  staffID: '',
+  clinicID: '',
+};
 
 const Wrapper: React.FC<OrderFormStorybookProps> = ({ products, staff, clinic }) => (
   <ProductListContextProvider

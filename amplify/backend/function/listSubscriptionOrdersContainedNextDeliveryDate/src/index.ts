@@ -120,20 +120,21 @@ export const handler = async (event: any) => {
     return responseItems;
   } catch (err) {
     const error: Error = parseResponseError(err);
-    console.error('error:', error);
-    const body = {
-      errors: [
-        {
-          status: 400,
-          message: error.message,
-          stack: error.stack,
-        },
-      ],
-    };
-    return {
-      statusCode: 400,
-      body: JSON.stringify(body),
-    };
+    console.error('list subscription order error:', error);
+    // const body = {
+    //   errors: [
+    //     {
+    //       status: 400,
+    //       message: error.message,
+    //       stack: error.stack,
+    //     },
+    //   ],
+    // };
+    // return {
+    //   statusCode: 400,
+    //   body: JSON.stringify(body),
+    // };
+    return error.message;
   }
 };
 

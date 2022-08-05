@@ -135,9 +135,14 @@ export const useExportOrderCSV = () => {
       if (orders.length === 0) {
         throw Error('It is empty that an ID list which export a csv file.');
       }
-      // orderとproductからCSVの行objectを生成。更にordersの多次元object配列をflatMapで1次元配列に加工。
+
+      // ordersに紐づくproduct配列をflatMapで1次元配列に加工しCSV行のobjectを生成
+      // isExportCSV=trueの商品のみcsv行に追加
+      // 1orderに複数productが存在する場合、productの数分のcsv行objectを生成する
       const records = orders.flatMap((order: ExtendedOrder<SubscriptionOrder | Order>) =>
-        order.normalizedProducts.map((product: NormalizedProduct) => createRecord(order, product, now)),
+        order.normalizedProducts
+          .filter((product: NormalizedProduct) => product.isExportCSV)
+          .map((product: NormalizedProduct) => createRecord(order, product, now)),
       );
       // CSVヘッダーと1次元配列化されたobject配列を結合後、object配列の値のみをObject.valuesで抜き出し配列化。
       // 次にjoinでカンマ区切りのCSV行として文字列へ変換しmapで配列化。

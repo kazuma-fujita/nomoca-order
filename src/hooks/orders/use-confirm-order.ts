@@ -20,17 +20,18 @@ export const useConfirmOrder = () => {
     }
   }, [basePath, formParam, router]);
 
-  // 注文するボタン押下処
+  // 注文するボタン クリックハンドラー
   const submitHandler = async () => {
     try {
       if (!formParam || !formParam.products) {
         throw Error('Form Values and products data are not found.');
       }
-      let products = formParam.products;
-      if (orderType === OrderType.singleOrder && formParam.deliveryType) {
-        // 通常注文の場合、速達料金、配送手数料を配列に追加
-        products = addDeliveryFeeAndExpressObjectToProductList(formParam.products, formParam.deliveryType);
-      }
+      const products =
+        orderType === OrderType.singleOrder && formParam.deliveryType
+          ? // 通常注文の場合、速達料金、配送手数料を配列に追加
+            addDeliveryFeeAndExpressObjectToProductList(formParam.products, formParam.deliveryType)
+          : formParam.products;
+
       // 重複商品配列はuseOrderFormでmerge済み。更に速達、配送手数料を加えた商品配列を登録
       await createOrder(orderType, { ...formParam, products: products });
       // 完了画面へ遷移

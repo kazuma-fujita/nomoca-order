@@ -12,6 +12,7 @@ const orderProduct: OrderProduct = {
   unitPrice: 1000,
   quantity: 1,
   viewOrder: 1,
+  isExportCSV: true,
   createdAt: '2021-11-25T14:32:55Z',
   updatedAt: '2021-11-25T14:32:55Z',
 };

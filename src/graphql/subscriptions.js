@@ -67,6 +67,7 @@ export const onCreateOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           owner
           createdAt
           updatedAt
@@ -122,6 +123,7 @@ export const onUpdateOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           owner
           createdAt
           updatedAt
@@ -177,6 +179,7 @@ export const onDeleteOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           owner
           createdAt
           updatedAt
@@ -229,6 +232,7 @@ export const onCreateOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      isExportCSV
       owner
       createdAt
       updatedAt
@@ -244,6 +248,7 @@ export const onUpdateOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      isExportCSV
       owner
       createdAt
       updatedAt
@@ -259,6 +264,7 @@ export const onDeleteOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      isExportCSV
       owner
       createdAt
       updatedAt

@@ -1,21 +1,12 @@
-import { OrderType } from 'API';
+import { OrderType, Product } from 'API';
 import { FormScreenQuery } from 'constants/form-screen-query';
 import { Path } from 'constants/path';
-import { mergeOrderFormProductList } from 'functions/orders/merge-order-form-product-list';
 import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
-
-// order-form/confirm-template-stories の OrderFormParamContextProvider 初期値としても利用
-export const orderFormDefaultValues: OrderFormParam = {
-  id: '',
-  products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
-  staffID: '',
-  clinicID: '',
-};
 
 // 注文・定期便作成、定期便更新ボタン押下時処理
 export const useUpsertOrderButton = (id?: string, products?: NormalizedProduct[], staffID?: string) => {
@@ -29,7 +20,7 @@ export const useUpsertOrderButton = (id?: string, products?: NormalizedProduct[]
   const defaultValues: OrderFormParam = useMemo(
     () => ({
       id: id ?? '',
-      products: products ?? [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1 }],
+      products: products ?? [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1, isExportCSV: true }],
       deleteProducts: products ?? [],
       staffID: staffID ?? '',
     }),
@@ -75,14 +66,14 @@ export const useInputOrder = () => {
   // 確認するボタン押下時処理
   const submitHandler = handleSubmit(
     useCallback(
-      (data: OrderFormParam) => {
-        if (!data.products || !productList || !productList.length) {
+      (param: OrderFormParam) => {
+        if (!param.products || !productList || !productList.length) {
           throw Error('Input form values are not found.');
         }
         // 入力された商品配列データをviewOrder順に並び替え、重複商品はquantityを合計してmergeし重複削除。
-        const mergedProducts = mergeOrderFormProductList(data.products, productList);
+        const mergedProducts = mergeOrderFormProductList(param.products, productList);
         // 確認画面に表示する為Stateに保存。確認画面から修正するボタン押下時も入力画面にmerge済み商品を表示する為、このタイミングで重複商品mergeを実行する
-        mutate({ ...data, products: mergedProducts }, false);
+        mutate({ ...param, products: mergedProducts }, false);
         router.push(`${basePath}?${FormScreenQuery.confirm}`, undefined, { shallow: true });
       },
       [productList, mutate, router, basePath],
@@ -90,4 +81,59 @@ export const useInputOrder = () => {
   );
 
   return { formReturn, fieldArrayReturn, submitHandler, cancelHandler };
+};
+
+const mergeOrderFormProductList = (
+  baseProducts: NormalizedProduct[],
+  masterProducts: Product[],
+): NormalizedProduct[] => {
+  // DBに登録されているproductマスターデータから必要な商品情報を取得
+  const normalizedProducts: NormalizedProduct[] = baseProducts.map((item) => {
+    const product = masterProducts.find((product) => product.id === item.productID);
+    if (!product) {
+      throw Error('A product master is not found.');
+    }
+    return {
+      relationID: product.id,
+      productID: product.id,
+      name: product.name,
+      unitPrice: product.unitPrice,
+      quantity: item.quantity,
+      viewOrder: product.viewOrder,
+      isExportCSV: product.isExportCSV,
+    };
+  });
+
+  // DBに登録されているproductマスターデータのviewOrder昇順でsort
+  const sortedProducts = normalizedProducts.sort((a, b) => {
+    if (!a.viewOrder || !b.viewOrder) {
+      throw Error('No view order found to compare.');
+    }
+    return a.viewOrder > b.viewOrder ? -1 : 1;
+  });
+
+  // 入力画面で同じ商品が複数選択されてる場合、個数を合算してlistをmerge
+  const mergedProducts = sortedProducts.reduce(
+    (results: NormalizedProduct[], current: NormalizedProduct, currentIndex: number) => {
+      const prev = results.find((item) => {
+        if (!item.viewOrder || !current.viewOrder) {
+          throw Error('No view order found to compare.');
+        }
+        return item.viewOrder === current.viewOrder;
+      });
+      if (currentIndex > 0 && prev) {
+        const total = { ...prev, quantity: prev.quantity + current.quantity };
+        return results.map((item) => {
+          if (!item.viewOrder || !current.viewOrder) {
+            throw Error('No view order found to compare.');
+          }
+          return item.viewOrder === current.viewOrder ? total : item;
+        });
+      } else {
+        return [...results, current];
+      }
+    },
+    [],
+  );
+  return mergedProducts;
 };

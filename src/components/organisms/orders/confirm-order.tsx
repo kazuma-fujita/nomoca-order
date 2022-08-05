@@ -73,11 +73,11 @@ const ProductsLabel = () => {
   const { data: formParam, orderType } = useOrderFormParam();
   if (!formParam || !formParam.products) return <ErrorAlert>Form Values and products data are not found.</ErrorAlert>;
 
-  let products = formParam.products;
-  if (orderType === OrderType.singleOrder && formParam.deliveryType) {
-    // 通常注文の場合、速達料金、配送手数料を配列に追加
-    products = addDeliveryFeeAndExpressObjectToProductList(formParam.products, formParam.deliveryType);
-  }
+  const products =
+    orderType === OrderType.singleOrder && formParam.deliveryType
+      ? // 通常注文の場合、速達料金、配送手数料を配列に追加
+        addDeliveryFeeAndExpressObjectToProductList(formParam.products, formParam.deliveryType)
+      : formParam.products;
   return <ReceiptTable products={products} />;
 };
 

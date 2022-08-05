@@ -4,7 +4,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { listSubscriptionOrdersContainedNextDeliveryDate } from '../../graphql/queries';
+import { listSubscriptionOrdersContainedNextDeliveryDate } from 'graphql/queries';
 
 export type NormalizedProduct = {
   relationID: string; // OrderProduct or SubscriptionOrderProduct の ID。定期便削除時はrelationIDでProductとのリレーションレコードであるSubscriptionOrderProductを削除
@@ -12,6 +12,7 @@ export type NormalizedProduct = {
   name: string;
   unitPrice: number;
   quantity: number;
+  isExportCSV: boolean; // useExportOrderCSV 内でisExportCSV=falseの場合、csv行に出力しない
   viewOrder?: number | null; // 入力確認画面で商品を表示するソート順。useCreateOrderでは値をOrderProductに登録
 };
 
@@ -21,11 +22,11 @@ export type ExtendedOrder<T> = T & {
 
 const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] => {
   if (!order.products) {
-    throw Error('Subscription order products is null.');
+    throw Error('Subscription order products are null.');
   }
   return order.products.items.map((orderProduct) => {
     if (!orderProduct) {
-      throw Error('Subscription order products is null.');
+      throw Error('A subscription order product relation is null.');
     }
     return {
       relationID: orderProduct.id,
@@ -33,6 +34,7 @@ const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct
       name: orderProduct.product.name,
       unitPrice: orderProduct.product.unitPrice,
       quantity: orderProduct.quantity,
+      isExportCSV: orderProduct.product.isExportCSV,
     };
   });
 };

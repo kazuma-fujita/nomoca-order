@@ -5,29 +5,36 @@ import {
   ListOrdersSortedByCreatedAtQueryVariables,
   ModelSortDirection,
   Order,
-  OrderProduct,
   Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
+import { SingleOrderSearchParam } from 'components/organisms/admins/single-orders/search-form/single-order-search-form';
 import { SWRKey } from 'constants/swr-key';
 import { listOrdersSortedByCreatedAt } from 'graphql/queries';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { useSingleOrderSearchParam } from '../admins/single-orders/use-single-order-search-param';
-import { SingleOrderSearchParam } from 'components/organisms/admins/single-orders/search-form/single-order-search-form';
+import { useSingleOrderSearchParam } from 'hooks/admins/single-orders/use-single-order-search-param';
 
-const createNormalizedProduct = (orderProduct: OrderProduct | null): NormalizedProduct =>
-  ({
-    relationID: orderProduct?.id,
-    productID: orderProduct?.orderID,
-    name: orderProduct?.name,
-    unitPrice: orderProduct?.unitPrice,
-    quantity: orderProduct?.quantity,
-  } as NormalizedProduct);
+const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
+  if (!order.products) {
+    throw Error('Order products are null.');
+  }
 
-const createNormalizedProducts = (order: Order): NormalizedProduct[] =>
-  order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct)) as NormalizedProduct[];
+  return order.products.items.map((orderProduct) => {
+    if (!orderProduct) {
+      throw Error('An order product relation is null.');
+    }
+    return {
+      relationID: orderProduct.id,
+      productID: orderProduct.orderID,
+      name: orderProduct.name,
+      unitPrice: orderProduct.unitPrice,
+      quantity: orderProduct.quantity,
+      isExportCSV: orderProduct.isExportCSV,
+    } as NormalizedProduct;
+  });
+};
 
 const fetcher = async (_: string, searchState: SingleOrderSearchParam): Promise<ExtendedOrder<Order>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
@@ -46,10 +53,6 @@ const fetcher = async (_: string, searchState: SingleOrderSearchParam): Promise<
     graphqlOperation(listOrdersSortedByCreatedAt, variables),
   )) as GraphQLResult<ListOrdersSortedByCreatedAtQuery>;
 
-  return transformOrderListIntoExtendedList(result);
-};
-
-const transformOrderListIntoExtendedList = (result: GraphQLResult<ListOrdersSortedByCreatedAtQuery>) => {
   if (!result.data || !result.data.listOrdersSortedByCreatedAt || !result.data.listOrdersSortedByCreatedAt.items) {
     throw Error('An API returned null.');
   }
@@ -68,7 +71,7 @@ const transformOrderListIntoExtendedList = (result: GraphQLResult<ListOrdersSort
 
   const extendedItems: ExtendedOrder<Order>[] = items.map((item) => ({
     ...item,
-    normalizedProducts: createNormalizedProducts(item),
+    normalizedProducts: generateNormalizedProducts(item),
   }));
 
   return extendedItems;

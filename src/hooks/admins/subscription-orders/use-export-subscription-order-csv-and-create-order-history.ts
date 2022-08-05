@@ -130,6 +130,7 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
           unitPrice: item.product.unitPrice,
           quantity: item.quantity,
           viewOrder: item.product.viewOrder,
+          isExportCSV: item.product.isExportCSV,
           owner: order.owner,
         };
 

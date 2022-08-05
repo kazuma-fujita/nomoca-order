@@ -77,6 +77,7 @@ type OrderProduct
   unitPrice: Int!
   quantity: Int!
   viewOrder: Int!
+  isExportCSV: Boolean!
   owner: String # Order同様ownerField追加。Nullableにすると登録時に自動でログインしているownerが登録される
 }
 

@@ -32,6 +32,7 @@ type Props = {
 
 export const OrderFormParamContextProvider: React.FC<Props> = ({ orderType, initialOrderFormParam, ...rest }) => {
   const response = useFetch<OrderFormParam>(SWRKey.orderFormParam, null);
+  // storybook表示用に初期値があれば設定
   const result = initialOrderFormParam ? { ...response, data: initialOrderFormParam } : response;
   return <OrderFormParamContext.Provider value={{ ...result, orderType }} {...rest} />;
 };

@@ -105,6 +105,7 @@ const createOrderProducts = async (newOrderID: string, productRelations: Normali
       unitPrice: item.unitPrice,
       quantity: item.quantity,
       viewOrder: item.viewOrder,
+      isExportCSV: item.isExportCSV,
     };
     const variables: CreateOrderProductMutationVariables = { input: input };
     // データ新規登録実行
