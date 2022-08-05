@@ -15,7 +15,7 @@ export const SingleOrderTemplate = () => {
         <ExportSingleOrderCSVButton selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
       </Box>
       <Box width='auto' display='flex' justifyContent='center' mb={4}>
-        <SingleOrderSearchForm />
+        <SingleOrderSearchForm setSelectedItems={setSelectedItems} />
       </Box>
       <SingleOrderList selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
     </>
