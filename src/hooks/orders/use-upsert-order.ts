@@ -38,7 +38,6 @@ import { getClinic, getStaff } from 'graphql/queries';
 import { useSendMail } from 'hooks/commons/use-send-mail';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
-import { useNowDate } from 'stores/use-now-date';
 import { OrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
@@ -119,7 +118,7 @@ const createOrderProducts = async (newOrderID: string, productRelations: Normali
   }
 };
 
-const createSingleOrder = async (param: OrderFormParam, now: Date) => {
+const createSingleOrder = async (param: OrderFormParam) => {
   if (!param.deliveryType || !param.clinicID || !param.staffID || !param.products) {
     throw Error('It is null that a required field which use to create or update order param.');
   }
@@ -136,8 +135,6 @@ const createSingleOrder = async (param: OrderFormParam, now: Date) => {
     deliveryType: param.deliveryType,
     clinicID: param.clinicID,
     staffID: param.staffID,
-    // 一覧の注文日時。createdAtを利用しない理由として、定期便csv出力時の履歴用orderデータ作成時に定期便申し込み日時をorderedAtに設定
-    orderedAt: now.toISOString(),
   };
 
   const variables: CreateOrderMutationVariables = { input: input };
@@ -218,18 +215,13 @@ export const useCreateOrder = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
-  const { data: now } = useNowDate();
   const { sendMail } = useSendMail();
 
   const createOrder = async (orderType: OrderType, param: OrderFormParam) => {
     setIsLoading(true);
     try {
-      if (!now) {
-        throw Error('A current date is not found.');
-      }
-
       // OrderTypeはpagesでContextに保存している値
-      orderType === OrderType.singleOrder ? await createSingleOrder(param, now) : await createSubscriptionOrder(param);
+      orderType === OrderType.singleOrder ? await createSingleOrder(param) : await createSubscriptionOrder(param);
       // 更新後データ再fetch実行
       mutate(orderType === OrderType.singleOrder ? SWRKey.orderList : SWRKey.subscriptionOrderList);
       setError(null);

@@ -11,7 +11,7 @@ export const SearchDeliveryStatusSelectBox = ({ control }: Props) => (
   <Controller
     name='deliveryStatus'
     control={control}
-    defaultValue={DeliveryStatus.none}
+    defaultValue={DeliveryStatus.ordered} // デフォルト未発送
     rules={{
       required: '配送状況を選択してください',
       pattern: {
@@ -22,7 +22,6 @@ export const SearchDeliveryStatusSelectBox = ({ control }: Props) => (
     render={({ field, formState: { errors } }) => (
       <TextField
         select
-        // fullWidth
         label='配送状況'
         error={Boolean(errors.deliveryStatus)}
         helperText={errors.deliveryStatus && errors.deliveryStatus.message}

@@ -60,7 +60,6 @@ type Order
   staff: Staff! @hasOne(fields: ["staffID"])
   deliveryStatus: DeliveryStatus!
   deliveryType: DeliveryType!
-  orderedAt: AWSDateTime!
   deliveredAt: AWSDateTime
   createdAt: AWSDateTime!
   type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])

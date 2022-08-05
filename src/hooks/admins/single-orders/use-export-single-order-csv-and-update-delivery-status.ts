@@ -64,7 +64,7 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
         sendMailSuccesses.length
       }`;
       const sendMailFailedBody = `Failed email sending:\n${sendMailFails.join('\n')}\ntotal: ${sendMailFails.length}`;
-      const notificationMailBody = `${updatedSuccessBody}\n${updatedFailedBody}\n\n${sendMailSuccessBody}\n${sendMailFailedBody}`;
+      const notificationMailBody = `${updatedSuccessBody}\n\n${updatedFailedBody}\n\n\n${sendMailSuccessBody}\n\n${sendMailFailedBody}`;
       // 注文状況更新、メール送信結果を運用メール通知
       await sendErrorMail({
         subject: notificationMailSubject,

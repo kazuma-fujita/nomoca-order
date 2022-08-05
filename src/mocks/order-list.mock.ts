@@ -32,7 +32,6 @@ const orderItem: Order = {
   staff: staffMock,
   deliveryStatus: DeliveryStatus.ordered,
   deliveryType: DeliveryType.regular,
-  orderedAt: '2021-01-20T09:32:55Z',
   deliveredAt: '2021-01-25T09:32:55Z',
   createdAt: '2022-01-25T09:32:55Z',
   updatedAt: '2022-01-25T14:32:55Z',

@@ -15,8 +15,8 @@ export const useSingleOrderSearchParam = () => useContext(SingleOrderSearchParam
 export const SingleOrderSearchParamContextProvider: React.FC = ({ children }) => {
   // useStateの初期値。配送状況は全件が初期値
   const initialState: SingleOrderSearchParam = {
-    // 配送状況。デフォルト全件
-    deliveryStatus: DeliveryStatus.none,
+    // 配送状況。デフォルト未発送
+    deliveryStatus: DeliveryStatus.ordered,
     // clinic name, phoneNumber検索は未実装
     name: '',
     phoneNumber: '',

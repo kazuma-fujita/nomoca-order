@@ -114,7 +114,6 @@ export const createOrder = /* GraphQL */ `
       }
       deliveryStatus
       deliveryType
-      orderedAt
       deliveredAt
       createdAt
       type
@@ -173,7 +172,6 @@ export const updateOrder = /* GraphQL */ `
       }
       deliveryStatus
       deliveryType
-      orderedAt
       deliveredAt
       createdAt
       type
@@ -232,7 +230,6 @@ export const deleteOrder = /* GraphQL */ `
       }
       deliveryStatus
       deliveryType
-      orderedAt
       deliveredAt
       createdAt
       type

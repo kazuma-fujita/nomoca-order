@@ -11,7 +11,6 @@ import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { OrderListContextProvider } from 'hooks/orders/use-fetch-order-list';
-import { NowDateContextProvider } from 'stores/use-now-date';
 import { SingleOrderSearchParamContextProvider } from 'hooks/admins/single-orders/use-single-order-search-param';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -33,11 +32,9 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
             <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
               <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
                 <ClinicContextProvider>
-                  <NowDateContextProvider>
-                    <Main>
-                      <OrderTemplate />
-                    </Main>
-                  </NowDateContextProvider>
+                  <Main>
+                    <OrderTemplate />
+                  </Main>
                 </ClinicContextProvider>
               </OrderFormParamContextProvider>
             </StaffListContextProvider>

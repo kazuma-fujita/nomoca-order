@@ -91,7 +91,6 @@ export const getOrder = /* GraphQL */ `
       }
       deliveryStatus
       deliveryType
-      orderedAt
       deliveredAt
       createdAt
       type
@@ -152,7 +151,6 @@ export const listOrders = /* GraphQL */ `
         }
         deliveryStatus
         deliveryType
-        orderedAt
         deliveredAt
         createdAt
         type
@@ -225,7 +223,6 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         }
         deliveryStatus
         deliveryType
-        orderedAt
         deliveredAt
         createdAt
         type
