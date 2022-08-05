@@ -1,12 +1,5 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import {
-  DeliveryStatus,
-  Order,
-  SendMailType,
-  UpdateOrderInput,
-  UpdateOrderMutation,
-  UpdateOrderMutationVariables,
-} from 'API';
+import { DeliveryStatus, Order, UpdateOrderInput, UpdateOrderMutation, UpdateOrderMutationVariables } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import {
   filteredPromiseFulfilledResult,
@@ -30,7 +23,7 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { exportCSV } = useExportOrderCSV();
-  const { sendMail } = useSendMail();
+  const { sendDeliverySingleOrderMail } = useSendMail();
 
   const exportSingleOrderCSVAndUpdateDeliveryStatus = async (orders: ExtendedOrder<Order>[]) => {
     setIsLoading(true);
@@ -51,44 +44,25 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
       }
 
       // 配送状況更新処理実行。内部的にPromise.allSettledでメール送信処理を同時並列実行
-      const updatedStatuses: PromiseSettledResult<ExtendedOrder<Order>>[] = await updateDeliveryStatus(
-        filteredOrders,
-        now,
-      );
-      // 配送状況更新成功/失敗orderリスト抽出
-      const updatedSuccesses = filteredPromiseFulfilledResult(updatedStatuses);
-      const updatedFails = filteredPromiseRejectedResult(updatedStatuses);
+      const { updatedSuccesses, updatedFails } = await updateDeliveryStatus(filteredOrders, now);
 
       // 配送状況更新成功したデータのみCSV出力
       await exportCSV(updatedSuccesses);
 
       // 配送状況更新成功データのみメール送信。Promise.allSettledでメール送信処理を同時並列実行
-      const sendMailStatuses: PromiseSettledResult<string>[] = await Promise.allSettled(
-        updatedSuccesses.map(
-          async (order) =>
-            // 注文配送メール送信
-            await sendMail({
-              sendMailType: SendMailType.deliveredSingleOrder,
-              products: order.normalizedProducts,
-              clinic: order.clinic,
-              staff: order.staff,
-              deliveryType: order.deliveryType,
-            }),
-        ),
-      );
-      // メール送信成功/失敗リスト抽出
-      const sendMailSuccesses = filteredPromiseFulfilledResult(sendMailStatuses);
-      const sendMailFails = filteredPromiseRejectedResult(sendMailStatuses);
+      const { sendMailSuccesses, sendMailFails } = await sendDeliverySingleOrderMail(updatedSuccesses);
+
       // 運用通知メールの件名・本文作成
       const notificationMailSubject = 'Completed to export a single order csv and to update a delivery status';
-      const notificationMailBody = `
-Successful updates:\n${updatedSuccesses.map((order) => order.clinic.name).join('\n')}\ntotal: ${
-        updatedSuccesses.length
-      }\n
-Failed updates:\n${updatedFails.join('\n')}\ntotal: ${updatedFails.length}\n\n
-Successful email sending:\n${sendMailSuccesses.join('\n')}\ntotal: ${sendMailSuccesses.length}\n
-Failed email sending:\n${sendMailFails.join('\n')}\ntotal: ${sendMailFails.length}\n
-`;
+      const updatedSuccessBody = `Successful updates:\n${updatedSuccesses
+        .map((order) => order.clinic.name)
+        .join('\n')}\ntotal: ${updatedSuccesses.length}`;
+      const updatedFailedBody = `Failed updates:\n${updatedFails.join('\n')}\ntotal: ${updatedFails.length}`;
+      const sendMailSuccessBody = `Successful email sending:\n${sendMailSuccesses.join('\n')}\ntotal: ${
+        sendMailSuccesses.length
+      }`;
+      const sendMailFailedBody = `Failed email sending:\n${sendMailFails.join('\n')}\ntotal: ${sendMailFails.length}`;
+      const notificationMailBody = `${updatedSuccessBody}\n${updatedFailedBody}\n\n${sendMailSuccessBody}\n${sendMailFailedBody}`;
       // 注文状況更新、メール送信結果を運用メール通知
       await sendErrorMail({
         subject: notificationMailSubject,
@@ -113,9 +87,9 @@ Failed email sending:\n${sendMailFails.join('\n')}\ntotal: ${sendMailFails.lengt
   return { exportSingleOrderCSVAndUpdateDeliveryStatus, isLoading, error, resetState };
 };
 
-const updateDeliveryStatus = async (filteredOrders: ExtendedOrder<Order>[], now: Date) =>
+const updateDeliveryStatus = async (filteredOrders: ExtendedOrder<Order>[], now: Date) => {
   // Promise.allSettledで並列処理。allSettledは途中でErrorが発生しても全ての処理を最後まで実行する
-  await Promise.allSettled(
+  const updatedStatuses: PromiseSettledResult<ExtendedOrder<Order>>[] = await Promise.allSettled(
     // mapはasync/awaitを使用するとpromiseを返却
     filteredOrders.map(async (order) => {
       // deliveryStatusを発送済み、発送日時に現在日時を設定
@@ -139,3 +113,8 @@ const updateDeliveryStatus = async (filteredOrders: ExtendedOrder<Order>[], now:
       return order;
     }),
   );
+  // 配送状況更新成功/失敗orderリスト抽出
+  const updatedSuccesses = filteredPromiseFulfilledResult(updatedStatuses);
+  const updatedFails = filteredPromiseRejectedResult(updatedStatuses);
+  return { updatedSuccesses, updatedFails };
+};

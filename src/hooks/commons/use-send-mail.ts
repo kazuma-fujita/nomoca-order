@@ -1,10 +1,14 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { Clinic, DeliveryType, SendMailType, SendOrderMailQueryVariables, Staff, SendOrderMailQuery } from 'API';
+import { Clinic, DeliveryType, SendMailType, SendOrderMailQueryVariables, Staff, SendOrderMailQuery, Order } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { calcTotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 import { sendOrderMail } from 'graphql/queries';
-import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { parseResponseError } from 'utilities/parse-response-error';
+import {
+  filteredPromiseFulfilledResult,
+  filteredPromiseRejectedResult,
+} from 'functions/filter-promise-settled-results';
 
 // .envからBCC mailAddress取得
 const mailBccAddress = process.env.NEXT_PUBLIC_MAIL_BCC_ADDRESS as string;
@@ -78,5 +82,27 @@ export const useSendMail = () => {
       throw parseError;
     }
   };
-  return { sendMail };
+
+  const sendDeliverySingleOrderMail = async (orders: ExtendedOrder<Order>[]) => {
+    // Promise.allSettledでメール送信処理を同時並列実行
+    const sendMailStatuses: PromiseSettledResult<string>[] = await Promise.allSettled(
+      orders.map(
+        async (order) =>
+          // 注文配送メール送信。成功時は医院名を返却
+          await sendMail({
+            sendMailType: SendMailType.deliveredSingleOrder,
+            products: order.normalizedProducts,
+            clinic: order.clinic,
+            staff: order.staff,
+            deliveryType: order.deliveryType,
+          }),
+      ),
+    );
+    // メール送信成功/失敗リスト抽出
+    const sendMailSuccesses = filteredPromiseFulfilledResult(sendMailStatuses);
+    const sendMailFails = filteredPromiseRejectedResult(sendMailStatuses);
+    return { sendMailSuccesses, sendMailFails };
+  };
+
+  return { sendMail, sendDeliverySingleOrderMail };
 };
