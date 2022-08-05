@@ -1,5 +1,14 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { Clinic, DeliveryType, SendMailType, SendOrderMailQueryVariables, Staff, SendOrderMailQuery, Order } from 'API';
+import {
+  Clinic,
+  DeliveryType,
+  SendMailType,
+  SendOrderMailQueryVariables,
+  Staff,
+  SendOrderMailQuery,
+  Order,
+  SubscriptionOrder,
+} from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { calcTotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 import { sendOrderMail } from 'graphql/queries';
@@ -104,5 +113,28 @@ export const useSendMail = () => {
     return { sendMailSuccesses, sendMailFails };
   };
 
-  return { sendMail, sendDeliverySingleOrderMail };
+  const sendDeliverySubscriptionOrderMail = async (orders: ExtendedOrder<SubscriptionOrder>[]) => {
+    // Promise.allSettledでメール送信処理を同時並列実行
+    const sendMailStatuses: PromiseSettledResult<string>[] = await Promise.allSettled(
+      orders.map(
+        async (order) =>
+          // 注文配送メール送信
+          await sendMail({
+            sendMailType: SendMailType.deliveredSubscriptionOrder,
+            products: order.normalizedProducts,
+            clinic: order.clinic,
+            staff: order.staff,
+            deliveryStartYear: order.deliveryStartYear,
+            deliveryStartMonth: order.deliveryStartMonth,
+            deliveryInterval: order.deliveryInterval,
+          }),
+      ),
+    );
+    // メール送信成功/失敗リスト抽出
+    const sendMailSuccesses = filteredPromiseFulfilledResult(sendMailStatuses);
+    const sendMailFails = filteredPromiseRejectedResult(sendMailStatuses);
+    return { sendMailSuccesses, sendMailFails };
+  };
+
+  return { sendMail, sendDeliverySingleOrderMail, sendDeliverySubscriptionOrderMail };
 };

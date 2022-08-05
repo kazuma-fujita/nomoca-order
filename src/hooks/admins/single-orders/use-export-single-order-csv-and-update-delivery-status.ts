@@ -54,10 +54,12 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
 
       // 運用通知メールの件名・本文作成
       const notificationMailSubject = 'Completed to export a single order csv and to update a delivery status';
-      const updatedSuccessBody = `Successful updates:\n${updatedSuccesses
+      const updatedSuccessBody = `Successful delivery status updates:\n${updatedSuccesses
         .map((order) => order.clinic.name)
         .join('\n')}\ntotal: ${updatedSuccesses.length}`;
-      const updatedFailedBody = `Failed updates:\n${updatedFails.join('\n')}\ntotal: ${updatedFails.length}`;
+      const updatedFailedBody = `Failed delivery status updates:\n${updatedFails.join('\n')}\ntotal: ${
+        updatedFails.length
+      }`;
       const sendMailSuccessBody = `Successful email sending:\n${sendMailSuccesses.join('\n')}\ntotal: ${
         sendMailSuccesses.length
       }`;
