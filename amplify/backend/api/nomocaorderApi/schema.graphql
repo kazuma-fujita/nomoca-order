@@ -208,3 +208,4 @@ type Query {
     @function(name: "sendErrorMail-${env}")
     @auth(rules: [{ allow: private, provider: userPools }])
 }
+ 

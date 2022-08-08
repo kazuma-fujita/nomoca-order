@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { GOOGLE_API_KEY, GOOGLE_GEOCODE_BASE_URL } from 'constants/google-api-key';
+
+export const GOOGLE_GEOCODE_BASE_URL = process.env.NEXT_PUBLIC_GOOGLE_GEOCODE_BASE_URL as string;
+export const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string;
 
 export const geocodeAPI = axios.create({
   method: 'GET',

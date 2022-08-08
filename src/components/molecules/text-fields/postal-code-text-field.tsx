@@ -34,7 +34,7 @@ export const PostalCodeTextField = ({ formState, register, handleOnChange, disab
       },
       minLength: { value: MAX_LENGTH, message: '郵便番号は7桁で入力してください' },
       maxLength: { value: MAX_LENGTH, message: '郵便番号は7桁で入力してください' },
-      // onChange: handleOnChange,
+      onChange: handleOnChange,
     })}
   />
 );
