@@ -54,7 +54,8 @@ context('SubscriptionOrder', () => {
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.input}`);
       // 入力フォームの要素確認、値の入力、確認するボタン押下処理。注文入力画面と共通処理。order-commands.js参照
       cy.expectInputOrderForm('定期便');
-      cy.findByRole('button', { name: '確認する' }).click();
+      cy.get('[data-testid="order-form-submit-button"]').should('be.visible').click();
+      // cy.findByRole('button', { name: '確認する' }).click();
       //////////////////////////////////////////////////
       // 定期便入力確認画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.confirm}`);
@@ -238,7 +239,7 @@ context('SubscriptionOrder', () => {
         cy.findByText('電話番号 01207654321');
       });
       // 更新前発注担当者確認
-      cy.findByRole('button', { name: '発注担当者 佐藤 太郎' });
+      // cy.findByRole('button', { name: '発注担当者 佐藤 太郎' });
       // 担当者追加
       cy.findByRole('button', { name: '発注担当者を追加する' }).click();
       cy.findByRole('dialog').within(() => {
@@ -247,12 +248,15 @@ context('SubscriptionOrder', () => {
         cy.findByRole('textbox', { name: '名' }).type('花子');
         cy.findByRole('button', { name: '追加する' }).click();
       });
+      // ダイアログが確実に閉じた事を確認
+      // cy.get('[data-testid="order-form-submit-button"]').should('be.visible');
       // 担当者プルダウンをクリックし作成した担当者を選択
-      cy.findByRole('button', { name: '発注担当者 佐藤 太郎' }).click();
-      cy.findByRole('option', { name: '鈴木 花子' }).click();
-      cy.findByRole('button', { name: '発注担当者 鈴木 花子' });
+      // cy.findByRole('button', { name: '発注担当者 佐藤 太郎' }).click();
+      // cy.findByRole('option', { name: '鈴木 花子' }).click();
+      // cy.findByRole('button', { name: '発注担当者 鈴木 花子' });
       // 確認画面へ遷移
-      cy.findByRole('button', { name: '確認する' }).click();
+      cy.get('[data-testid="order-form-submit-button"]').should('be.visible').click();
+      // cy.findByRole('button', { name: '確認する' }).click();
       //////////////////////////////////////////////////
       // 定期便入力確認画面表示
       cy.url().should('include', `${Path.subscriptionOrder}?${FormScreenQuery.confirm}`);
@@ -295,7 +299,7 @@ context('SubscriptionOrder', () => {
         cy.findByText('宮城県仙台市泉区虹の丘4-15-10');
         cy.findByText('電話番号 01207654321');
       });
-      cy.findByText('鈴木 花子');
+      // cy.findByText('鈴木 花子');
       cy.findByRole('button', { name: '注文する' }).click();
       //////////////////////////////////////////////////
       // 定期便入力完了画面表示
@@ -352,9 +356,11 @@ context('SubscriptionOrder', () => {
         cy.findByRole('heading', { name: '定期便を解約する' });
         cy.findByRole('button', { name: '解約する' }).click();
       });
+      // ダイアログが確実に閉じた事を確認
+      cy.findByTestId('menu-icon').should('be.visible');
       // 一覧確認
       cy.findByRole('table').within(() => {
-        cy.findByRole('cell', { name: '現在定期便の商品はありません' }).click();
+        cy.findByRole('cell', { name: '現在定期便の商品はありません' });
       });
     });
   });

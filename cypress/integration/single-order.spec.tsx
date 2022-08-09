@@ -55,7 +55,8 @@ context('SingleOrder', () => {
       cy.findByRole('radio', { name: '速達配送 +1,000円(税抜)' }).should('not.be.checked');
       // 入力フォームの要素確認、値の入力、確認するボタン押下処理
       cy.expectInputOrderForm('注文');
-      cy.findByRole('button', { name: '確認する' }).click();
+      cy.get('[data-testid="order-form-submit-button"]').should('be.visible').click();
+      // cy.findByRole('button', { name: '確認する' }).click();
       //////////////////////////////////////////////////
       // 入力確認画面表示
       cy.url().should('include', `${Path.singleOrder}?${FormScreenQuery.confirm}`);

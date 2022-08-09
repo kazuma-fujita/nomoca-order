@@ -66,6 +66,7 @@ export const OrderInputForm: React.FC<Props> = ({
           startIcon={<ArrowForwardIosIcon />}
           form='order-form'
           disabled={!formParam}
+          data-testid='order-form-submit-button'
         >
           確認する
         </Button>
