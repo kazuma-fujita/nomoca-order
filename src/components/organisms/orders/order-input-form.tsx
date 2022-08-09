@@ -3,7 +3,7 @@ import { Box, Button, Chip, Divider } from '@mui/material';
 import Form from 'components/atoms/form';
 import { ProductSelectBox } from 'components/molecules/select-boxes/product-select-box';
 import { StaffSelectBox } from 'components/molecules/select-boxes/staff-select-box';
-import { BaseSyntheticEvent } from 'react';
+import { BaseSyntheticEvent, useEffect } from 'react';
 import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 import { ClinicDetailOrderFormInput } from '../clinics/clinic-detail-input';
@@ -23,6 +23,12 @@ export const OrderInputForm: React.FC<Props> = ({
   children,
 }) => {
   const { data: formParam } = useOrderFormParam();
+  const { submitCount } = formReturn.formState;
+  useEffect(() => {
+    // validation error発生時画面Topへ移動
+    window.scrollTo(0, 0);
+    // form送信回数(validation error回数)の変更検知
+  }, [submitCount]);
 
   return (
     <>
@@ -60,7 +66,6 @@ export const OrderInputForm: React.FC<Props> = ({
           startIcon={<ArrowForwardIosIcon />}
           form='order-form'
           disabled={!formParam}
-          data-testid='order-input-form-button'
         >
           確認する
         </Button>
