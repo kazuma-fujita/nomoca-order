@@ -3,7 +3,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendOrderMail = exports.getCurrentDate = exports.listAdminSubscriptionOrders = exports.listSubscriptionOrdersContainedNextDeliveryDate = exports.listStaffSortedByViewOrder = exports.listStaff = exports.getStaff = exports.listProductsSortedByViewOrder = exports.listProducts = exports.getProduct = exports.listSubscriptionOrdersSortedByCreatedAt = exports.listSubscriptionOrders = exports.getSubscriptionOrder = exports.listOrdersSortedByCreatedAt = exports.listOrders = exports.getOrder = exports.listClinics = exports.getClinic = void 0;
+exports.sendErrorMail = exports.sendOrderMail = exports.getCurrentDate = exports.listSubscriptionOrdersContainedNextDeliveryDate = exports.listStaffSortedByViewOrder = exports.listStaff = exports.getStaff = exports.listProductsSortedByViewOrder = exports.listProducts = exports.getProduct = exports.listSubscriptionOrdersSortedByCreatedAt = exports.listSubscriptionOrders = exports.getSubscriptionOrder = exports.listOrdersSortedByCreatedAt = exports.listOrders = exports.getOrder = exports.listClinics = exports.getClinic = void 0;
 exports.getClinic = `
   query GetClinic($id: ID!) {
     getClinic(id: $id) {
@@ -59,6 +59,7 @@ exports.getOrder = `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           owner
           createdAt
           updatedAt
@@ -94,7 +95,6 @@ exports.getOrder = `
       }
       deliveryStatus
       deliveryType
-      orderedAt
       deliveredAt
       createdAt
       type
@@ -120,6 +120,7 @@ exports.listOrders = `
             unitPrice
             quantity
             viewOrder
+            isExportCSV
             owner
             createdAt
             updatedAt
@@ -155,7 +156,6 @@ exports.listOrders = `
         }
         deliveryStatus
         deliveryType
-        orderedAt
         deliveredAt
         createdAt
         type
@@ -193,6 +193,7 @@ exports.listOrdersSortedByCreatedAt = `
             unitPrice
             quantity
             viewOrder
+            isExportCSV
             owner
             createdAt
             updatedAt
@@ -228,7 +229,6 @@ exports.listOrdersSortedByCreatedAt = `
         }
         deliveryStatus
         deliveryType
-        orderedAt
         deliveredAt
         createdAt
         type
@@ -676,73 +676,6 @@ exports.listSubscriptionOrdersContainedNextDeliveryDate = `
     }
   }
 `;
-exports.listAdminSubscriptionOrders = `
-  query ListAdminSubscriptionOrders {
-    listAdminSubscriptionOrders {
-      id
-      products {
-        items {
-          id
-          subscriptionOrderID
-          productID
-          product {
-            id
-            name
-            unitPrice
-            orderType
-            viewOrder
-            isExportCSV
-            disabled
-            type
-            createdAt
-            updatedAt
-          }
-          quantity
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-      clinicID
-      clinic {
-        id
-        name
-        phoneNumber
-        postalCode
-        state
-        city
-        address
-        building
-        mailAddress
-        createdAt
-        updatedAt
-        owner
-      }
-      staffID
-      staff {
-        id
-        firstName
-        lastName
-        viewOrder
-        disabled
-        type
-        createdAt
-        updatedAt
-        owner
-      }
-      deliveryStartYear
-      deliveryStartMonth
-      deliveryInterval
-      nextDeliveryYear
-      nextDeliveryMonth
-      createdAt
-      type
-      owner
-      updatedAt
-    }
-  }
-`;
 exports.getCurrentDate = `
   query GetCurrentDate {
     getCurrentDate {
@@ -793,5 +726,10 @@ exports.sendOrderMail = `
       deliveryStartMonth: $deliveryStartMonth
       deliveryInterval: $deliveryInterval
     )
+  }
+`;
+exports.sendErrorMail = `
+  query SendErrorMail($toAddress: String!, $subject: String!, $body: String!) {
+    sendErrorMail(toAddress: $toAddress, subject: $subject, body: $body)
   }
 `;

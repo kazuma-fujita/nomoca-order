@@ -106,7 +106,6 @@ export type CreateOrderInput = {
   staffID: string,
   deliveryStatus: DeliveryStatus,
   deliveryType: DeliveryType,
-  orderedAt: string,
   deliveredAt?: string | null,
   createdAt?: string | null,
   type: Type,
@@ -114,6 +113,7 @@ export type CreateOrderInput = {
 };
 
 export enum DeliveryStatus {
+  none = "none",
   ordered = "ordered",
   delivered = "delivered",
   canceled = "canceled",
@@ -141,7 +141,6 @@ export type ModelOrderConditionInput = {
   staffID?: ModelIDInput | null,
   deliveryStatus?: ModelDeliveryStatusInput | null,
   deliveryType?: ModelDeliveryTypeInput | null,
-  orderedAt?: ModelStringInput | null,
   deliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelTypeInput | null,
@@ -192,7 +191,6 @@ export type Order = {
   staff: Staff,
   deliveryStatus: DeliveryStatus,
   deliveryType: DeliveryType,
-  orderedAt: string,
   deliveredAt?: string | null,
   createdAt: string,
   type: Type,
@@ -214,6 +212,7 @@ export type OrderProduct = {
   unitPrice: number,
   quantity: number,
   viewOrder: number,
+  isExportCSV: boolean,
   owner?: string | null,
   createdAt: string,
   updatedAt: string,
@@ -238,7 +237,6 @@ export type UpdateOrderInput = {
   staffID?: string | null,
   deliveryStatus?: DeliveryStatus | null,
   deliveryType?: DeliveryType | null,
-  orderedAt?: string | null,
   deliveredAt?: string | null,
   createdAt?: string | null,
   type?: Type | null,
@@ -256,6 +254,7 @@ export type CreateOrderProductInput = {
   unitPrice: number,
   quantity: number,
   viewOrder: number,
+  isExportCSV: boolean,
   owner?: string | null,
 };
 
@@ -265,6 +264,7 @@ export type ModelOrderProductConditionInput = {
   unitPrice?: ModelIntInput | null,
   quantity?: ModelIntInput | null,
   viewOrder?: ModelIntInput | null,
+  isExportCSV?: ModelBooleanInput | null,
   owner?: ModelStringInput | null,
   and?: Array< ModelOrderProductConditionInput | null > | null,
   or?: Array< ModelOrderProductConditionInput | null > | null,
@@ -283,6 +283,13 @@ export type ModelIntInput = {
   attributeType?: ModelAttributeTypes | null,
 };
 
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type UpdateOrderProductInput = {
   id: string,
   orderID?: string | null,
@@ -290,6 +297,7 @@ export type UpdateOrderProductInput = {
   unitPrice?: number | null,
   quantity?: number | null,
   viewOrder?: number | null,
+  isExportCSV?: boolean | null,
   owner?: string | null,
 };
 
@@ -458,13 +466,6 @@ export type ModelOrderTypeInput = {
   ne?: OrderType | null,
 };
 
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
 export type UpdateProductInput = {
   id: string,
   name?: string | null,
@@ -540,7 +541,6 @@ export type ModelOrderFilterInput = {
   staffID?: ModelIDInput | null,
   deliveryStatus?: ModelDeliveryStatusInput | null,
   deliveryType?: ModelDeliveryTypeInput | null,
-  orderedAt?: ModelStringInput | null,
   deliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelTypeInput | null,
@@ -746,6 +746,7 @@ export type CreateOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -783,7 +784,6 @@ export type CreateOrderMutation = {
     },
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
-    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -811,6 +811,7 @@ export type UpdateOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -848,7 +849,6 @@ export type UpdateOrderMutation = {
     },
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
-    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -876,6 +876,7 @@ export type DeleteOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -913,7 +914,6 @@ export type DeleteOrderMutation = {
     },
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
-    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -936,6 +936,7 @@ export type CreateOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -956,6 +957,7 @@ export type UpdateOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -976,6 +978,7 @@ export type DeleteOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -1497,6 +1500,7 @@ export type GetOrderQuery = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -1534,7 +1538,6 @@ export type GetOrderQuery = {
     },
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
-    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -1565,6 +1568,7 @@ export type ListOrdersQuery = {
           unitPrice: number,
           quantity: number,
           viewOrder: number,
+          isExportCSV: boolean,
           owner?: string | null,
           createdAt: string,
           updatedAt: string,
@@ -1602,7 +1606,6 @@ export type ListOrdersQuery = {
       },
       deliveryStatus: DeliveryStatus,
       deliveryType: DeliveryType,
-      orderedAt: string,
       deliveredAt?: string | null,
       createdAt: string,
       type: Type,
@@ -1638,6 +1641,7 @@ export type ListOrdersSortedByCreatedAtQuery = {
           unitPrice: number,
           quantity: number,
           viewOrder: number,
+          isExportCSV: boolean,
           owner?: string | null,
           createdAt: string,
           updatedAt: string,
@@ -1675,7 +1679,6 @@ export type ListOrdersSortedByCreatedAtQuery = {
       },
       deliveryStatus: DeliveryStatus,
       deliveryType: DeliveryType,
-      orderedAt: string,
       deliveredAt?: string | null,
       createdAt: string,
       type: Type,
@@ -2148,78 +2151,6 @@ export type ListSubscriptionOrdersContainedNextDeliveryDateQuery = {
   } | null > | null,
 };
 
-export type ListAdminSubscriptionOrdersQuery = {
-  listAdminSubscriptionOrders?:  Array< {
-    __typename: "SubscriptionOrder",
-    id: string,
-    products?:  {
-      __typename: "ModelSubscriptionOrderProductConnection",
-      items:  Array< {
-        __typename: "SubscriptionOrderProduct",
-        id: string,
-        subscriptionOrderID: string,
-        productID: string,
-        product:  {
-          __typename: "Product",
-          id: string,
-          name: string,
-          unitPrice: number,
-          orderType: OrderType,
-          viewOrder: number,
-          isExportCSV: boolean,
-          disabled: boolean,
-          type: Type,
-          createdAt: string,
-          updatedAt: string,
-        },
-        quantity: number,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    clinicID: string,
-    clinic:  {
-      __typename: "Clinic",
-      id: string,
-      name: string,
-      phoneNumber: string,
-      postalCode: string,
-      state: string,
-      city: string,
-      address: string,
-      building?: string | null,
-      mailAddress: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    },
-    staffID: string,
-    staff:  {
-      __typename: "Staff",
-      id: string,
-      firstName: string,
-      lastName: string,
-      viewOrder: number,
-      disabled: boolean,
-      type: Type,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    },
-    deliveryStartYear: number,
-    deliveryStartMonth: number,
-    deliveryInterval: number,
-    nextDeliveryYear?: number | null,
-    nextDeliveryMonth?: number | null,
-    createdAt: string,
-    type: string,
-    owner?: string | null,
-    updatedAt: string,
-  } | null > | null,
-};
-
 export type GetCurrentDateQuery = {
   getCurrentDate?:  {
     __typename: "CurrentDate",
@@ -2251,6 +2182,16 @@ export type SendOrderMailQueryVariables = {
 
 export type SendOrderMailQuery = {
   sendOrderMail?: string | null,
+};
+
+export type SendErrorMailQueryVariables = {
+  toAddress: string,
+  subject: string,
+  body: string,
+};
+
+export type SendErrorMailQuery = {
+  sendErrorMail?: string | null,
 };
 
 export type OnCreateClinicSubscriptionVariables = {
@@ -2337,6 +2278,7 @@ export type OnCreateOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -2374,7 +2316,6 @@ export type OnCreateOrderSubscription = {
     },
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
-    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -2401,6 +2342,7 @@ export type OnUpdateOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -2438,7 +2380,6 @@ export type OnUpdateOrderSubscription = {
     },
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
-    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -2465,6 +2406,7 @@ export type OnDeleteOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
         owner?: string | null,
         createdAt: string,
         updatedAt: string,
@@ -2502,7 +2444,6 @@ export type OnDeleteOrderSubscription = {
     },
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
-    orderedAt: string,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
@@ -2524,6 +2465,7 @@ export type OnCreateOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -2543,6 +2485,7 @@ export type OnUpdateOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -2562,6 +2505,7 @@ export type OnDeleteOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,

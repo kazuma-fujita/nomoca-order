@@ -23,6 +23,7 @@ export const createNormalizedProductsMock = (row: number): NormalizedProduct[] =
     unitPrice: 1000 * (i + 1),
     quantity: i + 1,
     viewOrder: i + 1,
+    isExportCSV: false,
   }));
 
 export const productListMock: Product[] = [...Array(3)].map((_, i) => ({

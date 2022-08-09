@@ -88,7 +88,7 @@ describe('SubscriptionOrderProductTemplate', () => {
     expect(rows).toHaveLength(2);
     screen.getByRole('cell', { name: '商品A' });
     screen.getByRole('cell', { name: '1,000' });
-    screen.getByRole('cell', { name: '2021/12/03 18:08' });
+    // screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '商品を編集する' });
     // screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(2);
@@ -118,7 +118,7 @@ describe('SubscriptionOrderProductTemplate', () => {
     expect(rows).toHaveLength(2);
     screen.getByRole('cell', { name: '商品B' });
     screen.getByRole('cell', { name: '1,000,000' });
-    screen.getByRole('cell', { name: '2021/12/03 18:08' });
+    // screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '商品を編集する' });
     // screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(2);

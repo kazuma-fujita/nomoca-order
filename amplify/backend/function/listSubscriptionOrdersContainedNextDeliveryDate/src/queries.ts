@@ -57,6 +57,7 @@ export const getOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           owner
           createdAt
           updatedAt
@@ -92,7 +93,6 @@ export const getOrder = /* GraphQL */ `
       }
       deliveryStatus
       deliveryType
-      orderedAt
       deliveredAt
       createdAt
       type
@@ -118,6 +118,7 @@ export const listOrders = /* GraphQL */ `
             unitPrice
             quantity
             viewOrder
+            isExportCSV
             owner
             createdAt
             updatedAt
@@ -153,7 +154,6 @@ export const listOrders = /* GraphQL */ `
         }
         deliveryStatus
         deliveryType
-        orderedAt
         deliveredAt
         createdAt
         type
@@ -191,6 +191,7 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
             unitPrice
             quantity
             viewOrder
+            isExportCSV
             owner
             createdAt
             updatedAt
@@ -226,7 +227,6 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         }
         deliveryStatus
         deliveryType
-        orderedAt
         deliveredAt
         createdAt
         type
@@ -674,73 +674,6 @@ export const listSubscriptionOrdersContainedNextDeliveryDate = /* GraphQL */ `
     }
   }
 `;
-export const listAdminSubscriptionOrders = /* GraphQL */ `
-  query ListAdminSubscriptionOrders {
-    listAdminSubscriptionOrders {
-      id
-      products {
-        items {
-          id
-          subscriptionOrderID
-          productID
-          product {
-            id
-            name
-            unitPrice
-            orderType
-            viewOrder
-            isExportCSV
-            disabled
-            type
-            createdAt
-            updatedAt
-          }
-          quantity
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-      clinicID
-      clinic {
-        id
-        name
-        phoneNumber
-        postalCode
-        state
-        city
-        address
-        building
-        mailAddress
-        createdAt
-        updatedAt
-        owner
-      }
-      staffID
-      staff {
-        id
-        firstName
-        lastName
-        viewOrder
-        disabled
-        type
-        createdAt
-        updatedAt
-        owner
-      }
-      deliveryStartYear
-      deliveryStartMonth
-      deliveryInterval
-      nextDeliveryYear
-      nextDeliveryMonth
-      createdAt
-      type
-      owner
-      updatedAt
-    }
-  }
-`;
 export const getCurrentDate = /* GraphQL */ `
   query GetCurrentDate {
     getCurrentDate {
@@ -791,5 +724,10 @@ export const sendOrderMail = /* GraphQL */ `
       deliveryStartMonth: $deliveryStartMonth
       deliveryInterval: $deliveryInterval
     )
+  }
+`;
+export const sendErrorMail = /* GraphQL */ `
+  query SendErrorMail($toAddress: String!, $subject: String!, $body: String!) {
+    sendErrorMail(toAddress: $toAddress, subject: $subject, body: $body)
   }
 `;

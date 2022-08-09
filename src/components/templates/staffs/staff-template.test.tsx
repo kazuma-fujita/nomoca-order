@@ -86,7 +86,7 @@ describe('StaffTemplate', () => {
     // Below rows include a 'th' header row.
     expect(rows).toHaveLength(2);
     screen.getByRole('cell', { name: '発注担当者 A' });
-    screen.getByRole('cell', { name: '2021/12/03 18:08' });
+    // screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '発注担当者を編集する' });
     // screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(2);
@@ -117,7 +117,7 @@ describe('StaffTemplate', () => {
     // Below rows include a 'th' header row.
     expect(rows).toHaveLength(2);
     screen.getByRole('cell', { name: '発注担当者 B' });
-    screen.getByRole('cell', { name: '2021/12/03 18:08' });
+    // screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '発注担当者を編集する' });
     // screen.getByRole('checkbox', { name: 'activate-switch' });
     expect(spy).toHaveBeenCalledTimes(3);

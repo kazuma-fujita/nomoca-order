@@ -6,6 +6,7 @@ import {
   ListSubscriptionOrdersSortedByCreatedAtQuery,
   ListSubscriptionOrdersSortedByCreatedAtQueryVariables,
   ModelSortDirection,
+  ModelSubscriptionOrderFilterInput,
   SubscriptionOrder,
   Type,
 } from './API';
@@ -56,15 +57,21 @@ export const handler = async (event: any) => {
   });
 
   try {
-    const variables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
+    const filter: ModelSubscriptionOrderFilterInput = { owner: { contains: username } };
+
+    const baseVariables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
       type: Type.subscriptionOrder,
       sortDirection: ModelSortDirection.DESC,
     };
 
+    // 顧客ユーザのリスト取得はowner fieldでfilter
+    const variables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = !isOperator
+      ? { ...baseVariables, filter: filter }
+      : baseVariables;
+
     const result = (await graphqlClient.query({
       query: gql(listSubscriptionOrdersSortedByCreatedAt),
-      // 顧客ユーザのリスト取得はowner fieldでfilter
-      variables: !isOperator ? { ...variables, filter: { owner: { contains: username } } } : variables,
+      variables: variables,
     })) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
 
     if (result.errors) {
@@ -121,19 +128,6 @@ export const handler = async (event: any) => {
   } catch (err) {
     const error: Error = parseResponseError(err);
     console.error('list subscription order error:', error);
-    // const body = {
-    //   errors: [
-    //     {
-    //       status: 400,
-    //       message: error.message,
-    //       stack: error.stack,
-    //     },
-    //   ],
-    // };
-    // return {
-    //   statusCode: 400,
-    //   body: JSON.stringify(body),
-    // };
     return error.message;
   }
 };

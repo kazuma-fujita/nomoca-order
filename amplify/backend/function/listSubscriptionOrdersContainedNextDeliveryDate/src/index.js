@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const aws_appsync_1 = __importDefault(require("aws-appsync"));
 const graphql_tag_1 = require("graphql-tag");
-const queries_1 = require("./queries");
 const API_1 = require("./API");
 const generate_next_delivery_year_month_1 = require("./generate-next-delivery-year-month");
+const queries_1 = require("./queries");
 global.fetch = require('node-fetch');
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -58,14 +58,17 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
         disableOffline: true,
     });
     try {
-        const variables = {
+        const filter = { owner: { contains: username } };
+        const baseVariables = {
             type: API_1.Type.subscriptionOrder,
             sortDirection: API_1.ModelSortDirection.DESC,
         };
+        // 顧客ユーザのリスト取得はowner fieldでfilter
+        const variables = !isOperator
+            ? Object.assign(Object.assign({}, baseVariables), { filter: filter }) : baseVariables;
         const result = (yield graphqlClient.query({
             query: (0, graphql_tag_1.gql)(queries_1.listSubscriptionOrdersSortedByCreatedAt),
-            // 顧客ユーザのリスト取得はowner fieldでfilter
-            variables: !isOperator ? Object.assign(Object.assign({}, variables), { filter: { owner: { contains: username } } }) : variables,
+            variables: variables,
         }));
         if (result.errors) {
             throw result.errors;
@@ -102,20 +105,8 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         const error = parseResponseError(err);
-        console.error('error:', error);
-        const body = {
-            errors: [
-                {
-                    status: 400,
-                    message: error.message,
-                    stack: error.stack,
-                },
-            ],
-        };
-        return {
-            statusCode: 400,
-            body: JSON.stringify(body),
-        };
+        console.error('list subscription order error:', error);
+        return error.message;
     }
 });
 exports.handler = handler;

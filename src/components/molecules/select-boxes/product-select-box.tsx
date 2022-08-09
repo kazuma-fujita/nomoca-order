@@ -40,6 +40,7 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
         productID: `ID-${selectedIndex}`,
         name: product.name,
         unitPrice: product.unitPrice,
+        isExportCSV: product.isExportCSV,
         quantity: prev ? prev.quantity : 1, // 個数は引き継ぎ
       };
       // 既存選択商品があればobject更新、無ければobject追加
@@ -67,6 +68,7 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
           name: '',
           unitPrice: 0,
           quantity: quantity,
+          isExportCSV: false,
         };
         setSelectedProducts([...selectedProducts, next]);
       }

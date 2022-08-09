@@ -19,6 +19,7 @@ var ModelAttributeTypes;
 })(ModelAttributeTypes = exports.ModelAttributeTypes || (exports.ModelAttributeTypes = {}));
 var DeliveryStatus;
 (function (DeliveryStatus) {
+    DeliveryStatus["none"] = "none";
     DeliveryStatus["ordered"] = "ordered";
     DeliveryStatus["delivered"] = "delivered";
     DeliveryStatus["canceled"] = "canceled";
