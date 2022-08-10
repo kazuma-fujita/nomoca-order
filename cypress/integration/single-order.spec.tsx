@@ -102,36 +102,64 @@ context('SingleOrder', () => {
       cy.url().should('include', `${Path.singleOrder}`);
       // 画面が完全に切り替わった事を確認
       cy.findByTestId('menu-icon').should('be.visible');
-      cy.findByRole('table').within(() => {
-        // 配送方法
-        cy.findByRole('cell', { name: '通常配送' });
-        // 発送状況
-        cy.findByRole('cell', { name: '未発送' });
-        // 発送日時
-        cy.findByRole('cell', { name: '-' });
-        // ボタン
-        cy.findByRole('button', { name: '注文キャンセル' });
-        // 商品表示
-        cy.findByRole('button', { name: 'expand row' }).click();
-        cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
-        // 商品
-        cy.findByRole('cell', { name: '注文商品A' });
-        cy.findByRole('cell', { name: '配送手数料' });
-        // 数量
-        cy.findAllByRole('cell', { name: '1' }).should('have.length', 2);
-        // 単価 金額
-        cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 4);
-        cy.findByRole('cell', { name: '小計' });
-        // 小計
-        cy.findByRole('cell', { name: '2,000' });
-        // 税
-        cy.findByRole('cell', { name: '税' });
-        cy.findByRole('cell', { name: '10 %' });
-        cy.findByRole('cell', { name: '200' });
-        // 合計
-        cy.findByRole('cell', { name: '合計' });
-        cy.findByRole('cell', { name: '2,200' });
-      });
+      // 配送方法
+      cy.findByRole('cell', { name: '通常配送' });
+      // 発送状況
+      cy.findByRole('cell', { name: '未発送' });
+      // 発送日時
+      cy.findByRole('cell', { name: '-' });
+      // ボタン
+      cy.findByRole('button', { name: '注文キャンセル' });
+      // 商品表示
+      cy.findByRole('button', { name: 'expand row' }).click();
+      cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
+      // 商品
+      cy.findByRole('cell', { name: '注文商品A' });
+      cy.findByRole('cell', { name: '配送手数料' });
+      // 数量
+      cy.findAllByRole('cell', { name: '1' }).should('have.length', 2);
+      // 単価 金額
+      cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 4);
+      cy.findByRole('cell', { name: '小計' });
+      // 小計
+      cy.findByRole('cell', { name: '2,000' });
+      // 税
+      cy.findByRole('cell', { name: '税' });
+      cy.findByRole('cell', { name: '10 %' });
+      cy.findByRole('cell', { name: '200' });
+      // 合計
+      cy.findByRole('cell', { name: '合計' });
+      cy.findByRole('cell', { name: '2,200' });
+      // cy.findByRole('table').within(() => {
+      //   // 配送方法
+      //   cy.findByRole('cell', { name: '通常配送' });
+      //   // 発送状況
+      //   cy.findByRole('cell', { name: '未発送' });
+      //   // 発送日時
+      //   cy.findByRole('cell', { name: '-' });
+      //   // ボタン
+      //   cy.findByRole('button', { name: '注文キャンセル' });
+      //   // 商品表示
+      //   cy.findByRole('button', { name: 'expand row' }).click();
+      //   cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
+      //   // 商品
+      //   cy.findByRole('cell', { name: '注文商品A' });
+      //   cy.findByRole('cell', { name: '配送手数料' });
+      //   // 数量
+      //   cy.findAllByRole('cell', { name: '1' }).should('have.length', 2);
+      //   // 単価 金額
+      //   cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 4);
+      //   cy.findByRole('cell', { name: '小計' });
+      //   // 小計
+      //   cy.findByRole('cell', { name: '2,000' });
+      //   // 税
+      //   cy.findByRole('cell', { name: '税' });
+      //   cy.findByRole('cell', { name: '10 %' });
+      //   cy.findByRole('cell', { name: '200' });
+      //   // 合計
+      //   cy.findByRole('cell', { name: '合計' });
+      //   cy.findByRole('cell', { name: '2,200' });
+      // });
       //////////////////////////////////////////////////
     });
   });

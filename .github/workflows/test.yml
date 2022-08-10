@@ -76,7 +76,9 @@ jobs:
       - name: Run Jest tests ⚗️
         run: npm run test
       - name: Run Lambda tests ⚗️
-        run: npm run test:listSubscriptionOrders
+        run: |
+          npm run npm:install:listSubscriptionOrders
+          npm run test:listSubscriptionOrders
         env:
           TZ: 'Asia/Tokyo'
       # Cypress e2e
