@@ -10,6 +10,9 @@ import {
   DeliveryType,
   SubscriptionOrder,
   Type,
+  UpdateSubscriptionOrderInput,
+  UpdateSubscriptionOrderMutation,
+  UpdateSubscriptionOrderMutationVariables,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import {
@@ -17,7 +20,11 @@ import {
   filteredPromiseRejectedResult,
 } from 'functions/filter-promise-settled-results';
 import { sendErrorMail } from 'functions/send-error-mail';
-import { createOrder, createOrderProduct } from 'graphql/mutations';
+import {
+  createOrder,
+  createOrderProduct,
+  updateSubscriptionOrder as updateSubscriptionOrderMutation,
+} from 'graphql/mutations';
 import { useExportOrderCSV } from 'hooks/admins/use-export-order-csv';
 import { useSendMail } from 'hooks/commons/use-send-mail';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
@@ -117,7 +124,8 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
         throw Error('It returned null that an API which executed to create order data.');
       }
       const newOrder = result.data.createOrder;
-      console.log('create new order', newOrder);
+      console.log('create new order history', newOrder);
+
       // Order と Product のリレーション作成
       for (const item of order.products.items) {
         if (!item) {
@@ -146,6 +154,23 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
         }
         console.log('newOrderProduct', result.data.createOrderProduct);
       }
+
+      // SubscriptionOrderのlastDeliveredAtの更新
+      const subscriptionOrderInput: UpdateSubscriptionOrderInput = {
+        id: order.id,
+        lastDeliveredAt: now.toISOString(), // 当月発送日時は現在日時
+      };
+
+      const subscriptionOrderVariables: UpdateSubscriptionOrderMutationVariables = { input: subscriptionOrderInput };
+      // SubscriptionOrderデータ更新実行
+      const subscriptionOrderResult = (await API.graphql(
+        graphqlOperation(updateSubscriptionOrderMutation, subscriptionOrderVariables),
+      )) as GraphQLResult<UpdateSubscriptionOrderMutation>;
+
+      if (!subscriptionOrderResult.data || !subscriptionOrderResult.data.updateSubscriptionOrder) {
+        throw Error('It returned null that an API which executed to update subscription order data.');
+      }
+
       // 処理成功時のresolveの値としてorderを返却
       return order;
     }),

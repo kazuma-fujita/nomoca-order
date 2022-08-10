@@ -101,7 +101,7 @@ type SubscriptionOrder
   deliveryInterval: Int!
   nextDeliveryYear: Int
   nextDeliveryMonth: Int
-  lastDeliveredAt: AWSDateTime
+  lastDeliveredAt: AWSDateTime # admin管理画面一覧の配送日時。csv出力した日時を保存。csv出力した当月はcsvボタンdisableの判定に利用
   createdAt: AWSDateTime!
   type: String!
     @index(name: "sortByCreatedAt", queryField: "listSubscriptionOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])

@@ -100,6 +100,8 @@ context('SingleOrder', () => {
       //////////////////////////////////////////////////
       // 一覧画面表示
       cy.url().should('include', `${Path.singleOrder}`);
+      // 画面が完全に切り替わった事を確認
+      cy.findByTestId('menu-icon').should('be.visible');
       cy.findByRole('table').within(() => {
         // 配送方法
         cy.findByRole('cell', { name: '通常配送' });

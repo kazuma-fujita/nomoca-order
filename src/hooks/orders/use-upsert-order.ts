@@ -195,7 +195,6 @@ const createSubscriptionOrder = async (param: OrderFormParam) => {
       id: param.id,
       ...inputParam,
     };
-    console.table(input);
     const variables: UpdateSubscriptionOrderMutationVariables = { input: input };
     // データ更新実行
     const result = (await API.graphql(

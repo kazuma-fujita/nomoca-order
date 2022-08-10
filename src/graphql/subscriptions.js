@@ -331,6 +331,7 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
       deliveryInterval
       nextDeliveryYear
       nextDeliveryMonth
+      lastDeliveredAt
       createdAt
       type
       owner
@@ -398,6 +399,7 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
       deliveryInterval
       nextDeliveryYear
       nextDeliveryMonth
+      lastDeliveredAt
       createdAt
       type
       owner
@@ -465,6 +467,7 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
       deliveryInterval
       nextDeliveryYear
       nextDeliveryMonth
+      lastDeliveredAt
       createdAt
       type
       owner
