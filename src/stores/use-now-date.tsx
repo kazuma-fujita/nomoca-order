@@ -15,9 +15,10 @@ const fetcher = async () => {
   if (!result.data || !result.data.getCurrentDate || !result.data.getCurrentDate.currentDate) {
     throw Error('It was returned null after the API had fetched data.');
   }
-  // 文字列型をDate型に変換
+  // 文字列型をDate型に変換。サーバからはUTC時刻が返却されるので、Dateオブジェクトで+9時間JST時刻に変換
+  console.log('server time', result.data.getCurrentDate.currentDate);
   const now = new Date(result.data.getCurrentDate.currentDate);
-  console.log('server time', now);
+  console.log('date time', now);
   return now;
 };
 
@@ -29,6 +30,6 @@ export const NowDateContextProvider: React.FC<Props> = ({ now, ...rest }) => {
   // nowはjest、storybookで使用するmock date。nowがあれば型を合わせる為にFetchResponseに変換
   const mockDate = now && ({ data: now } as FetchResponse<Date>);
   // useFetchは内部的にnow Propsが無いmockDateがundefinedの場合fetcherを呼ぶ
-  const response = useFetch<Date>('currentDate', fetcher, { revalidateOnFocus: false }, mockDate);
+  const response = useFetch<Date>('currentDate', fetcher, {}, mockDate);
   return <NowDateContext.Provider value={response} {...rest} />;
 };
