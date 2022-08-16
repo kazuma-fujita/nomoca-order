@@ -11,10 +11,17 @@ export const isShippingSubscriptionOrderThisMonth = (orders: ExtendedOrder<Subsc
   return isShippingSubscriptionOrderThisMonthByLastDeliveredAtList(lastDeliveredAtList, now);
 };
 
+// 単体テスト対象
 export const isShippingSubscriptionOrderThisMonthByLastDeliveredAtList = (
   lastDeliveredAtList: (string | null | undefined)[],
   now: Date,
 ) => {
+  console.log('date now object', new Date());
+  console.log('offset', new Date().getTimezoneOffset());
+  console.log('locale', new Date().toLocaleString());
+  console.log('locale date', new Date().toLocaleDateString());
+  console.log('now', now);
+  console.log('formatted', format(now, 'yyyy/MM/dd HH:mm:ss'));
   // 現在時刻yyyyMM文字列
   const currentYearMonth = formatDateYearMonth(now);
   // 当月csv出力済(当月発送済)リスト生成
@@ -23,6 +30,8 @@ export const isShippingSubscriptionOrderThisMonthByLastDeliveredAtList = (
     if (!lastDeliveredAt) {
       return false;
     }
+    console.log('deliveredAt', lastDeliveredAt);
+    console.log('deliveredAt formatted', format(parseISO(lastDeliveredAt), 'yyyy/MM/dd HH:mm:ss'));
     // 過去に配送日時記録があり、配送日時が当月だったら当月配送済み
     return formatDateFromDateString(lastDeliveredAt) === currentYearMonth;
   });
