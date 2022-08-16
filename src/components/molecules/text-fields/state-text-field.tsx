@@ -17,7 +17,6 @@ export const StateTextField = ({ formState, register, disabled }: Props) => (
     id='state'
     label='都道府県'
     autoComplete='off'
-    // autoComplete='address-level1'
     disabled={disabled}
     error={Boolean(formState.errors.state)}
     helperText={formState.errors.state ? formState.errors.state.message : '例 東京都'}
@@ -34,5 +33,6 @@ export const StateTextField = ({ formState, register, disabled }: Props) => (
       minLength: { value: MIN_LENGTH, message: '都道府県は3文字以上で入力してください' },
       maxLength: { value: MAX_LENGTH, message: '都道府県は4文字以下で入力してください' },
     })}
+    InputLabelProps={{ shrink: true }} // 郵便番号検索時にlabelと検索結果が重なる為、labelを事前に縮小
   />
 );

@@ -18,8 +18,6 @@ export const AddressTextField = ({ formState, register, disabled }: Props) => (
     disabled={disabled}
     autoComplete='off'
     fullWidth
-    // autoComplete='address-level2'
-    // autoComplete='street-address'
     error={Boolean(formState.errors.address)}
     helperText={formState.errors.address ? formState.errors.address.message : '例 1-2-3'}
     inputProps={{

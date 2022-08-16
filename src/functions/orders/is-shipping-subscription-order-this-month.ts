@@ -16,12 +16,6 @@ export const isShippingSubscriptionOrderThisMonthByLastDeliveredAtList = (
   lastDeliveredAtList: (string | null | undefined)[],
   now: Date,
 ) => {
-  console.log('date now object', new Date());
-  console.log('offset', new Date().getTimezoneOffset());
-  console.log('locale', new Date().toLocaleString());
-  console.log('locale date', new Date().toLocaleDateString());
-  console.log('now', now);
-  console.log('formatted', format(now, 'yyyy/MM/dd HH:mm:ss'));
   // 現在時刻yyyyMM文字列
   const currentYearMonth = formatDateYearMonth(now);
   // 当月csv出力済(当月発送済)リスト生成

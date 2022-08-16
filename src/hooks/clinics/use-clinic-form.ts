@@ -65,9 +65,10 @@ export const useClinicForm = () => {
           if (result.city) {
             setValue('city', result.city);
           }
-          if (result.address) {
-            setValue('address', result.address);
-          }
+          // 番地は補完しない
+          // if (result.address) {
+          //   setValue('address', result.address);
+          // }
         }
       }
     },

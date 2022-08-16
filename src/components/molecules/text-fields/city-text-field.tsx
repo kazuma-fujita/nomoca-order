@@ -18,8 +18,6 @@ export const CityTextField = ({ formState, register, disabled }: Props) => (
     disabled={disabled}
     autoComplete='off'
     fullWidth
-    // autoComplete='city-level2'
-    // autoComplete='street-city'
     error={Boolean(formState.errors.city)}
     helperText={formState.errors.city ? formState.errors.city.message : '例 渋谷区渋谷'}
     inputProps={{
@@ -33,5 +31,6 @@ export const CityTextField = ({ formState, register, disabled }: Props) => (
         message: '市区町村で使用できない文字が含まれています',
       },
     })}
+    InputLabelProps={{ shrink: true }} // 郵便番号検索時にlabelと検索結果が重なる為、labelを事前に縮小
   />
 );
