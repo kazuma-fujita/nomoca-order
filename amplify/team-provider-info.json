@@ -24,7 +24,7 @@
       "function": {
         "currentDate": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/currentDate-36745635706c63436564-build.zip"
+          "s3Key": "amplify-builds/currentDate-4f4935746a7348364532-build.zip"
         },
         "sendOrderMail": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
@@ -32,7 +32,7 @@
         },
         "listSubscriptionOrdersContainedNextDeliveryDate": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-5935302f4672766c6969-build.zip"
+          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-45725a78794479763666-build.zip"
         },
         "sendErrorMail": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
