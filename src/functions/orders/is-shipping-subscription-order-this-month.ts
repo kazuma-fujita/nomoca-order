@@ -15,6 +15,7 @@ export const isShippingSubscriptionOrderThisMonthByLastDeliveredAtList = (
   lastDeliveredAtList: (string | null | undefined)[],
   now: Date,
 ) => {
+  // 現在時刻yyyyMM文字列
   const currentYearMonth = formatDateYearMonth(now);
   // 当月csv出力済(当月発送済)リスト生成
   const shippedOrders = lastDeliveredAtList.filter((lastDeliveredAt) => {

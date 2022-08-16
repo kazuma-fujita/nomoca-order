@@ -92,12 +92,10 @@ export const handler = async (event: any) => {
         throw Error('The API fetched products but it returned null.');
       }
     }
-
-    const now = new Date();
+    // JST時刻のdateオブジェクト生成
+    const now = generateJSTDate();
     const nowYear = now.getFullYear();
     const nowMonth = now.getMonth() + 1;
-    console.log('nowYear', nowYear, 'nowMonth', nowMonth);
-
     // 顧客ユーザ、業務ユーザ共通で次回発送予定年月をレスポンスに追加
     const nextDeliveryDateItems = items.map((item) => {
       // 次回発送予定年月を計算した値
@@ -130,6 +128,19 @@ export const handler = async (event: any) => {
     console.error('list subscription order error:', error);
     return error.message;
   }
+};
+
+// JST時刻のdateオブジェクト生成
+const generateJSTDate = (): Date => {
+  // UTC -> JST変換処理
+  const now = new Date();
+  // JSTはUTCから+9時間
+  const jstOffset = 9 * 60;
+  // JSTとUTCの差分を計算
+  const offset = now.getTimezoneOffset() + jstOffset;
+  // getTimeはミリ秒なので60x1000
+  now.setTime(now.getTime() + offset * 60 * 1000);
+  return now;
 };
 
 const parseResponseError = (error: any): Error => {
