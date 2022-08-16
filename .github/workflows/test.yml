@@ -75,6 +75,8 @@ jobs:
         run: npm run lint
       - name: Run Jest tests ⚗️
         run: npm run test
+        env:
+          TZ: 'Asia/Tokyo' # タイムゾーン指定
       - name: Run Lambda tests ⚗️
         run: |
           npm run npm:install:listSubscriptionOrders
