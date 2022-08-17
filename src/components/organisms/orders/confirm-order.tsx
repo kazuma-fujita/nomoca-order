@@ -6,7 +6,7 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { ClinicDetail } from 'components/organisms/clinics/clinic-detail';
-import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
+import { addDeliveryFeeAndExpressFeeToProductList } from 'functions/orders/add-delivery-fee-and-express-fee-to-product-list';
 import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 import { BaseSyntheticEvent, MouseEventHandler } from 'react';
 import { useOrderFormParam } from 'stores/use-order-form-param';
@@ -76,7 +76,7 @@ const ProductsLabel = () => {
   const products =
     orderType === OrderType.singleOrder && formParam.deliveryType
       ? // 通常注文の場合、速達料金、配送手数料を配列に追加
-        addDeliveryFeeAndExpressObjectToProductList(formParam.products, formParam.deliveryType)
+        addDeliveryFeeAndExpressFeeToProductList(formParam.products, formParam.deliveryType)
       : formParam.products;
   return <ReceiptTable products={products} />;
 };

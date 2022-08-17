@@ -2,7 +2,7 @@ import { DeliveryType } from 'API';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { calcSubtotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 
-export const addDeliveryFeeAndExpressObjectToProductList = (
+export const addDeliveryFeeAndExpressFeeToProductList = (
   products: NormalizedProduct[],
   deliveryType: DeliveryType,
 ): NormalizedProduct[] => {
@@ -21,7 +21,6 @@ const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): Norma
   if (calcSubtotalFromProductList(products) >= 10000) {
     return products;
   }
-
   // 配列最後のviewOrder取得
   const trailingViewOrder = products[products.length - 1].viewOrder;
   if (!trailingViewOrder) {

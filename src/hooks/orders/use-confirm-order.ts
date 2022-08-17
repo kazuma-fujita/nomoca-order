@@ -1,7 +1,7 @@
 import { OrderType } from 'API';
 import { FormScreenQuery } from 'constants/form-screen-query';
 import { Path } from 'constants/path';
-import { addDeliveryFeeAndExpressObjectToProductList } from 'functions/orders/add-delivery-fee-and-express-object-to-product-list';
+import { addDeliveryFeeAndExpressFeeToProductList } from 'functions/orders/add-delivery-fee-and-express-fee-to-product-list';
 import { useCreateOrder } from 'hooks/orders/use-upsert-order';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -29,9 +29,8 @@ export const useConfirmOrder = () => {
       const products =
         orderType === OrderType.singleOrder && formParam.deliveryType
           ? // 通常注文の場合、速達料金、配送手数料を配列に追加
-            addDeliveryFeeAndExpressObjectToProductList(formParam.products, formParam.deliveryType)
+            addDeliveryFeeAndExpressFeeToProductList(formParam.products, formParam.deliveryType)
           : formParam.products;
-
       // 重複商品配列はuseOrderFormでmerge済み。更に速達、配送手数料を加えた商品配列を登録
       await createOrder(orderType, { ...formParam, products: products });
       // 完了画面へ遷移

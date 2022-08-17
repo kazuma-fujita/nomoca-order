@@ -66,14 +66,14 @@ export const useInputOrder = () => {
   // 確認するボタン押下時処理
   const submitHandler = handleSubmit(
     useCallback(
-      (param: OrderFormParam) => {
-        if (!param.products || !productList || !productList.length) {
+      (formParam: OrderFormParam) => {
+        if (!formParam.products || !productList || !productList.length) {
           throw Error('Input form values are not found.');
         }
         // 入力された商品配列データをviewOrder順に並び替え、重複商品はquantityを合計してmergeし重複削除。
-        const mergedProducts = mergeOrderFormProductList(param.products, productList);
+        const mergedProducts = mergeOrderFormProductList(formParam.products, productList);
         // 確認画面に表示する為Stateに保存。確認画面から修正するボタン押下時も入力画面にmerge済み商品を表示する為、このタイミングで重複商品mergeを実行する
-        mutate({ ...param, products: mergedProducts }, false);
+        mutate({ ...formParam, products: mergedProducts }, false);
         router.push(`${basePath}?${FormScreenQuery.confirm}`, undefined, { shallow: true });
       },
       [productList, mutate, router, basePath],
@@ -109,7 +109,7 @@ const mergeOrderFormProductList = (
     if (!a.viewOrder || !b.viewOrder) {
       throw Error('No view order found to compare.');
     }
-    return a.viewOrder > b.viewOrder ? -1 : 1;
+    return a.viewOrder > b.viewOrder ? 1 : -1;
   });
 
   // 入力画面で同じ商品が複数選択されてる場合、個数を合算してlistをmerge
