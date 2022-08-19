@@ -133,7 +133,8 @@ export const useExportOrderCSV = () => {
       }
 
       if (orders.length === 0) {
-        throw Error('It is empty that an ID list which export a csv file.');
+        // throw Error('It is empty that an ID list which export a csv file.');
+        return;
       }
 
       // ordersに紐づくproduct配列をflatMapで1次元配列に加工しCSV行のobjectを生成

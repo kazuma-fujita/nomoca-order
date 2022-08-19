@@ -69,9 +69,9 @@ export const onCreateOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
-          owner
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -107,8 +107,8 @@ export const onCreateOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      owner
       updatedAt
+      owner
     }
   }
 `;
@@ -125,9 +125,9 @@ export const onUpdateOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
-          owner
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -163,8 +163,8 @@ export const onUpdateOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      owner
       updatedAt
+      owner
     }
   }
 `;
@@ -181,9 +181,9 @@ export const onDeleteOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
-          owner
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -219,8 +219,8 @@ export const onDeleteOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      owner
       updatedAt
+      owner
     }
   }
 `;
@@ -234,9 +234,9 @@ export const onCreateOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
-      owner
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -250,9 +250,9 @@ export const onUpdateOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
-      owner
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -266,9 +266,9 @@ export const onDeleteOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
-      owner
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -548,6 +548,228 @@ export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+    }
+  }
+`;
+export const onCreateSubscriptionOrderHistory = /* GraphQL */ `
+  subscription OnCreateSubscriptionOrderHistory($owner: String) {
+    onCreateSubscriptionOrderHistory(owner: $owner) {
+      id
+      products {
+        items {
+          id
+          orderID
+          name
+          unitPrice
+          quantity
+          viewOrder
+          isExportCSV
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSubscriptionOrderHistory = /* GraphQL */ `
+  subscription OnUpdateSubscriptionOrderHistory($owner: String) {
+    onUpdateSubscriptionOrderHistory(owner: $owner) {
+      id
+      products {
+        items {
+          id
+          orderID
+          name
+          unitPrice
+          quantity
+          viewOrder
+          isExportCSV
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSubscriptionOrderHistory = /* GraphQL */ `
+  subscription OnDeleteSubscriptionOrderHistory($owner: String) {
+    onDeleteSubscriptionOrderHistory(owner: $owner) {
+      id
+      products {
+        items {
+          id
+          orderID
+          name
+          unitPrice
+          quantity
+          viewOrder
+          isExportCSV
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+export const onCreateSubscriptionOrderHistoryProduct = /* GraphQL */ `
+  subscription OnCreateSubscriptionOrderHistoryProduct($owner: String) {
+    onCreateSubscriptionOrderHistoryProduct(owner: $owner) {
+      id
+      orderID
+      name
+      unitPrice
+      quantity
+      viewOrder
+      isExportCSV
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSubscriptionOrderHistoryProduct = /* GraphQL */ `
+  subscription OnUpdateSubscriptionOrderHistoryProduct($owner: String) {
+    onUpdateSubscriptionOrderHistoryProduct(owner: $owner) {
+      id
+      orderID
+      name
+      unitPrice
+      quantity
+      viewOrder
+      isExportCSV
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSubscriptionOrderHistoryProduct = /* GraphQL */ `
+  subscription OnDeleteSubscriptionOrderHistoryProduct($owner: String) {
+    onDeleteSubscriptionOrderHistoryProduct(owner: $owner) {
+      id
+      orderID
+      name
+      unitPrice
+      quantity
+      viewOrder
+      isExportCSV
+      owner
+      createdAt
+      updatedAt
     }
   }
 `;

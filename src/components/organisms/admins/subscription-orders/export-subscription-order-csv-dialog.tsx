@@ -5,19 +5,22 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { ErrorAlert } from 'components/atoms/alerts/error-alert';
+import { isShippingSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-subscription-order-this-month';
+import { useFetchSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { useNowDate } from 'stores/use-now-date';
 
 type Props = {
   on: boolean;
   isLoading: boolean;
-  error: Error | null;
   submitHandler: () => void;
   cancelHandler: () => void;
 };
 
-export const ExportSubscriptionOrderCSVDialog = (props: Props) => {
+export const ExportSubscriptionOrderCSVDialog = ({ on, isLoading, submitHandler, cancelHandler }: Props) => {
+  const { data: orders } = useFetchSubscriptionOrderList();
+  const { data: now } = useNowDate();
   return (
-    <Dialog open={props.on}>
+    <Dialog open={on}>
       <DialogTitle>CSVを出力する前に必ず以下を確認してください</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -27,19 +30,19 @@ export const ExportSubscriptionOrderCSVDialog = (props: Props) => {
           <br />
           当月発送分をCSV出力して顧客に発送通知をしてよろしいですか？
         </DialogContentText>
-        {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
       </DialogContent>
       <DialogActions>
-        <LoadingButton onClick={props.cancelHandler} loadingIndicator='Loading...' loading={props.isLoading}>
+        <LoadingButton onClick={cancelHandler} loadingIndicator='Loading...' loading={isLoading}>
           閉じる
         </LoadingButton>
         <LoadingButton
-          onClick={props.submitHandler}
+          onClick={submitHandler}
           variant='contained'
           color='error'
-          loading={props.isLoading}
+          loading={isLoading}
           loadingPosition='start'
           startIcon={<LocalShippingIcon />}
+          disabled={!orders || orders.length === 0 || !now || isShippingSubscriptionOrderThisMonth(orders, now)}
         >
           CSVを出力して顧客に発送通知をする
         </LoadingButton>

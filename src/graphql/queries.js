@@ -57,9 +57,9 @@ export const getOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
-          owner
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -95,8 +95,8 @@ export const getOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      owner
       updatedAt
+      owner
     }
   }
 `;
@@ -118,9 +118,9 @@ export const listOrders = /* GraphQL */ `
             quantity
             viewOrder
             isExportCSV
-            owner
             createdAt
             updatedAt
+            owner
           }
           nextToken
         }
@@ -156,8 +156,8 @@ export const listOrders = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        owner
         updatedAt
+        owner
       }
       nextToken
     }
@@ -191,9 +191,9 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
             quantity
             viewOrder
             isExportCSV
-            owner
             createdAt
             updatedAt
+            owner
           }
           nextToken
         }
@@ -229,8 +229,8 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        owner
         updatedAt
+        owner
       }
       nextToken
     }
@@ -459,6 +459,208 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
         nextDeliveryYear
         nextDeliveryMonth
         lastDeliveredAt
+        createdAt
+        type
+        owner
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getSubscriptionOrderHistory = /* GraphQL */ `
+  query GetSubscriptionOrderHistory($id: ID!) {
+    getSubscriptionOrderHistory(id: $id) {
+      id
+      products {
+        items {
+          id
+          orderID
+          name
+          unitPrice
+          quantity
+          viewOrder
+          isExportCSV
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+export const listSubscriptionOrderHistories = /* GraphQL */ `
+  query ListSubscriptionOrderHistories(
+    $filter: ModelSubscriptionOrderHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubscriptionOrderHistories(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            isExportCSV
+            owner
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          mailAddress
+          createdAt
+          updatedAt
+          owner
+        }
+        staffID
+        staff {
+          id
+          firstName
+          lastName
+          viewOrder
+          disabled
+          type
+          createdAt
+          updatedAt
+          owner
+        }
+        deliveryStartYear
+        deliveryStartMonth
+        deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
+        createdAt
+        type
+        owner
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const listSubscriptionOrderHistoriesSortedByCreatedAt = /* GraphQL */ `
+  query ListSubscriptionOrderHistoriesSortedByCreatedAt(
+    $type: Type!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSubscriptionOrderHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubscriptionOrderHistoriesSortedByCreatedAt(
+      type: $type
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            isExportCSV
+            owner
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          mailAddress
+          createdAt
+          updatedAt
+          owner
+        }
+        staffID
+        staff {
+          id
+          firstName
+          lastName
+          viewOrder
+          disabled
+          type
+          createdAt
+          updatedAt
+          owner
+        }
+        deliveryStartYear
+        deliveryStartMonth
+        deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
         createdAt
         type
         owner

@@ -81,7 +81,6 @@ const createSubscriptionOrderProducts = async (newSubscriptionOrderID: string, c
 
     // データ新規登録実行
     const variables: CreateSubscriptionOrderProductMutationVariables = { input: input };
-    console.table(variables);
     const result = (await API.graphql(
       graphqlOperation(createSubscriptionOrderProduct, variables),
     )) as GraphQLResult<CreateSubscriptionOrderProductMutation>;

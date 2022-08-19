@@ -10,7 +10,7 @@ import { useOrderFormParam } from 'stores/use-order-form-param';
 const deliveryIntervals = [1, 2, 3, 4, 6];
 // 配送開始月の上限。Nヶ月を指定
 const deliveryStartMonthLimit = 6;
-
+// 選択した配送開始月より現在月の方が大きければ翌年を返却。e.g.) 選択月 2月 現在年月 2022/12月 の場合、2023年を返却
 const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth: number) =>
   selectMonth <= nowMonth ? nowYear + 1 : nowYear;
 
@@ -22,16 +22,26 @@ export const SubscriptionOrderForm = () => {
   // 現在年、月を取得。現在月はgetMonthの値に+1をして取得
   const nowYear = currentDate.getFullYear();
   const nowMonth = currentDate.getMonth() + 1;
+  ///////////////////////////////////
+  // TODO: debug
   // 配送開始月SelectField初期値。初期値として翌月を設定
-  const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
+  // const nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
+  const nextMonth = nowMonth;
+  ///////////////////////////////////
   // 配送開始月SelectFieldプルダウン月配列生成。翌月から〜lengthの数値で配送開始月の上限を設定
   const deliveryStartMonths = Array.from({ length: deliveryStartMonthLimit }, (_, i) => {
     const month = nextMonth + i;
     // 配送開始月プルダウンの年跨ぎを計算 e.g.) 10, 11, 12, 1, 2, 3月
     return month > 12 ? month - 12 : month;
   });
+  ///////////////////////////////////
+  // TODO: debug
   // 配送開始年TextField初期値。配送開始月初期値が翌年の場合、翌年の値を初期値に設定。また、確認画面戻りで既に値があれば初期値として設定
-  const initialYear = (data && data.deliveryStartYear) ?? addYearWithSelectedMonth(nowYear, nowMonth, nextMonth);
+  // const initialYear = (data && data.deliveryStartYear) ?? addYearWithSelectedMonth(nowYear, nowMonth, nextMonth);
+  const initialYear = nowYear;
+  console.log('nowYear', nowYear);
+  console.log('initialYear', initialYear);
+  ///////////////////////////////////
   const [deliveryStartYear, setDeliveryStartYear] = useState(initialYear);
   formReturn.setValue('deliveryStartYear', deliveryStartYear);
   // 配送開始月プルダウン変更handler。プルダウンで翌年を選択した場合、翌年の値を配送開始年に設定

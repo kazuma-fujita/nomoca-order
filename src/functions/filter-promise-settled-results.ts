@@ -1,3 +1,4 @@
+import { parseResponseError } from '../utilities/parse-response-error';
 // 配送状況DB更新成功orderリスト抽出
 export const filteredPromiseFulfilledResult = <T>(results: PromiseSettledResult<T>[]) =>
   results
@@ -12,5 +13,5 @@ export const filteredPromiseRejectedResult = <T>(results: PromiseSettledResult<T
     .filter((result) => result.status === 'rejected')
     .map((result) => {
       const fulfilled = result as PromiseRejectedResult;
-      return fulfilled.reason;
+      return parseResponseError(fulfilled.reason);
     });

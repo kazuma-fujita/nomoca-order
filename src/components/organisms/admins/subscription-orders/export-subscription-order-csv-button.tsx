@@ -2,7 +2,6 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Button from '@mui/material/Button';
 import { SubscriptionOrder } from 'API';
 import { isShippingSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-subscription-order-this-month';
-import { useExportSubscriptionOrderCSVAndCreateOrderHistory } from 'hooks/admins/subscription-orders/use-export-subscription-order-csv-and-create-order-history';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
@@ -11,11 +10,17 @@ import { ExportSubscriptionOrderCSVDialog } from './export-subscription-order-cs
 
 type props = {
   orders: ExtendedOrder<SubscriptionOrder>[] | null;
+  exportSubscriptionOrderCSVAndCreateOrderHistory: (orders: ExtendedOrder<SubscriptionOrder>[]) => Promise<void>;
+  isLoading: boolean;
+  resetState: () => void;
 };
 
-export const ExportSubscriptionOrderCSVButton = ({ orders }: props) => {
-  const { exportSubscriptionOrderCSVAndCreateOrderHistory, isLoading, error, resetState } =
-    useExportSubscriptionOrderCSVAndCreateOrderHistory();
+export const ExportSubscriptionOrderCSVButton = ({
+  orders,
+  exportSubscriptionOrderCSVAndCreateOrderHistory,
+  isLoading,
+  resetState,
+}: props) => {
   const [on, toggle] = useToggle(false);
   const { data: now } = useNowDate();
 
@@ -47,7 +52,6 @@ export const ExportSubscriptionOrderCSVButton = ({ orders }: props) => {
       <ExportSubscriptionOrderCSVDialog
         on={on}
         isLoading={isLoading}
-        error={error}
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
       />

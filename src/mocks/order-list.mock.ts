@@ -57,8 +57,7 @@ export const orderListMock: ExtendedOrder<Order>[] = [...Array(12)].map((_, i) =
   },
   normalizedProducts: createNormalizedProductsMock(i + 1),
   staff: { ...orderItem.staff, id: `dummyStaffID-${i + 1}`, lastName: `佐藤`, firstName: `太郎${i + 1}` },
-  deliveryType:
-    (i + 1) % 3 === 0 ? DeliveryType.regular : (i + 1) % 3 === 1 ? DeliveryType.subscription : DeliveryType.express,
+  deliveryType: (i + 1) % 2 === 0 ? DeliveryType.regular : DeliveryType.express,
   deliveryStatus:
     (i + 1) % 3 === 0 ? DeliveryStatus.ordered : (i + 1) % 3 === 1 ? DeliveryStatus.delivered : DeliveryStatus.canceled,
   deliveredAt: (i + 1) % 3 === 0 ? null : (i + 1) % 3 === 1 ? '2021-01-25T09:32:55Z' : null,

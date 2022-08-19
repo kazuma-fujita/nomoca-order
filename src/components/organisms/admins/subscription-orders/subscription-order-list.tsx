@@ -38,10 +38,6 @@ const header: TableHeader[] = [
     minWidth: 80,
   },
   {
-    label: '当月発送日時',
-    minWidth: 80,
-  },
-  {
     label: '申し込み日時',
     minWidth: 80,
   },
@@ -71,7 +67,6 @@ const Row = ({ item }: RowProps) => {
       <TableCell align='center'>{`${item.deliveryStartYear}/${item.deliveryStartMonth}月`}</TableCell>
       <TableCell align='center'>{`${item.deliveryInterval}ヶ月`}</TableCell>
       <TableCell align='center'>{`${item.nextDeliveryYear}/${item.nextDeliveryMonth}月`}</TableCell>
-      <TableCell align='center'>{item.lastDeliveredAt ? formatDateHourMinute(item.lastDeliveredAt) : '-'}</TableCell>
       <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
     </CommonTableRow>
   );
