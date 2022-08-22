@@ -69,9 +69,9 @@ export const onCreateOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -107,8 +107,8 @@ export const onCreateOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -125,9 +125,9 @@ export const onUpdateOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -163,8 +163,8 @@ export const onUpdateOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -181,9 +181,9 @@ export const onDeleteOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -219,8 +219,8 @@ export const onDeleteOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -234,9 +234,9 @@ export const onCreateOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -250,9 +250,9 @@ export const onUpdateOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -266,9 +266,9 @@ export const onDeleteOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
+      owner
       createdAt
       updatedAt
-      owner
     }
   }
 `;

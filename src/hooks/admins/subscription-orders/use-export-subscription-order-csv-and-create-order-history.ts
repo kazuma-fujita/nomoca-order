@@ -82,7 +82,9 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
       const updatedDeliveredSuccessBody = `CSV出力医院:\n${updatedDeliveredAtSuccesses
         .map((order) => order.clinic.name)
         .join('\n')}\n計:${updatedDeliveredAtSuccessTotal}件`;
-      const updatedDeliveredFailedBody = `CSV出力失敗件数:${updatedDeliveredAtFails.length}/${orderTotal}`;
+      const updatedDeliveredFailedBody = `エラー:\n${updatedDeliveredAtFails.join('\n')}\n計:${
+        updatedDeliveredAtFails.length
+      }件`;
       const updatedDeliveredBody = isUpdatedDeliveredSuccess
         ? updatedDeliveredSuccessBody
         : `${updatedDeliveredSuccessBody}\n${updatedDeliveredFailedBody}`;
@@ -100,8 +102,13 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
 
       // ダイアログにCSV出力成功 or 失敗メッセージ表示
       const resultMessage = `${notificationMailSubject}\n\n${notificationMailBody}`;
-      isUpdatedDeliveredSuccess ? setSuccessMessage(resultMessage) : setError(Error(resultMessage));
-
+      if (isUpdatedDeliveredSuccess) {
+        setSuccessMessage(resultMessage);
+        setError(null);
+      } else {
+        setSuccessMessage(null);
+        setError(Error(resultMessage));
+      }
       // lastDeliveredAtの更新を反映させる為一覧の再取得・更新
       mutate(SWRKey.subscriptionOrderList);
     } catch (error) {
@@ -114,7 +121,7 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
 
   const resetState = useCallback(() => {
     setIsLoading(false);
-    setError(null);
+    // setError(null);
   }, []);
 
   return { exportSubscriptionOrderCSVAndCreateOrderHistory, isLoading, successMessage, error, resetState };

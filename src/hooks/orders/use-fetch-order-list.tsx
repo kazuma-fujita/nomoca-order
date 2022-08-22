@@ -15,6 +15,7 @@ import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 import { useSingleOrderSearchParam } from 'hooks/admins/single-orders/use-single-order-search-param';
+import { useCurrentUser } from 'stores/use-current-user';
 
 const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
   if (!order.products) {
@@ -36,16 +37,20 @@ const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
   });
 };
 
-const fetcher = async (_: string, searchState: SingleOrderSearchParam): Promise<ExtendedOrder<Order>[]> => {
+const fetcher = async (
+  _: string,
+  isOperator: boolean,
+  searchState: SingleOrderSearchParam,
+): Promise<ExtendedOrder<Order>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
   const sortVariables: ListOrdersSortedByCreatedAtQueryVariables = {
     type: Type.order,
     sortDirection: ModelSortDirection.DESC,
   };
 
-  // 全件検索以外はfilter指定をしてAPI実行
+  // admin権限かつ検索条件が全件検索以外はfilter指定をしてAPI実行
   const variables =
-    searchState.deliveryStatus !== DeliveryStatus.none
+    isOperator && searchState.deliveryStatus !== DeliveryStatus.none
       ? { ...sortVariables, filter: { deliveryStatus: { eq: searchState.deliveryStatus } } }
       : sortVariables;
 
@@ -88,14 +93,16 @@ type Props = {
 };
 
 type ProviderProps = FetchResponse<ExtendedOrder<Order>[]> & {
-  swrKey: (string | SingleOrderSearchParam)[];
+  swrKey: (string | boolean | SingleOrderSearchParam)[];
 };
 
 export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
+  // adminユーザのみ検索をかける為、ログインユーザ権限取得
+  const { isOperator } = useCurrentUser();
   // グローバルに保存された注文検索条件(admin管理画面用)
   const { searchState } = useSingleOrderSearchParam();
   // 検索条件もSWRキャッシュの対象
-  const swrKey = [SWRKey.orderList, searchState];
+  const swrKey = [SWRKey.orderList, isOperator, searchState];
   const fetchResponse = useFetch<ExtendedOrder<Order>[]>(swrKey, fetcher, {}, mockResponse);
   return <OrderListContext.Provider value={{ ...fetchResponse, swrKey }}>{children}</OrderListContext.Provider>;
 };

@@ -62,8 +62,8 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
         : '選択した注文の中でCSV出力に失敗した注文があります。システム管理者に問い合わせてください。';
       const updatedSuccessBody = `CSV出力医院:\n${updatedStatusSuccesses
         .map((order) => order.clinic.name)
-        .join('\n')}\n計:${orderTotal}件`;
-      const updatedFailedBody = `CSV出力失敗件数:${updatedStatusFails.length}/${orderTotal}`;
+        .join('\n')}\n計:${updatedDeliveryStatusTotal}件`;
+      const updatedFailedBody = `エラー:\n${updatedStatusFails.join('\n')}\n計:${updatedStatusFails.length}件`;
       const updatedStatusBody = isSucceedUpdatedDeliveryStatus
         ? updatedSuccessBody
         : `${updatedSuccessBody}\n${updatedFailedBody}`;
@@ -78,7 +78,13 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
 
       // ダイアログにCSV出力成功 or 失敗メッセージ表示
       const resultMessage = `${notificationMailSubject}\n\n${notificationMailBody}`;
-      isSucceedUpdatedDeliveryStatus ? setSuccessMessage(resultMessage) : setError(Error(resultMessage));
+      if (isSucceedUpdatedDeliveryStatus) {
+        setSuccessMessage(resultMessage);
+        setError(null);
+      } else {
+        setSuccessMessage(null);
+        setError(Error(resultMessage));
+      }
 
       // 注文状況変更反映の為、注文一覧データ再取得・更新
       // swrKeyはuseFetchOrderListで一覧検索条件もkeyとして保持している
@@ -93,7 +99,7 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
 
   const resetState = useCallback(() => {
     setIsLoading(false);
-    setError(null);
+    // setError(null);
   }, []);
 
   return { exportSingleOrderCSVAndUpdateDeliveryStatus, isLoading, successMessage, error, resetState };
@@ -109,6 +115,7 @@ const updateDeliveryStatus = async (filteredOrders: ExtendedOrder<Order>[], now:
         id: order.id,
         deliveryStatus: DeliveryStatus.delivered,
         deliveredAt: now.toISOString(),
+        // owner: order.owner,
       };
       const variables: UpdateOrderMutationVariables = { input: input };
 

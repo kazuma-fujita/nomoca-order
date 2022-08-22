@@ -58,9 +58,9 @@ export const getOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          owner
           createdAt
           updatedAt
-          owner
         }
         nextToken
       }
@@ -96,8 +96,8 @@ export const getOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -119,9 +119,9 @@ export const listOrders = /* GraphQL */ `
             quantity
             viewOrder
             isExportCSV
+            owner
             createdAt
             updatedAt
-            owner
           }
           nextToken
         }
@@ -157,8 +157,8 @@ export const listOrders = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        updatedAt
         owner
+        updatedAt
       }
       nextToken
     }
@@ -192,9 +192,9 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
             quantity
             viewOrder
             isExportCSV
+            owner
             createdAt
             updatedAt
-            owner
           }
           nextToken
         }
@@ -230,8 +230,8 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        updatedAt
         owner
+        updatedAt
       }
       nextToken
     }
