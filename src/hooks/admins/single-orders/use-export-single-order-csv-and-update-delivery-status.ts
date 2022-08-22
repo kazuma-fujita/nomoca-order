@@ -110,24 +110,29 @@ const updateDeliveryStatus = async (filteredOrders: ExtendedOrder<Order>[], now:
   const updatedStatuses: PromiseSettledResult<ExtendedOrder<Order>>[] = await Promise.allSettled(
     // mapはasync/awaitを使用するとpromiseを返却
     filteredOrders.map(async (order) => {
-      // deliveryStatusを発送済み、発送日時に現在日時を設定
-      const input: UpdateOrderInput = {
-        id: order.id,
-        deliveryStatus: DeliveryStatus.delivered,
-        deliveredAt: now.toISOString(),
-        // owner: order.owner,
-      };
-      const variables: UpdateOrderMutationVariables = { input: input };
+      try {
+        // deliveryStatusを発送済み、発送日時に現在日時を設定
+        const input: UpdateOrderInput = {
+          id: order.id,
+          deliveryStatus: DeliveryStatus.delivered,
+          deliveredAt: now.toISOString(),
+        };
+        const variables: UpdateOrderMutationVariables = { input: input };
 
-      // データ更新実行
-      const result = (await API.graphql(
-        graphqlOperation(updateOrder, variables),
-      )) as GraphQLResult<UpdateOrderMutation>;
+        // データ更新実行
+        const result = (await API.graphql(
+          graphqlOperation(updateOrder, variables),
+        )) as GraphQLResult<UpdateOrderMutation>;
 
-      if (!result.data || !result.data.updateOrder) {
-        throw Error('It returned null that an API which executed to update order data.');
+        if (!result.data || !result.data.updateOrder) {
+          throw Error('It returned null that an API which executed to update order data.');
+        }
+        console.log('updatedOrder:', result.data.updateOrder);
+      } catch (err) {
+        const error = parseResponseError(err);
+        console.error('updates delivery status error:', error);
+        throw Error(`${order.clinic.name}: ${error}`);
       }
-      console.log('updatedOrder:', result.data.updateOrder);
       // 処理成功時のresolveの値としてorderを返却
       return order;
     }),
