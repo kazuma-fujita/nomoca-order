@@ -43,7 +43,7 @@ const fetcher = async (_: string, searchState: SingleOrderSearchParam): Promise<
     sortDirection: ModelSortDirection.DESC,
   };
 
-  // 全件検索以外はfilter指定
+  // 全件検索以外はfilter指定をしてAPI実行
   const variables =
     searchState.deliveryStatus !== DeliveryStatus.none
       ? { ...sortVariables, filter: { deliveryStatus: { eq: searchState.deliveryStatus } } }
@@ -56,6 +56,7 @@ const fetcher = async (_: string, searchState: SingleOrderSearchParam): Promise<
   if (!result.data || !result.data.listOrdersSortedByCreatedAt || !result.data.listOrdersSortedByCreatedAt.items) {
     throw Error('An API returned null.');
   }
+
   const items = result.data.listOrdersSortedByCreatedAt.items as Order[];
 
   for (const item of items) {
@@ -81,6 +82,7 @@ const OrderListContext = createContext({} as ProviderProps);
 
 export const useFetchOrderList = () => useContext(OrderListContext);
 
+// storybook用mock param
 type Props = {
   mockResponse?: FetchResponse<ExtendedOrder<Order>[]>;
 };
@@ -92,8 +94,8 @@ type ProviderProps = FetchResponse<ExtendedOrder<Order>[]> & {
 export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
   // グローバルに保存された注文検索条件(admin管理画面用)
   const { searchState } = useSingleOrderSearchParam();
+  // 検索条件もSWRキャッシュの対象
   const swrKey = [SWRKey.orderList, searchState];
   const fetchResponse = useFetch<ExtendedOrder<Order>[]>(swrKey, fetcher, {}, mockResponse);
-
   return <OrderListContext.Provider value={{ ...fetchResponse, swrKey }}>{children}</OrderListContext.Provider>;
 };

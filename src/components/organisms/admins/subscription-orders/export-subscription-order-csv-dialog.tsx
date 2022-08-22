@@ -5,20 +5,22 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { isShippingAllSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-all-subscription-order-this-month';
-import { useFetchSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import { useNowDate } from 'stores/use-now-date';
 
 type Props = {
   on: boolean;
   isLoading: boolean;
+  isDisabledButton: boolean;
   submitHandler: () => void;
   cancelHandler: () => void;
 };
 
-export const ExportSubscriptionOrderCSVDialog = ({ on, isLoading, submitHandler, cancelHandler }: Props) => {
-  const { data: orders } = useFetchSubscriptionOrderList();
-  const { data: now } = useNowDate();
+export const ExportSubscriptionOrderCSVDialog = ({
+  on,
+  isLoading,
+  isDisabledButton,
+  submitHandler,
+  cancelHandler,
+}: Props) => {
   return (
     <Dialog open={on}>
       <DialogTitle>CSVを出力する前に必ず以下を確認してください</DialogTitle>
@@ -42,7 +44,7 @@ export const ExportSubscriptionOrderCSVDialog = ({ on, isLoading, submitHandler,
           loading={isLoading}
           loadingPosition='start'
           startIcon={<LocalShippingIcon />}
-          disabled={!orders || orders.length === 0 || !now || isShippingAllSubscriptionOrderThisMonth(orders, now)}
+          disabled={isDisabledButton}
         >
           CSVを出力して顧客に発送通知をする
         </LoadingButton>

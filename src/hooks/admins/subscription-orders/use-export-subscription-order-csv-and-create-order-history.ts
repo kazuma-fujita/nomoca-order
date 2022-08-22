@@ -79,10 +79,10 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
         ? '定期便のCSVを出力しました'
         : '定期便のCSV出力に失敗した注文があります。システム管理者に問い合わせてください。';
       // 運用通知メールの件名・本文作成
-      const updatedDeliveredSuccessBody = `定期便CSV出力成功医院:\n${updatedDeliveredAtSuccesses
+      const updatedDeliveredSuccessBody = `CSV出力医院:\n${updatedDeliveredAtSuccesses
         .map((order) => order.clinic.name)
         .join('\n')}\n計:${updatedDeliveredAtSuccessTotal}件`;
-      const updatedDeliveredFailedBody = `定期便CSV出力失敗件数:${updatedDeliveredAtFails.length}/${orderTotal}`;
+      const updatedDeliveredFailedBody = `CSV出力失敗件数:${updatedDeliveredAtFails.length}/${orderTotal}`;
       const updatedDeliveredBody = isUpdatedDeliveredSuccess
         ? updatedDeliveredSuccessBody
         : `${updatedDeliveredSuccessBody}\n${updatedDeliveredFailedBody}`;
@@ -100,9 +100,9 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
 
       // ダイアログにCSV出力成功 or 失敗メッセージ表示
       const resultMessage = `${notificationMailSubject}\n\n${notificationMailBody}`;
-      updatedDeliveredAtFails.length === 0 ? setSuccessMessage(resultMessage) : setError(Error(resultMessage));
+      isUpdatedDeliveredSuccess ? setSuccessMessage(resultMessage) : setError(Error(resultMessage));
 
-      // lastDeliveredAtの更新を反映させる為一覧更新
+      // lastDeliveredAtの更新を反映させる為一覧の再取得・更新
       mutate(SWRKey.subscriptionOrderList);
     } catch (error) {
       setIsLoading(false);

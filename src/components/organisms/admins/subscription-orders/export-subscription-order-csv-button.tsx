@@ -8,7 +8,7 @@ import { useToggle } from 'react-use';
 import { useNowDate } from 'stores/use-now-date';
 import { ExportSubscriptionOrderCSVDialog } from './export-subscription-order-csv-dialog';
 
-type props = {
+type Props = {
   orders: ExtendedOrder<SubscriptionOrder>[] | null;
   exportSubscriptionOrderCSVAndCreateOrderHistory: (orders: ExtendedOrder<SubscriptionOrder>[]) => Promise<void>;
   isLoading: boolean;
@@ -20,7 +20,7 @@ export const ExportSubscriptionOrderCSVButton = ({
   exportSubscriptionOrderCSVAndCreateOrderHistory,
   isLoading,
   resetState,
-}: props) => {
+}: Props) => {
   const [on, toggle] = useToggle(false);
   const { data: now } = useNowDate();
 
@@ -36,7 +36,9 @@ export const ExportSubscriptionOrderCSVButton = ({
       cancelHandler();
     } catch (error) {}
   }, [orders, exportSubscriptionOrderCSVAndCreateOrderHistory, cancelHandler]);
-
+  // 定期便注文リストがあり、当月定期便注文リストの配送日時が当月だったらボタンdisabled
+  const isDisabledButton =
+    !orders || orders.length === 0 || !now || isShippingAllSubscriptionOrderThisMonth(orders, now);
   return (
     <>
       <Button
@@ -44,14 +46,14 @@ export const ExportSubscriptionOrderCSVButton = ({
         variant='contained'
         color='error'
         startIcon={<LocalShippingIcon />}
-        // 定期便注文リストがあり、当月定期便注文リストの配送日時が当月だったらボタンdisabled
-        disabled={!orders || orders.length === 0 || !now || isShippingAllSubscriptionOrderThisMonth(orders, now)}
+        disabled={isDisabledButton}
       >
         当月発送定期便をCSV出力して顧客に発送通知をする
       </Button>
       <ExportSubscriptionOrderCSVDialog
         on={on}
         isLoading={isLoading}
+        isDisabledButton={isDisabledButton}
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
       />
