@@ -33,6 +33,7 @@ import {
   createSubscriptionOrder as createSubscriptionOrderMutation,
   createSubscriptionOrderProduct,
   updateSubscriptionOrder as updateSubscriptionOrderMutation,
+  deleteSubscriptionOrderProduct,
 } from 'graphql/mutations';
 import { getClinic, getStaff } from 'graphql/queries';
 import { useSendMail } from 'hooks/commons/use-send-mail';
@@ -41,7 +42,6 @@ import { useCallback, useState } from 'react';
 import { OrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { deleteSubscriptionOrderProduct } from '../../graphql/mutations';
 
 const updateSubscriptionOrderProducts = async (
   updateOrderID: string,

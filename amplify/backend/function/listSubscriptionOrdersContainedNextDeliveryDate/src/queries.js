@@ -3,7 +3,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendErrorMail = exports.sendOrderMail = exports.getCurrentDate = exports.listSubscriptionOrdersContainedNextDeliveryDate = exports.listStaffSortedByViewOrder = exports.listStaff = exports.getStaff = exports.listProductsSortedByViewOrder = exports.listProducts = exports.getProduct = exports.listSubscriptionOrdersSortedByCreatedAt = exports.listSubscriptionOrders = exports.getSubscriptionOrder = exports.listOrdersSortedByCreatedAt = exports.listOrders = exports.getOrder = exports.listClinics = exports.getClinic = void 0;
+exports.sendErrorMail = exports.sendOrderMail = exports.getCurrentDate = exports.listSubscriptionOrdersContainedNextDeliveryDate = exports.listStaffSortedByViewOrder = exports.listStaff = exports.getStaff = exports.listProductsSortedByViewOrder = exports.listProducts = exports.getProduct = exports.listSubscriptionOrderHistoriesSortedByCreatedAt = exports.listSubscriptionOrderHistories = exports.getSubscriptionOrderHistory = exports.listSubscriptionOrdersSortedByCreatedAt = exports.listSubscriptionOrders = exports.getSubscriptionOrder = exports.listOrdersSortedByCreatedAt = exports.listOrders = exports.getOrder = exports.listClinics = exports.getClinic = void 0;
 exports.getClinic = `
   query GetClinic($id: ID!) {
     getClinic(id: $id) {
@@ -60,9 +60,9 @@ exports.getOrder = `
           quantity
           viewOrder
           isExportCSV
-          owner
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -98,8 +98,8 @@ exports.getOrder = `
       deliveredAt
       createdAt
       type
-      owner
       updatedAt
+      owner
     }
   }
 `;
@@ -121,9 +121,9 @@ exports.listOrders = `
             quantity
             viewOrder
             isExportCSV
-            owner
             createdAt
             updatedAt
+            owner
           }
           nextToken
         }
@@ -159,8 +159,8 @@ exports.listOrders = `
         deliveredAt
         createdAt
         type
-        owner
         updatedAt
+        owner
       }
       nextToken
     }
@@ -194,9 +194,9 @@ exports.listOrdersSortedByCreatedAt = `
             quantity
             viewOrder
             isExportCSV
-            owner
             createdAt
             updatedAt
+            owner
           }
           nextToken
         }
@@ -232,8 +232,8 @@ exports.listOrdersSortedByCreatedAt = `
         deliveredAt
         createdAt
         type
-        owner
         updatedAt
+        owner
       }
       nextToken
     }
@@ -299,6 +299,7 @@ exports.getSubscriptionOrder = `
       deliveryInterval
       nextDeliveryYear
       nextDeliveryMonth
+      lastDeliveredAt
       createdAt
       type
       owner
@@ -375,6 +376,7 @@ exports.listSubscriptionOrders = `
         deliveryInterval
         nextDeliveryYear
         nextDeliveryMonth
+        lastDeliveredAt
         createdAt
         type
         owner
@@ -424,6 +426,209 @@ exports.listSubscriptionOrdersSortedByCreatedAt = `
             createdAt
             updatedAt
             owner
+          }
+          nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          mailAddress
+          createdAt
+          updatedAt
+          owner
+        }
+        staffID
+        staff {
+          id
+          firstName
+          lastName
+          viewOrder
+          disabled
+          type
+          createdAt
+          updatedAt
+          owner
+        }
+        deliveryStartYear
+        deliveryStartMonth
+        deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
+        lastDeliveredAt
+        createdAt
+        type
+        owner
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+exports.getSubscriptionOrderHistory = `
+  query GetSubscriptionOrderHistory($id: ID!) {
+    getSubscriptionOrderHistory(id: $id) {
+      id
+      products {
+        items {
+          id
+          orderID
+          name
+          unitPrice
+          quantity
+          viewOrder
+          isExportCSV
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+exports.listSubscriptionOrderHistories = `
+  query ListSubscriptionOrderHistories(
+    $filter: ModelSubscriptionOrderHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubscriptionOrderHistories(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            isExportCSV
+            owner
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          mailAddress
+          createdAt
+          updatedAt
+          owner
+        }
+        staffID
+        staff {
+          id
+          firstName
+          lastName
+          viewOrder
+          disabled
+          type
+          createdAt
+          updatedAt
+          owner
+        }
+        deliveryStartYear
+        deliveryStartMonth
+        deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
+        createdAt
+        type
+        owner
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+exports.listSubscriptionOrderHistoriesSortedByCreatedAt = `
+  query ListSubscriptionOrderHistoriesSortedByCreatedAt(
+    $type: Type!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSubscriptionOrderHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubscriptionOrderHistoriesSortedByCreatedAt(
+      type: $type
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            isExportCSV
+            owner
+            createdAt
+            updatedAt
           }
           nextToken
         }
@@ -669,6 +874,7 @@ exports.listSubscriptionOrdersContainedNextDeliveryDate = `
       deliveryInterval
       nextDeliveryYear
       nextDeliveryMonth
+      lastDeliveredAt
       createdAt
       type
       owner

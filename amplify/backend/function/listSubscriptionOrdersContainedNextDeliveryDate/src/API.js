@@ -28,7 +28,6 @@ var DeliveryType;
 (function (DeliveryType) {
     DeliveryType["regular"] = "regular";
     DeliveryType["express"] = "express";
-    DeliveryType["subscription"] = "subscription";
 })(DeliveryType = exports.DeliveryType || (exports.DeliveryType = {}));
 var Type;
 (function (Type) {

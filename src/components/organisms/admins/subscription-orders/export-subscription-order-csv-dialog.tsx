@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { isShippingSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-subscription-order-this-month';
+import { isShippingAllSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-all-subscription-order-this-month';
 import { useFetchSubscriptionOrderList } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useNowDate } from 'stores/use-now-date';
 
@@ -42,7 +42,7 @@ export const ExportSubscriptionOrderCSVDialog = ({ on, isLoading, submitHandler,
           loading={isLoading}
           loadingPosition='start'
           startIcon={<LocalShippingIcon />}
-          disabled={!orders || orders.length === 0 || !now || isShippingSubscriptionOrderThisMonth(orders, now)}
+          disabled={!orders || orders.length === 0 || !now || isShippingAllSubscriptionOrderThisMonth(orders, now)}
         >
           CSVを出力して顧客に発送通知をする
         </LoadingButton>

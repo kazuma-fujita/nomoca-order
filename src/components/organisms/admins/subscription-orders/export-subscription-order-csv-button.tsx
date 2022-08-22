@@ -1,7 +1,7 @@
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Button from '@mui/material/Button';
 import { SubscriptionOrder } from 'API';
-import { isShippingSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-subscription-order-this-month';
+import { isShippingAllSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-all-subscription-order-this-month';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
@@ -44,8 +44,8 @@ export const ExportSubscriptionOrderCSVButton = ({
         variant='contained'
         color='error'
         startIcon={<LocalShippingIcon />}
-        // 定期便注文リストがあり、注文リストの配送日時が当月だったらボタンdisabled
-        disabled={!orders || orders.length === 0 || !now || isShippingSubscriptionOrderThisMonth(orders, now)}
+        // 定期便注文リストがあり、当月定期便注文リストの配送日時が当月だったらボタンdisabled
+        disabled={!orders || orders.length === 0 || !now || isShippingAllSubscriptionOrderThisMonth(orders, now)}
       >
         当月発送定期便をCSV出力して顧客に発送通知をする
       </Button>
