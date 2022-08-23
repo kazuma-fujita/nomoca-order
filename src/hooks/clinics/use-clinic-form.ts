@@ -22,7 +22,8 @@ export const useClinicForm = () => {
       phoneNumber: data ? data.phoneNumber : '',
     },
   };
-  const formReturn = useForm<Clinic>(defaultValues);
+  // reValidateMode=onBlurでTextFieldからフォーカスが外れたタイミングでvalidationが実行される
+  const formReturn = useForm<Clinic>({ ...defaultValues, reValidateMode: 'onBlur' });
   const { handleSubmit, reset: resetForm, clearErrors, setValue } = formReturn;
   const { upsertClinic, isLoading, error, resetState } = useUpsertClinic();
   const { searchAddress } = useSearchAddress();

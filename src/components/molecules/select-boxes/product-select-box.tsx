@@ -98,7 +98,6 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
               <TextField
                 name={field.name}
                 select
-                // fullWidth
                 sx={{ width: '60%' }}
                 label='商品'
                 onChange={(e) => {
@@ -166,7 +165,12 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
             )}
           />
           <Box ml={2} />
-          <Button onClick={() => fieldArrayReturn.append({ productID: '' })} variant='outlined' startIcon={<Add />}>
+          <Button
+            onClick={() => fieldArrayReturn.append({ productID: '' })}
+            variant='outlined'
+            startIcon={<Add />}
+            sx={{ maxHeight: 56, minWidth: 114 }}
+          >
             {'商品追加'}
           </Button>
           <Box ml={1} />
