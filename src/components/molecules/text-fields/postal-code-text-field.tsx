@@ -13,6 +13,7 @@ const MAX_LENGTH = 7;
 
 export const PostalCodeTextField = ({ formState, register, setValue, handleOnChange, disabled }: Props) => {
   // 入力値のtrimと全角数字 -> 半角数字変換処理
+  // 郵便番号住所検索があるので1文字ごとにtrim、変換処理を入れる
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue('postalCode', numericZenkaku2Hankaku(event.target.value.trim()));
   };

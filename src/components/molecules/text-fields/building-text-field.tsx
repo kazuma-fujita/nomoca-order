@@ -11,13 +11,9 @@ type Props = UseFormReturn<Clinic> & {
 const MAX_LENGTH = 256;
 
 export const BuildingTextField = ({ formState, register, setValue, disabled }: Props) => {
-  // 入力値の全角数字ハイフン -> 半角数字ハイフン変換処理。建物名部屋番号の間は空白がありえる為、trim処理は入れない
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue('building', numericZenkaku2Hankaku(hyphenZenkaku2Hankaku(event.target.value)));
-  };
-  // TextFieldからフォーカスが外れたらtrim処理
+  // TextFieldからフォーカスが外れたら入力値の全角数字ハイフン -> 半角数字ハイフン変換、trim処理
   const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setValue('building', event.target.value.trim());
+    setValue('building', numericZenkaku2Hankaku(hyphenZenkaku2Hankaku(event.target.value.trim())));
   };
 
   return (
@@ -25,7 +21,6 @@ export const BuildingTextField = ({ formState, register, setValue, disabled }: P
       type='text'
       id='building'
       label='建物名・部屋番号'
-      onInput={handleInput}
       autoComplete='off'
       fullWidth
       disabled={disabled}

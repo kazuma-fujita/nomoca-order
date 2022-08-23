@@ -12,8 +12,8 @@ const MIN_LENGTH = 10; // 固定電話番号桁数
 const MAX_LENGTH = 11; // 携帯電話番号桁数
 
 export const PhoneNumberTextField = ({ formState, register, setValue, disabled }: Props) => {
-  // 入力値のtrimと全角数字 -> 半角数字変換処理
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // TextFieldからフォーカスが外れたら入力値のtrimと全角数字 -> 半角数字変換処理
+  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue('phoneNumber', numericZenkaku2Hankaku(event.target.value.trim()));
   };
 
@@ -23,7 +23,6 @@ export const PhoneNumberTextField = ({ formState, register, setValue, disabled }
       type='text'
       id='phoneNumber'
       label='電話番号'
-      onInput={handleInput}
       disabled={disabled}
       autoComplete='off'
       error={Boolean(formState.errors.phoneNumber)}
@@ -39,6 +38,7 @@ export const PhoneNumberTextField = ({ formState, register, setValue, disabled }
           value: /^[0-9]+$/,
           message: '電話番号は半角数字で入力してください',
         },
+        onBlur: handleBlur,
       })}
     />
   );
@@ -49,8 +49,8 @@ type SearchProps = UseFormReturn<SingleOrderSearchParam> & {
 };
 
 export const SearchPhoneNumberTextField = ({ formState, register, setValue, disabled }: SearchProps) => {
-  // 入力値のtrimと全角数字 -> 半角数字変換処理
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // TextFieldからフォーカスが外れたら入力値のtrimと全角数字 -> 半角数字変換処理
+  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue('phoneNumber', numericZenkaku2Hankaku(event.target.value.trim()));
   };
 
@@ -59,7 +59,6 @@ export const SearchPhoneNumberTextField = ({ formState, register, setValue, disa
       type='text'
       id='phoneNumber'
       label='電話番号'
-      onInput={handleInput}
       disabled={disabled}
       autoComplete='off'
       error={Boolean(formState.errors.phoneNumber)}
@@ -74,6 +73,7 @@ export const SearchPhoneNumberTextField = ({ formState, register, setValue, disa
           value: /^[0-9]+$/,
           message: '電話番号は半角数字で入力してください',
         },
+        onBlur: handleBlur,
       })}
     />
   );

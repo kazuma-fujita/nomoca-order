@@ -11,8 +11,8 @@ type Props = UseFormReturn<Clinic> & {
 const MAX_LENGTH = 256;
 
 export const AddressTextField = ({ formState, register, setValue, disabled }: Props) => {
-  // 入力値のtrimと全角数字ハイフン -> 半角数字ハイフン変換処理
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // TextFieldからフォーカスが外れたら入力値のtrimと全角数字ハイフン -> 半角数字ハイフン変換処理
+  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue('address', numericZenkaku2Hankaku(hyphenZenkaku2Hankaku(event.target.value.trim())));
   };
 
@@ -22,7 +22,6 @@ export const AddressTextField = ({ formState, register, setValue, disabled }: Pr
       type='text'
       id='address'
       label='番地'
-      onInput={handleInput}
       disabled={disabled}
       autoComplete='off'
       fullWidth
@@ -38,6 +37,7 @@ export const AddressTextField = ({ formState, register, setValue, disabled }: Pr
           value: /^[^!"#$%&'()*+.,/:;<=>?@[\\\]^_`{|}~\s\p{Symbol}]+$/u, // ハイフン「-」を除く半角記号、空白、数学記号、通貨記号、音声記号、絵文字、機種依存文字を除外
           message: '番地で使用できない文字が含まれています',
         },
+        onBlur: handleBlur,
       })}
     />
   );
