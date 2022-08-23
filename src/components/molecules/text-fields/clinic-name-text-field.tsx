@@ -9,7 +9,12 @@ type Props = UseFormReturn<Clinic> & {
 
 const MAX_LENGTH = 256;
 
-export const ClinicNameTextField = ({ formState, register, disabled }: Props) => {
+export const ClinicNameTextField = ({ formState, register, setValue, disabled }: Props) => {
+  // TextFieldからフォーカスが外れたらtrim処理
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setValue('name', event.target.value.trim());
+  };
+
   return (
     <TextField
       required
@@ -34,6 +39,7 @@ export const ClinicNameTextField = ({ formState, register, disabled }: Props) =>
           // value: /^[^!"#$%&'()*+\-.,/:;<=>?@[\\\]^_`{|}~\s\p{Symbol}]+$/u, 半角記号、空白、数学記号、通貨記号、音声記号、絵文字、機種依存文字を除外
           message: '医院名で使用できない文字が含まれています',
         },
+        onBlur: handleBlur,
       })}
     />
   );

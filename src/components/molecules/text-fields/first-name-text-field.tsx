@@ -9,7 +9,12 @@ type Props = UseFormReturn<Staff> & {
 
 const MAX_LENGTH = 256;
 
-export const FirstNameTextField = ({ formState, register, disabled }: Props) => {
+export const FirstNameTextField = ({ formState, register, setValue, disabled }: Props) => {
+  // TextFieldからフォーカスが外れたらtrim処理
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setValue('firstName', event.target.value.trim());
+  };
+
   return (
     <TextField
       required
@@ -33,6 +38,7 @@ export const FirstNameTextField = ({ formState, register, disabled }: Props) => 
           value: /^[^!"#$%&'()*+\-.,/:;<=>?@[\\\]^_`{|}~\s\p{Symbol}]+$/u, // 半角記号、空白、数学記号、通貨記号、音声記号、絵文字、機種依存文字を除外
           message: '名で使用できない文字が含まれています',
         },
+        onBlur: handleBlur,
       })}
     />
   );
