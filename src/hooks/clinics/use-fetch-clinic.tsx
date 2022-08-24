@@ -1,10 +1,10 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { Clinic, ListClinicsQuery, Type } from 'API';
+import { Clinic, ListClinicsQuery } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
+import { SWRKey } from 'constants/swr-key';
 import { listClinics } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { SWRKey } from '../../constants/swr-key';
 
 const ClinicContext = createContext({} as FetchResponse<Clinic | null>);
 
