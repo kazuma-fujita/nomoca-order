@@ -5,13 +5,12 @@ import { UseFormReturn } from 'react-hook-form';
 
 interface Props extends UseFormReturn<Product> {
   disabled: boolean;
-  unitPrice?: number;
 }
 
 const minNumber = 1;
 const maxLength = 256;
 
-export const ProductUnitPriceTextField: React.FC<Props> = ({ formState, register, disabled, unitPrice }) => {
+export const ProductUnitPriceTextField: React.FC<Props> = ({ formState, register, disabled }) => {
   return (
     <TextField
       required
@@ -21,9 +20,7 @@ export const ProductUnitPriceTextField: React.FC<Props> = ({ formState, register
       autoComplete='off'
       margin='dense'
       fullWidth
-      // autoFocus
       disabled={disabled}
-      defaultValue={unitPrice ?? 0}
       inputProps={{
         maxLength: maxLength,
       }}

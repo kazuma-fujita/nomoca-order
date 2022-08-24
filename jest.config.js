@@ -10,7 +10,7 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
   moduleDirectories: ['node_modules', '<rootDir>/', 'src'],
-  testPathIgnorePatterns: ['<rootDir>/cypress/'],
+  testPathIgnorePatterns: ['<rootDir>/cypress/', '<rootDir>/amplify/'],
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     /* Handle CSS imports (with CSS modules)

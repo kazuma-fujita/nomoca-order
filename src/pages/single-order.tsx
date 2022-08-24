@@ -10,6 +10,8 @@ import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
+import { OrderListContextProvider } from 'hooks/orders/use-fetch-order-list';
+import { SingleOrderSearchParamContextProvider } from 'hooks/admins/single-orders/use-single-order-search-param';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();
@@ -18,22 +20,27 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
-      <ProductListContextProvider
-        orderType={OrderType.singleOrder}
-        isFilterByActiveProduct={true}
-        isRevalidateOnFocus={false}
-      >
-        <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
-          <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
-            <ClinicContextProvider>
-              <Main>
-                <OrderTemplate />
-              </Main>
-            </ClinicContextProvider>
-          </OrderFormParamContextProvider>
-        </StaffListContextProvider>
-      </ProductListContextProvider>
+      {/* admin側の処理と統一する為、使用しないがsearchParamContextを定義 */}
+      <SingleOrderSearchParamContextProvider>
+        <OrderListContextProvider>
+          {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
+          <ProductListContextProvider
+            orderType={OrderType.singleOrder}
+            isFilterByActiveProduct={true}
+            isRevalidateOnFocus={false}
+          >
+            <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
+              <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
+                <ClinicContextProvider>
+                  <Main>
+                    <OrderTemplate />
+                  </Main>
+                </ClinicContextProvider>
+              </OrderFormParamContextProvider>
+            </StaffListContextProvider>
+          </ProductListContextProvider>
+        </OrderListContextProvider>
+      </SingleOrderSearchParamContextProvider>
     </>
   );
 };
@@ -44,7 +51,7 @@ export default SingleOrderPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.SingleOrder + TitleSuffix,
+      pageTitle: ScreenName.singleOrder + TitleSuffix,
     },
   };
 };

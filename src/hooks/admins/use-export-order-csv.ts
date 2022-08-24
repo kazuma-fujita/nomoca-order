@@ -69,7 +69,7 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
     id: `"${order.id}"`,
     empty1: '',
     empty2: '',
-    orderedAt: `"${format(now, DateFormat.Date)}"`,
+    orderedAt: `"${format(now, DateFormat.date)}"`,
     empty3: '',
     empty4: '',
     empty5: '',
@@ -121,19 +121,29 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
 };
 
 export const useExportOrderCSV = () => {
-  const { now } = useNowDate();
+  const { data: now } = useNowDate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const exportCSV = async (orders: ExtendedOrder<SubscriptionOrder | Order>[]) => {
     setIsLoading(true);
     try {
-      if (!orders.length) {
-        throw Error('It is empty that an ID list which export a csv file.');
+      if (!now) {
+        throw Error('A current date is not found.');
       }
-      // orderとproductからCSVの行objectを生成。更にordersの多次元object配列をflatMapで1次元配列に加工。
+
+      if (orders.length === 0) {
+        // throw Error('It is empty that an ID list which export a csv file.');
+        return;
+      }
+
+      // ordersに紐づくproduct配列をflatMapで1次元配列に加工しCSV行のobjectを生成
+      // isExportCSV=trueの商品のみcsv行に追加
+      // 1orderに複数productが存在する場合、productの数分のcsv行objectを生成する
       const records = orders.flatMap((order: ExtendedOrder<SubscriptionOrder | Order>) =>
-        order.normalizedProducts.map((product: NormalizedProduct) => createRecord(order, product, now)),
+        order.normalizedProducts
+          .filter((product: NormalizedProduct) => product.isExportCSV)
+          .map((product: NormalizedProduct) => createRecord(order, product, now)),
       );
       // CSVヘッダーと1次元配列化されたobject配列を結合後、object配列の値のみをObject.valuesで抜き出し配列化。
       // 次にjoinでカンマ区切りのCSV行として文字列へ変換しmapで配列化。
@@ -142,10 +152,11 @@ export const useExportOrderCSV = () => {
       // UTF8 to Shift_JIS
       const outputSJIS = iconv.encode(outputUTF8, 'Shift_JIS');
       const blob = new Blob([outputSJIS], { type: 'application/octet-binary' });
+      // aタグ生成
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'sampleData.csv';
+      a.download = `order_${format(now, DateFormat.simpleDateHourMinute)}.csv`;
       a.click();
       a.remove();
 

@@ -12,6 +12,7 @@ enum OrderType {
 }
 
 enum DeliveryStatus {
+  none
   ordered
   delivered
   canceled
@@ -20,10 +21,17 @@ enum DeliveryStatus {
 enum DeliveryType {
   regular
   express
-  subscription
 }
 
-type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+type Clinic
+  @model
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  ) {
   id: ID!
   name: String!
   phoneNumber: String!
@@ -32,41 +40,95 @@ type Clinic @model @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Op
   city: String!
   address: String!
   building: String
+  mailAddress: String! # 注文・定期便メール送信のToAddress。医院情報登録時にログインユーザーのアドレスを登録
 }
 
 type Order
   @model
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read, update] }]) {
+  @auth(
+    rules: [{ allow: owner, ownerField: "owner" }, { allow: groups, groups: ["Operators"], operations: [read, update] }]
+  ) {
   id: ID!
   products: [OrderProduct] @hasMany(indexName: "byOrder", fields: ["id"])
   clinicID: ID!
   clinic: Clinic! @hasOne(fields: ["clinicID"])
   staffID: ID!
   staff: Staff! @hasOne(fields: ["staffID"])
-  orderType: OrderType!
-  deliveryStatus: DeliveryStatus!
-  deliveryType: DeliveryType!
-  deliveredAt: AWSDateTime
-  createdAt: AWSDateTime!
+  deliveryStatus: DeliveryStatus! #配送状況
+  deliveryType: DeliveryType! # 配送方法
+  deliveredAt: AWSDateTime # 発送日時
+  createdAt: AWSDateTime! # 注文日時
   type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
 }
 
 type OrderProduct
   @model(queries: null)
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+  @auth(
+    rules: [{ allow: owner, ownerField: "owner" }, { allow: groups, groups: ["Operators"], operations: [read, create] }]
+  ) {
   id: ID!
   orderID: ID! @index(name: "byOrder", sortKeyFields: ["viewOrder"])
   name: String!
   unitPrice: Int!
   quantity: Int!
   viewOrder: Int!
+  isExportCSV: Boolean!
 }
 
 type SubscriptionOrder
   @model
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Operators"], operations: [read, update] }
+      { allow: private, provider: iam, operations: [read] } # Lambdaから参照する為 iam 認証追加
+    ]
+  ) {
   id: ID!
   products: [SubscriptionOrderProduct] @hasMany(indexName: "bySubscriptionOrder", fields: ["id"])
+  clinicID: ID!
+  clinic: Clinic! @hasOne(fields: ["clinicID"])
+  staffID: ID!
+  staff: Staff! @hasOne(fields: ["staffID"])
+  deliveryStartYear: Int! # 配送開始年
+  deliveryStartMonth: Int! # 配送開始月
+  deliveryInterval: Int! # 配送頻度(月)
+  nextDeliveryYear: Int # 次回配送予定年
+  nextDeliveryMonth: Int # 次回配送予定月
+  lastDeliveredAt: AWSDateTime # csv出力した日時を保存。csv出力した当月のcsvボタン無効化判定に利用
+  createdAt: AWSDateTime! # 申し込み日時
+  type: String!
+    @index(name: "sortByCreatedAt", queryField: "listSubscriptionOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
+  owner: String # 顧客ユーザが実行するLambda functionのlistSubscriptionOrdersContainedNextDeliveryDateでログインユーザーlist取得時にownerで絞り込み。Nullableにすると登録時に自動でログインしているownerが登録される
+}
+
+type SubscriptionOrderProduct
+  @model(queries: null)
+  @auth(
+    rules: [
+      { allow: owner }
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["productID"])
+  productID: ID!
+  product: Product! @hasOne(fields: ["productID"]) # 商品マスターの内容変更に対応する為、N:Nモデル
+  quantity: Int!
+}
+
+# 定期便発送履歴 CSV出力時に履歴として作成され、更新されることは無い
+type SubscriptionOrderHistory
+  @model
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "owner" }
+      { allow: groups, groups: ["Operators"], operations: [read, create, update] }
+    ]
+  ) {
+  id: ID!
+  products: [SubscriptionOrderHistoryProduct] @hasMany(indexName: "bySubscriptionOrderHistory", fields: ["id"])
   clinicID: ID!
   clinic: Clinic! @hasOne(fields: ["clinicID"])
   staffID: ID!
@@ -74,22 +136,43 @@ type SubscriptionOrder
   deliveryStartYear: Int!
   deliveryStartMonth: Int!
   deliveryInterval: Int!
-  createdAt: AWSDateTime!
-  type: String!
-    @index(name: "sortByCreatedAt", queryField: "listSubscriptionOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
+  nextDeliveryYear: Int
+  nextDeliveryMonth: Int
+  createdAt: AWSDateTime! # 定期便発送日時
+  type: Type!
+    @index(
+      name: "sortByCreatedAt"
+      queryField: "listSubscriptionOrderHistoriesSortedByCreatedAt"
+      sortKeyFields: ["createdAt"]
+    )
+  owner: String # Operators権限者が定期便CSVを出力する時に注文履歴を作成する。定期便を作成するカスタマーユーザが履歴を見れるようにSubscriptionOrderのownerをOrderのownerコピーするフィールド
 }
 
-type SubscriptionOrderProduct
+# 定期便発送商品履歴
+type SubscriptionOrderHistoryProduct
   @model(queries: null)
-  @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Operators"], operations: [read] }]) {
+  @auth(
+    rules: [{ allow: owner, ownerField: "owner" }, { allow: groups, groups: ["Operators"], operations: [read, create] }]
+  ) {
   id: ID!
-  subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["productID"])
-  productID: ID!
-  product: Product! @hasOne(fields: ["productID"])
+  orderID: ID! @index(name: "bySubscriptionOrderHistory", sortKeyFields: ["viewOrder"])
+  name: String!
+  unitPrice: Int!
   quantity: Int!
+  viewOrder: Int!
+  isExportCSV: Boolean!
+  owner: String # Operators権限者が定期便CSVを出力する時に注文履歴を作成する。定期便を作成するカスタマーユーザが履歴を見れるようにSubscriptionOrderのownerをOrderのownerコピーするフィールド
 }
 
-type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { allow: private, operations: [read] }]) {
+type Product
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Operators"] }
+      { allow: private, operations: [read] }
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  ) {
   id: ID!
   name: String!
   unitPrice: Int!
@@ -100,11 +183,69 @@ type Product @model @auth(rules: [{ allow: groups, groups: ["Operators"] }, { al
   type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }
 
-type Staff @model @auth(rules: [{ allow: groups, groups: ["Operators"], operations: [read] }, { allow: owner }]) {
+type Staff
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Operators"], operations: [read] }
+      { allow: owner }
+      { allow: private, provider: iam, operations: [read] }
+    ]
+  ) {
   id: ID!
   firstName: String!
   lastName: String!
   viewOrder: Int!
   disabled: Boolean!
   type: Type! @index(name: "sortByViewOrder", queryField: "listStaffSortedByViewOrder", sortKeyFields: ["viewOrder"])
+}
+
+enum SendMailType {
+  orderedSingleOrder
+  orderedSubscriptionOrder
+  updatedSubscriptionOrder
+  canceledSingleOrder
+  canceledSubscriptionOrder
+  deliveredSingleOrder
+  deliveredSubscriptionOrder
+}
+
+type CurrentDate {
+  currentDate: AWSDateTime
+}
+
+type Query {
+  listSubscriptionOrdersContainedNextDeliveryDate: [SubscriptionOrder]
+    @function(name: "listSubscriptionOrdersContainedNextDeliveryDate-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
+
+  getCurrentDate: CurrentDate
+    @function(name: "currentDate-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
+
+  sendOrderMail(
+    toAddress: String!
+    bccAddress: String
+    sendMailType: SendMailType!
+    products: [String!]!
+    subtotal: Int!
+    tax: Int!
+    total: Int!
+    clinicName: String!
+    phoneNumber: String!
+    postalCode: String!
+    state: String!
+    city: String!
+    address: String!
+    building: String
+    staffName: String!
+    deliveryType: DeliveryType
+    deliveryStartYear: Int
+    deliveryStartMonth: Int
+    deliveryInterval: Int
+  ): String @function(name: "sendOrderMail-${env}") @auth(rules: [{ allow: private, provider: userPools }])
+
+  sendErrorMail(toAddress: String!, subject: String!, body: String!): String
+    @function(name: "sendErrorMail-${env}")
+    @auth(rules: [{ allow: private, provider: userPools }])
 }

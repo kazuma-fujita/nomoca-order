@@ -1,19 +1,26 @@
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import Button from '@mui/material/Button';
+import { DeliveryStatus, Order } from 'API';
+import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback } from 'react';
 import { useToggle } from 'react-use';
 import { ExportSingleOrderCSVDialog } from './export-single-order-csv-dialog';
-import { Order } from 'API';
-import { useExportSingleOrderCSVAndUpdateDeliveryStatus } from 'hooks/admins/single-orders/use-export-single-order-csv-and-update-delivery-status';
-import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 type Props = {
-  orders: ExtendedOrder<Order>[];
+  selectedItems: ExtendedOrder<Order>[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<ExtendedOrder<Order>[]>>;
+  exportSingleOrderCSVAndUpdateDeliveryStatus: (orders: ExtendedOrder<Order>[]) => Promise<void>;
+  isLoading: boolean;
+  resetState: () => void;
 };
 
-export const ExportSingleOrderCSVButton = ({ orders }: Props) => {
-  const { exportSingleOrderCSVAndUpdateDeliveryStatus, isLoading, error, resetState } =
-    useExportSingleOrderCSVAndUpdateDeliveryStatus();
+export const ExportSingleOrderCSVButton = ({
+  selectedItems,
+  setSelectedItems,
+  exportSingleOrderCSVAndUpdateDeliveryStatus,
+  isLoading,
+  resetState,
+}: Props) => {
   const [on, toggle] = useToggle(false);
 
   const cancelHandler = useCallback(() => {
@@ -23,11 +30,16 @@ export const ExportSingleOrderCSVButton = ({ orders }: Props) => {
 
   const submitHandler = useCallback(async () => {
     try {
-      await exportSingleOrderCSVAndUpdateDeliveryStatus(orders);
+      await exportSingleOrderCSVAndUpdateDeliveryStatus(selectedItems);
+      // CSVを出力したらチェックボックス選択を全て解除
+      setSelectedItems([]);
       cancelHandler();
     } catch (error) {}
-  }, [exportSingleOrderCSVAndUpdateDeliveryStatus, orders, cancelHandler]);
-
+  }, [exportSingleOrderCSVAndUpdateDeliveryStatus, selectedItems, setSelectedItems, cancelHandler]);
+  // 選択した注文の配送状況で発送前ステータス以外（発送済、キャンセル済）が一件でもあればボタン非活性
+  const isDisabledButton =
+    selectedItems.length === 0 ||
+    selectedItems.filter((order) => order.deliveryStatus !== DeliveryStatus.ordered).length > 0;
   return (
     <>
       <Button
@@ -35,14 +47,14 @@ export const ExportSingleOrderCSVButton = ({ orders }: Props) => {
         variant='contained'
         color='info'
         startIcon={<FileDownloadIcon />}
-        disabled={orders.length === 0}
+        disabled={isDisabledButton}
       >
         選択した注文をCSV出力して顧客に発送通知をする
       </Button>
       <ExportSingleOrderCSVDialog
         on={on}
         isLoading={isLoading}
-        error={error}
+        isDisabledButton={isDisabledButton}
         submitHandler={submitHandler}
         cancelHandler={cancelHandler}
       />

@@ -12,6 +12,7 @@ export const getClinic = /* GraphQL */ `
       city
       address
       building
+      mailAddress
       createdAt
       updatedAt
       owner
@@ -34,6 +35,7 @@ export const listClinics = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -54,6 +56,7 @@ export const getOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           createdAt
           updatedAt
           owner
@@ -70,6 +73,7 @@ export const getOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -86,7 +90,6 @@ export const getOrder = /* GraphQL */ `
         updatedAt
         owner
       }
-      orderType
       deliveryStatus
       deliveryType
       deliveredAt
@@ -107,6 +110,18 @@ export const listOrders = /* GraphQL */ `
       items {
         id
         products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            isExportCSV
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         clinicID
@@ -119,6 +134,7 @@ export const listOrders = /* GraphQL */ `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -135,7 +151,6 @@ export const listOrders = /* GraphQL */ `
           updatedAt
           owner
         }
-        orderType
         deliveryStatus
         deliveryType
         deliveredAt
@@ -168,6 +183,18 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
       items {
         id
         products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            isExportCSV
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         clinicID
@@ -180,6 +207,7 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -196,7 +224,6 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
           updatedAt
           owner
         }
-        orderType
         deliveryStatus
         deliveryType
         deliveredAt
@@ -218,6 +245,18 @@ export const getSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -235,6 +274,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -254,10 +294,13 @@ export const getSubscriptionOrder = /* GraphQL */ `
       deliveryStartYear
       deliveryStartMonth
       deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      lastDeliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -275,6 +318,27 @@ export const listSubscriptionOrders = /* GraphQL */ `
       items {
         id
         products {
+          items {
+            id
+            subscriptionOrderID
+            productID
+            product {
+              id
+              name
+              unitPrice
+              orderType
+              viewOrder
+              isExportCSV
+              disabled
+              type
+              createdAt
+              updatedAt
+            }
+            quantity
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         clinicID
@@ -287,6 +351,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -306,10 +371,13 @@ export const listSubscriptionOrders = /* GraphQL */ `
         deliveryStartYear
         deliveryStartMonth
         deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
+        lastDeliveredAt
         createdAt
         type
-        updatedAt
         owner
+        updatedAt
       }
       nextToken
     }
@@ -335,6 +403,27 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
       items {
         id
         products {
+          items {
+            id
+            subscriptionOrderID
+            productID
+            product {
+              id
+              name
+              unitPrice
+              orderType
+              viewOrder
+              isExportCSV
+              disabled
+              type
+              createdAt
+              updatedAt
+            }
+            quantity
+            createdAt
+            updatedAt
+            owner
+          }
           nextToken
         }
         clinicID
@@ -347,6 +436,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
           city
           address
           building
+          mailAddress
           createdAt
           updatedAt
           owner
@@ -366,10 +456,215 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
         deliveryStartYear
         deliveryStartMonth
         deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
+        lastDeliveredAt
         createdAt
         type
+        owner
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getSubscriptionOrderHistory = /* GraphQL */ `
+  query GetSubscriptionOrderHistory($id: ID!) {
+    getSubscriptionOrderHistory(id: $id) {
+      id
+      products {
+        items {
+          id
+          orderID
+          name
+          unitPrice
+          quantity
+          viewOrder
+          isExportCSV
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
         updatedAt
         owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+export const listSubscriptionOrderHistories = /* GraphQL */ `
+  query ListSubscriptionOrderHistories(
+    $filter: ModelSubscriptionOrderHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubscriptionOrderHistories(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            isExportCSV
+            owner
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          mailAddress
+          createdAt
+          updatedAt
+          owner
+        }
+        staffID
+        staff {
+          id
+          firstName
+          lastName
+          viewOrder
+          disabled
+          type
+          createdAt
+          updatedAt
+          owner
+        }
+        deliveryStartYear
+        deliveryStartMonth
+        deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
+        createdAt
+        type
+        owner
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const listSubscriptionOrderHistoriesSortedByCreatedAt = /* GraphQL */ `
+  query ListSubscriptionOrderHistoriesSortedByCreatedAt(
+    $type: Type!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSubscriptionOrderHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubscriptionOrderHistoriesSortedByCreatedAt(
+      type: $type
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        products {
+          items {
+            id
+            orderID
+            name
+            unitPrice
+            quantity
+            viewOrder
+            isExportCSV
+            owner
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        clinicID
+        clinic {
+          id
+          name
+          phoneNumber
+          postalCode
+          state
+          city
+          address
+          building
+          mailAddress
+          createdAt
+          updatedAt
+          owner
+        }
+        staffID
+        staff {
+          id
+          firstName
+          lastName
+          viewOrder
+          disabled
+          type
+          createdAt
+          updatedAt
+          owner
+        }
+        deliveryStartYear
+        deliveryStartMonth
+        deliveryInterval
+        nextDeliveryYear
+        nextDeliveryMonth
+        createdAt
+        type
+        owner
+        updatedAt
       }
       nextToken
     }
@@ -514,5 +809,130 @@ export const listStaffSortedByViewOrder = /* GraphQL */ `
       }
       nextToken
     }
+  }
+`;
+export const listSubscriptionOrdersContainedNextDeliveryDate = /* GraphQL */ `
+  query ListSubscriptionOrdersContainedNextDeliveryDate {
+    listSubscriptionOrdersContainedNextDeliveryDate {
+      id
+      products {
+        items {
+          id
+          subscriptionOrderID
+          productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
+          quantity
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      lastDeliveredAt
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+export const getCurrentDate = /* GraphQL */ `
+  query GetCurrentDate {
+    getCurrentDate {
+      currentDate
+    }
+  }
+`;
+export const sendOrderMail = /* GraphQL */ `
+  query SendOrderMail(
+    $toAddress: String!
+    $bccAddress: String
+    $sendMailType: SendMailType!
+    $products: [String!]!
+    $subtotal: Int!
+    $tax: Int!
+    $total: Int!
+    $clinicName: String!
+    $phoneNumber: String!
+    $postalCode: String!
+    $state: String!
+    $city: String!
+    $address: String!
+    $building: String
+    $staffName: String!
+    $deliveryType: DeliveryType
+    $deliveryStartYear: Int
+    $deliveryStartMonth: Int
+    $deliveryInterval: Int
+  ) {
+    sendOrderMail(
+      toAddress: $toAddress
+      bccAddress: $bccAddress
+      sendMailType: $sendMailType
+      products: $products
+      subtotal: $subtotal
+      tax: $tax
+      total: $total
+      clinicName: $clinicName
+      phoneNumber: $phoneNumber
+      postalCode: $postalCode
+      state: $state
+      city: $city
+      address: $address
+      building: $building
+      staffName: $staffName
+      deliveryType: $deliveryType
+      deliveryStartYear: $deliveryStartYear
+      deliveryStartMonth: $deliveryStartMonth
+      deliveryInterval: $deliveryInterval
+    )
+  }
+`;
+export const sendErrorMail = /* GraphQL */ `
+  query SendErrorMail($toAddress: String!, $subject: String!, $body: String!) {
+    sendErrorMail(toAddress: $toAddress, subject: $subject, body: $body)
   }
 `;

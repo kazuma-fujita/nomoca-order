@@ -12,4 +12,5 @@ export const clinicMock: Clinic = {
   phoneNumber: '0120811009',
   createdAt: '2022-11-25T14:32:55Z',
   updatedAt: '2022-11-25T14:32:55Z',
+  mailAddress: 'dummy@clinic.com',
 };

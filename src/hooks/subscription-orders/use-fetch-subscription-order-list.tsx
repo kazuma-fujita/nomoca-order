@@ -1,24 +1,18 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import {
-  ListSubscriptionOrdersSortedByCreatedAtQuery,
-  ListSubscriptionOrdersSortedByCreatedAtQueryVariables,
-  ModelSortDirection,
-  SubscriptionOrder,
-  SubscriptionOrderProduct,
-} from 'API';
+import { SubscriptionOrder } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
-import { listSubscriptionOrdersSortedByCreatedAt } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { Type } from 'API';
+import { listSubscriptionOrdersContainedNextDeliveryDate } from 'graphql/queries';
 
 export type NormalizedProduct = {
-  relationID: string;
+  relationID: string; // OrderProduct or SubscriptionOrderProduct の ID。定期便削除時はrelationIDでProductとのリレーションレコードであるSubscriptionOrderProductを削除
   productID: string; // use-hook-formで入力フォームにセットする商品ID。他、productのDBキャッシュからviewOrderなどの値を取得する為に使用
   name: string;
   unitPrice: number;
   quantity: number;
+  isExportCSV: boolean; // useExportOrderCSV 内でisExportCSV=falseの場合、csv行に出力しない
   viewOrder?: number | null; // 入力確認画面で商品を表示するソート順。useCreateOrderでは値をOrderProductに登録
 };
 
@@ -26,82 +20,68 @@ export type ExtendedOrder<T> = T & {
   normalizedProducts: NormalizedProduct[];
 };
 
-const createNormalizedProduct = (orderProduct: SubscriptionOrderProduct): NormalizedProduct =>
-  ({
-    relationID: orderProduct?.id,
-    productID: orderProduct?.productID,
-    name: orderProduct?.product.name,
-    unitPrice: orderProduct?.product.unitPrice,
-    quantity: orderProduct?.quantity,
-  } as NormalizedProduct);
+const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] => {
+  if (!order.products) {
+    throw Error('Subscription order products are null.');
+  }
+  return order.products.items.map((orderProduct) => {
+    if (!orderProduct) {
+      throw Error('A subscription order product relation is null.');
+    }
+    return {
+      relationID: orderProduct.id,
+      productID: orderProduct.productID,
+      name: orderProduct.product.name,
+      unitPrice: orderProduct.product.unitPrice,
+      quantity: orderProduct.quantity,
+      isExportCSV: orderProduct.product.isExportCSV,
+    };
+  });
+};
 
-const createNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] =>
-  order.products?.items.map((orderProduct) => createNormalizedProduct(orderProduct!)) as NormalizedProduct[];
+const SubscriptionOrderListContext = createContext({} as FetchResponse<ExtendedOrder<SubscriptionOrder>[]>);
+
+export const useFetchSubscriptionOrderList = () => useContext(SubscriptionOrderListContext);
 
 const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
-  // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
-  const sortVariables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
-    type: Type.subscriptionOrder,
-    sortDirection: ModelSortDirection.DESC,
-  };
-
   const result = (await API.graphql(
-    graphqlOperation(listSubscriptionOrdersSortedByCreatedAt, sortVariables),
-  )) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
+    graphqlOperation(listSubscriptionOrdersContainedNextDeliveryDate),
+  )) as GraphQLResult<{
+    listSubscriptionOrdersContainedNextDeliveryDate: [SubscriptionOrder];
+  }>;
 
-  if (
-    !result.data ||
-    !result.data.listSubscriptionOrdersSortedByCreatedAt ||
-    !result.data.listSubscriptionOrdersSortedByCreatedAt.items
-  ) {
+  if (!result.data) {
     throw Error('The API fetched data but it returned null.');
   }
 
-  const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
+  const items = result.data.listSubscriptionOrdersContainedNextDeliveryDate as SubscriptionOrder[];
   for (const item of items) {
     if (!item || !item.products || !item.products.items) {
-      throw Error('The API fetched a data element but it returned null.');
+      throw Error('The API fetched products but it returned null.');
     }
   }
 
   const extendedItems: ExtendedOrder<SubscriptionOrder>[] = items.map((item) => ({
     ...item,
-    normalizedProducts: createNormalizedProducts(item),
+    normalizedProducts: generateNormalizedProducts(item),
   }));
+
   return extendedItems;
 };
 
-export const useFetchSubscriptionOrderList = (): FetchResponse<ExtendedOrder<SubscriptionOrder>[]> =>
-  useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.subscriptionOrderList, fetcher);
-
-export type AdminSubscriptionOrderResponse = FetchResponse<ExtendedOrder<SubscriptionOrder>[]> & {
-  allData: ExtendedOrder<SubscriptionOrder>[] | null;
+type Props = {
+  mockResponse?: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>;
 };
 
-const AdminSubscriptionOrderListContext = createContext({} as AdminSubscriptionOrderResponse);
-
-export const useAdminSubscriptionOrderList = () => useContext(AdminSubscriptionOrderListContext);
-
-export const AdminSubscriptionOrderListContextProvider: React.FC = ({ children }) => {
-  // Windowにフォーカスが外れて再度当たった時のrevalidationを停止する
-  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(SWRKey.AdminSubscriptionOrderList, fetcher, {
-    revalidateOnFocus: false,
-  });
-  const { data } = fetchResponse;
-  // メモリ上に全件データ保存するstate生成
-  const { data: allData, mutate } = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
-    SWRKey.AdminAllSubscriptionOrderList,
-    null,
+export const SubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
+  const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
+    SWRKey.subscriptionOrderList,
+    fetcher,
+    {},
+    mockResponse,
   );
-  // 全件データstateが存在しない(初回アクセス)、かつAPIからデータ取得成功時
-  if (!allData && data) {
-    // 全件データ保存
-    mutate(data, false);
-  }
-  const responseData = { ...fetchResponse, allData: allData };
+
   return (
-    <AdminSubscriptionOrderListContext.Provider value={responseData}>
-      {children}
-    </AdminSubscriptionOrderListContext.Provider>
+    <SubscriptionOrderListContext.Provider value={fetchResponse}>{children}</SubscriptionOrderListContext.Provider>
   );
 };

@@ -5,12 +5,16 @@ import { UseFormReturn } from 'react-hook-form';
 
 interface Props extends UseFormReturn<Product> {
   disabled: boolean;
-  name?: string;
 }
 
 const maxLength = 256;
 
-export const ProductNameTextField: React.FC<Props> = ({ formState, register, disabled, name }) => {
+export const ProductNameTextField: React.FC<Props> = ({ formState, register, setValue, disabled }) => {
+  // TextFieldからフォーカスが外れたらtrim処理
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setValue('name', event.target.value.trim());
+  };
+
   return (
     <TextField
       required
@@ -22,7 +26,6 @@ export const ProductNameTextField: React.FC<Props> = ({ formState, register, dis
       fullWidth
       autoFocus
       disabled={disabled}
-      defaultValue={name ?? ''}
       inputProps={{
         maxLength: maxLength,
       }}
@@ -31,6 +34,7 @@ export const ProductNameTextField: React.FC<Props> = ({ formState, register, dis
       {...register('name', {
         required: '商品名を入力してください',
         maxLength: { value: maxLength, message: `商品名は${maxLength}桁で入力してください` },
+        onBlur: handleBlur,
       })}
     />
   );

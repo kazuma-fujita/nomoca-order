@@ -8,9 +8,6 @@ export const OrderFormTemplate = () => {
   const { orderType } = useOrderFormParam();
   return (
     <>
-      {/* <Typography variant='h5' textAlign='center'>
-        注文を入力する
-      </Typography> */}
       <Box mb={8} />
       {orderType === OrderType.singleOrder ? <SingleOrderForm /> : <SubscriptionOrderForm />}
     </>

@@ -36,22 +36,20 @@ export const ClinicDetailOrderFormInput = ({ setValue, control }: UseFormReturn<
 };
 
 export const ClinicDetailInput = () => {
+  // const { data, isLoading, error } = useFetchClinic();
   const { data, error } = useFetchClinic();
+  // if (isLoading) return <CircularProgress aria-label='Now loading' />;
+  if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <>
-      {error ||
-        (!data && (
-          <>
-            {error && <ErrorAlert>{error}</ErrorAlert>}
-            {!data && <UpsertClinicButton />}
-          </>
-        ))}
-      {data && (
+      {data ? (
         <Box display='flex' alignItems='center'>
           <ClinicDetail />
           <Box ml={4} />
           <UpsertClinicButton />
         </Box>
+      ) : (
+        <UpsertClinicButton />
       )}
     </>
   );

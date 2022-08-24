@@ -23,6 +23,7 @@ export const createNormalizedProductsMock = (row: number): NormalizedProduct[] =
     unitPrice: 1000 * (i + 1),
     quantity: i + 1,
     viewOrder: i + 1,
+    isExportCSV: false,
   }));
 
 export const productListMock: Product[] = [...Array(3)].map((_, i) => ({
@@ -33,5 +34,6 @@ export const productListMock: Product[] = [...Array(3)].map((_, i) => ({
   quantity: i + 1,
   viewOrder: i + 1,
   isExportCSV: Boolean((i + 1) % 2),
+  disabled: Boolean(i % 2),
   updatedAt: new Date(2022, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),
 }));

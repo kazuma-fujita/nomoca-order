@@ -5,12 +5,12 @@ import { useOrderFormParam } from 'stores/use-order-form-param';
 import BallotIcon from '@mui/icons-material/Ballot';
 
 export const CompleteOrderTemplate = () => {
-  const { orderType } = useOrderFormParam();
+  const { orderType, data: formParam } = useOrderFormParam();
   return orderType === OrderType.singleOrder ? (
     <CompleteOrder caption='ご注文ありがとうございます' buttonLabel='注文履歴を見る' buttonStartIcon={<BallotIcon />} />
   ) : (
     <CompleteOrder
-      caption='定期便の申し込みありがとうございます'
+      caption={formParam && formParam.id ? '定期便の内容を変更しました' : '定期便の申し込みありがとうございます'}
       buttonLabel='Topへ戻る'
       buttonStartIcon={<ArrowForwardIosIcon />}
     />

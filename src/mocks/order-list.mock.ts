@@ -12,6 +12,7 @@ const orderProduct: OrderProduct = {
   unitPrice: 1000,
   quantity: 1,
   viewOrder: 1,
+  isExportCSV: true,
   createdAt: '2021-11-25T14:32:55Z',
   updatedAt: '2021-11-25T14:32:55Z',
 };
@@ -27,7 +28,6 @@ const orderItem: Order = {
   clinicID: '',
   staffID: '',
   type: Type.order,
-  orderType: OrderType.singleOrder,
   products: orderProductConnection,
   clinic: clinicMock,
   staff: staffMock,
@@ -56,9 +56,8 @@ export const orderListMock: ExtendedOrder<Order>[] = [...Array(12)].map((_, i) =
     items: createProductConnections(i + 1),
   },
   normalizedProducts: createNormalizedProductsMock(i + 1),
-  staff: { ...orderItem.staff, id: `dummyStaffID-${i + 1}`, name: `発注担当者${i + 1}` },
-  deliveryType:
-    (i + 1) % 3 === 0 ? DeliveryType.regular : (i + 1) % 3 === 1 ? DeliveryType.subscription : DeliveryType.express,
+  staff: { ...orderItem.staff, id: `dummyStaffID-${i + 1}`, lastName: `佐藤`, firstName: `太郎${i + 1}` },
+  deliveryType: (i + 1) % 2 === 0 ? DeliveryType.regular : DeliveryType.express,
   deliveryStatus:
     (i + 1) % 3 === 0 ? DeliveryStatus.ordered : (i + 1) % 3 === 1 ? DeliveryStatus.delivered : DeliveryStatus.canceled,
   deliveredAt: (i + 1) % 3 === 0 ? null : (i + 1) % 3 === 1 ? '2021-01-25T09:32:55Z' : null,

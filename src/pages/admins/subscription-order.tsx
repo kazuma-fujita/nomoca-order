@@ -2,7 +2,7 @@ import { Main } from 'components/molecules/main';
 import { SubscriptionOrderTemplate } from 'components/templates/admins/subscription-orders/subscription-order-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
-import { AdminSubscriptionOrderListContextProvider } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { SubscriptionOrderListContextProvider } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
@@ -16,13 +16,13 @@ const SubscriptionOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof get
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <AdminSubscriptionOrderListContextProvider>
-        <NowDateContextProvider now={new Date()}>
+      <SubscriptionOrderListContextProvider>
+        <NowDateContextProvider>
           <Main>
             <SubscriptionOrderTemplate />
           </Main>
         </NowDateContextProvider>
-      </AdminSubscriptionOrderListContextProvider>
+      </SubscriptionOrderListContextProvider>
     </>
   );
 };
@@ -33,7 +33,7 @@ export default SubscriptionOrderPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.SubscriptionOrder + TitleSuffix,
+      pageTitle: ScreenName.subscriptionOrder + TitleSuffix,
     },
   };
 };

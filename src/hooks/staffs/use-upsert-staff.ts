@@ -24,10 +24,10 @@ export const useUpsertStaff = () => {
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onUpsertStaff =
     (param: Staff) =>
-    async (data: Staff[]): Promise<Staff[]> => {
+    async (data: Staff[] | undefined): Promise<Staff[]> => {
       setIsLoading(true);
       try {
-        let ret = [];
+        let ret: Staff[] = [];
         const inputParam = {
           firstName: param.firstName,
           lastName: param.lastName,
@@ -37,7 +37,7 @@ export const useUpsertStaff = () => {
           // fetch query実行時にviewOrderでsortする為、typeには 'Staff' 文字列を設定
           // sort対象のviewOrderは配列長 + 1を設定
           const input: CreateStaffInput = {
-            viewOrder: data.length + 1,
+            viewOrder: data ? data.length + 1 : 1,
             type: Type.staff,
             ...inputParam,
           };
@@ -48,8 +48,11 @@ export const useUpsertStaff = () => {
           if (!result.data || !result.data.createStaff) {
             throw Error('The API created data but it returned null.');
           }
-          ret = [...data, result.data.createStaff];
+          ret = data ? [...data, result.data.createStaff] : [result.data.createStaff];
         } else {
+          if (!data) {
+            throw Error('data is undefined.');
+          }
           // Update staff
           const input: UpdateStaffInput = {
             id: param.id,
@@ -65,7 +68,6 @@ export const useUpsertStaff = () => {
           const updatedStaff = result.data.updateStaff;
           ret = data.map((item) => (item.id === updatedStaff.id ? updatedStaff : item));
         }
-        setIsLoading(false);
         setError(null);
         return ret;
       } catch (error) {

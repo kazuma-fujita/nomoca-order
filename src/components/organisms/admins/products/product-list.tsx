@@ -24,15 +24,15 @@ const header = [
   },
   {
     label: '単価',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: 'CSV出力',
-    minWidth: 160,
+    minWidth: 40,
   },
   {
     label: '無効',
-    minWidth: 80,
+    minWidth: 40,
   },
   {
     label: 'プルダウン表示順',
@@ -40,11 +40,11 @@ const header = [
   },
   {
     label: '更新日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '編集',
-    minWidth: 80,
+    minWidth: 160,
   },
 ];
 

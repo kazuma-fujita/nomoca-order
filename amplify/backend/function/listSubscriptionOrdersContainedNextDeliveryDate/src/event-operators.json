@@ -1,0 +1,8 @@
+{
+  "identity": {
+    "username": "3cf5b284-0131-4801-9e65-3b5421c00910",
+    "claims": {
+      "cognito:groups": ["Operators"]
+    }
+  }
+}

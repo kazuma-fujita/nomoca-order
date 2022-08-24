@@ -77,6 +77,7 @@ coverage
 dist
 test-data.json
 examples/stubbing-spying__intercept/users5.json
+cypress/downloads
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
@@ -98,3 +99,7 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+# storybook
+build-storybook.log
+storybook-static

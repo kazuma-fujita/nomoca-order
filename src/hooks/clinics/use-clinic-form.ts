@@ -22,7 +22,8 @@ export const useClinicForm = () => {
       phoneNumber: data ? data.phoneNumber : '',
     },
   };
-  const formReturn = useForm<Clinic>(defaultValues);
+  // reValidateMode=onBlurでTextFieldからフォーカスが外れたタイミングでvalidationが実行される
+  const formReturn = useForm<Clinic>({ ...defaultValues, reValidateMode: 'onBlur' });
   const { handleSubmit, reset: resetForm, clearErrors, setValue } = formReturn;
   const { upsertClinic, isLoading, error, resetState } = useUpsertClinic();
   const { searchAddress } = useSearchAddress();
@@ -65,9 +66,10 @@ export const useClinicForm = () => {
           if (result.city) {
             setValue('city', result.city);
           }
-          if (result.address) {
-            setValue('address', result.address);
-          }
+          // 番地は補完しない
+          // if (result.address) {
+          //   setValue('address', result.address);
+          // }
         }
       }
     },

@@ -11,6 +11,7 @@ export type CreateClinicInput = {
   city: string,
   address: string,
   building?: string | null,
+  mailAddress: string,
 };
 
 export type ModelClinicConditionInput = {
@@ -21,6 +22,7 @@ export type ModelClinicConditionInput = {
   city?: ModelStringInput | null,
   address?: ModelStringInput | null,
   building?: ModelStringInput | null,
+  mailAddress?: ModelStringInput | null,
   and?: Array< ModelClinicConditionInput | null > | null,
   or?: Array< ModelClinicConditionInput | null > | null,
   not?: ModelClinicConditionInput | null,
@@ -76,6 +78,7 @@ export type Clinic = {
   city: string,
   address: string,
   building?: string | null,
+  mailAddress: string,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -90,6 +93,7 @@ export type UpdateClinicInput = {
   city?: string | null,
   address?: string | null,
   building?: string | null,
+  mailAddress?: string | null,
 };
 
 export type DeleteClinicInput = {
@@ -100,21 +104,16 @@ export type CreateOrderInput = {
   id?: string | null,
   clinicID: string,
   staffID: string,
-  orderType: OrderType,
   deliveryStatus: DeliveryStatus,
   deliveryType: DeliveryType,
   deliveredAt?: string | null,
   createdAt?: string | null,
   type: Type,
+  owner?: string | null,
 };
 
-export enum OrderType {
-  singleOrder = "singleOrder",
-  subscriptionOrder = "subscriptionOrder",
-}
-
-
 export enum DeliveryStatus {
+  none = "none",
   ordered = "ordered",
   delivered = "delivered",
   canceled = "canceled",
@@ -124,7 +123,6 @@ export enum DeliveryStatus {
 export enum DeliveryType {
   regular = "regular",
   express = "express",
-  subscription = "subscription",
 }
 
 
@@ -140,12 +138,12 @@ export enum Type {
 export type ModelOrderConditionInput = {
   clinicID?: ModelIDInput | null,
   staffID?: ModelIDInput | null,
-  orderType?: ModelOrderTypeInput | null,
   deliveryStatus?: ModelDeliveryStatusInput | null,
   deliveryType?: ModelDeliveryTypeInput | null,
   deliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelTypeInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelOrderConditionInput | null > | null,
   or?: Array< ModelOrderConditionInput | null > | null,
   not?: ModelOrderConditionInput | null,
@@ -165,11 +163,6 @@ export type ModelIDInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
-};
-
-export type ModelOrderTypeInput = {
-  eq?: OrderType | null,
-  ne?: OrderType | null,
 };
 
 export type ModelDeliveryStatusInput = {
@@ -195,14 +188,13 @@ export type Order = {
   clinic: Clinic,
   staffID: string,
   staff: Staff,
-  orderType: OrderType,
   deliveryStatus: DeliveryStatus,
   deliveryType: DeliveryType,
   deliveredAt?: string | null,
   createdAt: string,
   type: Type,
-  updatedAt: string,
   owner?: string | null,
+  updatedAt: string,
 };
 
 export type ModelOrderProductConnection = {
@@ -219,9 +211,10 @@ export type OrderProduct = {
   unitPrice: number,
   quantity: number,
   viewOrder: number,
+  isExportCSV: boolean,
+  owner?: string | null,
   createdAt: string,
   updatedAt: string,
-  owner?: string | null,
 };
 
 export type Staff = {
@@ -241,12 +234,12 @@ export type UpdateOrderInput = {
   id: string,
   clinicID?: string | null,
   staffID?: string | null,
-  orderType?: OrderType | null,
   deliveryStatus?: DeliveryStatus | null,
   deliveryType?: DeliveryType | null,
   deliveredAt?: string | null,
   createdAt?: string | null,
   type?: Type | null,
+  owner?: string | null,
 };
 
 export type DeleteOrderInput = {
@@ -260,6 +253,8 @@ export type CreateOrderProductInput = {
   unitPrice: number,
   quantity: number,
   viewOrder: number,
+  isExportCSV: boolean,
+  owner?: string | null,
 };
 
 export type ModelOrderProductConditionInput = {
@@ -268,6 +263,8 @@ export type ModelOrderProductConditionInput = {
   unitPrice?: ModelIntInput | null,
   quantity?: ModelIntInput | null,
   viewOrder?: ModelIntInput | null,
+  isExportCSV?: ModelBooleanInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelOrderProductConditionInput | null > | null,
   or?: Array< ModelOrderProductConditionInput | null > | null,
   not?: ModelOrderProductConditionInput | null,
@@ -285,6 +282,13 @@ export type ModelIntInput = {
   attributeType?: ModelAttributeTypes | null,
 };
 
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type UpdateOrderProductInput = {
   id: string,
   orderID?: string | null,
@@ -292,6 +296,8 @@ export type UpdateOrderProductInput = {
   unitPrice?: number | null,
   quantity?: number | null,
   viewOrder?: number | null,
+  isExportCSV?: boolean | null,
+  owner?: string | null,
 };
 
 export type DeleteOrderProductInput = {
@@ -305,8 +311,12 @@ export type CreateSubscriptionOrderInput = {
   deliveryStartYear: number,
   deliveryStartMonth: number,
   deliveryInterval: number,
+  nextDeliveryYear?: number | null,
+  nextDeliveryMonth?: number | null,
+  lastDeliveredAt?: string | null,
   createdAt?: string | null,
   type: string,
+  owner?: string | null,
 };
 
 export type ModelSubscriptionOrderConditionInput = {
@@ -315,8 +325,12 @@ export type ModelSubscriptionOrderConditionInput = {
   deliveryStartYear?: ModelIntInput | null,
   deliveryStartMonth?: ModelIntInput | null,
   deliveryInterval?: ModelIntInput | null,
+  nextDeliveryYear?: ModelIntInput | null,
+  nextDeliveryMonth?: ModelIntInput | null,
+  lastDeliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelSubscriptionOrderConditionInput | null > | null,
   or?: Array< ModelSubscriptionOrderConditionInput | null > | null,
   not?: ModelSubscriptionOrderConditionInput | null,
@@ -333,10 +347,13 @@ export type SubscriptionOrder = {
   deliveryStartYear: number,
   deliveryStartMonth: number,
   deliveryInterval: number,
+  nextDeliveryYear?: number | null,
+  nextDeliveryMonth?: number | null,
+  lastDeliveredAt?: string | null,
   createdAt: string,
   type: string,
-  updatedAt: string,
   owner?: string | null,
+  updatedAt: string,
 };
 
 export type ModelSubscriptionOrderProductConnection = {
@@ -371,6 +388,12 @@ export type Product = {
   updatedAt: string,
 };
 
+export enum OrderType {
+  singleOrder = "singleOrder",
+  subscriptionOrder = "subscriptionOrder",
+}
+
+
 export type UpdateSubscriptionOrderInput = {
   id: string,
   clinicID?: string | null,
@@ -378,8 +401,12 @@ export type UpdateSubscriptionOrderInput = {
   deliveryStartYear?: number | null,
   deliveryStartMonth?: number | null,
   deliveryInterval?: number | null,
+  nextDeliveryYear?: number | null,
+  nextDeliveryMonth?: number | null,
+  lastDeliveredAt?: string | null,
   createdAt?: string | null,
   type?: string | null,
+  owner?: string | null,
 };
 
 export type DeleteSubscriptionOrderInput = {
@@ -413,6 +440,132 @@ export type DeleteSubscriptionOrderProductInput = {
   id: string,
 };
 
+export type CreateSubscriptionOrderHistoryInput = {
+  id?: string | null,
+  clinicID: string,
+  staffID: string,
+  deliveryStartYear: number,
+  deliveryStartMonth: number,
+  deliveryInterval: number,
+  nextDeliveryYear?: number | null,
+  nextDeliveryMonth?: number | null,
+  createdAt?: string | null,
+  type: Type,
+  owner?: string | null,
+};
+
+export type ModelSubscriptionOrderHistoryConditionInput = {
+  clinicID?: ModelIDInput | null,
+  staffID?: ModelIDInput | null,
+  deliveryStartYear?: ModelIntInput | null,
+  deliveryStartMonth?: ModelIntInput | null,
+  deliveryInterval?: ModelIntInput | null,
+  nextDeliveryYear?: ModelIntInput | null,
+  nextDeliveryMonth?: ModelIntInput | null,
+  createdAt?: ModelStringInput | null,
+  type?: ModelTypeInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelSubscriptionOrderHistoryConditionInput | null > | null,
+  or?: Array< ModelSubscriptionOrderHistoryConditionInput | null > | null,
+  not?: ModelSubscriptionOrderHistoryConditionInput | null,
+};
+
+export type SubscriptionOrderHistory = {
+  __typename: "SubscriptionOrderHistory",
+  id: string,
+  products?: ModelSubscriptionOrderHistoryProductConnection | null,
+  clinicID: string,
+  clinic: Clinic,
+  staffID: string,
+  staff: Staff,
+  deliveryStartYear: number,
+  deliveryStartMonth: number,
+  deliveryInterval: number,
+  nextDeliveryYear?: number | null,
+  nextDeliveryMonth?: number | null,
+  createdAt: string,
+  type: Type,
+  owner?: string | null,
+  updatedAt: string,
+};
+
+export type ModelSubscriptionOrderHistoryProductConnection = {
+  __typename: "ModelSubscriptionOrderHistoryProductConnection",
+  items:  Array<SubscriptionOrderHistoryProduct | null >,
+  nextToken?: string | null,
+};
+
+export type SubscriptionOrderHistoryProduct = {
+  __typename: "SubscriptionOrderHistoryProduct",
+  id: string,
+  orderID: string,
+  name: string,
+  unitPrice: number,
+  quantity: number,
+  viewOrder: number,
+  isExportCSV: boolean,
+  owner?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateSubscriptionOrderHistoryInput = {
+  id: string,
+  clinicID?: string | null,
+  staffID?: string | null,
+  deliveryStartYear?: number | null,
+  deliveryStartMonth?: number | null,
+  deliveryInterval?: number | null,
+  nextDeliveryYear?: number | null,
+  nextDeliveryMonth?: number | null,
+  createdAt?: string | null,
+  type?: Type | null,
+  owner?: string | null,
+};
+
+export type DeleteSubscriptionOrderHistoryInput = {
+  id: string,
+};
+
+export type CreateSubscriptionOrderHistoryProductInput = {
+  id?: string | null,
+  orderID: string,
+  name: string,
+  unitPrice: number,
+  quantity: number,
+  viewOrder: number,
+  isExportCSV: boolean,
+  owner?: string | null,
+};
+
+export type ModelSubscriptionOrderHistoryProductConditionInput = {
+  orderID?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  unitPrice?: ModelIntInput | null,
+  quantity?: ModelIntInput | null,
+  viewOrder?: ModelIntInput | null,
+  isExportCSV?: ModelBooleanInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelSubscriptionOrderHistoryProductConditionInput | null > | null,
+  or?: Array< ModelSubscriptionOrderHistoryProductConditionInput | null > | null,
+  not?: ModelSubscriptionOrderHistoryProductConditionInput | null,
+};
+
+export type UpdateSubscriptionOrderHistoryProductInput = {
+  id: string,
+  orderID?: string | null,
+  name?: string | null,
+  unitPrice?: number | null,
+  quantity?: number | null,
+  viewOrder?: number | null,
+  isExportCSV?: boolean | null,
+  owner?: string | null,
+};
+
+export type DeleteSubscriptionOrderHistoryProductInput = {
+  id: string,
+};
+
 export type CreateProductInput = {
   id?: string | null,
   name: string,
@@ -437,11 +590,9 @@ export type ModelProductConditionInput = {
   not?: ModelProductConditionInput | null,
 };
 
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
+export type ModelOrderTypeInput = {
+  eq?: OrderType | null,
+  ne?: OrderType | null,
 };
 
 export type UpdateProductInput = {
@@ -501,6 +652,7 @@ export type ModelClinicFilterInput = {
   city?: ModelStringInput | null,
   address?: ModelStringInput | null,
   building?: ModelStringInput | null,
+  mailAddress?: ModelStringInput | null,
   and?: Array< ModelClinicFilterInput | null > | null,
   or?: Array< ModelClinicFilterInput | null > | null,
   not?: ModelClinicFilterInput | null,
@@ -516,12 +668,12 @@ export type ModelOrderFilterInput = {
   id?: ModelIDInput | null,
   clinicID?: ModelIDInput | null,
   staffID?: ModelIDInput | null,
-  orderType?: ModelOrderTypeInput | null,
   deliveryStatus?: ModelDeliveryStatusInput | null,
   deliveryType?: ModelDeliveryTypeInput | null,
   deliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelTypeInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelOrderFilterInput | null > | null,
   or?: Array< ModelOrderFilterInput | null > | null,
   not?: ModelOrderFilterInput | null,
@@ -533,6 +685,22 @@ export type ModelOrderConnection = {
   nextToken?: string | null,
 };
 
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelSubscriptionOrderFilterInput = {
   id?: ModelIDInput | null,
   clinicID?: ModelIDInput | null,
@@ -540,8 +708,12 @@ export type ModelSubscriptionOrderFilterInput = {
   deliveryStartYear?: ModelIntInput | null,
   deliveryStartMonth?: ModelIntInput | null,
   deliveryInterval?: ModelIntInput | null,
+  nextDeliveryYear?: ModelIntInput | null,
+  nextDeliveryMonth?: ModelIntInput | null,
+  lastDeliveredAt?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   type?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelSubscriptionOrderFilterInput | null > | null,
   or?: Array< ModelSubscriptionOrderFilterInput | null > | null,
   not?: ModelSubscriptionOrderFilterInput | null,
@@ -550,6 +722,29 @@ export type ModelSubscriptionOrderFilterInput = {
 export type ModelSubscriptionOrderConnection = {
   __typename: "ModelSubscriptionOrderConnection",
   items:  Array<SubscriptionOrder | null >,
+  nextToken?: string | null,
+};
+
+export type ModelSubscriptionOrderHistoryFilterInput = {
+  id?: ModelIDInput | null,
+  clinicID?: ModelIDInput | null,
+  staffID?: ModelIDInput | null,
+  deliveryStartYear?: ModelIntInput | null,
+  deliveryStartMonth?: ModelIntInput | null,
+  deliveryInterval?: ModelIntInput | null,
+  nextDeliveryYear?: ModelIntInput | null,
+  nextDeliveryMonth?: ModelIntInput | null,
+  createdAt?: ModelStringInput | null,
+  type?: ModelTypeInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelSubscriptionOrderHistoryFilterInput | null > | null,
+  or?: Array< ModelSubscriptionOrderHistoryFilterInput | null > | null,
+  not?: ModelSubscriptionOrderHistoryFilterInput | null,
+};
+
+export type ModelSubscriptionOrderHistoryConnection = {
+  __typename: "ModelSubscriptionOrderHistoryConnection",
+  items:  Array<SubscriptionOrderHistory | null >,
   nextToken?: string | null,
 };
 
@@ -573,6 +768,15 @@ export type ModelProductConnection = {
   nextToken?: string | null,
 };
 
+export type ModelIntKeyConditionInput = {
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+};
+
 export type ModelStaffFilterInput = {
   id?: ModelIDInput | null,
   firstName?: ModelStringInput | null,
@@ -591,30 +795,21 @@ export type ModelStaffConnection = {
   nextToken?: string | null,
 };
 
-export type ModelStringKeyConditionInput = {
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
+export type CurrentDate = {
+  __typename: "CurrentDate",
+  currentDate?: string | null,
 };
 
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
+export enum SendMailType {
+  orderedSingleOrder = "orderedSingleOrder",
+  orderedSubscriptionOrder = "orderedSubscriptionOrder",
+  updatedSubscriptionOrder = "updatedSubscriptionOrder",
+  canceledSingleOrder = "canceledSingleOrder",
+  canceledSubscriptionOrder = "canceledSubscriptionOrder",
+  deliveredSingleOrder = "deliveredSingleOrder",
+  deliveredSubscriptionOrder = "deliveredSubscriptionOrder",
 }
 
-
-export type ModelIntKeyConditionInput = {
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-};
 
 export type CreateClinicMutationVariables = {
   input: CreateClinicInput,
@@ -632,6 +827,7 @@ export type CreateClinicMutation = {
     city: string,
     address: string,
     building?: string | null,
+    mailAddress: string,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -654,6 +850,7 @@ export type UpdateClinicMutation = {
     city: string,
     address: string,
     building?: string | null,
+    mailAddress: string,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -676,6 +873,7 @@ export type DeleteClinicMutation = {
     city: string,
     address: string,
     building?: string | null,
+    mailAddress: string,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -701,9 +899,10 @@ export type CreateOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -718,6 +917,7 @@ export type CreateOrderMutation = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -735,14 +935,13 @@ export type CreateOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -765,9 +964,10 @@ export type UpdateOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -782,6 +982,7 @@ export type UpdateOrderMutation = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -799,14 +1000,13 @@ export type UpdateOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -829,9 +1029,10 @@ export type DeleteOrderMutation = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -846,6 +1047,7 @@ export type DeleteOrderMutation = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -863,14 +1065,13 @@ export type DeleteOrderMutation = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -888,9 +1089,10 @@ export type CreateOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -908,9 +1110,10 @@ export type UpdateOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -928,9 +1131,10 @@ export type DeleteOrderProductMutation = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -981,6 +1185,7 @@ export type CreateSubscriptionOrderMutation = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1001,10 +1206,13 @@ export type CreateSubscriptionOrderMutation = {
     deliveryStartYear: number,
     deliveryStartMonth: number,
     deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    lastDeliveredAt?: string | null,
     createdAt: string,
     type: string,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -1055,6 +1263,7 @@ export type UpdateSubscriptionOrderMutation = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1075,10 +1284,13 @@ export type UpdateSubscriptionOrderMutation = {
     deliveryStartYear: number,
     deliveryStartMonth: number,
     deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    lastDeliveredAt?: string | null,
     createdAt: string,
     type: string,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -1129,6 +1341,7 @@ export type DeleteSubscriptionOrderMutation = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1149,10 +1362,13 @@ export type DeleteSubscriptionOrderMutation = {
     deliveryStartYear: number,
     deliveryStartMonth: number,
     deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    lastDeliveredAt?: string | null,
     createdAt: string,
     type: string,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -1246,6 +1462,270 @@ export type DeleteSubscriptionOrderProductMutation = {
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+  } | null,
+};
+
+export type CreateSubscriptionOrderHistoryMutationVariables = {
+  input: CreateSubscriptionOrderHistoryInput,
+  condition?: ModelSubscriptionOrderHistoryConditionInput | null,
+};
+
+export type CreateSubscriptionOrderHistoryMutation = {
+  createSubscriptionOrderHistory?:  {
+    __typename: "SubscriptionOrderHistory",
+    id: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderHistoryProductConnection",
+      items:  Array< {
+        __typename: "SubscriptionOrderHistoryProduct",
+        id: string,
+        orderID: string,
+        name: string,
+        unitPrice: number,
+        quantity: number,
+        viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    clinicID: string,
+    clinic:  {
+      __typename: "Clinic",
+      id: string,
+      name: string,
+      phoneNumber: string,
+      postalCode: string,
+      state: string,
+      city: string,
+      address: string,
+      building?: string | null,
+      mailAddress: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    staffID: string,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      firstName: string,
+      lastName: string,
+      viewOrder: number,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
+    deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    createdAt: string,
+    type: Type,
+    owner?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSubscriptionOrderHistoryMutationVariables = {
+  input: UpdateSubscriptionOrderHistoryInput,
+  condition?: ModelSubscriptionOrderHistoryConditionInput | null,
+};
+
+export type UpdateSubscriptionOrderHistoryMutation = {
+  updateSubscriptionOrderHistory?:  {
+    __typename: "SubscriptionOrderHistory",
+    id: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderHistoryProductConnection",
+      items:  Array< {
+        __typename: "SubscriptionOrderHistoryProduct",
+        id: string,
+        orderID: string,
+        name: string,
+        unitPrice: number,
+        quantity: number,
+        viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    clinicID: string,
+    clinic:  {
+      __typename: "Clinic",
+      id: string,
+      name: string,
+      phoneNumber: string,
+      postalCode: string,
+      state: string,
+      city: string,
+      address: string,
+      building?: string | null,
+      mailAddress: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    staffID: string,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      firstName: string,
+      lastName: string,
+      viewOrder: number,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
+    deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    createdAt: string,
+    type: Type,
+    owner?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSubscriptionOrderHistoryMutationVariables = {
+  input: DeleteSubscriptionOrderHistoryInput,
+  condition?: ModelSubscriptionOrderHistoryConditionInput | null,
+};
+
+export type DeleteSubscriptionOrderHistoryMutation = {
+  deleteSubscriptionOrderHistory?:  {
+    __typename: "SubscriptionOrderHistory",
+    id: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderHistoryProductConnection",
+      items:  Array< {
+        __typename: "SubscriptionOrderHistoryProduct",
+        id: string,
+        orderID: string,
+        name: string,
+        unitPrice: number,
+        quantity: number,
+        viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    clinicID: string,
+    clinic:  {
+      __typename: "Clinic",
+      id: string,
+      name: string,
+      phoneNumber: string,
+      postalCode: string,
+      state: string,
+      city: string,
+      address: string,
+      building?: string | null,
+      mailAddress: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    staffID: string,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      firstName: string,
+      lastName: string,
+      viewOrder: number,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
+    deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    createdAt: string,
+    type: Type,
+    owner?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateSubscriptionOrderHistoryProductMutationVariables = {
+  input: CreateSubscriptionOrderHistoryProductInput,
+  condition?: ModelSubscriptionOrderHistoryProductConditionInput | null,
+};
+
+export type CreateSubscriptionOrderHistoryProductMutation = {
+  createSubscriptionOrderHistoryProduct?:  {
+    __typename: "SubscriptionOrderHistoryProduct",
+    id: string,
+    orderID: string,
+    name: string,
+    unitPrice: number,
+    quantity: number,
+    viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSubscriptionOrderHistoryProductMutationVariables = {
+  input: UpdateSubscriptionOrderHistoryProductInput,
+  condition?: ModelSubscriptionOrderHistoryProductConditionInput | null,
+};
+
+export type UpdateSubscriptionOrderHistoryProductMutation = {
+  updateSubscriptionOrderHistoryProduct?:  {
+    __typename: "SubscriptionOrderHistoryProduct",
+    id: string,
+    orderID: string,
+    name: string,
+    unitPrice: number,
+    quantity: number,
+    viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSubscriptionOrderHistoryProductMutationVariables = {
+  input: DeleteSubscriptionOrderHistoryProductInput,
+  condition?: ModelSubscriptionOrderHistoryProductConditionInput | null,
+};
+
+export type DeleteSubscriptionOrderHistoryProductMutation = {
+  deleteSubscriptionOrderHistoryProduct?:  {
+    __typename: "SubscriptionOrderHistoryProduct",
+    id: string,
+    orderID: string,
+    name: string,
+    unitPrice: number,
+    quantity: number,
+    viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1387,6 +1867,7 @@ export type GetClinicQuery = {
     city: string,
     address: string,
     building?: string | null,
+    mailAddress: string,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -1412,6 +1893,7 @@ export type ListClinicsQuery = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1438,9 +1920,10 @@ export type GetOrderQuery = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1455,6 +1938,7 @@ export type GetOrderQuery = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1472,14 +1956,13 @@ export type GetOrderQuery = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -1505,9 +1988,10 @@ export type ListOrdersQuery = {
           unitPrice: number,
           quantity: number,
           viewOrder: number,
+          isExportCSV: boolean,
+          owner?: string | null,
           createdAt: string,
           updatedAt: string,
-          owner?: string | null,
         } | null >,
         nextToken?: string | null,
       } | null,
@@ -1522,6 +2006,7 @@ export type ListOrdersQuery = {
         city: string,
         address: string,
         building?: string | null,
+        mailAddress: string,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
@@ -1539,14 +2024,86 @@ export type ListOrdersQuery = {
         updatedAt: string,
         owner?: string | null,
       },
-      orderType: OrderType,
       deliveryStatus: DeliveryStatus,
       deliveryType: DeliveryType,
       deliveredAt?: string | null,
       createdAt: string,
       type: Type,
-      updatedAt: string,
       owner?: string | null,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ListOrdersSortedByCreatedAtQueryVariables = {
+  type: Type,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOrdersSortedByCreatedAtQuery = {
+  listOrdersSortedByCreatedAt?:  {
+    __typename: "ModelOrderConnection",
+    items:  Array< {
+      __typename: "Order",
+      id: string,
+      products?:  {
+        __typename: "ModelOrderProductConnection",
+        items:  Array< {
+          __typename: "OrderProduct",
+          id: string,
+          orderID: string,
+          name: string,
+          unitPrice: number,
+          quantity: number,
+          viewOrder: number,
+          isExportCSV: boolean,
+          owner?: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
+      clinicID: string,
+      clinic:  {
+        __typename: "Clinic",
+        id: string,
+        name: string,
+        phoneNumber: string,
+        postalCode: string,
+        state: string,
+        city: string,
+        address: string,
+        building?: string | null,
+        mailAddress: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      staffID: string,
+      staff:  {
+        __typename: "Staff",
+        id: string,
+        firstName: string,
+        lastName: string,
+        viewOrder: number,
+        disabled: boolean,
+        type: Type,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      deliveryStatus: DeliveryStatus,
+      deliveryType: DeliveryType,
+      deliveredAt?: string | null,
+      createdAt: string,
+      type: Type,
+      owner?: string | null,
+      updatedAt: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1598,6 +2155,7 @@ export type GetSubscriptionOrderQuery = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -1618,10 +2176,13 @@ export type GetSubscriptionOrderQuery = {
     deliveryStartYear: number,
     deliveryStartMonth: number,
     deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    lastDeliveredAt?: string | null,
     createdAt: string,
     type: string,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -1675,6 +2236,7 @@ export type ListSubscriptionOrdersQuery = {
         city: string,
         address: string,
         building?: string | null,
+        mailAddress: string,
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
@@ -1695,10 +2257,312 @@ export type ListSubscriptionOrdersQuery = {
       deliveryStartYear: number,
       deliveryStartMonth: number,
       deliveryInterval: number,
+      nextDeliveryYear?: number | null,
+      nextDeliveryMonth?: number | null,
+      lastDeliveredAt?: string | null,
       createdAt: string,
       type: string,
+      owner?: string | null,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
+  type: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelSubscriptionOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
+  listSubscriptionOrdersSortedByCreatedAt?:  {
+    __typename: "ModelSubscriptionOrderConnection",
+    items:  Array< {
+      __typename: "SubscriptionOrder",
+      id: string,
+      products?:  {
+        __typename: "ModelSubscriptionOrderProductConnection",
+        items:  Array< {
+          __typename: "SubscriptionOrderProduct",
+          id: string,
+          subscriptionOrderID: string,
+          productID: string,
+          product:  {
+            __typename: "Product",
+            id: string,
+            name: string,
+            unitPrice: number,
+            orderType: OrderType,
+            viewOrder: number,
+            isExportCSV: boolean,
+            disabled: boolean,
+            type: Type,
+            createdAt: string,
+            updatedAt: string,
+          },
+          quantity: number,
+          createdAt: string,
+          updatedAt: string,
+          owner?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
+      clinicID: string,
+      clinic:  {
+        __typename: "Clinic",
+        id: string,
+        name: string,
+        phoneNumber: string,
+        postalCode: string,
+        state: string,
+        city: string,
+        address: string,
+        building?: string | null,
+        mailAddress: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      staffID: string,
+      staff:  {
+        __typename: "Staff",
+        id: string,
+        firstName: string,
+        lastName: string,
+        viewOrder: number,
+        disabled: boolean,
+        type: Type,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      deliveryStartYear: number,
+      deliveryStartMonth: number,
+      deliveryInterval: number,
+      nextDeliveryYear?: number | null,
+      nextDeliveryMonth?: number | null,
+      lastDeliveredAt?: string | null,
+      createdAt: string,
+      type: string,
+      owner?: string | null,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetSubscriptionOrderHistoryQueryVariables = {
+  id: string,
+};
+
+export type GetSubscriptionOrderHistoryQuery = {
+  getSubscriptionOrderHistory?:  {
+    __typename: "SubscriptionOrderHistory",
+    id: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderHistoryProductConnection",
+      items:  Array< {
+        __typename: "SubscriptionOrderHistoryProduct",
+        id: string,
+        orderID: string,
+        name: string,
+        unitPrice: number,
+        quantity: number,
+        viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    clinicID: string,
+    clinic:  {
+      __typename: "Clinic",
+      id: string,
+      name: string,
+      phoneNumber: string,
+      postalCode: string,
+      state: string,
+      city: string,
+      address: string,
+      building?: string | null,
+      mailAddress: string,
+      createdAt: string,
       updatedAt: string,
       owner?: string | null,
+    },
+    staffID: string,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      firstName: string,
+      lastName: string,
+      viewOrder: number,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
+    deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    createdAt: string,
+    type: Type,
+    owner?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListSubscriptionOrderHistoriesQueryVariables = {
+  filter?: ModelSubscriptionOrderHistoryFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSubscriptionOrderHistoriesQuery = {
+  listSubscriptionOrderHistories?:  {
+    __typename: "ModelSubscriptionOrderHistoryConnection",
+    items:  Array< {
+      __typename: "SubscriptionOrderHistory",
+      id: string,
+      products?:  {
+        __typename: "ModelSubscriptionOrderHistoryProductConnection",
+        items:  Array< {
+          __typename: "SubscriptionOrderHistoryProduct",
+          id: string,
+          orderID: string,
+          name: string,
+          unitPrice: number,
+          quantity: number,
+          viewOrder: number,
+          isExportCSV: boolean,
+          owner?: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
+      clinicID: string,
+      clinic:  {
+        __typename: "Clinic",
+        id: string,
+        name: string,
+        phoneNumber: string,
+        postalCode: string,
+        state: string,
+        city: string,
+        address: string,
+        building?: string | null,
+        mailAddress: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      staffID: string,
+      staff:  {
+        __typename: "Staff",
+        id: string,
+        firstName: string,
+        lastName: string,
+        viewOrder: number,
+        disabled: boolean,
+        type: Type,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      deliveryStartYear: number,
+      deliveryStartMonth: number,
+      deliveryInterval: number,
+      nextDeliveryYear?: number | null,
+      nextDeliveryMonth?: number | null,
+      createdAt: string,
+      type: Type,
+      owner?: string | null,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ListSubscriptionOrderHistoriesSortedByCreatedAtQueryVariables = {
+  type: Type,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelSubscriptionOrderHistoryFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSubscriptionOrderHistoriesSortedByCreatedAtQuery = {
+  listSubscriptionOrderHistoriesSortedByCreatedAt?:  {
+    __typename: "ModelSubscriptionOrderHistoryConnection",
+    items:  Array< {
+      __typename: "SubscriptionOrderHistory",
+      id: string,
+      products?:  {
+        __typename: "ModelSubscriptionOrderHistoryProductConnection",
+        items:  Array< {
+          __typename: "SubscriptionOrderHistoryProduct",
+          id: string,
+          orderID: string,
+          name: string,
+          unitPrice: number,
+          quantity: number,
+          viewOrder: number,
+          isExportCSV: boolean,
+          owner?: string | null,
+          createdAt: string,
+          updatedAt: string,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
+      clinicID: string,
+      clinic:  {
+        __typename: "Clinic",
+        id: string,
+        name: string,
+        phoneNumber: string,
+        postalCode: string,
+        state: string,
+        city: string,
+        address: string,
+        building?: string | null,
+        mailAddress: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      staffID: string,
+      staff:  {
+        __typename: "Staff",
+        id: string,
+        firstName: string,
+        lastName: string,
+        viewOrder: number,
+        disabled: boolean,
+        type: Type,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      deliveryStartYear: number,
+      deliveryStartMonth: number,
+      deliveryInterval: number,
+      nextDeliveryYear?: number | null,
+      nextDeliveryMonth?: number | null,
+      createdAt: string,
+      type: Type,
+      owner?: string | null,
+      updatedAt: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1732,6 +2596,35 @@ export type ListProductsQueryVariables = {
 
 export type ListProductsQuery = {
   listProducts?:  {
+    __typename: "ModelProductConnection",
+    items:  Array< {
+      __typename: "Product",
+      id: string,
+      name: string,
+      unitPrice: number,
+      orderType: OrderType,
+      viewOrder: number,
+      isExportCSV: boolean,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ListProductsSortedByViewOrderQueryVariables = {
+  type: Type,
+  viewOrder?: ModelIntKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelProductFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListProductsSortedByViewOrderQuery = {
+  listProductsSortedByViewOrder?:  {
     __typename: "ModelProductConnection",
     items:  Array< {
       __typename: "Product",
@@ -1794,189 +2687,6 @@ export type ListStaffQuery = {
   } | null,
 };
 
-export type ListOrdersSortedByCreatedAtQueryVariables = {
-  type: Type,
-  createdAt?: ModelStringKeyConditionInput | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelOrderFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListOrdersSortedByCreatedAtQuery = {
-  listOrdersSortedByCreatedAt?:  {
-    __typename: "ModelOrderConnection",
-    items:  Array< {
-      __typename: "Order",
-      id: string,
-      products?:  {
-        __typename: "ModelOrderProductConnection",
-        items:  Array< {
-          __typename: "OrderProduct",
-          id: string,
-          orderID: string,
-          name: string,
-          unitPrice: number,
-          quantity: number,
-          viewOrder: number,
-          createdAt: string,
-          updatedAt: string,
-          owner?: string | null,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-      clinicID: string,
-      clinic:  {
-        __typename: "Clinic",
-        id: string,
-        name: string,
-        phoneNumber: string,
-        postalCode: string,
-        state: string,
-        city: string,
-        address: string,
-        building?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      },
-      staffID: string,
-      staff:  {
-        __typename: "Staff",
-        id: string,
-        firstName: string,
-        lastName: string,
-        viewOrder: number,
-        disabled: boolean,
-        type: Type,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      },
-      orderType: OrderType,
-      deliveryStatus: DeliveryStatus,
-      deliveryType: DeliveryType,
-      deliveredAt?: string | null,
-      createdAt: string,
-      type: Type,
-      updatedAt: string,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
-  type: string,
-  createdAt?: ModelStringKeyConditionInput | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelSubscriptionOrderFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListSubscriptionOrdersSortedByCreatedAtQuery = {
-  listSubscriptionOrdersSortedByCreatedAt?:  {
-    __typename: "ModelSubscriptionOrderConnection",
-    items:  Array< {
-      __typename: "SubscriptionOrder",
-      id: string,
-      products?:  {
-        __typename: "ModelSubscriptionOrderProductConnection",
-        items:  Array< {
-          __typename: "SubscriptionOrderProduct",
-          id: string,
-          subscriptionOrderID: string,
-          productID: string,
-          product:  {
-            __typename: "Product",
-            id: string,
-            name: string,
-            unitPrice: number,
-            orderType: OrderType,
-            viewOrder: number,
-            isExportCSV: boolean,
-            disabled: boolean,
-            type: Type,
-            createdAt: string,
-            updatedAt: string,
-          },
-          quantity: number,
-          createdAt: string,
-          updatedAt: string,
-          owner?: string | null,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-      clinicID: string,
-      clinic:  {
-        __typename: "Clinic",
-        id: string,
-        name: string,
-        phoneNumber: string,
-        postalCode: string,
-        state: string,
-        city: string,
-        address: string,
-        building?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      },
-      staffID: string,
-      staff:  {
-        __typename: "Staff",
-        id: string,
-        firstName: string,
-        lastName: string,
-        viewOrder: number,
-        disabled: boolean,
-        type: Type,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      },
-      deliveryStartYear: number,
-      deliveryStartMonth: number,
-      deliveryInterval: number,
-      createdAt: string,
-      type: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type ListProductsSortedByViewOrderQueryVariables = {
-  type: Type,
-  viewOrder?: ModelIntKeyConditionInput | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelProductFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListProductsSortedByViewOrderQuery = {
-  listProductsSortedByViewOrder?:  {
-    __typename: "ModelProductConnection",
-    items:  Array< {
-      __typename: "Product",
-      id: string,
-      name: string,
-      unitPrice: number,
-      orderType: OrderType,
-      viewOrder: number,
-      isExportCSV: boolean,
-      disabled: boolean,
-      type: Type,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
 export type ListStaffSortedByViewOrderQueryVariables = {
   type: Type,
   viewOrder?: ModelIntKeyConditionInput | null,
@@ -2005,6 +2715,122 @@ export type ListStaffSortedByViewOrderQuery = {
   } | null,
 };
 
+export type ListSubscriptionOrdersContainedNextDeliveryDateQuery = {
+  listSubscriptionOrdersContainedNextDeliveryDate?:  Array< {
+    __typename: "SubscriptionOrder",
+    id: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderProductConnection",
+      items:  Array< {
+        __typename: "SubscriptionOrderProduct",
+        id: string,
+        subscriptionOrderID: string,
+        productID: string,
+        product:  {
+          __typename: "Product",
+          id: string,
+          name: string,
+          unitPrice: number,
+          orderType: OrderType,
+          viewOrder: number,
+          isExportCSV: boolean,
+          disabled: boolean,
+          type: Type,
+          createdAt: string,
+          updatedAt: string,
+        },
+        quantity: number,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    clinicID: string,
+    clinic:  {
+      __typename: "Clinic",
+      id: string,
+      name: string,
+      phoneNumber: string,
+      postalCode: string,
+      state: string,
+      city: string,
+      address: string,
+      building?: string | null,
+      mailAddress: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    staffID: string,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      firstName: string,
+      lastName: string,
+      viewOrder: number,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
+    deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    lastDeliveredAt?: string | null,
+    createdAt: string,
+    type: string,
+    owner?: string | null,
+    updatedAt: string,
+  } | null > | null,
+};
+
+export type GetCurrentDateQuery = {
+  getCurrentDate?:  {
+    __typename: "CurrentDate",
+    currentDate?: string | null,
+  } | null,
+};
+
+export type SendOrderMailQueryVariables = {
+  toAddress: string,
+  bccAddress?: string | null,
+  sendMailType: SendMailType,
+  products: Array< string >,
+  subtotal: number,
+  tax: number,
+  total: number,
+  clinicName: string,
+  phoneNumber: string,
+  postalCode: string,
+  state: string,
+  city: string,
+  address: string,
+  building?: string | null,
+  staffName: string,
+  deliveryType?: DeliveryType | null,
+  deliveryStartYear?: number | null,
+  deliveryStartMonth?: number | null,
+  deliveryInterval?: number | null,
+};
+
+export type SendOrderMailQuery = {
+  sendOrderMail?: string | null,
+};
+
+export type SendErrorMailQueryVariables = {
+  toAddress: string,
+  subject: string,
+  body: string,
+};
+
+export type SendErrorMailQuery = {
+  sendErrorMail?: string | null,
+};
+
 export type OnCreateClinicSubscriptionVariables = {
   owner?: string | null,
 };
@@ -2020,6 +2846,7 @@ export type OnCreateClinicSubscription = {
     city: string,
     address: string,
     building?: string | null,
+    mailAddress: string,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2041,6 +2868,7 @@ export type OnUpdateClinicSubscription = {
     city: string,
     address: string,
     building?: string | null,
+    mailAddress: string,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2062,6 +2890,7 @@ export type OnDeleteClinicSubscription = {
     city: string,
     address: string,
     building?: string | null,
+    mailAddress: string,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -2086,9 +2915,10 @@ export type OnCreateOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2103,6 +2933,7 @@ export type OnCreateOrderSubscription = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -2120,14 +2951,13 @@ export type OnCreateOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -2149,9 +2979,10 @@ export type OnUpdateOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2166,6 +2997,7 @@ export type OnUpdateOrderSubscription = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -2183,14 +3015,13 @@ export type OnUpdateOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -2212,9 +3043,10 @@ export type OnDeleteOrderSubscription = {
         unitPrice: number,
         quantity: number,
         viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2229,6 +3061,7 @@ export type OnDeleteOrderSubscription = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -2246,14 +3079,13 @@ export type OnDeleteOrderSubscription = {
       updatedAt: string,
       owner?: string | null,
     },
-    orderType: OrderType,
     deliveryStatus: DeliveryStatus,
     deliveryType: DeliveryType,
     deliveredAt?: string | null,
     createdAt: string,
     type: Type,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -2270,9 +3102,10 @@ export type OnCreateOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -2289,9 +3122,10 @@ export type OnUpdateOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -2308,9 +3142,10 @@ export type OnDeleteOrderProductSubscription = {
     unitPrice: number,
     quantity: number,
     viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -2360,6 +3195,7 @@ export type OnCreateSubscriptionOrderSubscription = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -2380,10 +3216,13 @@ export type OnCreateSubscriptionOrderSubscription = {
     deliveryStartYear: number,
     deliveryStartMonth: number,
     deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    lastDeliveredAt?: string | null,
     createdAt: string,
     type: string,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -2433,6 +3272,7 @@ export type OnUpdateSubscriptionOrderSubscription = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -2453,10 +3293,13 @@ export type OnUpdateSubscriptionOrderSubscription = {
     deliveryStartYear: number,
     deliveryStartMonth: number,
     deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    lastDeliveredAt?: string | null,
     createdAt: string,
     type: string,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -2506,6 +3349,7 @@ export type OnDeleteSubscriptionOrderSubscription = {
       city: string,
       address: string,
       building?: string | null,
+      mailAddress: string,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -2526,10 +3370,13 @@ export type OnDeleteSubscriptionOrderSubscription = {
     deliveryStartYear: number,
     deliveryStartMonth: number,
     deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    lastDeliveredAt?: string | null,
     createdAt: string,
     type: string,
-    updatedAt: string,
     owner?: string | null,
+    updatedAt: string,
   } | null,
 };
 
@@ -2620,6 +3467,264 @@ export type OnDeleteSubscriptionOrderProductSubscription = {
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+  } | null,
+};
+
+export type OnCreateSubscriptionOrderHistorySubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateSubscriptionOrderHistorySubscription = {
+  onCreateSubscriptionOrderHistory?:  {
+    __typename: "SubscriptionOrderHistory",
+    id: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderHistoryProductConnection",
+      items:  Array< {
+        __typename: "SubscriptionOrderHistoryProduct",
+        id: string,
+        orderID: string,
+        name: string,
+        unitPrice: number,
+        quantity: number,
+        viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    clinicID: string,
+    clinic:  {
+      __typename: "Clinic",
+      id: string,
+      name: string,
+      phoneNumber: string,
+      postalCode: string,
+      state: string,
+      city: string,
+      address: string,
+      building?: string | null,
+      mailAddress: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    staffID: string,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      firstName: string,
+      lastName: string,
+      viewOrder: number,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
+    deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    createdAt: string,
+    type: Type,
+    owner?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSubscriptionOrderHistorySubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateSubscriptionOrderHistorySubscription = {
+  onUpdateSubscriptionOrderHistory?:  {
+    __typename: "SubscriptionOrderHistory",
+    id: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderHistoryProductConnection",
+      items:  Array< {
+        __typename: "SubscriptionOrderHistoryProduct",
+        id: string,
+        orderID: string,
+        name: string,
+        unitPrice: number,
+        quantity: number,
+        viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    clinicID: string,
+    clinic:  {
+      __typename: "Clinic",
+      id: string,
+      name: string,
+      phoneNumber: string,
+      postalCode: string,
+      state: string,
+      city: string,
+      address: string,
+      building?: string | null,
+      mailAddress: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    staffID: string,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      firstName: string,
+      lastName: string,
+      viewOrder: number,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
+    deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    createdAt: string,
+    type: Type,
+    owner?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSubscriptionOrderHistorySubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteSubscriptionOrderHistorySubscription = {
+  onDeleteSubscriptionOrderHistory?:  {
+    __typename: "SubscriptionOrderHistory",
+    id: string,
+    products?:  {
+      __typename: "ModelSubscriptionOrderHistoryProductConnection",
+      items:  Array< {
+        __typename: "SubscriptionOrderHistoryProduct",
+        id: string,
+        orderID: string,
+        name: string,
+        unitPrice: number,
+        quantity: number,
+        viewOrder: number,
+        isExportCSV: boolean,
+        owner?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    clinicID: string,
+    clinic:  {
+      __typename: "Clinic",
+      id: string,
+      name: string,
+      phoneNumber: string,
+      postalCode: string,
+      state: string,
+      city: string,
+      address: string,
+      building?: string | null,
+      mailAddress: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    staffID: string,
+    staff:  {
+      __typename: "Staff",
+      id: string,
+      firstName: string,
+      lastName: string,
+      viewOrder: number,
+      disabled: boolean,
+      type: Type,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    deliveryStartYear: number,
+    deliveryStartMonth: number,
+    deliveryInterval: number,
+    nextDeliveryYear?: number | null,
+    nextDeliveryMonth?: number | null,
+    createdAt: string,
+    type: Type,
+    owner?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateSubscriptionOrderHistoryProductSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateSubscriptionOrderHistoryProductSubscription = {
+  onCreateSubscriptionOrderHistoryProduct?:  {
+    __typename: "SubscriptionOrderHistoryProduct",
+    id: string,
+    orderID: string,
+    name: string,
+    unitPrice: number,
+    quantity: number,
+    viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSubscriptionOrderHistoryProductSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateSubscriptionOrderHistoryProductSubscription = {
+  onUpdateSubscriptionOrderHistoryProduct?:  {
+    __typename: "SubscriptionOrderHistoryProduct",
+    id: string,
+    orderID: string,
+    name: string,
+    unitPrice: number,
+    quantity: number,
+    viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSubscriptionOrderHistoryProductSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteSubscriptionOrderHistoryProductSubscription = {
+  onDeleteSubscriptionOrderHistoryProduct?:  {
+    __typename: "SubscriptionOrderHistoryProduct",
+    id: string,
+    orderID: string,
+    name: string,
+    unitPrice: number,
+    quantity: number,
+    viewOrder: number,
+    isExportCSV: boolean,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 

@@ -1,6 +1,7 @@
 import { Add, DeleteForever } from '@mui/icons-material';
-import { Box, Button, IconButton, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import { OrderType } from 'API';
+import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
@@ -10,7 +11,7 @@ import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
 
 type Props = UseFormReturn<OrderFormParam, object> & {
   fieldArrayReturn: UseFieldArrayReturn;
-  initialReceiptProducts?: NormalizedProduct[] | null;
+  // initialReceiptProducts?: NormalizedProduct[] | null;
 };
 
 type ProductErrorField = {
@@ -21,10 +22,10 @@ type ProductErrorField = {
 // 商品個数の数字連番の配列を生成
 const quantities = Array.from({ length: 25 }, (_, i) => i + 1);
 
-export const ProductSelectBox = ({ control, fieldArrayReturn, initialReceiptProducts }: Props) => {
-  const { orderType } = useOrderFormParam();
-  const { data: productList } = useFetchProductList();
-  const [selectedProducts, setSelectedProducts] = useState<NormalizedProduct[]>(initialReceiptProducts ?? []);
+export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
+  const { data: defaultValues, orderType } = useOrderFormParam();
+  const { data: productList, isLoading, error } = useFetchProductList();
+  const [selectedProducts, setSelectedProducts] = useState<NormalizedProduct[]>(defaultValues?.products ?? []);
 
   const onChangeProduct = useCallback(
     (selectedIndex: number, productID: string) => {
@@ -39,6 +40,7 @@ export const ProductSelectBox = ({ control, fieldArrayReturn, initialReceiptProd
         productID: `ID-${selectedIndex}`,
         name: product.name,
         unitPrice: product.unitPrice,
+        isExportCSV: product.isExportCSV,
         quantity: prev ? prev.quantity : 1, // 個数は引き継ぎ
       };
       // 既存選択商品があればobject更新、無ければobject追加
@@ -66,6 +68,7 @@ export const ProductSelectBox = ({ control, fieldArrayReturn, initialReceiptProd
           name: '',
           unitPrice: 0,
           quantity: quantity,
+          isExportCSV: false,
         };
         setSelectedProducts([...selectedProducts, next]);
       }
@@ -80,6 +83,8 @@ export const ProductSelectBox = ({ control, fieldArrayReturn, initialReceiptProd
     [selectedProducts],
   );
 
+  if (isLoading) return <CircularProgress aria-label='Now loading' />;
+  if (error) return <ErrorAlert>{error}</ErrorAlert>;
   return (
     <>
       {fieldArrayReturn.fields.map((item, index) => (
@@ -93,7 +98,6 @@ export const ProductSelectBox = ({ control, fieldArrayReturn, initialReceiptProd
               <TextField
                 name={field.name}
                 select
-                // fullWidth
                 sx={{ width: '60%' }}
                 label='商品'
                 onChange={(e) => {
@@ -161,7 +165,12 @@ export const ProductSelectBox = ({ control, fieldArrayReturn, initialReceiptProd
             )}
           />
           <Box ml={2} />
-          <Button onClick={() => fieldArrayReturn.append({ productID: '' })} variant='outlined' startIcon={<Add />}>
+          <Button
+            onClick={() => fieldArrayReturn.append({ productID: '' })}
+            variant='outlined'
+            startIcon={<Add />}
+            sx={{ maxHeight: 56, minWidth: 114 }}
+          >
             {'商品追加'}
           </Button>
           <Box ml={1} />

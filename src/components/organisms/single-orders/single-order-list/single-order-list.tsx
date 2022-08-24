@@ -1,5 +1,5 @@
 import { TableCell } from '@mui/material';
-import { DeliveryStatus, Order } from 'API';
+import { Order } from 'API';
 import { DeliveryStatusChip } from 'components/atoms/delivery-status-chip';
 import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
@@ -8,6 +8,7 @@ import { CancelSingleOrderButton } from 'components/organisms/single-orders/canc
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import React from 'react';
 import { TableHeader } from 'types/table-header';
 
 const header: TableHeader[] = [
@@ -17,19 +18,19 @@ const header: TableHeader[] = [
   },
   {
     label: '注文日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '配送方法',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '発送状況',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '発送日時',
-    minWidth: 160,
+    minWidth: 80,
   },
   {
     label: '',
@@ -52,7 +53,7 @@ type RowProps = {
 
 const Row = ({ item }: RowProps) => {
   return (
-    <CommonTableRow key={item.id} colSpan={header.length} products={item.normalizedProducts}>
+    <CommonTableRow colSpan={header.length} products={item.normalizedProducts}>
       <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
       <TableCell align='center'>
         <DeliveryTypeChip deliveryType={item.deliveryType} />
@@ -63,11 +64,7 @@ const Row = ({ item }: RowProps) => {
       <TableCell align='center'>{item.deliveredAt ? formatDateHourMinute(item.deliveredAt) : '-'}</TableCell>
       {item.products && (
         <TableCell align='center'>
-          <CancelSingleOrderButton
-            id={item.id}
-            products={item.products}
-            disabled={item.deliveryStatus !== DeliveryStatus.ordered}
-          />
+          <CancelSingleOrderButton item={item} />
         </TableCell>
       )}
     </CommonTableRow>

@@ -14,13 +14,19 @@ export const useFetch = <Data = any>(
   key: Key,
   fetcher: BareFetcher<Data> | null,
   config?: Partial<PublicConfiguration<Data, any, BareFetcher<Data>>> | undefined,
+  mockResponse?: FetchResponse<Data>,
 ): FetchResponse<Data> => {
-  const { data, error, mutate } = useSWR<Data>(key, fetcher, config);
-  return {
-    data: data ?? null,
-    error: error ? parseResponseError(error) : null,
-    isLoading: Boolean(!data && !error),
-    isEmptyList: Boolean(Array.isArray(data) && data.length === 0),
-    mutate: mutate,
-  } as const;
+  const { data, error, mutate } = useSWR<Data>(key, mockResponse ? null : fetcher, config);
+  return mockResponse
+    ? {
+        ...mockResponse,
+        mutate: mutate,
+      }
+    : ({
+        data: data ?? null,
+        error: error ? parseResponseError(error) : null,
+        isLoading: Boolean(!data && !error),
+        isEmptyList: Boolean(Array.isArray(data) && data.length === 0),
+        mutate: mutate,
+      } as const);
 };

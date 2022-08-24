@@ -1,6 +1,12 @@
 {
   "baseUrl": "http://localhost:3000",
   "includeShadowDom": true,
-  "viewportWidth": 1000,
-  "viewportHeight": 1000
+  "viewportWidth": 1200,
+  "viewportHeight": 1600,
+  "defaultCommandTimeout": 5000,
+  "watchForFileChanges": false,
+  "env": {
+    "userPoolId": "ap-northeast-1_YUuIwVXfK",
+    "clientId": "69mvsjv0or2djhg7id7gerbo0r"
+  }
 }

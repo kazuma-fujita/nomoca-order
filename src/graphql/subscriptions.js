@@ -12,6 +12,7 @@ export const onCreateClinic = /* GraphQL */ `
       city
       address
       building
+      mailAddress
       createdAt
       updatedAt
       owner
@@ -29,6 +30,7 @@ export const onUpdateClinic = /* GraphQL */ `
       city
       address
       building
+      mailAddress
       createdAt
       updatedAt
       owner
@@ -46,6 +48,7 @@ export const onDeleteClinic = /* GraphQL */ `
       city
       address
       building
+      mailAddress
       createdAt
       updatedAt
       owner
@@ -64,6 +67,7 @@ export const onCreateOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           createdAt
           updatedAt
           owner
@@ -80,6 +84,7 @@ export const onCreateOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -96,7 +101,6 @@ export const onCreateOrder = /* GraphQL */ `
         updatedAt
         owner
       }
-      orderType
       deliveryStatus
       deliveryType
       deliveredAt
@@ -119,6 +123,7 @@ export const onUpdateOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           createdAt
           updatedAt
           owner
@@ -135,6 +140,7 @@ export const onUpdateOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -151,7 +157,6 @@ export const onUpdateOrder = /* GraphQL */ `
         updatedAt
         owner
       }
-      orderType
       deliveryStatus
       deliveryType
       deliveredAt
@@ -174,6 +179,7 @@ export const onDeleteOrder = /* GraphQL */ `
           unitPrice
           quantity
           viewOrder
+          isExportCSV
           createdAt
           updatedAt
           owner
@@ -190,6 +196,7 @@ export const onDeleteOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -206,7 +213,6 @@ export const onDeleteOrder = /* GraphQL */ `
         updatedAt
         owner
       }
-      orderType
       deliveryStatus
       deliveryType
       deliveredAt
@@ -226,6 +232,7 @@ export const onCreateOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      isExportCSV
       createdAt
       updatedAt
       owner
@@ -241,6 +248,7 @@ export const onUpdateOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      isExportCSV
       createdAt
       updatedAt
       owner
@@ -256,6 +264,7 @@ export const onDeleteOrderProduct = /* GraphQL */ `
       unitPrice
       quantity
       viewOrder
+      isExportCSV
       createdAt
       updatedAt
       owner
@@ -271,6 +280,18 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -288,6 +309,7 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -307,10 +329,13 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
       deliveryStartYear
       deliveryStartMonth
       deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      lastDeliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -323,6 +348,18 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -340,6 +377,7 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -359,10 +397,13 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
       deliveryStartYear
       deliveryStartMonth
       deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      lastDeliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -375,6 +416,18 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
           id
           subscriptionOrderID
           productID
+          product {
+            id
+            name
+            unitPrice
+            orderType
+            viewOrder
+            isExportCSV
+            disabled
+            type
+            createdAt
+            updatedAt
+          }
           quantity
           createdAt
           updatedAt
@@ -392,6 +445,7 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
         city
         address
         building
+        mailAddress
         createdAt
         updatedAt
         owner
@@ -411,10 +465,13 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
       deliveryStartYear
       deliveryStartMonth
       deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      lastDeliveredAt
       createdAt
       type
-      updatedAt
       owner
+      updatedAt
     }
   }
 `;
@@ -490,6 +547,228 @@ export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+    }
+  }
+`;
+export const onCreateSubscriptionOrderHistory = /* GraphQL */ `
+  subscription OnCreateSubscriptionOrderHistory($owner: String) {
+    onCreateSubscriptionOrderHistory(owner: $owner) {
+      id
+      products {
+        items {
+          id
+          orderID
+          name
+          unitPrice
+          quantity
+          viewOrder
+          isExportCSV
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSubscriptionOrderHistory = /* GraphQL */ `
+  subscription OnUpdateSubscriptionOrderHistory($owner: String) {
+    onUpdateSubscriptionOrderHistory(owner: $owner) {
+      id
+      products {
+        items {
+          id
+          orderID
+          name
+          unitPrice
+          quantity
+          viewOrder
+          isExportCSV
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSubscriptionOrderHistory = /* GraphQL */ `
+  subscription OnDeleteSubscriptionOrderHistory($owner: String) {
+    onDeleteSubscriptionOrderHistory(owner: $owner) {
+      id
+      products {
+        items {
+          id
+          orderID
+          name
+          unitPrice
+          quantity
+          viewOrder
+          isExportCSV
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      clinicID
+      clinic {
+        id
+        name
+        phoneNumber
+        postalCode
+        state
+        city
+        address
+        building
+        mailAddress
+        createdAt
+        updatedAt
+        owner
+      }
+      staffID
+      staff {
+        id
+        firstName
+        lastName
+        viewOrder
+        disabled
+        type
+        createdAt
+        updatedAt
+        owner
+      }
+      deliveryStartYear
+      deliveryStartMonth
+      deliveryInterval
+      nextDeliveryYear
+      nextDeliveryMonth
+      createdAt
+      type
+      owner
+      updatedAt
+    }
+  }
+`;
+export const onCreateSubscriptionOrderHistoryProduct = /* GraphQL */ `
+  subscription OnCreateSubscriptionOrderHistoryProduct($owner: String) {
+    onCreateSubscriptionOrderHistoryProduct(owner: $owner) {
+      id
+      orderID
+      name
+      unitPrice
+      quantity
+      viewOrder
+      isExportCSV
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSubscriptionOrderHistoryProduct = /* GraphQL */ `
+  subscription OnUpdateSubscriptionOrderHistoryProduct($owner: String) {
+    onUpdateSubscriptionOrderHistoryProduct(owner: $owner) {
+      id
+      orderID
+      name
+      unitPrice
+      quantity
+      viewOrder
+      isExportCSV
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSubscriptionOrderHistoryProduct = /* GraphQL */ `
+  subscription OnDeleteSubscriptionOrderHistoryProduct($owner: String) {
+    onDeleteSubscriptionOrderHistoryProduct(owner: $owner) {
+      id
+      orderID
+      name
+      unitPrice
+      quantity
+      viewOrder
+      isExportCSV
+      owner
+      createdAt
+      updatedAt
     }
   }
 `;

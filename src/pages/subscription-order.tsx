@@ -11,6 +11,7 @@ import { NowDateContextProvider } from 'stores/use-now-date';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
+import { SubscriptionOrderListContextProvider } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -22,24 +23,26 @@ const SubscriptionOrderPage = (props: Props) => {
       <Head>
         <title>{props.pageTitle}</title>
       </Head>
-      {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
-      <ProductListContextProvider
-        orderType={OrderType.subscriptionOrder}
-        isFilterByActiveProduct={true}
-        isRevalidateOnFocus={false}
-      >
-        <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
-          <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder}>
-            <NowDateContextProvider now={new Date()}>
-              <ClinicContextProvider>
-                <Main>
-                  <OrderTemplate />
-                </Main>
-              </ClinicContextProvider>
-            </NowDateContextProvider>
-          </OrderFormParamContextProvider>
-        </StaffListContextProvider>
-      </ProductListContextProvider>
+      <SubscriptionOrderListContextProvider>
+        {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
+        <ProductListContextProvider
+          orderType={OrderType.subscriptionOrder}
+          isFilterByActiveProduct={true}
+          isRevalidateOnFocus={false}
+        >
+          <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
+            <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder}>
+              <NowDateContextProvider>
+                <ClinicContextProvider>
+                  <Main>
+                    <OrderTemplate />
+                  </Main>
+                </ClinicContextProvider>
+              </NowDateContextProvider>
+            </OrderFormParamContextProvider>
+          </StaffListContextProvider>
+        </ProductListContextProvider>
+      </SubscriptionOrderListContextProvider>
     </>
   );
 };
@@ -50,7 +53,7 @@ export default SubscriptionOrderPage;
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   return {
     props: {
-      pageTitle: ScreenName.SubscriptionOrder + TitleSuffix,
+      pageTitle: ScreenName.subscriptionOrder + TitleSuffix,
     },
   };
 };

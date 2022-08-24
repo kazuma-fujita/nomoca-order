@@ -5,19 +5,24 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 
 type Props = {
   on: boolean;
   isLoading: boolean;
-  error: Error | null;
+  isDisabledButton: boolean;
   submitHandler: () => void;
   cancelHandler: () => void;
 };
 
-export const ExportSingleOrderCSVDialog = (props: Props) => {
+export const ExportSingleOrderCSVDialog = ({
+  on,
+  isLoading,
+  isDisabledButton,
+  submitHandler,
+  cancelHandler,
+}: Props) => {
   return (
-    <Dialog open={props.on}>
+    <Dialog open={on}>
       <DialogTitle>CSVを出力する前に必ず以下を確認してください</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -27,19 +32,19 @@ export const ExportSingleOrderCSVDialog = (props: Props) => {
           <br />
           発送済みにしてよろしいですか？
         </DialogContentText>
-        {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
       </DialogContent>
       <DialogActions>
-        <LoadingButton onClick={props.cancelHandler} loadingIndicator='Loading...' loading={props.isLoading}>
+        <LoadingButton onClick={cancelHandler} loadingIndicator='Loading...' loading={isLoading}>
           閉じる
         </LoadingButton>
         <LoadingButton
-          onClick={props.submitHandler}
+          onClick={submitHandler}
           variant='contained'
           color='error'
-          loading={props.isLoading}
+          loading={isLoading}
           loadingPosition='start'
           startIcon={<LocalShippingIcon />}
+          disabled={isDisabledButton}
         >
           発送済みにする
         </LoadingButton>

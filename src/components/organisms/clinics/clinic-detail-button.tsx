@@ -5,7 +5,12 @@ import { Clinic } from 'API';
 import { MouseEvent, useState } from 'react';
 import { ClinicDetail } from './clinic-detail';
 
-export const ClinicDetailButton = (clinic: Clinic) => {
+type Props = {
+  staffName: string;
+  clinic: Clinic;
+};
+
+export const ClinicDetailButton = ({ staffName, clinic }: Props) => {
   // const [on, toggle] = useToggle(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -33,7 +38,7 @@ export const ClinicDetailButton = (clinic: Clinic) => {
         }}
       >
         <Box p={4}>
-          <ClinicDetail clinic={clinic} />
+          <ClinicDetail clinic={clinic} staffName={staffName} />
         </Box>
       </Popover>
     </>

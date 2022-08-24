@@ -25,10 +25,10 @@ export const useUpsertProduct = () => {
   // mutateはstoreで保持しているdataをasyncで取得、加工後のdataをPromiseで返却しstoreのstateを更新する
   const onUpsertProduct =
     (param: Product, orderType: OrderType) =>
-    async (data: Product[]): Promise<Product[]> => {
+    async (data: Product[] | undefined): Promise<Product[]> => {
       setIsLoading(true);
       try {
-        let ret = [];
+        let ret: Product[] = [];
         const inputParam = {
           name: param.name,
           unitPrice: Number(param.unitPrice),
@@ -39,7 +39,7 @@ export const useUpsertProduct = () => {
           // fetch query実行時にviewOrderでsortする為、typeには 'Product' 文字列を設定
           // sort対象のviewOrderは配列長 + 1を設定
           const input: CreateProductInput = {
-            viewOrder: data.length + 1,
+            viewOrder: data ? data.length + 1 : 1,
             type: Type.product,
             orderType: orderType,
             ...inputParam,
@@ -51,8 +51,11 @@ export const useUpsertProduct = () => {
           if (!result.data || !result.data.createProduct) {
             throw Error('The API created data but it returned null.');
           }
-          ret = [...data, result.data.createProduct];
+          ret = data ? [...data, result.data.createProduct] : [result.data.createProduct];
         } else {
+          if (!data) {
+            throw Error('data is undefined.');
+          }
           // Update product
           const input: UpdateProductInput = {
             id: param.id,
@@ -68,7 +71,6 @@ export const useUpsertProduct = () => {
           const updatedProduct = result.data.updateProduct;
           ret = data.map((item) => (item.id === updatedProduct.id ? updatedProduct : item));
         }
-        setIsLoading(false);
         setError(null);
         return ret;
       } catch (error) {

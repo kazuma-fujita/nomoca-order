@@ -8,6 +8,7 @@ import { LastNameTextField } from 'components/molecules/text-fields/last-name-te
 import { useUpsertStaffForm } from 'hooks/staffs/use-upsert-staff-form';
 import { UseFormReturn } from 'react-hook-form';
 import { Box } from '@mui/material';
+import { useCallback } from 'react';
 
 type Props = {
   staff?: Staff;
@@ -16,10 +17,20 @@ type Props = {
 export const UpsertStaffButton = ({ staff }: Props) => {
   const { useFormReturn, submitButtonLabel, dialogTitle, on, toggle, isLoading, error, submitHandler, cancelHandler } =
     useUpsertStaffForm(staff);
+
   const startIcon = staff ? <Edit /> : <Add />;
+  const onButtonClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      toggle();
+      // buttonのフォーカスを外す
+      e.currentTarget.blur();
+    },
+    [toggle],
+  );
+
   return (
     <>
-      <Button onClick={toggle} variant='outlined' startIcon={startIcon}>
+      <Button onClick={onButtonClick} variant='outlined' startIcon={startIcon}>
         {dialogTitle}
       </Button>
       <InputDialog
