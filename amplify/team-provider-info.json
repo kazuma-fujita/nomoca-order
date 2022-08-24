@@ -63,6 +63,24 @@
           "appId": "d37kyr3s00ujyn",
           "type": "cicd"
         }
+      },
+      "function": {
+        "currentDate": {
+          "deploymentBucketName": "amplify-nomocaorder-main-203343-deployment",
+          "s3Key": "amplify-builds/currentDate-4f4935746a7348364532-build.zip"
+        },
+        "sendOrderMail": {
+          "deploymentBucketName": "amplify-nomocaorder-main-203343-deployment",
+          "s3Key": "amplify-builds/sendOrderMail-5375466f58375a413854-build.zip"
+        },
+        "listSubscriptionOrdersContainedNextDeliveryDate": {
+          "deploymentBucketName": "amplify-nomocaorder-main-203343-deployment",
+          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-63532b2f793142496535-build.zip"
+        },
+        "sendErrorMail": {
+          "deploymentBucketName": "amplify-nomocaorder-main-203343-deployment",
+          "s3Key": "amplify-builds/sendErrorMail-6d504b7936796a6d5a70-build.zip"
+        }
       }
     }
   }
