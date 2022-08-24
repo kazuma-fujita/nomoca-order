@@ -3,10 +3,13 @@ import { Auth } from 'aws-amplify';
 import { Path } from 'constants/path';
 import { SWRKey } from 'constants/swr-key';
 import { UserGroup } from 'constants/user-group';
+import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NextRouter, useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import useSWR, { KeyedMutator, useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { useFetchOrderList } from '../hooks/orders/use-fetch-order-list';
+import { useFetchStaffList } from '../hooks/staffs/use-fetch-staff-list';
 
 type ProviderProps = {
   currentUser: CognitoUserInterface | undefined;
@@ -41,7 +44,6 @@ export const CurrentUserContextProvider = ({ ...props }) => {
     [currentUser, error, mutateUser, groups, email, isOperator],
   );
   return <CurrentUserContext.Provider value={value} {...props} />;
-  // return <CurrentUserContext.Provider value={{ currentUser, error, mutateUser, groups, isOperator }} {...props} />;
 };
 
 // ログイン後画面の認証判定
@@ -49,21 +51,22 @@ export const useVerifyAuthenticated = () => {
   const router = useRouter();
   const { mutateUser } = useCurrentUser();
   useEffect(() => {
-    // 高速に遷移するため事前に遷移先画面をprefetchする
-    router.prefetch(Path.index);
     (async () => {
       try {
+        console.log('after login');
         // Cognitoから認証情報取得
         const currentUser = await Auth.currentAuthenticatedUser();
         // 認証済みの場合Global stateの更新。useSWRの第2引数にfalseを指定すると再検証(再fetch)をしない
         mutateUser(currentUser, false);
       } catch (error) {
         console.error('useVerifyAuthenticated error:', error);
+        // 高速に遷移するため事前に遷移先画面をprefetchする
+        router.prefetch(Path.index);
         // URL直叩き対応。未認証の場合 The user is not authenticated が発生する
         router.replace(Path.index);
       }
     })();
-  }, []);
+  }, [mutateUser, router]);
 };
 
 // ログイン前画面の認証判定
@@ -71,7 +74,6 @@ export const useVerifyBeforeAuthenticate = () => {
   const router = useRouter();
   useEffect(() => {
     console.log('before login');
-    afterAuthTransition(router);
     // 画面ステータスをみてログイン後画面に遷移
     return onAuthUIStateChange((nextAuthState, authData) => {
       console.log('nextAuthState', nextAuthState);
@@ -80,7 +82,7 @@ export const useVerifyBeforeAuthenticate = () => {
         afterAuthTransition(router);
       }
     });
-  }, []);
+  }, [router]);
 };
 
 const afterAuthTransition = (router: NextRouter) => {
@@ -110,18 +112,12 @@ export const useSignOut = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [isSignedOut, setIsSignedOut] = useState(false);
-  const { cache } = useSWRConfig();
   const router = useRouter();
-  // useEffect(() => {
-  //   // 高速に遷移するため事前に遷移先画面をprefetchする
-  //   router.prefetch(Path.index);
-  //   // 画面ステータスをみてログイン画面に遷移
-  //   return onAuthUIStateChange((nextAuthState, authData) => {
-  //     if (nextAuthState === AuthState.SignedOut) {
-  //       router.replace(Path.index);
-  //     }
-  //   });
-  // }, []);
+  // useSWR cacheクリアの為個別に設定しているswrKeyを取得
+  const { cache } = useSWRConfig();
+  const { swrKey: orderListKey } = useFetchOrderList();
+  const { swrKey: productListKey } = useFetchProductList();
+  const { swrKey: staffListKey } = useFetchStaffList();
 
   useEffect(() => {
     // componentがunmountされてからログイン画面へ遷移させる
@@ -130,18 +126,23 @@ export const useSignOut = () => {
         router.replace(Path.index);
       }
     };
-  }, [isSignedOut]);
+  }, [isSignedOut, router]);
 
   // 利用側でasync/awaitできるようにPromise<void>を返却
   const signOut = useCallback(async (): Promise<void> => {
     setIsLoading(true);
     try {
+      console.log('sign out');
       // globalにsign out実行。他にログインしている端末があれば全てsign out
       await Auth.signOut({ global: true });
-      // Store(useSWR)のCacheをクリア
+      // useSWRのcacheクリア
       for (const key of Object.values(SWRKey)) {
         cache.delete(key);
       }
+      // 個別に設定しているuseSWRのcacheクリア
+      cache.delete(orderListKey);
+      cache.delete(staffListKey);
+      cache.delete(productListKey);
       setIsLoading(false);
       setError(null);
       // ログイン画面へ遷移
@@ -150,7 +151,8 @@ export const useSignOut = () => {
       setIsLoading(false);
       setError(parseResponseError(error));
     }
-  }, []);
+  }, [cache, orderListKey, productListKey, staffListKey]);
+
   const resetState = useCallback(() => {
     setIsLoading(false);
     setError(null);

@@ -4,6 +4,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { listClinics } from 'graphql/queries';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
+import { SWRKey } from '../../constants/swr-key';
 
 const ClinicContext = createContext({} as FetchResponse<Clinic | null>);
 
@@ -30,6 +31,6 @@ type Props = {
 
 // 配送先を実装する画面はTop階層(pages)で一回のみデータfetch、useContextを利用してdataを使い回す
 export const ClinicContextProvider: React.FC<Props> = ({ mockResponse, ...rest }) => {
-  const response = useFetch<Clinic | null>(Type.clinic, fetcher, { revalidateOnFocus: false }, mockResponse);
+  const response = useFetch<Clinic | null>(SWRKey.clinic, fetcher, { revalidateOnFocus: false }, mockResponse);
   return <ClinicContext.Provider value={response} {...rest} />;
 };
