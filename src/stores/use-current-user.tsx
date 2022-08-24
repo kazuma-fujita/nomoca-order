@@ -70,9 +70,11 @@ export const useVerifyAuthenticated = () => {
 export const useVerifyBeforeAuthenticate = () => {
   const router = useRouter();
   useEffect(() => {
+    console.log('before login');
     afterAuthTransition(router);
     // 画面ステータスをみてログイン後画面に遷移
     return onAuthUIStateChange((nextAuthState, authData) => {
+      console.log('nextAuthState', nextAuthState);
       // ログイン直後判定
       if (nextAuthState === AuthState.SignedIn && authData) {
         afterAuthTransition(router);
@@ -88,12 +90,15 @@ const afterAuthTransition = (router: NextRouter) => {
       // currentUserがUserGroupに所属していない場合undefinedが返却される
       const groups: string[] | undefined = currentUser.signInUserSession.accessToken.payload['cognito:groups'];
       const isOperator: boolean = groups ? groups.includes(UserGroup.Operators) : false;
-      // 高速に遷移するため事前に遷移先画面をprefetchする
-      // TODO: 遷移先未定
-      router.prefetch(Path.adminsSingleOrder);
-      router.prefetch(Path.singleOrder);
       // UserGroupにより遷移先の振り分け
-      isOperator ? router.replace(Path.adminsSingleOrder) : router.replace(Path.singleOrder);
+      // 高速に遷移するため事前に遷移先画面をprefetchする
+      if (isOperator) {
+        router.prefetch(Path.adminsSingleOrder);
+        router.replace(Path.adminsSingleOrder);
+      } else {
+        router.prefetch(Path.singleOrder);
+        router.replace(Path.singleOrder);
+      }
     } catch (error) {
       // currentAuthenticatedUser実行時に未認証の場合 The user is not authenticated が発生。ログイン画面へ遷移
       router.replace(Path.index);
