@@ -28,8 +28,9 @@ export const SubscriptionOrderForm = () => {
 };
 
 // DEBUG MODE 当月の定期便を作成可能。CI/本番環境ではfalseを設定 (JSON.parseは文字列のtrue/falseをbooleanに変換可能)
+// CI環境ではprocess.envを設定していな為、環境変数値が取れなかったら文字列のfalseを返却
 const canCreateSubscriptionOrderForTheCurrentMonth = JSON.parse(
-  process.env.NEXT_PUBLIC_CAN_CREATE_SUBSCRIPTION_ORDER_FOR_THE_CURRENT_MONTH_FOR_DEBUGGING as string,
+  (process.env.NEXT_PUBLIC_CAN_CREATE_SUBSCRIPTION_ORDER_FOR_THE_CURRENT_MONTH_FOR_DEBUGGING as string) ?? 'false',
 );
 
 const DeliveryStartYearMonthSelectBox = ({ register, setValue, control }: UseFormReturn<OrderFormParam>) => {
