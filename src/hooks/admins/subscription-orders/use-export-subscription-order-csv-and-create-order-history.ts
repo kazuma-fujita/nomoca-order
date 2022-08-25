@@ -40,7 +40,7 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const { exportCSV } = useExportOrderCSV();
-  const { sendDeliverySubscriptionOrderMail } = useSendMail();
+  const { sendDeliverySubscriptionOrderMail, createSendMailResultBody } = useSendMail();
 
   const exportSubscriptionOrderCSVAndCreateOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[]) => {
     setIsLoading(true);
@@ -73,32 +73,42 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
       // lastDeliveredAt更新成功データのみCSV出力
       await exportCSV(updatedDeliveredAtSuccesses);
 
+      // lastDeliveredAt更新総件数
       const updatedDeliveredAtSuccessTotal = updatedDeliveredAtSuccesses.length;
+      // lastDeliveredAt更新成功フラグ
       const isUpdatedDeliveredSuccess = updatedDeliveredAtFails.length === 0;
+      // 運用メール件名
       const notificationMailSubject = isUpdatedDeliveredSuccess
         ? '定期便のCSVを出力しました'
         : '定期便のCSV出力に失敗した注文があります。システム管理者に問い合わせてください。';
-      // 運用通知メールの件名・本文作成
-      const updatedDeliveredSuccessBody = `CSV出力医院:\n${updatedDeliveredAtSuccesses
-        .map((order) => order.clinic.name)
-        .join('\n')}\n計:${updatedDeliveredAtSuccessTotal}件`;
-      const updatedDeliveredFailedBody = `エラー:\n${updatedDeliveredAtFails.join('\n')}\n計:${
-        updatedDeliveredAtFails.length
-      }件`;
-      const updatedDeliveredBody = isUpdatedDeliveredSuccess
-        ? updatedDeliveredSuccessBody
-        : `${updatedDeliveredSuccessBody}\n${updatedDeliveredFailedBody}`;
-      const sendMailSuccessBody = `メール送信成功件数:${sendMailSuccesses.length}/${updatedDeliveredAtSuccessTotal}`;
-      const sendMailFailedBody = `メール送信失敗件数:${sendMailFails.length}/${updatedDeliveredAtSuccessTotal}`;
-      const createdHistorySuccessBody = `定期便履歴データ登録成功件数:${createdHistorySuccesses.length}/${orderTotal}`;
-      const createdHistoryFailedBody = `定期便履歴データ登録エラー:\n${createdHistoryFails.join('\n')}\n計:${
-        createdHistoryFails.length
-      }件`;
-      const createdHistoryBody =
-        createdHistoryFails.length === 0
-          ? createdHistorySuccessBody
-          : `${createdHistorySuccessBody}\n${createdHistoryFailedBody}`;
-      const notificationMailBody = `${updatedDeliveredBody}\n\n\n${sendMailSuccessBody}\n${sendMailFailedBody}\n\n\n${createdHistoryBody}`;
+
+      // lastDeliveredAt更新メール本文
+      const createUpdatedDeliveredAtBody = () => {
+        const updatedSuccessClinicNames = updatedDeliveredAtSuccesses.map((order) => order.clinic.name).join('\n');
+        const updatedSuccessCountBody = `CSV出力成功件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
+        const updatedFailedCountBody = `CSV出力失敗件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
+        const updatedSuccessBody = `${updatedSuccessClinicNames}\n${updatedSuccessCountBody}`;
+        const updatedFailedBody = `エラー:\n${updatedDeliveredAtFails.join('\n')}\n${updatedFailedCountBody}`;
+        return isUpdatedDeliveredSuccess ? updatedSuccessBody : `${updatedSuccessBody}\n${updatedFailedBody}`;
+      };
+      // 定期便発送メール送信結果メール本文
+      const sendMailResultBody = createSendMailResultBody(
+        sendMailSuccesses,
+        sendMailFails,
+        updatedDeliveredAtSuccessTotal,
+      );
+
+      // 定期便履歴データ登録結果メール本文
+      const createHistoryBody = () => {
+        const createdSuccessBody = `定期便履歴データ登録成功件数:${createdHistorySuccesses.length}/${orderTotal}`;
+        const createdFailedCount = `定期便履歴データ登録失敗件数:${createdHistoryFails.length}/${orderTotal}`;
+        const errorMessages = createdHistoryFails.join('\n');
+        const createdFailedBody = `定期便履歴データ登録エラー:\n${errorMessages}\n${createdFailedCount}`;
+        return createdHistoryFails.length === 0 ? createdSuccessBody : `${createdSuccessBody}\n${createdFailedBody}`;
+      };
+
+      // 運用メール本文
+      const notificationMailBody = `${createUpdatedDeliveredAtBody()}\n\n\n${sendMailResultBody}\n\n\n${createHistoryBody()}`;
 
       // Order履歴データ作成、メール送信結果を運用メール通知
       await sendErrorMail({
@@ -115,6 +125,7 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
         setSuccessMessage(null);
         setError(Error(resultMessage));
       }
+
       // lastDeliveredAtの更新を反映させる為一覧の再取得・更新
       mutate(SWRKey.subscriptionOrderList);
     } catch (error) {

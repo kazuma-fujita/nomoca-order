@@ -24,7 +24,7 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
   const [error, setError] = useState<Error | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const { exportCSV } = useExportOrderCSV();
-  const { sendDeliverySingleOrderMail } = useSendMail();
+  const { sendDeliverySingleOrderMail, createSendMailResultBody } = useSendMail();
 
   const exportSingleOrderCSVAndUpdateDeliveryStatus = async (orders: ExtendedOrder<Order>[]) => {
     setIsLoading(true);
@@ -54,22 +54,31 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
       // 配送状況更新成功データのみメール送信。Promise.allSettledでメール送信処理を同時並列実行
       const { sendMailSuccesses, sendMailFails } = await sendDeliverySingleOrderMail(updatedStatusSuccesses);
 
-      // 運用通知メールの件名・本文作成
-      const updatedDeliveryStatusTotal = updatedStatusSuccesses.length;
+      // 配送状況更新成功フラグ
       const isSucceedUpdatedDeliveryStatus = updatedStatusFails.length === 0;
+      // 運用通知メール件名
       const notificationMailSubject = isSucceedUpdatedDeliveryStatus
         ? '選択した注文のCSVを出力しました'
         : '選択した注文の中でCSV出力に失敗した注文があります。システム管理者に問い合わせてください。';
-      const updatedSuccessBody = `CSV出力医院:\n${updatedStatusSuccesses
-        .map((order) => order.clinic.name)
-        .join('\n')}\n計:${updatedDeliveryStatusTotal}件`;
-      const updatedFailedBody = `エラー:\n${updatedStatusFails.join('\n')}\n計:${updatedStatusFails.length}件`;
-      const updatedStatusBody = isSucceedUpdatedDeliveryStatus
-        ? updatedSuccessBody
-        : `${updatedSuccessBody}\n${updatedFailedBody}`;
-      const sendMailSuccessBody = `メール送信成功件数:${sendMailSuccesses.length}/${updatedDeliveryStatusTotal}`;
-      const sendMailFailedBody = `メール送信失敗件数:${sendMailFails.length}/${updatedDeliveryStatusTotal}`;
-      const notificationMailBody = `${updatedStatusBody}\n\n\n${sendMailSuccessBody}\n${sendMailFailedBody}`;
+
+      // 配送状況更新成功総件数
+      const updatedDeliveryStatusTotal = updatedStatusSuccesses.length;
+      // 配信状況更新メール本文
+      const createUpdateStatusBody = () => {
+        const updatedStatusSuccessClinicNames = updatedStatusSuccesses.map((order) => order.clinic.name).join('\n');
+        const updatedSuccessCountBody = `CSV出力成功件数:${updatedStatusSuccesses.length}/${orderTotal}`;
+        const updatedFailedCountBody = `CSV出力失敗件数:${updatedStatusFails.length}/${orderTotal}`;
+        // 配送状況更新成功件数メッセージ
+        const updatedSuccessBody = `${updatedStatusSuccessClinicNames}\n${updatedSuccessCountBody}`;
+        // 配送状況更新失敗メッセージ
+        const updatedFailedBody = `エラー:\n${updatedStatusFails.join('\n')}\n${updatedFailedCountBody}`;
+        // 配送状況更新が失敗していればエラーメッセージを出力
+        return isSucceedUpdatedDeliveryStatus ? updatedSuccessBody : `${updatedSuccessBody}\n${updatedFailedBody}`;
+      };
+      // 発送メール送信結果メール本文
+      const sendMailResultBody = createSendMailResultBody(sendMailSuccesses, sendMailFails, updatedDeliveryStatusTotal);
+      // 運用メール本文
+      const notificationMailBody = `${createUpdateStatusBody()}\n\n\n${sendMailResultBody}`;
       // 注文状況更新、メール送信結果を運用メール通知
       await sendErrorMail({
         subject: notificationMailSubject,

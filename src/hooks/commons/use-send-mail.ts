@@ -95,17 +95,21 @@ export const useSendMail = () => {
   const sendDeliverySingleOrderMail = async (orders: ExtendedOrder<Order>[]) => {
     // Promise.allSettledでメール送信処理を同時並列実行
     const sendMailStatuses: PromiseSettledResult<string>[] = await Promise.allSettled(
-      orders.map(
-        async (order) =>
+      orders.map(async (order) => {
+        try {
           // 注文配送メール送信。成功時は医院名を返却
-          await sendMail({
+          return await sendMail({
             sendMailType: SendMailType.deliveredSingleOrder,
             products: order.normalizedProducts,
             clinic: order.clinic,
             staff: order.staff,
             deliveryType: order.deliveryType,
-          }),
-      ),
+          });
+        } catch (err) {
+          const error = parseResponseError(err);
+          throw Error(`${order.clinic.name}: ${error}`);
+        }
+      }),
     );
     // メール送信成功/失敗リスト抽出
     const sendMailSuccesses = filteredPromiseFulfilledResult(sendMailStatuses);
@@ -116,10 +120,10 @@ export const useSendMail = () => {
   const sendDeliverySubscriptionOrderMail = async (orders: ExtendedOrder<SubscriptionOrder>[]) => {
     // Promise.allSettledでメール送信処理を同時並列実行
     const sendMailStatuses: PromiseSettledResult<string>[] = await Promise.allSettled(
-      orders.map(
-        async (order) =>
+      orders.map(async (order) => {
+        try {
           // 注文配送メール送信
-          await sendMail({
+          return await sendMail({
             sendMailType: SendMailType.deliveredSubscriptionOrder,
             products: order.normalizedProducts,
             clinic: order.clinic,
@@ -127,8 +131,12 @@ export const useSendMail = () => {
             deliveryStartYear: order.deliveryStartYear,
             deliveryStartMonth: order.deliveryStartMonth,
             deliveryInterval: order.deliveryInterval,
-          }),
-      ),
+          });
+        } catch (err) {
+          const error = parseResponseError(err);
+          throw Error(`${order.clinic.name}: ${error}`);
+        }
+      }),
     );
     // メール送信成功/失敗リスト抽出
     const sendMailSuccesses = filteredPromiseFulfilledResult(sendMailStatuses);
@@ -136,5 +144,19 @@ export const useSendMail = () => {
     return { sendMailSuccesses, sendMailFails };
   };
 
-  return { sendMail, sendDeliverySingleOrderMail, sendDeliverySubscriptionOrderMail };
+  // 配送メール送信結果メール本文
+  const createSendMailResultBody = (
+    sendMailSuccesses: string[],
+    sendMailFails: (Error | null)[],
+    sendMailTotalCount: number,
+  ) => {
+    // 配送状況更新成功件数メッセージ
+    const sendMailSuccessBody = `メール送信成功件数:${sendMailSuccesses.length}/${sendMailTotalCount}`;
+    const sendMailFailedCountBody = `メール送信失敗件数:${sendMailFails.length}/${sendMailTotalCount}`;
+    const sendMailFailedBody = `メール送信エラー:\n${sendMailFails.join('\n')}\n${sendMailFailedCountBody}`;
+    // 配送状況更新が失敗していればエラーメッセージを出力
+    return sendMailFails.length === 0 ? sendMailSuccessBody : `${sendMailSuccessBody}\n${sendMailFailedBody}`;
+  };
+
+  return { sendMail, sendDeliverySingleOrderMail, sendDeliverySubscriptionOrderMail, createSendMailResultBody };
 };

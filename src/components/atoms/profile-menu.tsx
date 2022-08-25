@@ -45,7 +45,6 @@ export const ProfileMenu = (props: Props) => {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        // onClick={handleClose}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -94,7 +93,7 @@ export const ProfileMenu = (props: Props) => {
                 </MenuItem>
               ),
             )}
-            {index === 0 && <Divider />}
+            {index === 0 && items.length > 1 && <Divider />}
           </div>
         ))}
       </Menu>

@@ -1,8 +1,19 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, styled } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  styled,
+} from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
 import Link from 'components/atoms/link';
 import { HeaderItem } from 'components/molecules/header';
+import { releaseVersion } from 'constants/release-version';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -57,6 +68,9 @@ export const SideDrawer = (props: Props) => {
           <Divider />
         </div>
       ))}
+      <Box ml={2} mt={2} sx={{ fontSize: 12 }}>
+        Version {releaseVersion}
+      </Box>
     </Drawer>
   );
 };

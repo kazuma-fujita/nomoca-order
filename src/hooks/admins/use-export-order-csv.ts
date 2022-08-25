@@ -8,6 +8,7 @@ import { useCallback, useState } from 'react';
 import { useNowDate } from 'stores/use-now-date';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { escapeDoubleQuotesForCSV } from 'functions/strings/converters';
 
 const header = {
   id: '"オーダー番号"',
@@ -74,7 +75,7 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
     empty4: '',
     empty5: '',
     empty6: '',
-    productName: `"${product.name}"`,
+    productName: `"${escapeDoubleQuotesForCSV(product.name)}"`,
     empty7: '',
     empty8: '',
     empty9: '',
@@ -103,7 +104,7 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
     toFirstName: '',
     toPostalCode: `"${order.clinic.postalCode}"`,
     toPref: `"${order.clinic.state}"`,
-    toAddress: `"${order.clinic.city}${order.clinic.address} ${order.clinic.building}"`,
+    toAddress: `"${escapeDoubleQuotesForCSV(`${order.clinic.city}${order.clinic.address} ${order.clinic.building}`)}"`,
     toPhoneNumber: `"${order.clinic.phoneNumber}"`,
     empty26: '',
     empty27: '',
@@ -114,7 +115,7 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
     fromAddress: `"${CorporateInformation.address}"`,
     fromPhoneNumber: `"${CorporateInformation.exportCSVphoneNumber}"`,
     empty28: '',
-    toCompanyName: `"${order.clinic.name}"`,
+    toCompanyName: `"${escapeDoubleQuotesForCSV(order.clinic.name)}"`,
     fromCompanyName: `"${CorporateInformation.name}"`,
     empty29: '',
   };

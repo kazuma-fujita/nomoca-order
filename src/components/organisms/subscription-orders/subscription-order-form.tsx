@@ -27,9 +27,10 @@ export const SubscriptionOrderForm = () => {
   );
 };
 
-// DEBUG MODE 当月の定期便を作成可能。CI/本番環境ではfalseを設定
-const canCreateSubscriptionOrderForTheCurrentMonth = Boolean(
-  process.env.NEXT_PUBLIC_CAN_CREATE_SUBSCRIPTION_ORDER_FOR_THE_CURRENT_MONTH_FOR_DEBUGGING,
+// DEBUG MODE 当月の定期便を作成可能。CI/本番環境ではfalseを設定 (JSON.parseは文字列のtrue/falseをbooleanに変換可能)
+// CI環境ではprocess.envを設定していな為、環境変数値が取れなかったら文字列のfalseを返却
+const canCreateSubscriptionOrderForTheCurrentMonth = JSON.parse(
+  (process.env.NEXT_PUBLIC_CAN_CREATE_SUBSCRIPTION_ORDER_FOR_THE_CURRENT_MONTH_FOR_DEBUGGING as string) ?? 'false',
 );
 
 const DeliveryStartYearMonthSelectBox = ({ register, setValue, control }: UseFormReturn<OrderFormParam>) => {
@@ -40,6 +41,8 @@ const DeliveryStartYearMonthSelectBox = ({ register, setValue, control }: UseFor
   // 現在年、月を取得。現在月はgetMonthの値に+1をして取得
   const nowYear = currentDate.getFullYear();
   const nowMonth = currentDate.getMonth() + 1;
+
+  console.log('canCreateSubscriptionOrderForTheCurrentMonth', canCreateSubscriptionOrderForTheCurrentMonth);
 
   // 配送開始月SelectField初期値。初期値として翌月を設定
   let nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;

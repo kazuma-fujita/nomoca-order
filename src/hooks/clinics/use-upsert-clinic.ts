@@ -5,7 +5,6 @@ import {
   CreateClinicMutation,
   CreateClinicMutationVariables,
   ListClinicsQuery,
-  Type,
   UpdateClinicInput,
   UpdateClinicMutation,
   UpdateClinicMutationVariables,
@@ -17,6 +16,7 @@ import { useCallback, useState } from 'react';
 import { useCurrentUser } from 'stores/use-current-user';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { SWRKey } from 'constants/swr-key';
 
 export const useUpsertClinic = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,6 @@ export const useUpsertClinic = () => {
   const onUpsertClinic = (param: Clinic) => async (): Promise<Clinic> => {
     setIsLoading(true);
     try {
-      console.log('singed in user mailAddress', email);
       if (!email) {
         throw Error('Signed in user mail address is not found.');
       }
@@ -81,10 +80,7 @@ export const useUpsertClinic = () => {
   };
 
   // // mutateを実行してstoreで保持しているstateを更新。mutateの第1引数にはkeyを指定し、第2引数で状態変更を実行する関数を指定。mutateの戻り値はPromise<any>。
-  const upsertClinic = useCallback(
-    async (param: Clinic) => mutate(Type.clinic, onUpsertClinic(param), false),
-    [mutate],
-  );
+  const upsertClinic = async (param: Clinic) => mutate(SWRKey.clinic, onUpsertClinic(param), false);
 
   const resetState = useCallback(() => {
     setIsLoading(false);

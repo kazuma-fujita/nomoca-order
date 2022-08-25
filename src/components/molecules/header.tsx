@@ -1,7 +1,6 @@
 import CategoryIcon from '@mui/icons-material/Category';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -57,20 +56,17 @@ export const Header = () => {
         ],
       ];
   const menuItems: HeaderItem[][] = [
-    [{ path: Path.changePassword, icon: LockIcon, label: ScreenName.changePassword }],
+    // パスワード変更は要望があれば実装
+    // [{ path: Path.changePassword, icon: LockIcon, label: ScreenName.changePassword }],
     [{ path: Path.signOut, icon: LogoutIcon, label: ScreenName.signOut }],
   ];
   // findItemsが無かった場合401画面へ遷移
   let findItems = drawerItems
-    // .map((items) => items.find((item) => `/${item.path}` === router.pathname))
     .map((items) => items.find((item) => item.path === router.pathname))
     .filter((item) => item);
 
   if (findItems.length === 0) {
-    findItems = menuItems
-      .map((items) => items.find((item) => item.path === router.pathname))
-      // .map((items) => items.find((item) => `/${item.path}` === router.pathname))
-      .filter((item) => item);
+    findItems = menuItems.map((items) => items.find((item) => item.path === router.pathname)).filter((item) => item);
   }
   if (findItems.length === 0) {
     // Nextの組み込み401 Unauthorizedページを表示

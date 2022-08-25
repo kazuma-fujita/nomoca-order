@@ -12,6 +12,7 @@ import 'styles/globals.css';
 import theme from 'styles/theme';
 import createEmotionCache from 'utilities/create-emotion-cache';
 import { L10n } from 'utilities/l10n';
+import { GoogleAnalytics } from 'nextjs-google-analytics';
 
 // localized Amplify-UI
 I18n.setLanguage('ja');
@@ -26,27 +27,30 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-function MyApp(props: MyAppProps) {
+const App = (props: MyAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
-    <CurrentUserContextProvider>
-      <SWRConfig value={{ use: [loggingMiddleware] }}>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </CacheProvider>
-      </SWRConfig>
-    </CurrentUserContextProvider>
+    <>
+      <GoogleAnalytics trackPageViews />
+      <CurrentUserContextProvider>
+        <SWRConfig value={{ use: [loggingMiddleware] }}>
+          <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={theme}>
+              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+              <CssBaseline />
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </CacheProvider>
+        </SWRConfig>
+      </CurrentUserContextProvider>
+    </>
   );
-}
+};
 
-MyApp.propTypes = {
+App.propTypes = {
   Component: PropTypes.elementType.isRequired,
   emotionCache: PropTypes.object,
   pageProps: PropTypes.object.isRequired,
 };
 
-export default MyApp;
+export default App;
