@@ -1,8 +1,8 @@
 import { TextField } from '@mui/material';
+import { Clinic } from 'API';
+import { numericZenkaku2Hankaku } from 'functions/strings/converters';
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { Clinic } from 'API';
-import { hyphenZenkaku2Hankaku, numericZenkaku2Hankaku } from 'functions/strings/converters';
 
 type Props = UseFormReturn<Clinic> & {
   disabled: boolean;
@@ -11,9 +11,9 @@ type Props = UseFormReturn<Clinic> & {
 const MAX_LENGTH = 256;
 
 export const BuildingTextField = ({ formState, register, setValue, disabled }: Props) => {
-  // TextFieldからフォーカスが外れたら入力値の全角数字ハイフン -> 半角数字ハイフン変換、trim処理
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setValue('building', numericZenkaku2Hankaku(hyphenZenkaku2Hankaku(event.target.value.trim())));
+  // TextFieldからフォーカスが外れたら入力値のtrimと全角数字 -> 半角数字変換処理
+  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue('building', numericZenkaku2Hankaku(event.target.value.trim()));
   };
 
   return (

@@ -11,8 +11,8 @@ type Props = UseFormReturn<Clinic> & {
 const MAX_LENGTH = 256;
 
 export const AddressTextField = ({ formState, register, setValue, disabled }: Props) => {
-  // TextFieldからフォーカスが外れたら入力値のtrimと全角数字ハイフン -> 半角数字ハイフン変換処理
-  const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // TextFieldからフォーカスが外れたら入力値の全角数字ハイフン -> 半角数字ハイフン変換、trim処理
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setValue('address', numericZenkaku2Hankaku(hyphenZenkaku2Hankaku(event.target.value.trim())));
   };
 

@@ -4,3 +4,6 @@ export const numericZenkaku2Hankaku = (input: string) =>
 
 // 全角ハイフン -> 半角ハイフン変換
 export const hyphenZenkaku2Hankaku = (input: string) => input.replace(/[‐－―ー−]/g, '-');
+
+// 全角ハイフン -> 半角ハイフン変換
+export const escapeDoubleQuotesForCSV = (input: string) => input.replace(/"/g, '""');
