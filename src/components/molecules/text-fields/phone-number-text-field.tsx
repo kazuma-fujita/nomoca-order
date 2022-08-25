@@ -20,7 +20,7 @@ export const PhoneNumberTextField = ({ formState, register, setValue, disabled }
   return (
     <TextField
       required
-      type='text'
+      type='tel'
       id='phoneNumber'
       label='電話番号'
       disabled={disabled}
@@ -32,12 +32,12 @@ export const PhoneNumberTextField = ({ formState, register, setValue, disabled }
       }}
       {...register('phoneNumber', {
         required: '電話番号を入力してください',
-        minLength: { value: MIN_LENGTH, message: '電話番号は' + MIN_LENGTH + '桁以上で入力してください' },
-        maxLength: { value: MAX_LENGTH, message: '電話番号は' + MAX_LENGTH + '桁以下で入力してください' },
         pattern: {
-          value: /^[0-9]+$/,
+          value: /^0[0-9]{9,10}$/, // 先頭が0かつ数字のみ10か11桁のみ許可
           message: '電話番号は半角数字で入力してください',
         },
+        minLength: { value: MIN_LENGTH, message: '電話番号は' + MIN_LENGTH + '桁以上で入力してください' },
+        maxLength: { value: MAX_LENGTH, message: '電話番号は' + MAX_LENGTH + '桁以下で入力してください' },
         onBlur: handleBlur,
       })}
     />
