@@ -13,11 +13,13 @@ import {
   UpdateSubscriptionOrderMutationVariables,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
+import { SWRKey } from 'constants/swr-key';
 import {
   filteredPromiseFulfilledResult,
   filteredPromiseRejectedResult,
 } from 'functions/filter-promise-settled-results';
-import { sendErrorMail } from 'functions/send-error-mail';
+import { filterNonShippingSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-all-subscription-order-this-month';
+import { sendOperationMail } from 'functions/send-operation-mail';
 import {
   createSubscriptionOrderHistory,
   createSubscriptionOrderHistoryProduct,
@@ -28,10 +30,8 @@ import { useSendMail } from 'hooks/commons/use-send-mail';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { useNowDate } from 'stores/use-now-date';
-import { parseResponseError } from 'utilities/parse-response-error';
 import { useSWRConfig } from 'swr';
-import { SWRKey } from 'constants/swr-key';
-import { filterNonShippingSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-all-subscription-order-this-month';
+import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
   const { data: now } = useNowDate();
@@ -111,7 +111,7 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
       const notificationMailBody = `${createUpdatedDeliveredAtBody()}\n\n\n${sendMailResultBody}\n\n\n${createHistoryBody()}`;
 
       // Order履歴データ作成、メール送信結果を運用メール通知
-      await sendErrorMail({
+      await sendOperationMail({
         subject: notificationMailSubject,
         body: notificationMailBody,
       });

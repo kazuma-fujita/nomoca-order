@@ -5,7 +5,7 @@ import {
   filteredPromiseFulfilledResult,
   filteredPromiseRejectedResult,
 } from 'functions/filter-promise-settled-results';
-import { sendErrorMail } from 'functions/send-error-mail';
+import { sendOperationMail } from 'functions/send-operation-mail';
 import { updateOrder } from 'graphql/mutations';
 import { useExportOrderCSV } from 'hooks/admins/use-export-order-csv';
 import { useSendMail } from 'hooks/commons/use-send-mail';
@@ -80,7 +80,7 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
       // 運用メール本文
       const notificationMailBody = `${createUpdateStatusBody()}\n\n\n${sendMailResultBody}`;
       // 注文状況更新、メール送信結果を運用メール通知
-      await sendErrorMail({
+      await sendOperationMail({
         subject: notificationMailSubject,
         body: notificationMailBody,
       });
