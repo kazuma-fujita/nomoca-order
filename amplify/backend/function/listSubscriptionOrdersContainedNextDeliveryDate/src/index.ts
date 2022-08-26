@@ -1,6 +1,5 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import AWSAppSyncClient from 'aws-appsync';
-import { GraphQLError } from 'graphql';
 import { gql } from 'graphql-tag';
 import {
   ListSubscriptionOrdersSortedByCreatedAtQuery,
@@ -12,7 +11,9 @@ import {
 } from './API';
 import { generateNextDeliveryYearMonth } from './generate-next-delivery-year-month';
 import { listSubscriptionOrdersSortedByCreatedAt } from './queries';
+
 global.fetch = require('node-fetch');
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -56,78 +57,82 @@ export const handler = async (event: any) => {
     disableOffline: true,
   });
 
-  try {
-    const filter: ModelSubscriptionOrderFilterInput = { owner: { contains: username } };
+  // ExceptionをそのままAPI responseとして返却する為 try-catch しない
+  // try {
 
-    const baseVariables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
-      type: Type.subscriptionOrder,
-      sortDirection: ModelSortDirection.DESC,
-    };
+  const filter: ModelSubscriptionOrderFilterInput = { owner: { contains: username } };
 
-    // 顧客ユーザのリスト取得はowner fieldでfilter
-    const variables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = !isOperator
-      ? { ...baseVariables, filter: filter }
-      : baseVariables;
+  const baseVariables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = {
+    type: Type.subscriptionOrder,
+    sortDirection: ModelSortDirection.DESC,
+  };
 
-    const result = (await graphqlClient.query({
-      query: gql(listSubscriptionOrdersSortedByCreatedAt),
-      variables: variables,
-    })) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
+  // 顧客ユーザのリスト取得はowner fieldでfilter
+  const variables: ListSubscriptionOrdersSortedByCreatedAtQueryVariables = !isOperator
+    ? { ...baseVariables, filter: filter }
+    : baseVariables;
 
-    if (result.errors) {
-      throw result.errors;
-    }
+  const result = (await graphqlClient.query({
+    query: gql(listSubscriptionOrdersSortedByCreatedAt),
+    variables: variables,
+  })) as GraphQLResult<ListSubscriptionOrdersSortedByCreatedAtQuery>;
 
-    if (
-      !result.data ||
-      !result.data.listSubscriptionOrdersSortedByCreatedAt ||
-      !result.data.listSubscriptionOrdersSortedByCreatedAt.items
-    ) {
-      throw Error('The API fetched data but it returned null.');
-    }
-
-    const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
-    for (const item of items) {
-      if (!item || !item.products || !item.products.items) {
-        throw Error('The API fetched products but it returned null.');
-      }
-    }
-    // JST時刻のdateオブジェクト生成
-    const now = generateJSTDate();
-    const nowYear = now.getFullYear();
-    const nowMonth = now.getMonth() + 1;
-    // 顧客ユーザ、業務ユーザ共通で次回発送予定年月をレスポンスに追加
-    const nextDeliveryDateItems = items.map((item) => {
-      // 次回発送予定年月を計算した値
-      const nextDeliveryYearMonth = generateNextDeliveryYearMonth(
-        item.deliveryStartYear,
-        item.deliveryStartMonth,
-        item.deliveryInterval,
-        nowYear,
-        nowMonth,
-      );
-      // 次回配送予定年月をセット
-      return {
-        ...item,
-        nextDeliveryYear: nextDeliveryYearMonth.nextDeliveryYear,
-        nextDeliveryMonth: nextDeliveryYearMonth.nextDeliveryMonth,
-      };
-    });
-
-    // 業務ユーザのリスト取得
-    const responseItems = isOperator
-      ? nextDeliveryDateItems // 当月のみのリストに絞り込み。配送予定月が現在年月であればAPIレスポンスとして返却
-          .filter((item) => item.nextDeliveryYear === nowYear && item.nextDeliveryMonth === nowMonth)
-      : nextDeliveryDateItems;
-
-    console.log('responseItems', responseItems);
-
-    return responseItems;
-  } catch (err) {
-    const error: Error = parseResponseError(err);
-    console.error('list subscription order error:', error);
-    return error.message;
+  if (result.errors) {
+    throw result.errors;
   }
+
+  if (
+    !result.data ||
+    !result.data.listSubscriptionOrdersSortedByCreatedAt ||
+    !result.data.listSubscriptionOrdersSortedByCreatedAt.items
+  ) {
+    throw Error('The API fetched data but it returned null.');
+  }
+
+  const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
+  for (const item of items) {
+    if (!item || !item.products || !item.products.items) {
+      throw Error('The API fetched products but it returned null.');
+    }
+  }
+  // JST時刻のdateオブジェクト生成
+  const now = generateJSTDate();
+  const nowYear = now.getFullYear();
+  const nowMonth = now.getMonth() + 1;
+  // 顧客ユーザ、業務ユーザ共通で次回発送予定年月をレスポンスに追加
+  const nextDeliveryDateItems = items.map((item) => {
+    // 次回発送予定年月を計算した値
+    const nextDeliveryYearMonth = generateNextDeliveryYearMonth(
+      item.deliveryStartYear,
+      item.deliveryStartMonth,
+      item.deliveryInterval,
+      nowYear,
+      nowMonth,
+    );
+    // 次回配送予定年月をセット
+    return {
+      ...item,
+      nextDeliveryYear: nextDeliveryYearMonth.nextDeliveryYear,
+      nextDeliveryMonth: nextDeliveryYearMonth.nextDeliveryMonth,
+    };
+  });
+
+  // 業務ユーザのリスト取得
+  const responseItems = isOperator
+    ? nextDeliveryDateItems // 当月のみのリストに絞り込み。配送予定月が現在年月であればAPIレスポンスとして返却
+        .filter((item) => item.nextDeliveryYear === nowYear && item.nextDeliveryMonth === nowMonth)
+    : nextDeliveryDateItems;
+
+  console.log('responseItems', responseItems);
+
+  return responseItems;
+
+  // ExceptionをそのままAPI responseとして返却する為 try-catch しない
+  // } catch (err) {
+  //   const error: Error = parseResponseError(err);
+  //   console.error('list subscription order error:', error);
+  //   return error.message;
+  // }
 };
 
 // JST時刻のdateオブジェクト生成
@@ -141,20 +146,4 @@ const generateJSTDate = (): Date => {
   // getTimeはミリ秒なので60x1000
   now.setTime(now.getTime() + offset * 60 * 1000);
   return now;
-};
-
-const parseResponseError = (error: any): Error => {
-  if (!error) return Error('A error is undefined.');
-
-  const errorResult = error as Error;
-  if (errorResult.message) {
-    return Error(errorResult.message);
-  }
-
-  const graphqlResult = error as GraphQLError;
-  if (graphqlResult.message) {
-    return Error(graphqlResult.message);
-  }
-
-  return Error('A error type is unknown.');
 };

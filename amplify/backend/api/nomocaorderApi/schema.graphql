@@ -224,8 +224,7 @@ type Query {
     @auth(rules: [{ allow: private, provider: userPools }])
 
   sendOrderMail(
-    toAddress: String!
-    bccAddress: String
+    toAddresses: [String!]!
     sendMailType: SendMailType!
     products: [String!]!
     subtotal: Int!

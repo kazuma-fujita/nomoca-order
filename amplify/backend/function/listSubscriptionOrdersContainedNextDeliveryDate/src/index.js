@@ -57,57 +57,58 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
         },
         disableOffline: true,
     });
-    try {
-        const filter = { owner: { contains: username } };
-        const baseVariables = {
-            type: API_1.Type.subscriptionOrder,
-            sortDirection: API_1.ModelSortDirection.DESC,
-        };
-        // 顧客ユーザのリスト取得はowner fieldでfilter
-        const variables = !isOperator
-            ? Object.assign(Object.assign({}, baseVariables), { filter: filter }) : baseVariables;
-        const result = (yield graphqlClient.query({
-            query: (0, graphql_tag_1.gql)(queries_1.listSubscriptionOrdersSortedByCreatedAt),
-            variables: variables,
-        }));
-        if (result.errors) {
-            throw result.errors;
-        }
-        if (!result.data ||
-            !result.data.listSubscriptionOrdersSortedByCreatedAt ||
-            !result.data.listSubscriptionOrdersSortedByCreatedAt.items) {
-            throw Error('The API fetched data but it returned null.');
-        }
-        const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items;
-        for (const item of items) {
-            if (!item || !item.products || !item.products.items) {
-                throw Error('The API fetched products but it returned null.');
-            }
-        }
-        // JST時刻のdateオブジェクト生成
-        const now = generateJSTDate();
-        const nowYear = now.getFullYear();
-        const nowMonth = now.getMonth() + 1;
-        // 顧客ユーザ、業務ユーザ共通で次回発送予定年月をレスポンスに追加
-        const nextDeliveryDateItems = items.map((item) => {
-            // 次回発送予定年月を計算した値
-            const nextDeliveryYearMonth = (0, generate_next_delivery_year_month_1.generateNextDeliveryYearMonth)(item.deliveryStartYear, item.deliveryStartMonth, item.deliveryInterval, nowYear, nowMonth);
-            // 次回配送予定年月をセット
-            return Object.assign(Object.assign({}, item), { nextDeliveryYear: nextDeliveryYearMonth.nextDeliveryYear, nextDeliveryMonth: nextDeliveryYearMonth.nextDeliveryMonth });
-        });
-        // 業務ユーザのリスト取得
-        const responseItems = isOperator
-            ? nextDeliveryDateItems // 当月のみのリストに絞り込み。配送予定月が現在年月であればAPIレスポンスとして返却
-                .filter((item) => item.nextDeliveryYear === nowYear && item.nextDeliveryMonth === nowMonth)
-            : nextDeliveryDateItems;
-        console.log('responseItems', responseItems);
-        return responseItems;
+    // ExceptionをそのままAPI responseとして返却する為 try-catch しない
+    // try {
+    const filter = { owner: { contains: username } };
+    const baseVariables = {
+        type: API_1.Type.subscriptionOrder,
+        sortDirection: API_1.ModelSortDirection.DESC,
+    };
+    // 顧客ユーザのリスト取得はowner fieldでfilter
+    const variables = !isOperator
+        ? Object.assign(Object.assign({}, baseVariables), { filter: filter }) : baseVariables;
+    const result = (yield graphqlClient.query({
+        query: (0, graphql_tag_1.gql)(queries_1.listSubscriptionOrdersSortedByCreatedAt),
+        variables: variables,
+    }));
+    if (result.errors) {
+        throw result.errors;
     }
-    catch (err) {
-        const error = parseResponseError(err);
-        console.error('list subscription order error:', error);
-        return error.message;
+    if (!result.data ||
+        !result.data.listSubscriptionOrdersSortedByCreatedAt ||
+        !result.data.listSubscriptionOrdersSortedByCreatedAt.items) {
+        throw Error('The API fetched data but it returned null.');
     }
+    const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items;
+    for (const item of items) {
+        if (!item || !item.products || !item.products.items) {
+            throw Error('The API fetched products but it returned null.');
+        }
+    }
+    // JST時刻のdateオブジェクト生成
+    const now = generateJSTDate();
+    const nowYear = now.getFullYear();
+    const nowMonth = now.getMonth() + 1;
+    // 顧客ユーザ、業務ユーザ共通で次回発送予定年月をレスポンスに追加
+    const nextDeliveryDateItems = items.map((item) => {
+        // 次回発送予定年月を計算した値
+        const nextDeliveryYearMonth = (0, generate_next_delivery_year_month_1.generateNextDeliveryYearMonth)(item.deliveryStartYear, item.deliveryStartMonth, item.deliveryInterval, nowYear, nowMonth);
+        // 次回配送予定年月をセット
+        return Object.assign(Object.assign({}, item), { nextDeliveryYear: nextDeliveryYearMonth.nextDeliveryYear, nextDeliveryMonth: nextDeliveryYearMonth.nextDeliveryMonth });
+    });
+    // 業務ユーザのリスト取得
+    const responseItems = isOperator
+        ? nextDeliveryDateItems // 当月のみのリストに絞り込み。配送予定月が現在年月であればAPIレスポンスとして返却
+            .filter((item) => item.nextDeliveryYear === nowYear && item.nextDeliveryMonth === nowMonth)
+        : nextDeliveryDateItems;
+    console.log('responseItems', responseItems);
+    return responseItems;
+    // ExceptionをそのままAPI responseとして返却する為 try-catch しない
+    // } catch (err) {
+    //   const error: Error = parseResponseError(err);
+    //   console.error('list subscription order error:', error);
+    //   return error.message;
+    // }
 });
 exports.handler = handler;
 // JST時刻のdateオブジェクト生成
@@ -121,17 +122,4 @@ const generateJSTDate = () => {
     // getTimeはミリ秒なので60x1000
     now.setTime(now.getTime() + offset * 60 * 1000);
     return now;
-};
-const parseResponseError = (error) => {
-    if (!error)
-        return Error('A error is undefined.');
-    const errorResult = error;
-    if (errorResult.message) {
-        return Error(errorResult.message);
-    }
-    const graphqlResult = error;
-    if (graphqlResult.message) {
-        return Error(graphqlResult.message);
-    }
-    return Error('A error type is unknown.');
 };

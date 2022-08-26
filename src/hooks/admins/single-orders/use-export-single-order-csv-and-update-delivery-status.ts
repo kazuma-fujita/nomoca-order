@@ -28,82 +28,87 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
 
   const exportSingleOrderCSVAndUpdateDeliveryStatus = async (orders: ExtendedOrder<Order>[]) => {
     setIsLoading(true);
-    try {
-      if (!now) {
-        throw Error('A current date is not found.');
-      }
 
-      if (orders.length === 0) {
-        throw Error('注文を選択してください');
-      }
+    // エラーは全てPromise.allSettledでハンドリングする為、try-catchしない
+    // try {
 
-      // 未発送ステータスのorderのみステータス変更、CSV出力、メール送信実行。発送済、注文キャンセルステータスは除外
-      const filteredOrders = orders.filter((order) => order.deliveryStatus === DeliveryStatus.ordered);
-
-      const orderTotal = filteredOrders.length;
-      if (orderTotal === 0) {
-        throw Error('未発送の注文を選択してください');
-      }
-
-      // 配送状況更新処理実行。内部的にPromise.allSettledでメール送信処理を同時並列実行
-      const { updatedStatusSuccesses, updatedStatusFails } = await updateDeliveryStatus(filteredOrders, now);
-
-      // 配送状況更新成功したデータのみCSV出力
-      await exportCSV(updatedStatusSuccesses);
-
-      // 配送状況更新成功データのみメール送信。Promise.allSettledでメール送信処理を同時並列実行
-      const { sendMailSuccesses, sendMailFails } = await sendDeliverySingleOrderMail(updatedStatusSuccesses);
-
-      // 配送状況更新成功フラグ
-      const isSucceedUpdatedDeliveryStatus = updatedStatusFails.length === 0;
-      // 運用通知メール件名
-      const notificationMailSubject = isSucceedUpdatedDeliveryStatus
-        ? '選択した注文のCSVを出力しました'
-        : '選択した注文の中でCSV出力に失敗した注文があります。システム管理者に問い合わせてください。';
-
-      // 配送状況更新成功総件数
-      const updatedDeliveryStatusTotal = updatedStatusSuccesses.length;
-      // 配信状況更新メール本文
-      const createUpdateStatusBody = () => {
-        const updatedStatusSuccessClinicNames = updatedStatusSuccesses.map((order) => order.clinic.name).join('\n');
-        const updatedSuccessCountBody = `CSV出力成功件数:${updatedStatusSuccesses.length}/${orderTotal}`;
-        const updatedFailedCountBody = `CSV出力失敗件数:${updatedStatusFails.length}/${orderTotal}`;
-        // 配送状況更新成功件数メッセージ
-        const updatedSuccessBody = `${updatedStatusSuccessClinicNames}\n${updatedSuccessCountBody}`;
-        // 配送状況更新失敗メッセージ
-        const updatedFailedBody = `エラー:\n${updatedStatusFails.join('\n')}\n${updatedFailedCountBody}`;
-        // 配送状況更新が失敗していればエラーメッセージを出力
-        return isSucceedUpdatedDeliveryStatus ? updatedSuccessBody : `${updatedSuccessBody}\n${updatedFailedBody}`;
-      };
-      // 発送メール送信結果メール本文
-      const sendMailResultBody = createSendMailResultBody(sendMailSuccesses, sendMailFails, updatedDeliveryStatusTotal);
-      // 運用メール本文
-      const notificationMailBody = `${createUpdateStatusBody()}\n\n\n${sendMailResultBody}`;
-      // 注文状況更新、メール送信結果を運用メール通知
-      await sendOperationMail({
-        subject: notificationMailSubject,
-        body: notificationMailBody,
-      });
-
-      // ダイアログにCSV出力成功 or 失敗メッセージ表示
-      const resultMessage = `${notificationMailSubject}\n\n${notificationMailBody}`;
-      if (isSucceedUpdatedDeliveryStatus) {
-        setSuccessMessage(resultMessage);
-        setError(null);
-      } else {
-        setSuccessMessage(null);
-        setError(Error(resultMessage));
-      }
-
-      // 注文状況変更反映の為、注文一覧データ再取得・更新
-      // swrKeyはuseFetchOrderListで一覧検索条件もkeyとして保持している
-      mutate(swrKey);
-    } catch (error) {
-      setIsLoading(false);
-      const parsedError = parseResponseError(error);
-      setError(parsedError);
-      throw parsedError;
+    if (!now) {
+      throw Error('A current date is not found.');
     }
+
+    if (orders.length === 0) {
+      throw Error('注文を選択してください');
+    }
+
+    // 未発送ステータスのorderのみステータス変更、CSV出力、メール送信実行。発送済、注文キャンセルステータスは除外
+    const filteredOrders = orders.filter((order) => order.deliveryStatus === DeliveryStatus.ordered);
+
+    const orderTotal = filteredOrders.length;
+    if (orderTotal === 0) {
+      throw Error('未発送の注文を選択してください');
+    }
+
+    // 配送状況更新処理実行。内部的にPromise.allSettledでメール送信処理を同時並列実行
+    const { updatedStatusSuccesses, updatedStatusFails } = await updateDeliveryStatus(filteredOrders, now);
+
+    // 配送状況更新成功したデータのみCSV出力
+    await exportCSV(updatedStatusSuccesses);
+
+    // 配送状況更新成功データのみメール送信。Promise.allSettledでメール送信処理を同時並列実行
+    const { sendMailSuccesses, sendMailFails } = await sendDeliverySingleOrderMail(updatedStatusSuccesses);
+
+    // 配送状況更新成功フラグ
+    const isSucceedUpdatedDeliveryStatus = updatedStatusFails.length === 0;
+    // 運用通知メール件名
+    const notificationMailSubject = isSucceedUpdatedDeliveryStatus
+      ? '選択した注文のCSVを出力しました'
+      : '選択した注文の中でCSV出力に失敗した注文があります。システム管理者に問い合わせてください。';
+
+    // 配送状況更新成功総件数
+    const updatedDeliveryStatusTotal = updatedStatusSuccesses.length;
+    // 配信状況更新メール本文
+    const createUpdateStatusBody = () => {
+      const updatedStatusSuccessClinicNames = updatedStatusSuccesses.map((order) => order.clinic.name).join('\n');
+      const updatedSuccessCountBody = `CSV出力成功件数:${updatedStatusSuccesses.length}/${orderTotal}`;
+      const updatedFailedCountBody = `CSV出力失敗件数:${updatedStatusFails.length}/${orderTotal}`;
+      // 配送状況更新成功件数メッセージ
+      const updatedSuccessBody = `${updatedStatusSuccessClinicNames}\n${updatedSuccessCountBody}`;
+      // 配送状況更新失敗メッセージ
+      const updatedFailedBody = `エラー:\n${updatedStatusFails.join('\n')}\n${updatedFailedCountBody}`;
+      // 配送状況更新が失敗していればエラーメッセージを出力
+      return isSucceedUpdatedDeliveryStatus ? updatedSuccessBody : `${updatedSuccessBody}\n${updatedFailedBody}`;
+    };
+    // 発送メール送信結果メール本文
+    const sendMailResultBody = createSendMailResultBody(sendMailSuccesses, sendMailFails, updatedDeliveryStatusTotal);
+    // 運用メール本文
+    const notificationMailBody = `${createUpdateStatusBody()}\n\n\n${sendMailResultBody}`;
+    // 注文状況更新、メール送信結果を運用メール通知
+    await sendOperationMail({
+      subject: notificationMailSubject,
+      body: notificationMailBody,
+    });
+
+    // ダイアログにCSV出力成功 or 失敗メッセージ表示
+    const resultMessage = `${notificationMailSubject}\n\n${notificationMailBody}`;
+    if (isSucceedUpdatedDeliveryStatus) {
+      setSuccessMessage(resultMessage);
+      setError(null);
+    } else {
+      setSuccessMessage(null);
+      setError(Error(resultMessage));
+    }
+
+    // 注文状況変更反映の為、注文一覧データ再取得・更新
+    // swrKeyはuseFetchOrderListで一覧検索条件もkeyとして保持している
+    mutate(swrKey);
+
+    // エラーは全てPromise.allSettledでハンドリングする為、try-catchしない
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   const parsedError = parseResponseError(error);
+    //   setError(parsedError);
+    //   throw parsedError;
+    // }
   };
 
   const resetState = useCallback(() => {

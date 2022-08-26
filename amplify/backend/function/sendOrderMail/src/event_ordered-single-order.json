@@ -1,6 +1,6 @@
 {
   "arguments": {
-    "toAddress": "kazuma.fujita@genova.co.jp",
+    "toAddresses": ["kazuma.fujita@genova.co.jp", "kazuma.fujita.zuma@gmail.com"],
     "sendMailType": "orderedSingleOrder",
     "products": ["高保存ロール紙 100m(卓上プリンタ/KIOSK筐体用) 1個 19,800円"],
     "subtotal": 19800,

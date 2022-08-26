@@ -888,8 +888,7 @@ export const getCurrentDate = /* GraphQL */ `
 `;
 export const sendOrderMail = /* GraphQL */ `
   query SendOrderMail(
-    $toAddress: String!
-    $bccAddress: String
+    $toAddresses: [String!]!
     $sendMailType: SendMailType!
     $products: [String!]!
     $subtotal: Int!
@@ -909,8 +908,7 @@ export const sendOrderMail = /* GraphQL */ `
     $deliveryInterval: Int
   ) {
     sendOrderMail(
-      toAddress: $toAddress
-      bccAddress: $bccAddress
+      toAddresses: $toAddresses
       sendMailType: $sendMailType
       products: $products
       subtotal: $subtotal

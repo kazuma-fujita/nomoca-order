@@ -9,38 +9,33 @@ exports.handler = async (event) => {
 
   const defaultCharset = 'UTF-8';
   const fromAddress = 'Nomoca Order <no-reply@nomoca-order.com>';
-  try {
-    // 送信するEmailのparamsを設定
-    const params = {
-      Destination: {
-        ToAddresses: [toAddress],
+  // 送信するEmailのparamsを設定
+  const params = {
+    Destination: {
+      ToAddresses: [toAddress],
+    },
+    Message: {
+      Subject: {
+        Charset: defaultCharset,
+        Data: subject,
       },
-      Message: {
-        Subject: {
+      Body: {
+        Text: {
           Charset: defaultCharset,
-          Data: subject,
-        },
-        Body: {
-          Text: {
-            Charset: defaultCharset,
-            Data: body,
-          },
+          Data: body,
         },
       },
-      Source: fromAddress, // From・必須
-    };
+    },
+    Source: fromAddress, // From・必須
+  };
 
-    // リージョンを設定
-    AWS.config.update({ region: 'us-east-1' });
-    // 送信処理
-    const ses = new AWS.SES();
-    await ses.sendEmail(params).promise();
-    console.log('Success to Send an Email');
-    return;
-  } catch (e) {
-    console.log(`Failed to Send an Email: ${e}`);
-    return e;
-  }
+  // リージョンを設定
+  AWS.config.update({ region: 'us-east-1' });
+  // 送信処理
+  const ses = new AWS.SES();
+  await ses.sendEmail(params).promise();
+  console.log('Success to Send an Email');
+  return;
 
   // return {
   //   statusCode: 200,

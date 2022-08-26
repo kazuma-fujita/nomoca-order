@@ -58,9 +58,9 @@ export const getOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
-          owner
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -96,8 +96,8 @@ export const getOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      owner
       updatedAt
+      owner
     }
   }
 `;
@@ -119,9 +119,9 @@ export const listOrders = /* GraphQL */ `
             quantity
             viewOrder
             isExportCSV
-            owner
             createdAt
             updatedAt
+            owner
           }
           nextToken
         }
@@ -157,8 +157,8 @@ export const listOrders = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        owner
         updatedAt
+        owner
       }
       nextToken
     }
@@ -192,9 +192,9 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
             quantity
             viewOrder
             isExportCSV
-            owner
             createdAt
             updatedAt
+            owner
           }
           nextToken
         }
@@ -230,8 +230,8 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        owner
         updatedAt
+        owner
       }
       nextToken
     }
@@ -889,8 +889,7 @@ export const getCurrentDate = /* GraphQL */ `
 `;
 export const sendOrderMail = /* GraphQL */ `
   query SendOrderMail(
-    $toAddress: String!
-    $bccAddress: String
+    $toAddresses: [String!]!
     $sendMailType: SendMailType!
     $products: [String!]!
     $subtotal: Int!
@@ -910,8 +909,7 @@ export const sendOrderMail = /* GraphQL */ `
     $deliveryInterval: Int
   ) {
     sendOrderMail(
-      toAddress: $toAddress
-      bccAddress: $bccAddress
+      toAddresses: $toAddresses
       sendMailType: $sendMailType
       products: $products
       subtotal: $subtotal

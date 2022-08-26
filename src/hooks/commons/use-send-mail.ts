@@ -20,8 +20,8 @@ import {
 } from 'functions/filter-promise-settled-results';
 
 // .envからBCC mailAddress取得
-const mailBccAddress = process.env.NEXT_PUBLIC_MAIL_BCC_ADDRESS as string;
-
+// const mailBccAddress = process.env.NEXT_PUBLIC_MAIL_BCC_ADDRESS as string;
+const toOperationAddress = process.env.NEXT_PUBLIC_OPERATION_MAIL_TO_ADDRESS as string;
 // 名前付き引数
 type Options = {
   sendMailType: SendMailType;
@@ -54,8 +54,8 @@ export const useSendMail = () => {
 
     // requestパラメータ設定
     const sendMailVariables: SendOrderMailQueryVariables = {
-      toAddress: clinic.mailAddress,
-      bccAddress: mailBccAddress,
+      toAddresses: [clinic.mailAddress, toOperationAddress],
+      // bccAddress: mailBccAddress,
       sendMailType: sendMailType,
       products: products.map(
         (product) =>
