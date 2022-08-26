@@ -33,6 +33,7 @@ exports.handler = async (event) => {
   AWS.config.update({ region: 'us-east-1' });
   // 送信処理
   const ses = new AWS.SES();
+  // sendEmail実行時に発生したExceptionはそのままAPIのResponseとして返却する為、try - catchしない
   await ses.sendEmail(params).promise();
   console.log('Success to Send an Email');
   return;

@@ -146,6 +146,7 @@ export const useExportOrderCSV = () => {
           .filter((product: NormalizedProduct) => product.isExportCSV)
           .map((product: NormalizedProduct) => createRecord(order, product, now)),
       );
+
       // CSVヘッダーと1次元配列化されたobject配列を結合後、object配列の値のみをObject.valuesで抜き出し配列化。
       // 次にjoinでカンマ区切りのCSV行として文字列へ変換しmapで配列化。
       // 最後にjoinで文字列配列をwindows改行コード区切りにし文字列化。
@@ -163,6 +164,7 @@ export const useExportOrderCSV = () => {
 
       setIsLoading(false);
       setError(null);
+      return records;
     } catch (error) {
       setIsLoading(false);
       const parsedError = parseResponseError(error);

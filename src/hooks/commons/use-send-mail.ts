@@ -55,7 +55,6 @@ export const useSendMail = () => {
     // requestパラメータ設定
     const sendMailVariables: SendOrderMailQueryVariables = {
       toAddresses: [clinic.mailAddress, toOperationAddress],
-      // bccAddress: mailBccAddress,
       sendMailType: sendMailType,
       products: products.map(
         (product) =>

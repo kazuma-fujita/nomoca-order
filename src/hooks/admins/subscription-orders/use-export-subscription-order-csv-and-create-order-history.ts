@@ -49,14 +49,16 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
     // try {
 
     if (!now) {
-      throw Error('A current date is not found.');
+      setError(Error('A current date is not found.'));
+      return;
     }
     // 定期便注文リストから当月未配送の定期便注文をフィルタリング
     const nonShippedOrders = filterNonShippingSubscriptionOrderThisMonth(orders, now);
 
     const orderTotal = nonShippedOrders.length;
     if (orderTotal === 0) {
-      throw Error('当月配送予定の定期便がありません');
+      setError(Error('当月配送予定の定期便がありません'));
+      return;
     }
 
     // 定期便履歴データ作成処理。内部的にPromise.allSettledでメール送信処理を同時並列実行
@@ -74,7 +76,11 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
     const { sendMailSuccesses, sendMailFails } = await sendDeliverySubscriptionOrderMail(updatedDeliveredAtSuccesses);
 
     // lastDeliveredAt更新成功データのみCSV出力
-    await exportCSV(updatedDeliveredAtSuccesses);
+    const records = await exportCSV(updatedDeliveredAtSuccesses);
+    if (!records) {
+      setError(Error('CSV出力に失敗しました'));
+      return;
+    }
 
     // lastDeliveredAt更新総件数
     const updatedDeliveredAtSuccessTotal = updatedDeliveredAtSuccesses.length;
@@ -87,10 +93,12 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
 
     // lastDeliveredAt更新メール本文
     const createUpdatedDeliveredAtBody = () => {
-      const updatedSuccessClinicNames = updatedDeliveredAtSuccesses.map((order) => order.clinic.name).join('\n');
-      const updatedSuccessCountBody = `CSV出力成功件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
-      const updatedFailedCountBody = `CSV出力失敗件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
-      const updatedSuccessBody = `${updatedSuccessClinicNames}\n${updatedSuccessCountBody}`;
+      // recordsは出力したcsvデータを保持。医院名+商品名を取得
+      const outputCSVProducts = records.map((r) => `${r.toCompanyName} ${r.productName}`).join('\n');
+      const outputCSVCount = `CSV出力件数:${records.length}件`;
+      const updatedSuccessCountBody = `発送日時更新成功件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
+      const updatedFailedCountBody = `発送日時更新失敗件数:${updatedDeliveredAtFails.length}/${orderTotal}`;
+      const updatedSuccessBody = `${outputCSVProducts}\n${outputCSVCount}\n\n${updatedSuccessCountBody}`;
       const updatedFailedBody = `エラー:\n${updatedDeliveredAtFails.join('\n')}\n${updatedFailedCountBody}`;
       return isUpdatedDeliveredSuccess ? updatedSuccessBody : `${updatedSuccessBody}\n${updatedFailedBody}`;
     };

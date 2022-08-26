@@ -45,14 +45,19 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
 
     const orderTotal = filteredOrders.length;
     if (orderTotal === 0) {
-      throw Error('未発送の注文を選択してください');
+      setError(Error('未発送の注文を選択してください'));
+      return;
     }
 
     // 配送状況更新処理実行。内部的にPromise.allSettledでメール送信処理を同時並列実行
     const { updatedStatusSuccesses, updatedStatusFails } = await updateDeliveryStatus(filteredOrders, now);
 
     // 配送状況更新成功したデータのみCSV出力
-    await exportCSV(updatedStatusSuccesses);
+    const records = await exportCSV(updatedStatusSuccesses);
+    if (!records) {
+      setError(Error('CSV出力に失敗しました'));
+      return;
+    }
 
     // 配送状況更新成功データのみメール送信。Promise.allSettledでメール送信処理を同時並列実行
     const { sendMailSuccesses, sendMailFails } = await sendDeliverySingleOrderMail(updatedStatusSuccesses);
@@ -68,11 +73,13 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
     const updatedDeliveryStatusTotal = updatedStatusSuccesses.length;
     // 配信状況更新メール本文
     const createUpdateStatusBody = () => {
-      const updatedStatusSuccessClinicNames = updatedStatusSuccesses.map((order) => order.clinic.name).join('\n');
-      const updatedSuccessCountBody = `CSV出力成功件数:${updatedStatusSuccesses.length}/${orderTotal}`;
-      const updatedFailedCountBody = `CSV出力失敗件数:${updatedStatusFails.length}/${orderTotal}`;
+      // recordsは出力したcsvデータを保持。医院名+商品名を取得
+      const outputCSVProducts = records.map((r) => `${r.toCompanyName} ${r.productName}`).join('\n');
+      const outputCSVCount = `CSV出力件数:${records.length}件`;
+      const updatedSuccessCountBody = `配送状況更新成功件数:${updatedStatusSuccesses.length}/${orderTotal}`;
+      const updatedFailedCountBody = `配送状況更新失敗件数:${updatedStatusFails.length}/${orderTotal}`;
       // 配送状況更新成功件数メッセージ
-      const updatedSuccessBody = `${updatedStatusSuccessClinicNames}\n${updatedSuccessCountBody}`;
+      const updatedSuccessBody = `${outputCSVProducts}\n${outputCSVCount}\n\n${updatedSuccessCountBody}`;
       // 配送状況更新失敗メッセージ
       const updatedFailedBody = `エラー:\n${updatedStatusFails.join('\n')}\n${updatedFailedCountBody}`;
       // 配送状況更新が失敗していればエラーメッセージを出力

@@ -303,7 +303,8 @@ exports.handler = async (event) => {
   AWS.config.update({ region: 'us-east-1' });
   // sesインスタンス生成
   const ses = new AWS.SES();
-  // toAddresses配列の値ごとにses.sendMailを実行
+  // toAddresses配列の値ごとにses.sendMailを実行。Promise.allを利用し並行処理で実行
+  // sendEmail実行時に発生したExceptionはそのままAPIのResponseとして返却する為、try - catchしない
   await Promise.all(
     toAddresses.map(async (toAddress) => {
       // toAddressをparamsに追加
@@ -314,7 +315,6 @@ exports.handler = async (event) => {
         },
       };
       console.table(requestParams);
-      // 送信処理
       await ses.sendEmail(requestParams).promise();
       console.log('Success to Send an Email');
     }),
