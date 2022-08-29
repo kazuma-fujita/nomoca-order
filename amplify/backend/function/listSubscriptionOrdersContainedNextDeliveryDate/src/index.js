@@ -30,7 +30,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('groups', groups);
     console.log('isOperator', isOperator);
     console.log('username', username);
-    console.log('process.env', process.env);
     let credentials = {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -46,7 +45,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
             sessionToken: 'fake',
         };
     }
-    console.log('Credentials:', credentials);
     // AppSync接続クライアント生成。mock起動時、GRAPHQLAPIENDPOINはローカルURLに向く
     const graphqlClient = new aws_appsync_1.default({
         url: process.env.API_NOMOCAORDERAPI_GRAPHQLAPIENDPOINTOUTPUT,

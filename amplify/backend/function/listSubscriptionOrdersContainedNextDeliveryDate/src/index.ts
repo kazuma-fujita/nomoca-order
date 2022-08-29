@@ -25,7 +25,6 @@ export const handler = async (event: any) => {
   console.log('groups', groups);
   console.log('isOperator', isOperator);
   console.log('username', username);
-  console.log('process.env', process.env);
 
   let credentials = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
@@ -43,8 +42,6 @@ export const handler = async (event: any) => {
       sessionToken: 'fake',
     };
   }
-
-  console.log('Credentials:', credentials);
 
   // AppSync接続クライアント生成。mock起動時、GRAPHQLAPIENDPOINはローカルURLに向く
   const graphqlClient = new AWSAppSyncClient({
