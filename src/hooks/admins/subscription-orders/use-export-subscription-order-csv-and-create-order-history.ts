@@ -76,11 +76,7 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
     const { sendMailSuccesses, sendMailFails } = await sendDeliverySubscriptionOrderMail(updatedDeliveredAtSuccesses);
 
     // lastDeliveredAt更新成功データのみCSV出力
-    const records = await exportCSV(updatedDeliveredAtSuccesses);
-    if (!records) {
-      setError(Error('CSV出力に失敗しました'));
-      return;
-    }
+    const outputCSVCountMessage = await exportCSV(updatedDeliveredAtSuccesses);
 
     // lastDeliveredAt更新総件数
     const updatedDeliveredAtSuccessTotal = updatedDeliveredAtSuccesses.length;
@@ -93,12 +89,9 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
 
     // lastDeliveredAt更新メール本文
     const createUpdatedDeliveredAtBody = () => {
-      // recordsは出力したcsvデータを保持。医院名+商品名を取得
-      const outputCSVProducts = records.map((r) => `${r.toCompanyName} ${r.productName}`).join('\n');
-      const outputCSVCount = `CSV出力件数:${records.length}件`;
       const updatedSuccessCountBody = `発送日時更新成功件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
       const updatedFailedCountBody = `発送日時更新失敗件数:${updatedDeliveredAtFails.length}/${orderTotal}`;
-      const updatedSuccessBody = `${outputCSVProducts}\n${outputCSVCount}\n\n${updatedSuccessCountBody}`;
+      const updatedSuccessBody = `${outputCSVCountMessage}\n\n${updatedSuccessCountBody}`;
       const updatedFailedBody = `エラー:\n${updatedDeliveredAtFails.join('\n')}\n${updatedFailedCountBody}`;
       return isUpdatedDeliveredSuccess ? updatedSuccessBody : `${updatedSuccessBody}\n${updatedFailedBody}`;
     };

@@ -53,11 +53,7 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
     const { updatedStatusSuccesses, updatedStatusFails } = await updateDeliveryStatus(filteredOrders, now);
 
     // 配送状況更新成功したデータのみCSV出力
-    const records = await exportCSV(updatedStatusSuccesses);
-    if (!records) {
-      setError(Error('CSV出力に失敗しました'));
-      return;
-    }
+    const outputCSVCountMessage = await exportCSV(updatedStatusSuccesses);
 
     // 配送状況更新成功データのみメール送信。Promise.allSettledでメール送信処理を同時並列実行
     const { sendMailSuccesses, sendMailFails } = await sendDeliverySingleOrderMail(updatedStatusSuccesses);
@@ -73,13 +69,10 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
     const updatedDeliveryStatusTotal = updatedStatusSuccesses.length;
     // 配信状況更新メール本文
     const createUpdateStatusBody = () => {
-      // recordsは出力したcsvデータを保持。医院名+商品名を取得
-      const outputCSVProducts = records.map((r) => `${r.toCompanyName} ${r.productName}`).join('\n');
-      const outputCSVCount = `CSV出力件数:${records.length}件`;
       const updatedSuccessCountBody = `配送状況更新成功件数:${updatedStatusSuccesses.length}/${orderTotal}`;
       const updatedFailedCountBody = `配送状況更新失敗件数:${updatedStatusFails.length}/${orderTotal}`;
       // 配送状況更新成功件数メッセージ
-      const updatedSuccessBody = `${outputCSVProducts}\n${outputCSVCount}\n\n${updatedSuccessCountBody}`;
+      const updatedSuccessBody = `${outputCSVCountMessage}\n\n${updatedSuccessCountBody}`;
       // 配送状況更新失敗メッセージ
       const updatedFailedBody = `エラー:\n${updatedStatusFails.join('\n')}\n${updatedFailedCountBody}`;
       // 配送状況更新が失敗していればエラーメッセージを出力

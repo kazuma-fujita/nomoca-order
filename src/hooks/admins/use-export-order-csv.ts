@@ -164,7 +164,21 @@ export const useExportOrderCSV = () => {
 
       setIsLoading(false);
       setError(null);
-      return records;
+
+      // recordsは出力したcsvデータを保持。医院名+商品名を取得
+      const outputCSVProducts = records.map((r) => `${r.toCompanyName} ${r.productName}`).join('\n');
+      const outputCSVCount = `CSV出力件数:${records.length}件`;
+      const nonOutputCSVProducts = orders.flatMap((order: ExtendedOrder<SubscriptionOrder | Order>) =>
+        order.normalizedProducts
+          .filter((product: NormalizedProduct) => !product.isExportCSV)
+          .map((product: NormalizedProduct) => `${order.clinic.name} ${product.name}`),
+      );
+      // 商品管理画面でCSV出力無効商品一覧メッセージを出力
+      const nonOutputCSVProductsMessage =
+        nonOutputCSVProducts.length > 0 ? `CSV出力設定無効商品が含まれています\n${nonOutputCSVProducts}` : '';
+      // CSV出力結果メッセージ
+      const outputCSVCountMessage = `${outputCSVProducts}\n${outputCSVCount}\n\n${nonOutputCSVProductsMessage}`;
+      return outputCSVCountMessage;
     } catch (error) {
       setIsLoading(false);
       const parsedError = parseResponseError(error);
