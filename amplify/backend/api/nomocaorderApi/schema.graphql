@@ -112,10 +112,11 @@ type SubscriptionOrderProduct
     ]
   ) {
   id: ID!
-  subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["productID"])
+  subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["viewOrder"])
   productID: ID!
   product: Product! @hasOne(fields: ["productID"]) # 商品マスターの内容変更に対応する為、N:Nモデル
   quantity: Int!
+  viewOrder: Int!
 }
 
 # 定期便発送履歴 CSV出力時に履歴として作成され、更新されることは無い

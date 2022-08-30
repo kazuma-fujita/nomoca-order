@@ -13,6 +13,7 @@ const productRelation: SubscriptionOrderProduct = {
   quantity: 1,
   createdAt: '2021-11-25T14:32:55Z',
   updatedAt: '2021-11-25T14:32:55Z',
+  viewOrder: 1,
 };
 
 const products: ModelSubscriptionOrderProductConnection = {

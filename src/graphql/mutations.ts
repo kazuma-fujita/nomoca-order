@@ -324,6 +324,7 @@ export const createSubscriptionOrder = /* GraphQL */ `
             updatedAt
           }
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -395,6 +396,7 @@ export const updateSubscriptionOrder = /* GraphQL */ `
             updatedAt
           }
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -466,6 +468,7 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
             updatedAt
           }
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -534,6 +537,7 @@ export const createSubscriptionOrderProduct = /* GraphQL */ `
         updatedAt
       }
       quantity
+      viewOrder
       createdAt
       updatedAt
       owner
@@ -562,6 +566,7 @@ export const updateSubscriptionOrderProduct = /* GraphQL */ `
         updatedAt
       }
       quantity
+      viewOrder
       createdAt
       updatedAt
       owner
@@ -590,6 +595,7 @@ export const deleteSubscriptionOrderProduct = /* GraphQL */ `
         updatedAt
       }
       quantity
+      viewOrder
       createdAt
       updatedAt
       owner

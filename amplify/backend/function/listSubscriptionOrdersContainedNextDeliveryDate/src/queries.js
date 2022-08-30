@@ -261,6 +261,7 @@ exports.getSubscriptionOrder = `
             updatedAt
           }
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -338,6 +339,7 @@ exports.listSubscriptionOrders = `
               updatedAt
             }
             quantity
+            viewOrder
             createdAt
             updatedAt
             owner
@@ -423,6 +425,7 @@ exports.listSubscriptionOrdersSortedByCreatedAt = `
               updatedAt
             }
             quantity
+            viewOrder
             createdAt
             updatedAt
             owner
@@ -836,6 +839,7 @@ exports.listSubscriptionOrdersContainedNextDeliveryDate = `
             updatedAt
           }
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -891,8 +895,7 @@ exports.getCurrentDate = `
 `;
 exports.sendOrderMail = `
   query SendOrderMail(
-    $toAddress: String!
-    $bccAddress: String
+    $toAddresses: [String!]!
     $sendMailType: SendMailType!
     $products: [String!]!
     $subtotal: Int!
@@ -912,8 +915,7 @@ exports.sendOrderMail = `
     $deliveryInterval: Int
   ) {
     sendOrderMail(
-      toAddress: $toAddress
-      bccAddress: $bccAddress
+      toAddresses: $toAddresses
       sendMailType: $sendMailType
       products: $products
       subtotal: $subtotal

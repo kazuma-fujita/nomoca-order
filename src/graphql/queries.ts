@@ -259,6 +259,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
             updatedAt
           }
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
@@ -336,6 +337,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
               updatedAt
             }
             quantity
+            viewOrder
             createdAt
             updatedAt
             owner
@@ -421,6 +423,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
               updatedAt
             }
             quantity
+            viewOrder
             createdAt
             updatedAt
             owner
@@ -834,6 +837,7 @@ export const listSubscriptionOrdersContainedNextDeliveryDate = /* GraphQL */ `
             updatedAt
           }
           quantity
+          viewOrder
           createdAt
           updatedAt
           owner
