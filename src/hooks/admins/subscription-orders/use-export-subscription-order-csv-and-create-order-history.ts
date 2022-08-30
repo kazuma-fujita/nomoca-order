@@ -91,7 +91,7 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
     const createUpdatedDeliveredAtBody = () => {
       const updatedSuccessCountBody = `発送日時更新成功件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
       const updatedFailedCountBody = `発送日時更新失敗件数:${updatedDeliveredAtFails.length}/${orderTotal}`;
-      const updatedSuccessBody = `${outputCSVCountMessage}\n\n${updatedSuccessCountBody}`;
+      const updatedSuccessBody = `${outputCSVCountMessage}\n${updatedSuccessCountBody}`;
       const updatedFailedBody = `エラー:\n${updatedDeliveredAtFails.join('\n')}\n${updatedFailedCountBody}`;
       return isUpdatedDeliveredSuccess ? updatedSuccessBody : `${updatedSuccessBody}\n${updatedFailedBody}`;
     };

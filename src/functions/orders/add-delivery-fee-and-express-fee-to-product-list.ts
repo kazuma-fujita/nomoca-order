@@ -2,6 +2,13 @@ import { DeliveryType } from 'API';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { calcSubtotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 
+export const OrderFeeLabel = {
+  deliveryFee: '配送手数料',
+  expressFee: '速達配送料',
+} as const;
+
+export type OrderFeeLabel = typeof OrderFeeLabel[keyof typeof OrderFeeLabel];
+
 export const addDeliveryFeeAndExpressFeeToProductList = (
   products: NormalizedProduct[],
   deliveryType: DeliveryType,
@@ -33,7 +40,7 @@ const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): Norma
     {
       relationID: 'deliveryFee',
       productID: 'deliveryFee',
-      name: '配送手数料',
+      name: OrderFeeLabel.deliveryFee,
       unitPrice: 1000,
       quantity: 1,
       isExportCSV: false, // 配送手数料はcsvに出力しない
@@ -66,7 +73,7 @@ const addExpressDeliveryObjectToProductList = (
     {
       relationID: 'express',
       productID: 'express',
-      name: '速達配送料',
+      name: OrderFeeLabel.expressFee,
       unitPrice: 1000,
       quantity: 1,
       isExportCSV: false, // 速達料はcsvに出力しない

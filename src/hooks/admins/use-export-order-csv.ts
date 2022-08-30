@@ -9,6 +9,7 @@ import { useNowDate } from 'stores/use-now-date';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { escapeDoubleQuotesForCSV } from 'functions/strings/converters';
+import { OrderFeeLabel } from 'functions/orders/add-delivery-fee-and-express-fee-to-product-list';
 
 const header = {
   id: '"オーダー番号"',
@@ -168,14 +169,22 @@ export const useExportOrderCSV = () => {
       // recordsは出力したcsvデータを保持。医院名+商品名を取得
       const outputCSVProducts = records.map((r) => `${r.toCompanyName} ${r.productName}`).join('\n');
       const outputCSVCount = `CSV出力件数:${records.length}件`;
+      // CSV出力設定の商品では無い、かつ速達配送料、配送手数料ではない商品リスト作成
       const nonOutputCSVProducts = orders.flatMap((order: ExtendedOrder<SubscriptionOrder | Order>) =>
         order.normalizedProducts
-          .filter((product: NormalizedProduct) => !product.isExportCSV)
-          .map((product: NormalizedProduct) => `${order.clinic.name} ${product.name}`),
+          .filter(
+            (product: NormalizedProduct) =>
+              !product.isExportCSV &&
+              product.name !== OrderFeeLabel.deliveryFee &&
+              product.name !== OrderFeeLabel.expressFee,
+          )
+          .map((product: NormalizedProduct) => `${order.clinic.name}  ${product.name}`),
       );
       // 商品管理画面でCSV出力無効商品一覧メッセージを出力
       const nonOutputCSVProductsMessage =
-        nonOutputCSVProducts.length > 0 ? `CSV出力設定無効商品が含まれています\n${nonOutputCSVProducts}` : '';
+        nonOutputCSVProducts.length > 0
+          ? `注文にCSV出力設定無効商品が含まれています。個別に発送してください。\n${nonOutputCSVProducts.join('\n')}`
+          : '';
       // CSV出力結果メッセージ
       const outputCSVCountMessage = `${outputCSVProducts}\n${outputCSVCount}\n\n${nonOutputCSVProductsMessage}`;
       return outputCSVCountMessage;

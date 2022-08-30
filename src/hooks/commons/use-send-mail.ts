@@ -56,10 +56,10 @@ export const useSendMail = () => {
     const sendMailVariables: SendOrderMailQueryVariables = {
       toAddresses: [clinic.mailAddress, toOperationAddress],
       sendMailType: sendMailType,
-      products: products.map(
-        (product) =>
-          `${product.name} ${product.quantity}個 ${(product.unitPrice * product.quantity).toLocaleString()}円`,
-      ),
+      products: products.map((product) => {
+        const total = (product.unitPrice * product.quantity).toLocaleString();
+        return `${product.name}  単価 ${product.unitPrice}円  数量 ${product.quantity}  金額 ${total}円`;
+      }),
       subtotal: subtotal,
       tax: taxes,
       total: total,

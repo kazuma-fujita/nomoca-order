@@ -72,7 +72,7 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
       const updatedSuccessCountBody = `配送状況更新成功件数:${updatedStatusSuccesses.length}/${orderTotal}`;
       const updatedFailedCountBody = `配送状況更新失敗件数:${updatedStatusFails.length}/${orderTotal}`;
       // 配送状況更新成功件数メッセージ
-      const updatedSuccessBody = `${outputCSVCountMessage}\n\n${updatedSuccessCountBody}`;
+      const updatedSuccessBody = `${outputCSVCountMessage}\n${updatedSuccessCountBody}`;
       // 配送状況更新失敗メッセージ
       const updatedFailedBody = `エラー:\n${updatedStatusFails.join('\n')}\n${updatedFailedCountBody}`;
       // 配送状況更新が失敗していればエラーメッセージを出力
