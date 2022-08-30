@@ -78,11 +78,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
         throw Error('The API fetched data but it returned null.');
     }
     const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items;
-    for (const item of items) {
-        if (!item || !item.products || !item.products.items) {
-            throw Error('The API fetched products but it returned null.');
-        }
-    }
     // JST時刻のdateオブジェクト生成
     const now = generateJSTDate();
     const nowYear = now.getFullYear();

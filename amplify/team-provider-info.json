@@ -32,7 +32,7 @@
         },
         "listSubscriptionOrdersContainedNextDeliveryDate": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-7a45314b653937366c45-build.zip"
+          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-737a4756695a76666557-build.zip"
         },
         "sendErrorMail": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",

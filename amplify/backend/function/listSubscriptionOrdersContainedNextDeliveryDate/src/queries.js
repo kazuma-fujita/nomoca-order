@@ -261,7 +261,6 @@ exports.getSubscriptionOrder = `
             updatedAt
           }
           quantity
-          viewOrder
           createdAt
           updatedAt
           owner
@@ -339,7 +338,6 @@ exports.listSubscriptionOrders = `
               updatedAt
             }
             quantity
-            viewOrder
             createdAt
             updatedAt
             owner
@@ -425,7 +423,6 @@ exports.listSubscriptionOrdersSortedByCreatedAt = `
               updatedAt
             }
             quantity
-            viewOrder
             createdAt
             updatedAt
             owner
@@ -839,7 +836,6 @@ exports.listSubscriptionOrdersContainedNextDeliveryDate = `
             updatedAt
           }
           quantity
-          viewOrder
           createdAt
           updatedAt
           owner

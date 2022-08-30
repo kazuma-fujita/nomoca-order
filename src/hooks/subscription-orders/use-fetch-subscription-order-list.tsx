@@ -21,22 +21,45 @@ export type ExtendedOrder<T> = T & {
 };
 
 const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] => {
-  if (!order.products) {
-    throw Error('Subscription order products are null.');
+  if (!order.products || !order.products.items) {
+    throw Error('The API fetched products but it returned null.');
   }
-  return order.products.items.map((orderProduct) => {
-    if (!orderProduct) {
-      throw Error('A subscription order product relation is null.');
-    }
-    return {
-      relationID: orderProduct.id,
-      productID: orderProduct.productID,
-      name: orderProduct.product.name,
-      unitPrice: orderProduct.product.unitPrice,
-      quantity: orderProduct.quantity,
-      isExportCSV: orderProduct.product.isExportCSV,
-    };
-  });
+
+  // viewOrder昇順でsort
+  return order.products.items
+    .sort((a, b) => {
+      if (!a || !b) {
+        throw Error('No view order found to compare.');
+      }
+      return a.product.viewOrder > b.product.viewOrder ? 1 : -1;
+    })
+    .map((orderProduct) => {
+      if (!orderProduct) {
+        throw Error('A subscription order product relation is null.');
+      }
+      return {
+        relationID: orderProduct.id,
+        productID: orderProduct.productID,
+        name: orderProduct.product.name,
+        unitPrice: orderProduct.product.unitPrice,
+        quantity: orderProduct.quantity,
+        isExportCSV: orderProduct.product.isExportCSV,
+      };
+    });
+
+  // return order.products.items.map((orderProduct) => {
+  //   if (!orderProduct) {
+  //     throw Error('A subscription order product relation is null.');
+  //   }
+  //   return {
+  //     relationID: orderProduct.id,
+  //     productID: orderProduct.productID,
+  //     name: orderProduct.product.name,
+  //     unitPrice: orderProduct.product.unitPrice,
+  //     quantity: orderProduct.quantity,
+  //     isExportCSV: orderProduct.product.isExportCSV,
+  //   };
+  // });
 };
 
 const SubscriptionOrderListContext = createContext({} as FetchResponse<ExtendedOrder<SubscriptionOrder>[]>);
@@ -59,6 +82,7 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
     if (!item || !item.products || !item.products.items) {
       throw Error('The API fetched products but it returned null.');
     }
+    console.table(item.products.items);
   }
 
   const extendedItems: ExtendedOrder<SubscriptionOrder>[] = items.map((item) => ({

@@ -87,11 +87,6 @@ export const handler = async (event: any) => {
   }
 
   const items = result.data.listSubscriptionOrdersSortedByCreatedAt.items as SubscriptionOrder[];
-  for (const item of items) {
-    if (!item || !item.products || !item.products.items) {
-      throw Error('The API fetched products but it returned null.');
-    }
-  }
   // JST時刻のdateオブジェクト生成
   const now = generateJSTDate();
   const nowYear = now.getFullYear();
@@ -106,6 +101,7 @@ export const handler = async (event: any) => {
       nowYear,
       nowMonth,
     );
+
     // 次回配送予定年月をセット
     return {
       ...item,

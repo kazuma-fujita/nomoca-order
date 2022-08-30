@@ -80,7 +80,6 @@ const createSubscriptionOrderProducts = async (newSubscriptionOrderID: string, c
       subscriptionOrderID: newSubscriptionOrderID,
       productID: item.productID,
       quantity: item.quantity,
-      viewOrder: item.viewOrder,
     };
 
     // データ新規登録実行
