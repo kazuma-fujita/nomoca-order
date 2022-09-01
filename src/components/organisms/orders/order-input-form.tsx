@@ -6,7 +6,7 @@ import { StaffSelectBox } from 'components/molecules/select-boxes/staff-select-b
 import { BaseSyntheticEvent, useEffect } from 'react';
 import { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
 import { OrderFormParam, useOrderFormParam } from 'stores/use-order-form-param';
-import { ClinicDetailOrderFormInput } from '../clinics/clinic-detail-input';
+import { ClinicDetailOrderFormInput } from 'components/organisms/clinics/clinic-detail-input';
 
 type Props = {
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
