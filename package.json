@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "NEXT_PUBLIC_CAN_CREATE_SUBSCRIPTION_ORDER_FOR_THE_CURRENT_MONTH_FOR_DEBUGGING=false next build && next export",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint --dir src",
     "fmt": "npx prettier --write 'src/**/*.{ts,tsx,js,jsx}'",

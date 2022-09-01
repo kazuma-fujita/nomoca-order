@@ -1,0 +1,15 @@
+runs:
+  using: 'composite'
+  steps:
+    - name: Output .env
+      run: |
+        cat <<EOS > src/.env
+        SKIP_PREFLIGHT_CHECK=true
+        NEXT_PUBLIC_GOOGLE_GEOCODE_BASE_URL="https://maps.googleapis.com/maps/api/geocode"
+        NEXT_PUBLIC_GOOGLE_API_KEY="AIzaSyAhDoba8whZT5ZxXlRKefmAwKbpfdvDGek"
+        NEXT_PUBLIC_OPERATION_MAIL_TO_ADDRESS=kazuma.fujita@genova.co.jp
+        NEXT_PUBLIC_ERROR_MAIL_TO_ADDRESS=kazuma.fujita@genova.co.jp
+        NEXT_PUBLIC_CAN_CREATE_SUBSCRIPTION_ORDER_FOR_THE_CURRENT_MONTH_FOR_DEBUGGING=true
+        NEXT_PUBLIC_GA_MEASUREMENT_ID=
+        EOS
+      shell: bash
