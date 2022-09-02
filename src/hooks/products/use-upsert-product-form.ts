@@ -21,22 +21,23 @@ export const useUpsertProductForm = (product?: Product) => {
 
   const cancelHandler = useCallback(() => {
     clearErrors();
-    resetForm();
     resetState();
     toggle();
-  }, [clearErrors, resetForm, resetState, toggle]);
+  }, [clearErrors, resetState, toggle]);
 
   const submitHandler = handleSubmit(
     useCallback(
       async (param: Product) => {
         try {
-          // await upsertProduct(product ? { ...data, id: product.id } : data);
           await upsertProduct(param);
           cancelHandler();
+          // 新規登録時はreact-hook-formで保持しているformのcacheをクリア
+          if (!product) {
+            resetForm();
+          }
         } catch (error) {}
       },
-      // [cancelHandler, product, upsertProduct],
-      [cancelHandler, upsertProduct],
+      [cancelHandler, product, resetForm, upsertProduct],
     ),
   );
 

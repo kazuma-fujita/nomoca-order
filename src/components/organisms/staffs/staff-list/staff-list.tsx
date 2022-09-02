@@ -45,7 +45,6 @@ export const StaffList = () => {
   const { updateAllStaff, error: updateAllError } = useUpdateAllStaff();
 
   const handleOnDragEnd = useCallback(
-    // (result: DropResult, provided: ResponderProvided) => {
     (result: DropResult) => {
       if (result.destination) {
         updateAllStaff({ sourceIndex: result.source.index, destinationIndex: result.destination.index });
