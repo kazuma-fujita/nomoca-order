@@ -1,4 +1,4 @@
-import { Box, FormHelperText, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Chip, Divider, FormHelperText, MenuItem, TextField, Typography } from '@mui/material';
 import { OrderInputForm } from 'components/organisms/orders/order-input-form';
 import { useInputOrder } from 'hooks/orders/use-input-order';
 import { useState } from 'react';
@@ -15,7 +15,12 @@ export const SubscriptionOrderForm = () => {
       submitHandler={submitHandler}
       cancelHandler={cancelHandler}
     >
-      <Box mt={2} mb={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
+      <Box mt={8}>
+        <Divider textAlign='left'>
+          <Chip label='配送開始月・頻度' />
+        </Divider>
+      </Box>
+      <Box mt={6} mb={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
         <DeliveryStartYearMonthSelectBox {...formReturn} />
         <Box mr={2} />
         <DeliveryIntervalSelectBox {...formReturn} />

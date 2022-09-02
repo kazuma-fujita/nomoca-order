@@ -3,13 +3,12 @@ import { Auth } from 'aws-amplify';
 import { Path } from 'constants/path';
 import { SWRKey } from 'constants/swr-key';
 import { UserGroup } from 'constants/user-group';
+import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NextRouter, useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import useSWR, { KeyedMutator, useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
-import { useFetchOrderList } from '../hooks/orders/use-fetch-order-list';
-import { useFetchStaffList } from '../hooks/staffs/use-fetch-staff-list';
 
 type ProviderProps = {
   currentUser: CognitoUserInterface | undefined;
@@ -117,7 +116,6 @@ export const useSignOut = () => {
   const { cache } = useSWRConfig();
   const { swrKey: orderListKey } = useFetchOrderList();
   const { swrKey: productListKey } = useFetchProductList();
-  const { swrKey: staffListKey } = useFetchStaffList();
 
   useEffect(() => {
     // componentがunmountされてからログイン画面へ遷移させる
@@ -141,7 +139,6 @@ export const useSignOut = () => {
       }
       // 個別に設定しているuseSWRのcacheクリア
       cache.delete(orderListKey);
-      cache.delete(staffListKey);
       cache.delete(productListKey);
       setIsLoading(false);
       setError(null);
@@ -151,7 +148,7 @@ export const useSignOut = () => {
       setIsLoading(false);
       setError(parseResponseError(error));
     }
-  }, [cache, orderListKey, productListKey, staffListKey]);
+  }, [cache, orderListKey, productListKey]);
 
   const resetState = useCallback(() => {
     setIsLoading(false);

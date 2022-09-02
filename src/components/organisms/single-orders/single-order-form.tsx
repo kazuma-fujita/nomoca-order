@@ -1,4 +1,4 @@
-import { Box, FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Box, Chip, Divider, FormControl, FormControlLabel, FormHelperText, Radio, RadioGroup } from '@mui/material';
 import { DeliveryType } from 'API';
 import { OrderInputForm } from 'components/organisms/orders/order-input-form';
 import { useInputOrder } from 'hooks/orders/use-input-order';
@@ -13,7 +13,12 @@ export const SingleOrderForm = () => {
       submitHandler={submitHandler}
       cancelHandler={cancelHandler}
     >
-      <Box mt={8} mb={8} mr={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
+      <Box mt={8}>
+        <Divider textAlign='left'>
+          <Chip label='配送方法' />
+        </Divider>
+      </Box>
+      <Box mt={4} mb={8} mr={2} ml={4} sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}>
         <Controller
           name='deliveryType'
           control={formReturn.control}
@@ -21,7 +26,7 @@ export const SingleOrderForm = () => {
           rules={{ required: '配送方法を選択してください' }}
           render={({ field, formState: { errors } }) => (
             <FormControl error={Boolean(errors.deliveryType)}>
-              <FormLabel id='delivery-type-group-label'>配送方法</FormLabel>
+              {/* <FormLabel id='delivery-type-group-label'>配送方法</FormLabel> */}
               <RadioGroup
                 row
                 aria-labelledby='delivery-type-group-label'

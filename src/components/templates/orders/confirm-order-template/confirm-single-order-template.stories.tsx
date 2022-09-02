@@ -39,7 +39,7 @@ const Wrapper: React.FC<OrderFormStorybookProps> = ({ products, staff, clinic })
     isRevalidateOnFocus={false}
     mockResponse={products}
   >
-    <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false} mockResponse={staff}>
+    <StaffListContextProvider mockResponse={staff}>
       <ClinicContextProvider mockResponse={clinic}>
         <OrderFormParamContextProvider orderType={OrderType.singleOrder} initialOrderFormParam={defaultValues}>
           <ConfirmOrderTemplate />

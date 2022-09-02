@@ -30,7 +30,7 @@ const SubscriptionOrderPage = (props: Props) => {
           isFilterByActiveProduct={true}
           isRevalidateOnFocus={false}
         >
-          <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
+          <StaffListContextProvider isRevalidateOnFocus={false}>
             <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder}>
               <NowDateContextProvider>
                 <ClinicContextProvider>

@@ -136,7 +136,7 @@ const Wrapper: React.FC<OrderFormStorybookProps> = ({ products, staff, clinic })
     isRevalidateOnFocus={false}
     mockResponse={products}
   >
-    <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false} mockResponse={staff}>
+    <StaffListContextProvider isRevalidateOnFocus={false} mockResponse={staff}>
       <ClinicContextProvider mockResponse={clinic}>
         <OrderFormParamContextProvider
           orderType={OrderType.subscriptionOrder}

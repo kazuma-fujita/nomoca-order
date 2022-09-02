@@ -24,7 +24,7 @@ const item: Staff = {
 
 const render = () =>
   customRender(
-    <StaffListContextProvider isFilterByActiveStaff={false}>
+    <StaffListContextProvider>
       <StaffTemplate />
     </StaffListContextProvider>,
   );
