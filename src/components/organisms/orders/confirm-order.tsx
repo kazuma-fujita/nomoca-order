@@ -78,7 +78,16 @@ const ProductsLabel = () => {
       ? // 通常注文の場合、速達料金、配送手数料を配列に追加
         addDeliveryFeeAndExpressFeeToProductList(formParam.products, formParam.deliveryType)
       : formParam.products;
-  return <ReceiptTable products={products} />;
+  return (
+    <>
+      <ReceiptTable products={products} />
+      {orderType === OrderType.singleOrder && (
+        <Typography variant='caption'>
+          ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
+        </Typography>
+      )}
+    </>
+  );
 };
 
 const StaffNameLabel = () => {
