@@ -6,7 +6,10 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { ClinicDetail } from 'components/organisms/clinics/clinic-detail';
-import { addDeliveryFeeAndExpressFeeToProductList } from 'functions/orders/add-delivery-fee-and-express-fee-to-product-list';
+import {
+  addDeliveryFeeAndExpressFeeToProductList,
+  addDeliveryFeeObjectToProductList,
+} from 'functions/orders/add-delivery-fee-and-express-fee-to-product-list';
 import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 import { BaseSyntheticEvent, MouseEventHandler, useEffect } from 'react';
 import { useOrderFormParam } from 'stores/use-order-form-param';
@@ -80,17 +83,16 @@ const ProductsLabel = () => {
 
   const products =
     orderType === OrderType.singleOrder && formParam.deliveryType
-      ? // 通常注文の場合、速達料金、配送手数料を配列に追加
+      ? // 通常注文の場合、速達料金、1万円未満注文の配送手数料を配列に追加
         addDeliveryFeeAndExpressFeeToProductList(formParam.products, formParam.deliveryType)
-      : formParam.products;
+      : // 定期便の場合、1万円未満注文の配送手数料を配列に追加
+        addDeliveryFeeObjectToProductList(formParam.products);
   return (
     <>
       <ReceiptTable products={products} />
-      {orderType === OrderType.singleOrder && (
-        <Typography variant='caption'>
-          ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
-        </Typography>
-      )}
+      <Typography variant='caption'>
+        ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
+      </Typography>
     </>
   );
 };

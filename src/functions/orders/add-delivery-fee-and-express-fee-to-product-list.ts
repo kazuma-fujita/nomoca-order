@@ -19,7 +19,7 @@ export const addDeliveryFeeAndExpressFeeToProductList = (
   return addExpressDeliveryObjectToProductList(tempProducts, deliveryType);
 };
 
-const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): NormalizedProduct[] => {
+export const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): NormalizedProduct[] => {
   if (products.length === 0) {
     throw Error('A product list is empty.');
   }
