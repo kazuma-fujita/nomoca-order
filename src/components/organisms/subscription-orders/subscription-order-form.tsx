@@ -70,7 +70,7 @@ const DeliveryStartYearMonthSelectBox = ({ register, setValue, control }: UseFor
 
   // 選択した配送開始月より現在月の方が大きければ翌年を返却。e.g.) 選択月 2月 現在年月 2022/12月 の場合、2023年を返却
   const addYearWithSelectedMonth = (nowYear: number, nowMonth: number, selectMonth: number) =>
-    selectMonth <= nowMonth ? nowYear + 1 : nowYear;
+    nowMonth > selectMonth ? nowYear + 1 : nowYear;
   // 配送開始年TextField初期値。配送開始月初期値が翌年の場合、翌年の値を初期値に設定。また、確認画面戻りで既に値があれば初期値として設定
   let initialYear = (data && data.deliveryStartYear) ?? addYearWithSelectedMonth(nowYear, nowMonth, nextMonth);
 
