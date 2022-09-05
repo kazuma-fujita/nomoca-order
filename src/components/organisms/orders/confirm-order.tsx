@@ -8,7 +8,7 @@ import { ReceiptTable } from 'components/molecules/receipt-table';
 import { ClinicDetail } from 'components/organisms/clinics/clinic-detail';
 import { addDeliveryFeeAndExpressFeeToProductList } from 'functions/orders/add-delivery-fee-and-express-fee-to-product-list';
 import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
-import { BaseSyntheticEvent, MouseEventHandler } from 'react';
+import { BaseSyntheticEvent, MouseEventHandler, useEffect } from 'react';
 import { useOrderFormParam } from 'stores/use-order-form-param';
 
 type Props = {
@@ -20,6 +20,11 @@ type Props = {
 
 export const ConfirmOrder: React.FC<Props> = ({ isLoading, error, submitHandler, cancelHandler }) => {
   const { data: formParam, orderType } = useOrderFormParam();
+  useEffect(() => {
+    // error発生時画面Topへ移動
+    window.scrollTo(0, 0);
+  }, [error]);
+
   return (
     <>
       {error && (

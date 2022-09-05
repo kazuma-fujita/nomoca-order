@@ -10,6 +10,7 @@ export const useUpsertProductForm = (product?: Product) => {
       id: product ? product.id : '',
       name: product ? product.name : '',
       unitPrice: product ? product.unitPrice : 0,
+      purchasePrice: product ? product.purchasePrice : 0,
       isExportCSV: product ? product.isExportCSV : false,
       disabled: product ? product.disabled : false,
     },

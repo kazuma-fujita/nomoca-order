@@ -20,7 +20,9 @@ export const useUpsertOrderButton = (id?: string, products?: NormalizedProduct[]
   const defaultValues: OrderFormParam = useMemo(
     () => ({
       id: id ?? '',
-      products: products ?? [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1, isExportCSV: true }],
+      products: products ?? [
+        { relationID: '', productID: '', name: '', purchasePrice: 0, unitPrice: 0, quantity: 1, isExportCSV: true },
+      ],
       deleteProducts: products ?? [],
       staffID: staffID ?? '',
     }),
@@ -97,6 +99,7 @@ const mergeOrderFormProductList = (
       relationID: product.id,
       productID: product.id,
       name: product.name,
+      purchasePrice: product.purchasePrice,
       unitPrice: product.unitPrice,
       quantity: item.quantity,
       viewOrder: product.viewOrder,

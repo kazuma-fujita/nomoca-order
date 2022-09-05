@@ -30,6 +30,7 @@ const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
       relationID: orderProduct.id,
       productID: orderProduct.orderID,
       name: orderProduct.name,
+      purchasePrice: orderProduct.purchasePrice,
       unitPrice: orderProduct.unitPrice,
       quantity: orderProduct.quantity,
       isExportCSV: orderProduct.isExportCSV,

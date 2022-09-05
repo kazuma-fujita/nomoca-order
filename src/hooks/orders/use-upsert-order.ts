@@ -104,6 +104,7 @@ const createOrderProducts = async (newOrderID: string, productRelations: Normali
     const input: CreateOrderProductInput = {
       orderID: newOrderID,
       name: item.name,
+      purchasePrice: item.purchasePrice,
       unitPrice: item.unitPrice,
       quantity: item.quantity,
       viewOrder: item.viewOrder,

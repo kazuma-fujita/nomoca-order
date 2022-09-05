@@ -41,7 +41,8 @@ const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): Norma
       relationID: 'deliveryFee',
       productID: 'deliveryFee',
       name: OrderFeeLabel.deliveryFee,
-      unitPrice: 1000,
+      purchasePrice: 0, // 仕入れ値
+      unitPrice: 1000, // 売価
       quantity: 1,
       isExportCSV: false, // 配送手数料はcsvに出力しない
       viewOrder: trailingViewOrder + 1, // 配列最後のviewOrderの値から1を足して表示順を最後に設定
@@ -74,7 +75,8 @@ const addExpressDeliveryObjectToProductList = (
       relationID: 'express',
       productID: 'express',
       name: OrderFeeLabel.expressFee,
-      unitPrice: 1000,
+      purchasePrice: 0, // 仕入れ値
+      unitPrice: 1000, // 売価
       quantity: 1,
       isExportCSV: false, // 速達料はcsvに出力しない
       viewOrder: trailingViewOrder + 1, // 配列最後のviewOrderの値から1を足して表示順を最後に設定

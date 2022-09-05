@@ -37,6 +37,7 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
         relationID: `ID-${selectedIndex}`,
         productID: `ID-${selectedIndex}`,
         name: product.name,
+        purchasePrice: product.purchasePrice,
         unitPrice: product.unitPrice,
         isExportCSV: product.isExportCSV,
         quantity: prev ? prev.quantity : 1, // 個数は引き継ぎ
@@ -64,6 +65,7 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
           relationID: `ID-${selectedIndex}`,
           productID: `ID-${selectedIndex}`,
           name: '',
+          purchasePrice: 0,
           unitPrice: 0,
           quantity: quantity,
           isExportCSV: false,

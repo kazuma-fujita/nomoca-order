@@ -23,6 +23,10 @@ const header = [
     minWidth: 160,
   },
   {
+    label: '仕入れ値',
+    minWidth: 80,
+  },
+  {
     label: '単価',
     minWidth: 80,
   },
@@ -95,6 +99,7 @@ export const ProductList = () => {
                       {(provided) => (
                         <StyledTableRow key={item.id} ref={provided.innerRef} {...provided.draggableProps}>
                           <StyledTableCell>{item.name}</StyledTableCell>
+                          <StyledTableCell>{item.purchasePrice.toLocaleString()}</StyledTableCell>
                           <StyledTableCell>{item.unitPrice.toLocaleString()}</StyledTableCell>
                           <StyledTableCell align='center'>{item.isExportCSV ? '◯' : '-'}</StyledTableCell>
                           <StyledTableCell align='center'>{item.disabled ? '◯' : '-'}</StyledTableCell>

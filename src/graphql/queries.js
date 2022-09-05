@@ -53,6 +53,7 @@ export const getOrder = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -114,6 +115,7 @@ export const listOrders = /* GraphQL */ `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -187,6 +189,7 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -248,6 +251,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            purchasePrice
             unitPrice
             orderType
             viewOrder
@@ -325,6 +329,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
             product {
               id
               name
+              purchasePrice
               unitPrice
               orderType
               viewOrder
@@ -410,6 +415,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
             product {
               id
               name
+              purchasePrice
               unitPrice
               orderType
               viewOrder
@@ -477,6 +483,7 @@ export const getSubscriptionOrderHistory = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -544,6 +551,7 @@ export const listSubscriptionOrderHistories = /* GraphQL */ `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -619,6 +627,7 @@ export const listSubscriptionOrderHistoriesSortedByCreatedAt = /* GraphQL */ `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -675,6 +684,7 @@ export const getProduct = /* GraphQL */ `
     getProduct(id: $id) {
       id
       name
+      purchasePrice
       unitPrice
       orderType
       viewOrder
@@ -696,6 +706,7 @@ export const listProducts = /* GraphQL */ `
       items {
         id
         name
+        purchasePrice
         unitPrice
         orderType
         viewOrder
@@ -729,6 +740,7 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
       items {
         id
         name
+        purchasePrice
         unitPrice
         orderType
         viewOrder
@@ -823,6 +835,7 @@ export const listSubscriptionOrdersContainedNextDeliveryDate = /* GraphQL */ `
           product {
             id
             name
+            purchasePrice
             unitPrice
             orderType
             viewOrder

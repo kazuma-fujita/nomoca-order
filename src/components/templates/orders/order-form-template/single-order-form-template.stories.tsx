@@ -110,7 +110,9 @@ const description = `
 
 const orderFormDefaultValues: OrderFormParam = {
   id: '',
-  products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1, isExportCSV: true }],
+  products: [
+    { relationID: '', productID: '', name: '', purchasePrice: 0, unitPrice: 0, quantity: 1, isExportCSV: true },
+  ],
   staffID: '',
   clinicID: '',
 };

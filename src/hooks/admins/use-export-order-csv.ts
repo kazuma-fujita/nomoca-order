@@ -66,7 +66,8 @@ const header = {
 };
 
 const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: NormalizedProduct, now: Date) => {
-  const { total, taxes, subtotal } = calcTotalFromPriceAndQuantity(product.unitPrice, product.quantity);
+  //  purchasePriceは仕入れ値。新世紀に支払いする金額でCSVに出力する金額
+  const { total, taxes, subtotal } = calcTotalFromPriceAndQuantity(product.purchasePrice, product.quantity);
   return {
     id: `"${order.id}"`,
     empty1: '',
@@ -166,9 +167,12 @@ export const useExportOrderCSV = () => {
       setIsLoading(false);
       setError(null);
 
-      // recordsは出力したcsvデータを保持。医院名+商品名を取得
-      const outputCSVProducts = records.map((r) => `${r.toCompanyName} ${r.productName}`).join('\n');
+      // recordsは出力したcsvデータを保持。医院名、商品名等を取得
+      const outputCSVProducts = records
+        .map((r) => `${r.toCompanyName}  ${r.productName}  個数${r.quantity}  小計${r.subtotal}円  合計${r.total}円`)
+        .join('\n');
       const outputCSVCount = `CSV出力件数:${records.length}件`;
+      const outPutCSVDescription = '※ 小計は仕入れ値 x 個数。合計は仕入れ値の小計 + 消費税';
       // CSV出力設定の商品では無い、かつ速達配送料、配送手数料ではない商品リスト作成
       const nonOutputCSVProducts = orders.flatMap((order: ExtendedOrder<SubscriptionOrder | Order>) =>
         order.normalizedProducts
@@ -178,7 +182,10 @@ export const useExportOrderCSV = () => {
               product.name !== OrderFeeLabel.deliveryFee &&
               product.name !== OrderFeeLabel.expressFee,
           )
-          .map((product: NormalizedProduct) => `${order.clinic.name}  ${product.name}`),
+          .map(
+            (product: NormalizedProduct) =>
+              `${order.clinic.name}  ${product.name}  仕入れ値${product.purchasePrice}円  個数${product.quantity}`,
+          ),
       );
       // 商品管理画面でCSV出力無効商品一覧メッセージを出力
       const nonOutputCSVProductsMessage =
@@ -186,7 +193,7 @@ export const useExportOrderCSV = () => {
           ? `注文にCSV出力設定無効商品が含まれています。個別に発送してください。\n${nonOutputCSVProducts.join('\n')}`
           : '';
       // CSV出力結果メッセージ
-      const outputCSVCountMessage = `${outputCSVProducts}\n${outputCSVCount}\n\n${nonOutputCSVProductsMessage}`;
+      const outputCSVCountMessage = `${outputCSVProducts}\n${outPutCSVDescription}\n${outputCSVCount}\n\n${nonOutputCSVProductsMessage}`;
       return outputCSVCountMessage;
     } catch (error) {
       setIsLoading(false);

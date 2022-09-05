@@ -194,6 +194,7 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
           const input: CreateSubscriptionOrderHistoryProductInput = {
             orderID: newOrder.id,
             name: item.product.name,
+            purchasePrice: item.product.purchasePrice,
             unitPrice: item.product.unitPrice,
             quantity: item.quantity,
             viewOrder: item.product.viewOrder,

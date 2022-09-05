@@ -76,6 +76,7 @@ export const createOrder = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -135,6 +136,7 @@ export const updateOrder = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -194,6 +196,7 @@ export const deleteOrder = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -250,6 +253,7 @@ export const createOrderProduct = /* GraphQL */ `
       id
       orderID
       name
+      purchasePrice
       unitPrice
       quantity
       viewOrder
@@ -269,6 +273,7 @@ export const updateOrderProduct = /* GraphQL */ `
       id
       orderID
       name
+      purchasePrice
       unitPrice
       quantity
       viewOrder
@@ -288,6 +293,7 @@ export const deleteOrderProduct = /* GraphQL */ `
       id
       orderID
       name
+      purchasePrice
       unitPrice
       quantity
       viewOrder
@@ -313,6 +319,7 @@ export const createSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            purchasePrice
             unitPrice
             orderType
             viewOrder
@@ -384,6 +391,7 @@ export const updateSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            purchasePrice
             unitPrice
             orderType
             viewOrder
@@ -455,6 +463,7 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            purchasePrice
             unitPrice
             orderType
             viewOrder
@@ -523,6 +532,7 @@ export const createSubscriptionOrderProduct = /* GraphQL */ `
       product {
         id
         name
+        purchasePrice
         unitPrice
         orderType
         viewOrder
@@ -551,6 +561,7 @@ export const updateSubscriptionOrderProduct = /* GraphQL */ `
       product {
         id
         name
+        purchasePrice
         unitPrice
         orderType
         viewOrder
@@ -579,6 +590,7 @@ export const deleteSubscriptionOrderProduct = /* GraphQL */ `
       product {
         id
         name
+        purchasePrice
         unitPrice
         orderType
         viewOrder
@@ -607,6 +619,7 @@ export const createSubscriptionOrderHistory = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -668,6 +681,7 @@ export const updateSubscriptionOrderHistory = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -729,6 +743,7 @@ export const deleteSubscriptionOrderHistory = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -790,6 +805,7 @@ export const createSubscriptionOrderHistoryProduct = /* GraphQL */ `
       id
       orderID
       name
+      purchasePrice
       unitPrice
       quantity
       viewOrder
@@ -812,6 +828,7 @@ export const updateSubscriptionOrderHistoryProduct = /* GraphQL */ `
       id
       orderID
       name
+      purchasePrice
       unitPrice
       quantity
       viewOrder
@@ -834,6 +851,7 @@ export const deleteSubscriptionOrderHistoryProduct = /* GraphQL */ `
       id
       orderID
       name
+      purchasePrice
       unitPrice
       quantity
       viewOrder
@@ -852,6 +870,7 @@ export const createProduct = /* GraphQL */ `
     createProduct(input: $input, condition: $condition) {
       id
       name
+      purchasePrice
       unitPrice
       orderType
       viewOrder
@@ -871,6 +890,7 @@ export const updateProduct = /* GraphQL */ `
     updateProduct(input: $input, condition: $condition) {
       id
       name
+      purchasePrice
       unitPrice
       orderType
       viewOrder
@@ -890,6 +910,7 @@ export const deleteProduct = /* GraphQL */ `
     deleteProduct(input: $input, condition: $condition) {
       id
       name
+      purchasePrice
       unitPrice
       orderType
       viewOrder

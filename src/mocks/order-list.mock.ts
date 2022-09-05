@@ -9,6 +9,7 @@ const orderProduct: OrderProduct = {
   id: '',
   orderID: '',
   name: '商品',
+  purchasePrice: 800,
   unitPrice: 1000,
   quantity: 1,
   viewOrder: 1,
