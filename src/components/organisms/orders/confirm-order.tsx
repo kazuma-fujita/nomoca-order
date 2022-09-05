@@ -6,10 +6,7 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { DeliveryTypeChip } from 'components/atoms/delivery-type-chip';
 import { ReceiptTable } from 'components/molecules/receipt-table';
 import { ClinicDetail } from 'components/organisms/clinics/clinic-detail';
-import {
-  addDeliveryFeeAndExpressFeeToProductList,
-  addDeliveryFeeObjectToProductList,
-} from 'functions/orders/add-delivery-fee-and-express-fee-to-product-list';
+import { addDeliveryFeeAndExpressFeeToProductList } from 'functions/orders/add-delivery-fee-and-express-fee-to-product-list';
 import { useFetchStaffList } from 'hooks/staffs/use-fetch-staff-list';
 import { BaseSyntheticEvent, MouseEventHandler, useEffect } from 'react';
 import { useOrderFormParam } from 'stores/use-order-form-param';
@@ -83,10 +80,10 @@ const ProductsLabel = () => {
 
   const products =
     orderType === OrderType.singleOrder && formParam.deliveryType
-      ? // 通常注文の場合、速達料金、1万円未満注文の配送手数料を配列に追加
+      ? // 通常注文の場合、速達料金、1万円未満の配送手数料を配列に追加
         addDeliveryFeeAndExpressFeeToProductList(formParam.products, formParam.deliveryType)
-      : // 定期便の場合、1万円未満注文の配送手数料を配列に追加
-        addDeliveryFeeObjectToProductList(formParam.products);
+      : formParam.products;
+
   return (
     <>
       <ReceiptTable products={products} />
