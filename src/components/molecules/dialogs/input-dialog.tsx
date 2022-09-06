@@ -62,33 +62,3 @@ export const InputDialog: React.FC<Props> = ({
     </Dialog>
   );
 };
-
-// export const InputDialog: React.FC<Props> = (props: Props) => {
-//   return (
-//     <Dialog open={props.on}>
-//       <Form onSubmit={props.submitHandler}>
-//         <DialogTitle>{props.dialogTitle}</DialogTitle>
-//         <DialogContent>
-//           {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
-//           <Box mt={2} mb={2}>
-//             {props.children}
-//           </Box>
-//         </DialogContent>
-//         <DialogActions>
-//           <LoadingButton onClick={props.cancelHandler} loadingIndicator='Loading...' loading={props.isLoading}>
-//             キャンセル
-//           </LoadingButton>
-//           <LoadingButton
-//             type='submit'
-//             variant='contained'
-//             loading={props.isLoading}
-//             loadingPosition='start'
-//             startIcon={props.startIcon}
-//           >
-//             {props.submitButtonLabel}
-//           </LoadingButton>
-//         </DialogActions>
-//       </Form>
-//     </Dialog>
-//   );
-// };

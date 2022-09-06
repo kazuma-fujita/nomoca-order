@@ -41,7 +41,7 @@ export const Header = () => {
         [
           { path: Path.singleOrderProduct, icon: CategoryIcon, label: ScreenName.singleOrderProduct },
           { path: Path.subscriptionOrderProduct, icon: CategoryIcon, label: ScreenName.subscriptionOrderProduct },
-          { path: Path.term, icon: FormatAlignLeftIcon, label: ScreenName.term },
+          { path: Path.terms, icon: FormatAlignLeftIcon, label: ScreenName.terms },
         ],
       ]
     : [
@@ -52,12 +52,10 @@ export const Header = () => {
         [
           { path: Path.staff, icon: PeopleIcon, label: ScreenName.staff },
           { path: Path.clinic, icon: LocalShippingIcon, label: ScreenName.clinic },
-          { path: Path.term, icon: FormatAlignLeftIcon, label: ScreenName.term },
         ],
       ];
   const menuItems: HeaderItem[][] = [
-    // パスワード変更は要望があれば実装
-    // [{ path: Path.changePassword, icon: LockIcon, label: ScreenName.changePassword }],
+    [{ path: Path.terms, icon: FormatAlignLeftIcon, label: ScreenName.terms }],
     [{ path: Path.signOut, icon: LogoutIcon, label: ScreenName.signOut }],
   ];
   // findItemsが無かった場合401画面へ遷移

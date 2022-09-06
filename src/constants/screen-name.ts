@@ -7,7 +7,7 @@ export const ScreenName = {
   singleOrderProduct: '注文商品管理',
   subscriptionOrderProduct: '定期便商品管理',
   clinic: '配送先',
-  term: '利用規約',
+  terms: '利用規約',
   changePassword: 'パスワード変更',
   signOut: 'ログアウト',
 } as const;
