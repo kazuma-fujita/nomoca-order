@@ -172,7 +172,7 @@ export const useExportOrderCSV = () => {
         .map((r) => `${r.toCompanyName}  ${r.productName}  個数${r.quantity}  小計${r.subtotal}円  合計${r.total}円`)
         .join('\n');
       const outputCSVCount = `CSV出力件数:${records.length}件`;
-      const outPutCSVDescription = '※ 小計は仕入れ値 x 個数。合計は仕入れ値の小計 + 消費税';
+      const outPutCSVDescription = '※ 小計は仕入れ値 x 個数';
       // CSV出力設定の商品では無い、かつ速達配送料、配送手数料ではない商品リスト作成
       const nonOutputCSVProducts = orders.flatMap((order: ExtendedOrder<SubscriptionOrder | Order>) =>
         order.normalizedProducts

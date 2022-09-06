@@ -1,15 +1,16 @@
 import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { OrderType, Type } from 'API';
+import { OrderType, Product, Type } from 'API';
 import { API } from 'aws-amplify';
 import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { customRender } from 'utilities/tests/custom-render';
 import { ProductTemplate } from './product-template';
 
-const item = {
+const item: Product = {
   __typename: 'Product',
   id: 'dummyID-1',
   name: '商品A',
+  purchasePrice: 800,
   unitPrice: 1000,
   type: Type.product,
   orderType: OrderType.subscriptionOrder,
@@ -17,6 +18,7 @@ const item = {
   disabled: false,
   createdAt: '2021-11-25T14:32:55.000Z',
   updatedAt: '2021-12-03T09:08:07.000Z',
+  isExportCSV: false,
 };
 
 const render = () =>
@@ -42,6 +44,7 @@ const create = async () => {
   // It submits form input values.
   userEvent.type(screen.getByRole('textbox', { name: '商品名' }), '商品A');
   userEvent.type(screen.getByRole('spinbutton', { name: '単価' }), '1000');
+  userEvent.type(screen.getByRole('spinbutton', { name: '仕入れ値' }), '800');
   userEvent.click(screen.getByRole('button', { name: '追加する' }));
 };
 
@@ -56,6 +59,7 @@ const update = async () => {
   // It submits form input values.
   userEvent.type(screen.getByRole('textbox', { name: '商品名' }), '商品B');
   userEvent.type(screen.getByRole('spinbutton', { name: '単価' }), '1000000');
+  userEvent.type(screen.getByRole('spinbutton', { name: '仕入れ値' }), '800000');
   userEvent.click(screen.getByRole('button', { name: '編集する' }));
 };
 
@@ -88,6 +92,7 @@ describe('SubscriptionOrderProductTemplate', () => {
     expect(rows).toHaveLength(2);
     screen.getByRole('cell', { name: '商品A' });
     screen.getByRole('cell', { name: '1,000' });
+    screen.getByRole('cell', { name: '800' });
     // screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '商品を編集する' });
     // screen.getByRole('checkbox', { name: 'activate-switch' });
@@ -107,9 +112,9 @@ describe('SubscriptionOrderProductTemplate', () => {
   });
 
   test('It renders a staff list after it updates a product.', async () => {
-    spy
-      .mockResolvedValueOnce({ data: { listProductsSortedByViewOrder: { items: [item] } } })
-      .mockResolvedValueOnce({ data: { updateProduct: { ...item, name: '商品B', unitPrice: 1000000 } } });
+    spy.mockResolvedValueOnce({ data: { listProductsSortedByViewOrder: { items: [item] } } }).mockResolvedValueOnce({
+      data: { updateProduct: { ...item, name: '商品B', unitPrice: 1000000, purchasePrice: 800000 } },
+    });
     await update();
     // It waits for it to disappear dialog.
     await waitForElementToBeRemoved(() => screen.getByRole('heading', { name: '商品を編集する' }));
@@ -118,6 +123,7 @@ describe('SubscriptionOrderProductTemplate', () => {
     expect(rows).toHaveLength(2);
     screen.getByRole('cell', { name: '商品B' });
     screen.getByRole('cell', { name: '1,000,000' });
+    screen.getByRole('cell', { name: '800,000' });
     // screen.getByRole('cell', { name: '2021/12/03 18:08' });
     screen.getByRole('button', { name: '商品を編集する' });
     // screen.getByRole('checkbox', { name: 'activate-switch' });
