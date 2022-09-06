@@ -124,7 +124,9 @@ const description = `
 
 const orderFormDefaultValues: OrderFormParam = {
   id: '',
-  products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1, isExportCSV: true }],
+  products: [
+    { relationID: '', productID: '', name: '', purchasePrice: 0, unitPrice: 0, quantity: 1, isExportCSV: true },
+  ],
   staffID: '',
   clinicID: '',
 };
@@ -136,7 +138,7 @@ const Wrapper: React.FC<OrderFormStorybookProps> = ({ products, staff, clinic })
     isRevalidateOnFocus={false}
     mockResponse={products}
   >
-    <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false} mockResponse={staff}>
+    <StaffListContextProvider isRevalidateOnFocus={false} mockResponse={staff}>
       <ClinicContextProvider mockResponse={clinic}>
         <OrderFormParamContextProvider
           orderType={OrderType.subscriptionOrder}

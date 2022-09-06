@@ -7,12 +7,15 @@ import { SignOutMenuItem } from 'components/organisms/sign-out/sign-out-menu-ite
 import { Path } from 'constants/path';
 import React, { useState } from 'react';
 import { useCurrentUser } from 'stores/use-current-user';
+import { TermsDialog } from '../organisms/terms/terms-dialog';
+import useToggle from 'react-use/lib/useToggle';
 
 type Props = {
   menuItems: HeaderItem[][];
 };
 
 export const ProfileMenu = (props: Props) => {
+  const [on, toggle] = useToggle(false);
   const { email } = useCurrentUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -84,6 +87,16 @@ export const ProfileMenu = (props: Props) => {
                   </ListItemIcon>
                   <ListItemText primary={item.label} />
                 </SignOutMenuItem>
+              ) : item.path === Path.terms ? (
+                <>
+                  <MenuItem onClick={toggle} key={item.path}>
+                    <ListItemIcon>
+                      <SvgIcon component={item.icon} fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary={item.label} />
+                  </MenuItem>
+                  <TermsDialog on={on} toggle={toggle} />
+                </>
               ) : (
                 <MenuItem key={item.path} component={Link} href={item.path}>
                   <ListItemIcon>

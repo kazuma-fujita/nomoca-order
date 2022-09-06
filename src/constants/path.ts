@@ -8,7 +8,7 @@ export const Path = {
   singleOrderProduct: '/admins/single-order-product',
   subscriptionOrderProduct: '/admins/subscription-order-product',
   clinic: '/clinic',
-  term: '/term',
+  terms: '/terms',
   changePassword: '/change-password',
   signOut: '/sign-out',
 } as const;

@@ -69,6 +69,7 @@ type OrderProduct
   id: ID!
   orderID: ID! @index(name: "byOrder", sortKeyFields: ["viewOrder"])
   name: String!
+  purchasePrice: Int! # 仕入れ値。新世紀に支払いする金額でCSVに出力する金額
   unitPrice: Int!
   quantity: Int!
   viewOrder: Int!
@@ -112,7 +113,7 @@ type SubscriptionOrderProduct
     ]
   ) {
   id: ID!
-  subscriptionOrderID: ID! @index(name: "bySubscriptionOrder", sortKeyFields: ["productID"])
+  subscriptionOrderID: ID! @index(name: "bySubscriptionOrder")
   productID: ID!
   product: Product! @hasOne(fields: ["productID"]) # 商品マスターの内容変更に対応する為、N:Nモデル
   quantity: Int!
@@ -157,6 +158,7 @@ type SubscriptionOrderHistoryProduct
   id: ID!
   orderID: ID! @index(name: "bySubscriptionOrderHistory", sortKeyFields: ["viewOrder"])
   name: String!
+  purchasePrice: Int! # 仕入れ値。新世紀に支払いする金額でCSVに出力する金額
   unitPrice: Int!
   quantity: Int!
   viewOrder: Int!
@@ -175,7 +177,8 @@ type Product
   ) {
   id: ID!
   name: String!
-  unitPrice: Int!
+  purchasePrice: Int! # 仕入れ値。新世紀に支払いする金額でCSVに出力する金額
+  unitPrice: Int! # 売価。顧客が支払いする金額
   orderType: OrderType!
   viewOrder: Int!
   isExportCSV: Boolean!
@@ -224,8 +227,7 @@ type Query {
     @auth(rules: [{ allow: private, provider: userPools }])
 
   sendOrderMail(
-    toAddress: String!
-    bccAddress: String
+    toAddresses: [String!]!
     sendMailType: SendMailType!
     products: [String!]!
     subtotal: Int!

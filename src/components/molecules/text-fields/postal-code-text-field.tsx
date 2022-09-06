@@ -21,7 +21,7 @@ export const PostalCodeTextField = ({ formState, register, setValue, handleOnCha
   return (
     <TextField
       required
-      type='tel'
+      type='tel' // numberだとスマートフォンでキーボードにカンマが表示される為、telを設定
       id='postalCode'
       label='郵便番号'
       onInput={handleInput}

@@ -6,13 +6,18 @@ import { sendErrorMail as sendErrorMailQueries } from 'graphql/queries';
 import { parseResponseError } from 'utilities/parse-response-error';
 
 // .envからmailAddress取得
-const toAddress = process.env.NEXT_PUBLIC_ERROR_MAIL_TO_ADDRESS as string;
+const toAddress = process.env.NEXT_PUBLIC_OPERATION_MAIL_TO_ADDRESS as string;
+
+// 名前付き引数
+type Options = {
+  subject: string;
+  body: string;
+};
 
 // 注文・定期便・定期便更新メール送信
-export const sendErrorMail = async (body: string) => {
-  const mailSubject = `[${ProductName}] An error was occurred`;
-
-  console.log('error toAddress', toAddress);
+export const sendOperationMail = async ({ subject, body }: Options) => {
+  console.log('operation toAddress', toAddress);
+  const mailSubject = `[${ProductName}] ${subject}`;
 
   const sendMailVariables: SendErrorMailQueryVariables = {
     toAddress: toAddress,
@@ -21,7 +26,7 @@ export const sendErrorMail = async (body: string) => {
   };
 
   try {
-    // メール送信
+    // メール送信 sendErrorMail lambda functionを利用
     const sendMailResult = (await API.graphql(
       graphqlOperation(sendErrorMailQueries, sendMailVariables),
     )) as GraphQLResult<SendErrorMailQuery>;

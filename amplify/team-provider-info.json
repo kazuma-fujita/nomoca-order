@@ -28,15 +28,15 @@
         },
         "sendOrderMail": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/sendOrderMail-5375466f58375a413854-build.zip"
+          "s3Key": "amplify-builds/sendOrderMail-3771564b48567a456466-build.zip"
         },
         "listSubscriptionOrdersContainedNextDeliveryDate": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-63532b2f793142496535-build.zip"
+          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-43694e6334514f4c4354-build.zip"
         },
         "sendErrorMail": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/sendErrorMail-6d504b7936796a6d5a70-build.zip"
+          "s3Key": "amplify-builds/sendErrorMail-64495868556d2f6a3541-build.zip"
         }
       }
     }
@@ -71,15 +71,15 @@
         },
         "sendOrderMail": {
           "deploymentBucketName": "amplify-nomocaorder-main-203343-deployment",
-          "s3Key": "amplify-builds/sendOrderMail-5375466f58375a413854-build.zip"
+          "s3Key": "amplify-builds/sendOrderMail-3771564b48567a456466-build.zip"
         },
         "listSubscriptionOrdersContainedNextDeliveryDate": {
           "deploymentBucketName": "amplify-nomocaorder-main-203343-deployment",
-          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-63532b2f793142496535-build.zip"
+          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-43694e6334514f4c4354-build.zip"
         },
         "sendErrorMail": {
           "deploymentBucketName": "amplify-nomocaorder-main-203343-deployment",
-          "s3Key": "amplify-builds/sendErrorMail-6d504b7936796a6d5a70-build.zip"
+          "s3Key": "amplify-builds/sendErrorMail-64495868556d2f6a3541-build.zip"
         }
       }
     }

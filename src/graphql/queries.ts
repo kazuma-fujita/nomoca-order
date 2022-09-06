@@ -54,13 +54,14 @@ export const getOrder = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
           isExportCSV
-          owner
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
@@ -96,8 +97,8 @@ export const getOrder = /* GraphQL */ `
       deliveredAt
       createdAt
       type
-      owner
       updatedAt
+      owner
     }
   }
 `;
@@ -115,13 +116,14 @@ export const listOrders = /* GraphQL */ `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
             isExportCSV
-            owner
             createdAt
             updatedAt
+            owner
           }
           nextToken
         }
@@ -157,8 +159,8 @@ export const listOrders = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        owner
         updatedAt
+        owner
       }
       nextToken
     }
@@ -188,13 +190,14 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
             isExportCSV
-            owner
             createdAt
             updatedAt
+            owner
           }
           nextToken
         }
@@ -230,8 +233,8 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
         deliveredAt
         createdAt
         type
-        owner
         updatedAt
+        owner
       }
       nextToken
     }
@@ -249,6 +252,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
           product {
             id
             name
+            purchasePrice
             unitPrice
             orderType
             viewOrder
@@ -326,6 +330,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
             product {
               id
               name
+              purchasePrice
               unitPrice
               orderType
               viewOrder
@@ -411,6 +416,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
             product {
               id
               name
+              purchasePrice
               unitPrice
               orderType
               viewOrder
@@ -478,6 +484,7 @@ export const getSubscriptionOrderHistory = /* GraphQL */ `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -545,6 +552,7 @@ export const listSubscriptionOrderHistories = /* GraphQL */ `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -620,6 +628,7 @@ export const listSubscriptionOrderHistoriesSortedByCreatedAt = /* GraphQL */ `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -676,6 +685,7 @@ export const getProduct = /* GraphQL */ `
     getProduct(id: $id) {
       id
       name
+      purchasePrice
       unitPrice
       orderType
       viewOrder
@@ -697,6 +707,7 @@ export const listProducts = /* GraphQL */ `
       items {
         id
         name
+        purchasePrice
         unitPrice
         orderType
         viewOrder
@@ -730,6 +741,7 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
       items {
         id
         name
+        purchasePrice
         unitPrice
         orderType
         viewOrder
@@ -824,6 +836,7 @@ export const listSubscriptionOrdersContainedNextDeliveryDate = /* GraphQL */ `
           product {
             id
             name
+            purchasePrice
             unitPrice
             orderType
             viewOrder
@@ -889,8 +902,7 @@ export const getCurrentDate = /* GraphQL */ `
 `;
 export const sendOrderMail = /* GraphQL */ `
   query SendOrderMail(
-    $toAddress: String!
-    $bccAddress: String
+    $toAddresses: [String!]!
     $sendMailType: SendMailType!
     $products: [String!]!
     $subtotal: Int!
@@ -910,8 +922,7 @@ export const sendOrderMail = /* GraphQL */ `
     $deliveryInterval: Int
   ) {
     sendOrderMail(
-      toAddress: $toAddress
-      bccAddress: $bccAddress
+      toAddresses: $toAddresses
       sendMailType: $sendMailType
       products: $products
       subtotal: $subtotal

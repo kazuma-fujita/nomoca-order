@@ -13,23 +13,23 @@ Cypress.Commands.add('expectInputOrderForm', (orderTypeLabel) => {
   cy.get('[name="products.0.productID"]').parent().click();
   cy.findByRole('option', { name: `${orderTypeLabel}商品A` }).click();
   // 商品金額
-  cy.findByRole('table').within(() => {
-    cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
-    // 商品
-    cy.findByRole('cell', { name: `${orderTypeLabel}商品A` });
-    // 数量
-    cy.findByRole('cell', { name: '1' });
-    // 単価 金額 小計
-    cy.findByRole('cell', { name: '小計' });
-    cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 3);
-    // 税
-    cy.findByRole('cell', { name: '税' });
-    cy.findByRole('cell', { name: '10 %' });
-    cy.findByRole('cell', { name: '100' });
-    // 合計
-    cy.findByRole('cell', { name: '合計' });
-    cy.findByRole('cell', { name: '1,100' });
-  });
+  // cy.findByRole('table').within(() => {
+  //   cy.findByRole('row', { name: '商品 数量 単価(円) 金額(円)' });
+  //   // 商品
+  //   cy.findByRole('cell', { name: `${orderTypeLabel}商品A` });
+  //   // 数量
+  //   cy.findByRole('cell', { name: '1' });
+  //   // 単価 金額 小計
+  //   cy.findByRole('cell', { name: '小計' });
+  //   cy.findAllByRole('cell', { name: '1,000' }).should('have.length', 3);
+  //   // 税
+  //   cy.findByRole('cell', { name: '税' });
+  //   cy.findByRole('cell', { name: '10 %' });
+  //   cy.findByRole('cell', { name: '100' });
+  //   // 合計
+  //   cy.findByRole('cell', { name: '合計' });
+  //   cy.findByRole('cell', { name: '1,100' });
+  // });
   // 画面下部のボタンまでScroll
   cy.findByRole('button', { name: '確認する' }).scrollIntoView().should('be.visible');
   // 配送先入力

@@ -28,9 +28,10 @@ export const useConfirmOrder = () => {
       }
       const products =
         orderType === OrderType.singleOrder && formParam.deliveryType
-          ? // 通常注文の場合、速達料金、配送手数料を配列に追加
+          ? // 通常注文の場合、速達料金、1万円未満の配送手数料を配列に追加
             addDeliveryFeeAndExpressFeeToProductList(formParam.products, formParam.deliveryType)
           : formParam.products;
+
       // 重複商品配列はuseOrderFormでmerge済み。更に速達、配送手数料を加えた商品配列を登録
       await createOrder(orderType, { ...formParam, products: products });
       // 完了画面へ遷移

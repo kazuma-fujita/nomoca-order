@@ -18,6 +18,7 @@ const description = `
 
 - 顧客は本画面上で入力商品情報を確認する
   - 入力した商品の数量、単価、金額、小計、税、合計金額を表示
+  - 注文金額合計が10,000円(税別)未満の場合 +1,000円(税別)加算
   - 入力画面の複数の商品プルダウンで同一商品を選択した場合、本画面では個数を合算した1商品のみ表示
 - 配送開始月、配送頻度、配送先、発注担当者を確認する
 - 注文ボタンを押下し注文完了画面へ遷移する
@@ -44,7 +45,7 @@ const Wrapper: React.FC<OrderFormStorybookProps> = ({ products, staff, clinic })
     isRevalidateOnFocus={false}
     mockResponse={products}
   >
-    <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false} mockResponse={staff}>
+    <StaffListContextProvider isRevalidateOnFocus={false} mockResponse={staff}>
       <ClinicContextProvider mockResponse={clinic}>
         <OrderFormParamContextProvider orderType={OrderType.subscriptionOrder} initialOrderFormParam={defaultValues}>
           <ConfirmOrderTemplate />

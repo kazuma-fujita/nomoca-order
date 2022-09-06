@@ -18,7 +18,6 @@ const description = `
 
 - 顧客は本画面上で注文商品を選択する
   - 商品数量は1〜25個の範囲で選択
-  - 選択した商品、個数を計算し単価・金額・税・合計金額をプレビュー表示
   - 商品追加・削除ボタンで購入商品の追加・削除が可能
 - 配送方法を選択する
   - 通常配送、速達配送を選択可能
@@ -110,7 +109,9 @@ const description = `
 
 const orderFormDefaultValues: OrderFormParam = {
   id: '',
-  products: [{ relationID: '', productID: '', name: '', unitPrice: 0, quantity: 1, isExportCSV: true }],
+  products: [
+    { relationID: '', productID: '', name: '', purchasePrice: 0, unitPrice: 0, quantity: 1, isExportCSV: true },
+  ],
   staffID: '',
   clinicID: '',
 };
@@ -122,7 +123,7 @@ const Wrapper: React.FC<OrderFormStorybookProps> = ({ products, staff, clinic })
     isRevalidateOnFocus={false}
     mockResponse={products}
   >
-    <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false} mockResponse={staff}>
+    <StaffListContextProvider isRevalidateOnFocus={false} mockResponse={staff}>
       <ClinicContextProvider mockResponse={clinic}>
         <OrderFormParamContextProvider orderType={OrderType.singleOrder} initialOrderFormParam={orderFormDefaultValues}>
           <OrderFormTemplate />

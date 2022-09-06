@@ -10,7 +10,8 @@ export type NormalizedProduct = {
   relationID: string; // OrderProduct or SubscriptionOrderProduct の ID。定期便削除時はrelationIDでProductとのリレーションレコードであるSubscriptionOrderProductを削除
   productID: string; // use-hook-formで入力フォームにセットする商品ID。他、productのDBキャッシュからviewOrderなどの値を取得する為に使用
   name: string;
-  unitPrice: number;
+  purchasePrice: number; // 仕入れ値。CSVに出力する金額
+  unitPrice: number; // 単価。売値。顧客が支払う金額
   quantity: number;
   isExportCSV: boolean; // useExportOrderCSV 内でisExportCSV=falseの場合、csv行に出力しない
   viewOrder?: number | null; // 入力確認画面で商品を表示するソート順。useCreateOrderでは値をOrderProductに登録
@@ -21,22 +22,32 @@ export type ExtendedOrder<T> = T & {
 };
 
 const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct[] => {
-  if (!order.products) {
-    throw Error('Subscription order products are null.');
+  if (!order.products || !order.products.items) {
+    throw Error('The API fetched products but it returned null.');
   }
-  return order.products.items.map((orderProduct) => {
-    if (!orderProduct) {
-      throw Error('A subscription order product relation is null.');
-    }
-    return {
-      relationID: orderProduct.id,
-      productID: orderProduct.productID,
-      name: orderProduct.product.name,
-      unitPrice: orderProduct.product.unitPrice,
-      quantity: orderProduct.quantity,
-      isExportCSV: orderProduct.product.isExportCSV,
-    };
-  });
+
+  // viewOrder昇順でsort
+  return order.products.items
+    .sort((a, b) => {
+      if (!a || !b) {
+        throw Error('No view order found to compare.');
+      }
+      return a.product.viewOrder > b.product.viewOrder ? 1 : -1;
+    })
+    .map((orderProduct) => {
+      if (!orderProduct) {
+        throw Error('A subscription order product relation is null.');
+      }
+      return {
+        relationID: orderProduct.id,
+        productID: orderProduct.productID,
+        name: orderProduct.product.name,
+        purchasePrice: orderProduct.product.purchasePrice,
+        unitPrice: orderProduct.product.unitPrice,
+        quantity: orderProduct.quantity,
+        isExportCSV: orderProduct.product.isExportCSV,
+      };
+    });
 };
 
 const SubscriptionOrderListContext = createContext({} as FetchResponse<ExtendedOrder<SubscriptionOrder>[]>);
@@ -59,6 +70,7 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
     if (!item || !item.products || !item.products.items) {
       throw Error('The API fetched products but it returned null.');
     }
+    console.table(item.products.items);
   }
 
   const extendedItems: ExtendedOrder<SubscriptionOrder>[] = items.map((item) => ({

@@ -78,7 +78,7 @@ const description = `
 `;
 
 const Wrapper: React.FC<FetchResponse> = (props) => (
-  <StaffListContextProvider isFilterByActiveStaff={false} mockResponse={props}>
+  <StaffListContextProvider mockResponse={props}>
     <StaffTemplate />
   </StaffListContextProvider>
 );

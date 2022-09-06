@@ -32,6 +32,7 @@ export const useUpsertProduct = () => {
         const inputParam = {
           name: param.name,
           unitPrice: Number(param.unitPrice),
+          purchasePrice: Number(param.purchasePrice),
           isExportCSV: param.isExportCSV,
           disabled: param.disabled,
         };

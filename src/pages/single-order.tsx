@@ -29,7 +29,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
             isFilterByActiveProduct={true}
             isRevalidateOnFocus={false}
           >
-            <StaffListContextProvider isFilterByActiveStaff={true} isRevalidateOnFocus={false}>
+            <StaffListContextProvider isRevalidateOnFocus={false}>
               <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
                 <ClinicContextProvider>
                   <Main>

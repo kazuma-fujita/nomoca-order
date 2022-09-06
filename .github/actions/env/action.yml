@@ -1,0 +1,9 @@
+runs:
+  using: 'composite'
+  steps:
+    - name: Output .env
+      run: |
+        cat <<EOS > src/.env
+        NEXT_PUBLIC_CAN_CREATE_SUBSCRIPTION_ORDER_FOR_THE_CURRENT_MONTH_FOR_DEBUGGING=true
+        EOS
+      shell: bash

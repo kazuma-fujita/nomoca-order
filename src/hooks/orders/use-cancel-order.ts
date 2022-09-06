@@ -8,17 +8,18 @@ import {
   UpdateOrderMutationVariables,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SWRKey } from 'constants/swr-key';
 import { updateOrder as updateOrderQuery } from 'graphql/mutations';
 import { useSendMail } from 'hooks/commons/use-send-mail';
 import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ExtendedOrder } from '../subscription-orders/use-fetch-subscription-order-list';
+import { useFetchOrderList } from './use-fetch-order-list';
 
 export const useCancelOrder = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const { swrKey } = useFetchOrderList();
   const { mutate } = useSWRConfig();
   const { sendMail } = useSendMail();
 
@@ -38,7 +39,7 @@ export const useCancelOrder = () => {
       setError(null);
       console.log('canceledOrder:', result.data.updateOrder);
       // 再フェッチ実行
-      mutate(SWRKey.orderList);
+      mutate(swrKey);
     } catch (error) {
       setIsLoading(false);
       setError(parseResponseError(error));

@@ -46,20 +46,6 @@ const createProductRelations = (row: number): SubscriptionOrderProduct[] =>
     },
   }));
 
-// export const subscriptionOrderListMock: ExtendedOrder<SubscriptionOrder>[] = [...Array(12)].map((_, i) => ({
-//   ...item,
-//   id: `dummyID-${i + 1}`,
-//   products: {
-//     ...products,
-//     items: createProductRelations(i + 1),
-//   },
-//   normalizedProducts: createNormalizedProductsMock(i + 1),
-//   staff: { ...item.staff, id: `dummyStaffID-${i + 1}`, lastName: `佐藤`, firstName: `太郎${i + 1}` },
-//   deliveryStartMonth: i + 1,
-//   deliveryInterval: i + 1,
-//   updatedAt: new Date(2021, 1 + i, 2 + i, 12 + i, 30 + i, 0).toISOString(),
-// }));
-
 export const generateSubscriptionOrderListMock = (generateCount: number): ExtendedOrder<SubscriptionOrder>[] =>
   [...Array(generateCount)].map((_, i) => ({
     ...item,

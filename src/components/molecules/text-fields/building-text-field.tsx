@@ -31,12 +31,13 @@ export const BuildingTextField = ({ formState, register, setValue, disabled }: P
       }}
       {...register('building', {
         maxLength: { value: MAX_LENGTH, message: '建物名・部屋番号は' + MAX_LENGTH + '桁で入力してください' },
-        pattern: {
-          // 「!"#%&'()-.,」を除く半角記号、数学記号、通貨記号、音声記号、絵文字、機種依存文字を除外
-          // 建物名、部屋番号の間など文字列中の空白はありえる為許可
-          value: /^[^$*+/:;<=>?@[\\\]^_`{|}~\p{Symbol}]+$/u,
-          message: '建物名・部屋番号で使用できない文字が含まれています',
-        },
+        // 建物名・部屋番号は空白が入る可能性がある他、記号や特殊文字も入る可能性があるので文字種validationは外す
+        // pattern: {
+        // 「!"#%&'()-.,」を除く半角記号、数学記号、通貨記号、音声記号、絵文字、機種依存文字を除外
+        // 建物名、部屋番号の間など文字列中の空白はありえる為許可
+        //   value: /^[^$*+/:;<=>?@[\\\]^_`{|}~\p{Symbol}]+$/u,
+        //   message: '建物名・部屋番号で使用できない文字が含まれています',
+        // },
         onBlur: handleBlur,
       })}
     />

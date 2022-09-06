@@ -18,7 +18,7 @@ export const UpsertStaffButton = ({ staff }: Props) => {
   const { useFormReturn, submitButtonLabel, dialogTitle, on, toggle, isLoading, error, submitHandler, cancelHandler } =
     useUpsertStaffForm(staff);
 
-  const startIcon = staff ? <Edit /> : <Add />;
+  const buttonIcon = staff ? <Edit /> : <Add />;
   const onButtonClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       toggle();
@@ -30,13 +30,13 @@ export const UpsertStaffButton = ({ staff }: Props) => {
 
   return (
     <>
-      <Button onClick={onButtonClick} variant='outlined' startIcon={startIcon}>
+      <Button onClick={onButtonClick} variant='outlined' startIcon={buttonIcon}>
         {dialogTitle}
       </Button>
       <InputDialog
         dialogTitle={dialogTitle}
         submitButtonLabel={submitButtonLabel}
-        startIcon={startIcon}
+        startIcon={buttonIcon}
         on={on}
         formId='staff-form'
         isLoading={isLoading}

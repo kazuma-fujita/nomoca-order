@@ -56,6 +56,7 @@ exports.getOrder = `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -117,6 +118,7 @@ exports.listOrders = `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -190,6 +192,7 @@ exports.listOrdersSortedByCreatedAt = `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -251,6 +254,7 @@ exports.getSubscriptionOrder = `
           product {
             id
             name
+            purchasePrice
             unitPrice
             orderType
             viewOrder
@@ -328,6 +332,7 @@ exports.listSubscriptionOrders = `
             product {
               id
               name
+              purchasePrice
               unitPrice
               orderType
               viewOrder
@@ -413,6 +418,7 @@ exports.listSubscriptionOrdersSortedByCreatedAt = `
             product {
               id
               name
+              purchasePrice
               unitPrice
               orderType
               viewOrder
@@ -480,6 +486,7 @@ exports.getSubscriptionOrderHistory = `
           id
           orderID
           name
+          purchasePrice
           unitPrice
           quantity
           viewOrder
@@ -547,6 +554,7 @@ exports.listSubscriptionOrderHistories = `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -622,6 +630,7 @@ exports.listSubscriptionOrderHistoriesSortedByCreatedAt = `
             id
             orderID
             name
+            purchasePrice
             unitPrice
             quantity
             viewOrder
@@ -678,6 +687,7 @@ exports.getProduct = `
     getProduct(id: $id) {
       id
       name
+      purchasePrice
       unitPrice
       orderType
       viewOrder
@@ -699,6 +709,7 @@ exports.listProducts = `
       items {
         id
         name
+        purchasePrice
         unitPrice
         orderType
         viewOrder
@@ -732,6 +743,7 @@ exports.listProductsSortedByViewOrder = `
       items {
         id
         name
+        purchasePrice
         unitPrice
         orderType
         viewOrder
@@ -826,6 +838,7 @@ exports.listSubscriptionOrdersContainedNextDeliveryDate = `
           product {
             id
             name
+            purchasePrice
             unitPrice
             orderType
             viewOrder
@@ -891,8 +904,7 @@ exports.getCurrentDate = `
 `;
 exports.sendOrderMail = `
   query SendOrderMail(
-    $toAddress: String!
-    $bccAddress: String
+    $toAddresses: [String!]!
     $sendMailType: SendMailType!
     $products: [String!]!
     $subtotal: Int!
@@ -912,8 +924,7 @@ exports.sendOrderMail = `
     $deliveryInterval: Int
   ) {
     sendOrderMail(
-      toAddress: $toAddress
-      bccAddress: $bccAddress
+      toAddresses: $toAddresses
       sendMailType: $sendMailType
       products: $products
       subtotal: $subtotal

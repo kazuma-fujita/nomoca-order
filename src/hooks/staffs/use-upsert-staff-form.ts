@@ -20,10 +20,9 @@ export const useUpsertStaffForm = (staff?: Staff) => {
 
   const cancelHandler = useCallback(() => {
     clearErrors();
-    resetForm();
     resetState();
     toggle();
-  }, [clearErrors, resetForm, resetState, toggle]);
+  }, [clearErrors, resetState, toggle]);
 
   const submitHandler = handleSubmit(
     useCallback(
@@ -31,9 +30,13 @@ export const useUpsertStaffForm = (staff?: Staff) => {
         try {
           await upsertStaff(param);
           cancelHandler();
+          // 新規登録時はreact-hook-formで保持しているformのcacheをクリア
+          if (!staff) {
+            resetForm();
+          }
         } catch (error) {}
       },
-      [cancelHandler, upsertStaff],
+      [cancelHandler, resetForm, staff, upsertStaff],
     ),
   );
 

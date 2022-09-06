@@ -237,8 +237,8 @@ const createMailBody = (
 exports.handler = async (event) => {
   console.log('EVENT', event);
   const {
-    toAddress,
-    bccAddress,
+    toAddresses,
+    // bccAddress,
     sendMailType,
     products,
     subtotal,
@@ -282,49 +282,44 @@ exports.handler = async (event) => {
   );
   console.log(mailSubject);
   console.log(mailBody);
-  try {
-    // 送信するEmailのparamsを設定
-    const params = {
-      Destination: {
-        ToAddresses: [toAddress],
+  // 送信するEmailのparamsを設定
+  const baseParams = {
+    Message: {
+      Subject: {
+        Charset: defaultCharset,
+        Data: mailSubject,
       },
-      Message: {
-        Subject: {
+      Body: {
+        Text: {
           Charset: defaultCharset,
-          Data: mailSubject,
-        },
-        Body: {
-          Text: {
-            Charset: defaultCharset,
-            Data: mailBody,
-          },
+          Data: mailBody,
         },
       },
-      Source: fromAddress, // From・必須
-    };
-    // bccAddressがあればパラメーターに追加
-    const requestParams = bccAddress
-      ? {
-          ...params,
-          Destination: {
-            BccAddresses: [bccAddress],
-            ToAddresses: [toAddress],
-          },
-        }
-      : params;
+    },
+    Source: fromAddress, // From・必須
+  };
 
-    console.table(requestParams);
-    // リージョンを設定
-    AWS.config.update({ region: 'us-east-1' });
-    // 送信処理
-    const ses = new AWS.SES();
-    await ses.sendEmail(requestParams).promise();
-    console.log('Success to Send an Email');
-    return clinicName;
-  } catch (e) {
-    console.log(`Failed to Send an Email: ${e}`);
-    return e;
-  }
+  // リージョンを設定
+  AWS.config.update({ region: 'us-east-1' });
+  // sesインスタンス生成
+  const ses = new AWS.SES();
+  // toAddresses配列の値ごとにses.sendMailを実行。Promise.allを利用し並行処理で実行
+  // sendEmail実行時に発生したExceptionはそのままAPIのResponseとして返却する為、try - catchしない
+  await Promise.all(
+    toAddresses.map(async (toAddress) => {
+      // toAddressをparamsに追加
+      const requestParams = {
+        ...baseParams,
+        Destination: {
+          ToAddresses: [toAddress],
+        },
+      };
+      console.table(requestParams);
+      await ses.sendEmail(requestParams).promise();
+      console.log('Success to Send an Email');
+    }),
+  );
+  return clinicName;
 
   // return {
   //   statusCode: 200,

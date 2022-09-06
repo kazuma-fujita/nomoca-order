@@ -73,6 +73,9 @@ const updateSubscriptionOrderProducts = async (
 const createSubscriptionOrderProducts = async (newSubscriptionOrderID: string, createProducts: NormalizedProduct[]) => {
   // SubscriptionOrder と Product のリレーション作成
   for (const item of createProducts) {
+    if (!item.viewOrder) {
+      throw Error('A view order is not found.');
+    }
     const input: CreateSubscriptionOrderProductInput = {
       subscriptionOrderID: newSubscriptionOrderID,
       productID: item.productID,
@@ -101,6 +104,7 @@ const createOrderProducts = async (newOrderID: string, productRelations: Normali
     const input: CreateOrderProductInput = {
       orderID: newOrderID,
       name: item.name,
+      purchasePrice: item.purchasePrice,
       unitPrice: item.unitPrice,
       quantity: item.quantity,
       viewOrder: item.viewOrder,

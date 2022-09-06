@@ -13,11 +13,12 @@ const StaffSelectInput = ({ setValue, control }: UseFormReturn<OrderFormParam>) 
     // 定期便更新時はdefaultValuesのstaffIDを最優先にしてプルダウン設定
     // 定期便・通常注文新規作成時にStaffデータがあれば先頭の値をプルダウン設定
     // Staffデータが無い状態で入力画面上でStaffデータを作成した場合、新規作成staffIDを動的にプルダウン設定
+    const activeList = staffList && staffList.filter((staff) => !staff.disabled);
     const staffID =
       defaultValues && defaultValues.staffID
         ? defaultValues.staffID
-        : staffList && staffList.length > 0
-        ? staffList[0].id
+        : activeList && activeList.length > 0
+        ? activeList[0].id
         : null;
 
     if (staffID) {
@@ -43,11 +44,13 @@ const StaffSelectInput = ({ setValue, control }: UseFormReturn<OrderFormParam>) 
           {...field}
         >
           {staffList &&
-            staffList.map((staff) => (
-              <MenuItem key={staff.id} value={staff.id}>
-                {`${staff.lastName}  ${staff.firstName}`}
-              </MenuItem>
-            ))}
+            staffList
+              .filter((staff) => !staff.disabled)
+              .map((staff) => (
+                <MenuItem key={staff.id} value={staff.id}>
+                  {`${staff.lastName}  ${staff.firstName}`}
+                </MenuItem>
+              ))}
         </TextField>
       )}
     />

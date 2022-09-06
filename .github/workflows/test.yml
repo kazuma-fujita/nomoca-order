@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
+      # Export .env
+      - name: Export dummy /env
+        uses: ./.github/actions/env
       # Install JAVA
       - name: Export dummy build.gradle
         uses: ./.github/actions/gradle

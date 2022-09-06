@@ -13,11 +13,13 @@ import {
   UpdateSubscriptionOrderMutationVariables,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
+import { SWRKey } from 'constants/swr-key';
 import {
   filteredPromiseFulfilledResult,
   filteredPromiseRejectedResult,
 } from 'functions/filter-promise-settled-results';
-import { sendErrorMail } from 'functions/send-error-mail';
+import { filterNonShippingSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-all-subscription-order-this-month';
+import { sendOperationMail } from 'functions/send-operation-mail';
 import {
   createSubscriptionOrderHistory,
   createSubscriptionOrderHistoryProduct,
@@ -28,10 +30,8 @@ import { useSendMail } from 'hooks/commons/use-send-mail';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { useNowDate } from 'stores/use-now-date';
-import { parseResponseError } from 'utilities/parse-response-error';
 import { useSWRConfig } from 'swr';
-import { SWRKey } from 'constants/swr-key';
-import { filterNonShippingSubscriptionOrderThisMonth } from 'functions/orders/is-shipping-all-subscription-order-this-month';
+import { parseResponseError } from 'utilities/parse-response-error';
 
 export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
   const { data: now } = useNowDate();
@@ -44,96 +44,102 @@ export const useExportSubscriptionOrderCSVAndCreateOrderHistory = () => {
 
   const exportSubscriptionOrderCSVAndCreateOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[]) => {
     setIsLoading(true);
-    try {
-      if (!now) {
-        throw Error('A current date is not found.');
-      }
-      // 定期便注文リストから当月未配送の定期便注文をフィルタリング
-      const nonShippedOrders = filterNonShippingSubscriptionOrderThisMonth(orders, now);
 
-      const orderTotal = nonShippedOrders.length;
-      if (orderTotal === 0) {
-        throw Error('当月配送予定の定期便がありません');
-      }
+    // エラーは全てPromise.allSettledでハンドリングする為、try-catchしない
+    // try {
 
-      // 定期便履歴データ作成処理。内部的にPromise.allSettledでメール送信処理を同時並列実行
-      // 定期便履歴データは不整合を許容する為、エラーが発生しても特にハンドリングしない
-      const { createdHistorySuccesses, createdHistoryFails } = await createOrderHistory(nonShippedOrders, now);
-
-      // SubscriptionOrderのlastDeliveredAtを更新。内部的にPromise.allSettledでメール送信処理を同時並列実行
-      // lastDeliveredAtは当月CSV出力ボタン表示判定に使用する為、エラー発生時はエラーメッセージを表示しハンドリング
-      const { updatedDeliveredAtSuccesses, updatedDeliveredAtFails } = await updateOrderDeliveredAt(
-        nonShippedOrders,
-        now,
-      );
-
-      // lastDeliveredAt更新成功データのみメール送信。Promise.allSettledでメール送信処理を同時並列実行
-      const { sendMailSuccesses, sendMailFails } = await sendDeliverySubscriptionOrderMail(updatedDeliveredAtSuccesses);
-
-      // lastDeliveredAt更新成功データのみCSV出力
-      await exportCSV(updatedDeliveredAtSuccesses);
-
-      // lastDeliveredAt更新総件数
-      const updatedDeliveredAtSuccessTotal = updatedDeliveredAtSuccesses.length;
-      // lastDeliveredAt更新成功フラグ
-      const isUpdatedDeliveredSuccess = updatedDeliveredAtFails.length === 0;
-      // 運用メール件名
-      const notificationMailSubject = isUpdatedDeliveredSuccess
-        ? '定期便のCSVを出力しました'
-        : '定期便のCSV出力に失敗した注文があります。システム管理者に問い合わせてください。';
-
-      // lastDeliveredAt更新メール本文
-      const createUpdatedDeliveredAtBody = () => {
-        const updatedSuccessClinicNames = updatedDeliveredAtSuccesses.map((order) => order.clinic.name).join('\n');
-        const updatedSuccessCountBody = `CSV出力成功件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
-        const updatedFailedCountBody = `CSV出力失敗件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
-        const updatedSuccessBody = `${updatedSuccessClinicNames}\n${updatedSuccessCountBody}`;
-        const updatedFailedBody = `エラー:\n${updatedDeliveredAtFails.join('\n')}\n${updatedFailedCountBody}`;
-        return isUpdatedDeliveredSuccess ? updatedSuccessBody : `${updatedSuccessBody}\n${updatedFailedBody}`;
-      };
-      // 定期便発送メール送信結果メール本文
-      const sendMailResultBody = createSendMailResultBody(
-        sendMailSuccesses,
-        sendMailFails,
-        updatedDeliveredAtSuccessTotal,
-      );
-
-      // 定期便履歴データ登録結果メール本文
-      const createHistoryBody = () => {
-        const createdSuccessBody = `定期便履歴データ登録成功件数:${createdHistorySuccesses.length}/${orderTotal}`;
-        const createdFailedCount = `定期便履歴データ登録失敗件数:${createdHistoryFails.length}/${orderTotal}`;
-        const errorMessages = createdHistoryFails.join('\n');
-        const createdFailedBody = `定期便履歴データ登録エラー:\n${errorMessages}\n${createdFailedCount}`;
-        return createdHistoryFails.length === 0 ? createdSuccessBody : `${createdSuccessBody}\n${createdFailedBody}`;
-      };
-
-      // 運用メール本文
-      const notificationMailBody = `${createUpdatedDeliveredAtBody()}\n\n\n${sendMailResultBody}\n\n\n${createHistoryBody()}`;
-
-      // Order履歴データ作成、メール送信結果を運用メール通知
-      await sendErrorMail({
-        subject: notificationMailSubject,
-        body: notificationMailBody,
-      });
-
-      // ダイアログにCSV出力成功 or 失敗メッセージ表示
-      const resultMessage = `${notificationMailSubject}\n\n${notificationMailBody}`;
-      if (isUpdatedDeliveredSuccess) {
-        setSuccessMessage(resultMessage);
-        setError(null);
-      } else {
-        setSuccessMessage(null);
-        setError(Error(resultMessage));
-      }
-
-      // lastDeliveredAtの更新を反映させる為一覧の再取得・更新
-      mutate(SWRKey.subscriptionOrderList);
-    } catch (error) {
-      setIsLoading(false);
-      const parsedError = parseResponseError(error);
-      setError(parsedError);
-      throw parsedError;
+    if (!now) {
+      setError(Error('A current date is not found.'));
+      return;
     }
+    // 定期便注文リストから当月未配送の定期便注文をフィルタリング
+    const nonShippedOrders = filterNonShippingSubscriptionOrderThisMonth(orders, now);
+
+    const orderTotal = nonShippedOrders.length;
+    if (orderTotal === 0) {
+      setError(Error('当月配送予定の定期便がありません'));
+      return;
+    }
+
+    // 定期便履歴データ作成処理。内部的にPromise.allSettledでメール送信処理を同時並列実行
+    // 定期便履歴データは不整合を許容する為、エラーが発生しても特にハンドリングしない
+    const { createdHistorySuccesses, createdHistoryFails } = await createOrderHistory(nonShippedOrders, now);
+
+    // SubscriptionOrderのlastDeliveredAtを更新。内部的にPromise.allSettledでメール送信処理を同時並列実行
+    // lastDeliveredAtは当月CSV出力ボタン表示判定に使用する為、エラー発生時はエラーメッセージを表示しハンドリング
+    const { updatedDeliveredAtSuccesses, updatedDeliveredAtFails } = await updateOrderDeliveredAt(
+      nonShippedOrders,
+      now,
+    );
+
+    // lastDeliveredAt更新成功データのみメール送信。Promise.allSettledでメール送信処理を同時並列実行
+    const { sendMailSuccesses, sendMailFails } = await sendDeliverySubscriptionOrderMail(updatedDeliveredAtSuccesses);
+
+    // lastDeliveredAt更新成功データのみCSV出力
+    const outputCSVCountMessage = await exportCSV(updatedDeliveredAtSuccesses);
+
+    // lastDeliveredAt更新総件数
+    const updatedDeliveredAtSuccessTotal = updatedDeliveredAtSuccesses.length;
+    // lastDeliveredAt更新成功フラグ
+    const isUpdatedDeliveredSuccess = updatedDeliveredAtFails.length === 0;
+    // 運用メール件名
+    const notificationMailSubject = isUpdatedDeliveredSuccess
+      ? '定期便のCSVを出力しました'
+      : '定期便のCSV出力に失敗した注文があります。システム管理者に問い合わせてください。';
+
+    // lastDeliveredAt更新メール本文
+    const createUpdatedDeliveredAtBody = () => {
+      const updatedSuccessCountBody = `発送日時更新成功件数:${updatedDeliveredAtSuccesses.length}/${orderTotal}`;
+      const updatedFailedCountBody = `発送日時更新失敗件数:${updatedDeliveredAtFails.length}/${orderTotal}`;
+      const updatedSuccessBody = `${outputCSVCountMessage}\n${updatedSuccessCountBody}`;
+      const updatedFailedBody = `エラー:\n${updatedDeliveredAtFails.join('\n')}\n${updatedFailedCountBody}`;
+      return isUpdatedDeliveredSuccess ? updatedSuccessBody : `${updatedSuccessBody}\n${updatedFailedBody}`;
+    };
+    // 定期便発送メール送信結果メール本文
+    const sendMailResultBody = createSendMailResultBody(
+      sendMailSuccesses,
+      sendMailFails,
+      updatedDeliveredAtSuccessTotal,
+    );
+
+    // 定期便履歴データ登録結果メール本文
+    const createHistoryBody = () => {
+      const createdSuccessBody = `定期便履歴データ登録成功件数:${createdHistorySuccesses.length}/${orderTotal}`;
+      const createdFailedCount = `定期便履歴データ登録失敗件数:${createdHistoryFails.length}/${orderTotal}`;
+      const errorMessages = createdHistoryFails.join('\n');
+      const createdFailedBody = `定期便履歴データ登録エラー:\n${errorMessages}\n${createdFailedCount}`;
+      return createdHistoryFails.length === 0 ? createdSuccessBody : `${createdSuccessBody}\n${createdFailedBody}`;
+    };
+
+    // 運用メール本文
+    const notificationMailBody = `${createUpdatedDeliveredAtBody()}\n\n\n${sendMailResultBody}\n\n\n${createHistoryBody()}`;
+
+    // Order履歴データ作成、メール送信結果を運用メール通知
+    await sendOperationMail({
+      subject: notificationMailSubject,
+      body: notificationMailBody,
+    });
+
+    // ダイアログにCSV出力成功 or 失敗メッセージ表示
+    const resultMessage = `${notificationMailSubject}\n\n${notificationMailBody}`;
+    if (isUpdatedDeliveredSuccess) {
+      setSuccessMessage(resultMessage);
+      setError(null);
+    } else {
+      setSuccessMessage(null);
+      setError(Error(resultMessage));
+    }
+
+    // lastDeliveredAtの更新を反映させる為一覧の再取得・更新
+    mutate(SWRKey.subscriptionOrderList);
+
+    // エラーは全てPromise.allSettledでハンドリングする為、try-catchしない
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   const parsedError = parseResponseError(error);
+    //   setError(parsedError);
+    //   throw parsedError;
+    // }
   };
 
   const resetState = useCallback(() => {
@@ -188,6 +194,7 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
           const input: CreateSubscriptionOrderHistoryProductInput = {
             orderID: newOrder.id,
             name: item.product.name,
+            purchasePrice: item.product.purchasePrice,
             unitPrice: item.product.unitPrice,
             quantity: item.quantity,
             viewOrder: item.product.viewOrder,

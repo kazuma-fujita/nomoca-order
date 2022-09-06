@@ -49,7 +49,7 @@ context('SingleOrder', () => {
       cy.get('header').contains(ScreenName.singleOrder).should('exist');
       cy.findByRole('button', { name: '注文を入力する' });
       // 配送方法
-      cy.findByRole('radiogroup', { name: '配送方法' });
+      cy.findByText('配送方法');
       //　通常配送チェック状態
       cy.findByRole('radio', { name: '通常配送' }).should('be.checked');
       cy.findByRole('radio', { name: '速達配送 +1,000円(税抜)' }).should('not.be.checked');

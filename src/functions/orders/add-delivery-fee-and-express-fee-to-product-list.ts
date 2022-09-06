@@ -2,6 +2,13 @@ import { DeliveryType } from 'API';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { calcSubtotalFromProductList } from 'functions/orders/calc-total-taxes-subtotal';
 
+export const OrderFeeLabel = {
+  deliveryFee: '配送手数料',
+  expressFee: '速達配送料',
+} as const;
+
+export type OrderFeeLabel = typeof OrderFeeLabel[keyof typeof OrderFeeLabel];
+
 export const addDeliveryFeeAndExpressFeeToProductList = (
   products: NormalizedProduct[],
   deliveryType: DeliveryType,
@@ -12,7 +19,7 @@ export const addDeliveryFeeAndExpressFeeToProductList = (
   return addExpressDeliveryObjectToProductList(tempProducts, deliveryType);
 };
 
-const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): NormalizedProduct[] => {
+export const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): NormalizedProduct[] => {
   if (products.length === 0) {
     throw Error('A product list is empty.');
   }
@@ -33,8 +40,9 @@ const addDeliveryFeeObjectToProductList = (products: NormalizedProduct[]): Norma
     {
       relationID: 'deliveryFee',
       productID: 'deliveryFee',
-      name: '配送手数料',
-      unitPrice: 1000,
+      name: OrderFeeLabel.deliveryFee,
+      purchasePrice: 0, // 仕入れ値
+      unitPrice: 1000, // 売価
       quantity: 1,
       isExportCSV: false, // 配送手数料はcsvに出力しない
       viewOrder: trailingViewOrder + 1, // 配列最後のviewOrderの値から1を足して表示順を最後に設定
@@ -66,8 +74,9 @@ const addExpressDeliveryObjectToProductList = (
     {
       relationID: 'express',
       productID: 'express',
-      name: '速達配送料',
-      unitPrice: 1000,
+      name: OrderFeeLabel.expressFee,
+      purchasePrice: 0, // 仕入れ値
+      unitPrice: 1000, // 売価
       quantity: 1,
       isExportCSV: false, // 速達料はcsvに出力しない
       viewOrder: trailingViewOrder + 1, // 配列最後のviewOrderの値から1を足して表示順を最後に設定

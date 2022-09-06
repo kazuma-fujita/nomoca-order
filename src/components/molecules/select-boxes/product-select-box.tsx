@@ -1,8 +1,6 @@
 import { Add, DeleteForever } from '@mui/icons-material';
-import { Box, Button, CircularProgress, IconButton, MenuItem, TextField, Typography } from '@mui/material';
-import { OrderType } from 'API';
+import { Box, Button, CircularProgress, IconButton, MenuItem, TextField } from '@mui/material';
 import { ErrorAlert } from 'components/atoms/alerts/error-alert';
-import { ReceiptTable } from 'components/molecules/receipt-table';
 import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
@@ -23,7 +21,7 @@ type ProductErrorField = {
 const quantities = Array.from({ length: 25 }, (_, i) => i + 1);
 
 export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
-  const { data: defaultValues, orderType } = useOrderFormParam();
+  const { data: defaultValues } = useOrderFormParam();
   const { data: productList, isLoading, error } = useFetchProductList();
   const [selectedProducts, setSelectedProducts] = useState<NormalizedProduct[]>(defaultValues?.products ?? []);
 
@@ -39,6 +37,7 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
         relationID: `ID-${selectedIndex}`,
         productID: `ID-${selectedIndex}`,
         name: product.name,
+        purchasePrice: product.purchasePrice,
         unitPrice: product.unitPrice,
         isExportCSV: product.isExportCSV,
         quantity: prev ? prev.quantity : 1, // 個数は引き継ぎ
@@ -66,6 +65,7 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
           relationID: `ID-${selectedIndex}`,
           productID: `ID-${selectedIndex}`,
           name: '',
+          purchasePrice: 0,
           unitPrice: 0,
           quantity: quantity,
           isExportCSV: false,
@@ -154,7 +154,6 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
                   'quantity' in (errors.products as ProductErrorField[])[index] &&
                   (errors.products as ProductErrorField[])[index].quantity.message
                 }
-                // {...field}
               >
                 {quantities.map((quantity, index) => (
                   <MenuItem key={index} value={quantity}>
@@ -186,14 +185,14 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
           )}
         </Box>
       ))}
-      <Box mt={8} mb={8}>
+      {/* <Box mt={8} mb={8}>
         <ReceiptTable products={selectedProducts} />
         {orderType === OrderType.singleOrder && (
           <Typography variant='caption'>
             ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
           </Typography>
         )}
-      </Box>
+      </Box> */}
     </>
   );
 };
