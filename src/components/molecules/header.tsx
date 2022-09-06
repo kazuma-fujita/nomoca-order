@@ -41,7 +41,6 @@ export const Header = () => {
         [
           { path: Path.singleOrderProduct, icon: CategoryIcon, label: ScreenName.singleOrderProduct },
           { path: Path.subscriptionOrderProduct, icon: CategoryIcon, label: ScreenName.subscriptionOrderProduct },
-          { path: Path.terms, icon: FormatAlignLeftIcon, label: ScreenName.terms },
         ],
       ]
     : [
