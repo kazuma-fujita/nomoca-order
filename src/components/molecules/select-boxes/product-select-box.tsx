@@ -185,14 +185,6 @@ export const ProductSelectBox = ({ control, fieldArrayReturn }: Props) => {
           )}
         </Box>
       ))}
-      {/* <Box mt={8} mb={8}>
-        <ReceiptTable products={selectedProducts} />
-        {orderType === OrderType.singleOrder && (
-          <Typography variant='caption'>
-            ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
-          </Typography>
-        )}
-      </Box> */}
     </>
   );
 };

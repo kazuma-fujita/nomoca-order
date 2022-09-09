@@ -193,7 +193,7 @@ export const useExportOrderCSV = () => {
           ? `注文にCSV出力設定無効商品が含まれています。個別に発送してください。\n${nonOutputCSVProducts.join('\n')}`
           : '';
       // CSV出力結果メッセージ
-      const outputCSVCountMessage = `${outputCSVProducts}\n${outPutCSVDescription}\n${outputCSVCount}\n\n${nonOutputCSVProductsMessage}`;
+      const outputCSVCountMessage = `${outputCSVProducts}\n${outPutCSVDescription}\n${outputCSVCount}\n\n${nonOutputCSVProductsMessage}\n\n`;
       return outputCSVCountMessage;
     } catch (error) {
       setIsLoading(false);

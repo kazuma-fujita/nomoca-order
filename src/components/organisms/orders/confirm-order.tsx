@@ -87,9 +87,11 @@ const ProductsLabel = () => {
   return (
     <>
       <ReceiptTable products={products} />
-      <Typography variant='caption'>
-        ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
-      </Typography>
+      {orderType === OrderType.singleOrder && (
+        <Typography variant='caption'>
+          ※ご注文合計金額が10,000円(税抜)未満の場合、別途配送手数料として1,000円(税抜)を頂戴致します。
+        </Typography>
+      )}
     </>
   );
 };
