@@ -35,7 +35,7 @@ export const ProductNameTextField: React.FC<Props> = ({ formState, register, set
         required: '商品名を入力してください',
         maxLength: { value: maxLength, message: `商品名は${maxLength}桁で入力してください` },
         pattern: {
-          value: /^[^\s\p{Symbol}]+$/u, // 空白、数学記号、通貨記号、音声記号、絵文字、機種依存文字を除外
+          value: /^\S+$/i, // 空白のみ除外
           message: '商品名で使用できない文字が含まれています',
         },
         onBlur: handleBlur,
