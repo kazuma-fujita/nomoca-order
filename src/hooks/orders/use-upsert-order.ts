@@ -55,7 +55,6 @@ const updateSubscriptionOrderProducts = async (
     }
     const input: DeleteSubscriptionOrderProductInput = { id: item.relationID };
     const variables: DeleteSubscriptionOrderProductMutationVariables = { input: input };
-    console.table(variables);
     // データ削除実行
     const result = (await API.graphql(
       graphqlOperation(deleteSubscriptionOrderProduct, variables),
