@@ -29,13 +29,13 @@ export const seedProducts = [
       S: 'singleOrder',
     },
     name: {
-      S: '注文商品A',
+      S: '高保存ロール紙(100m×10巻)',
     },
     purchasePrice: {
-      N: '800',
+      N: '13860',
     },
     unitPrice: {
-      N: '1000',
+      N: '19800',
     },
     viewOrder: {
       N: '1',
@@ -50,13 +50,13 @@ export const seedProducts = [
       S: 'singleOrder',
     },
     name: {
-      S: '注文商品B',
+      S: '高保存ロール紙(240m×10巻)',
     },
     purchasePrice: {
-      N: '1600',
+      N: '27720',
     },
     unitPrice: {
-      N: '2000',
+      N: '39600',
     },
     viewOrder: {
       N: '2',
@@ -71,13 +71,13 @@ export const seedProducts = [
       S: 'singleOrder',
     },
     name: {
-      S: '注文商品C',
+      S: 'コインメックカセットチューブ(1個)',
     },
     purchasePrice: {
-      N: '2400',
+      N: '7500',
     },
     unitPrice: {
-      N: '3000',
+      N: '12500',
     },
     viewOrder: {
       N: '3',
@@ -92,13 +92,13 @@ export const seedProducts = [
       S: 'singleOrder',
     },
     name: {
-      S: 'CSV出力無効注文商品A',
+      S: 'インクリボン(黒/1500枚分1セット)',
     },
     purchasePrice: {
-      N: '3200',
+      N: '5060',
     },
     unitPrice: {
-      N: '4000',
+      N: '4600',
     },
     viewOrder: {
       N: '4',
@@ -116,13 +116,13 @@ export const seedProducts = [
       S: 'singleOrder',
     },
     name: {
-      S: 'CSV出力無効注文商品B',
+      S: 'クリーニングカード(10枚1セット)',
     },
     purchasePrice: {
-      N: '4000',
+      N: '800',
     },
     unitPrice: {
-      N: '5000',
+      N: '727',
     },
     viewOrder: {
       N: '5',
@@ -140,13 +140,13 @@ export const seedProducts = [
       S: 'singleOrder',
     },
     name: {
-      S: 'CSV出力無効注文商品C',
+      S: '無停電電源装置(UPS)',
     },
     purchasePrice: {
-      N: '4800',
+      N: '11770',
     },
     unitPrice: {
-      N: '6000',
+      N: '20000',
     },
     viewOrder: {
       N: '6',
@@ -164,13 +164,13 @@ export const seedProducts = [
       S: 'subscriptionOrder',
     },
     name: {
-      S: '定期便商品A',
+      S: '高保存ロール紙(100m×10巻)',
     },
     purchasePrice: {
-      N: '800',
+      N: '13860',
     },
     unitPrice: {
-      N: '1000',
+      N: '19800',
     },
     viewOrder: {
       N: '1',
@@ -185,109 +185,109 @@ export const seedProducts = [
       S: 'subscriptionOrder',
     },
     name: {
-      S: '定期便商品B',
+      S: '高保存ロール紙(240m×10巻)',
     },
     purchasePrice: {
-      N: '1600',
+      N: '27720',
     },
     unitPrice: {
-      N: '2000',
+      N: '39600',
     },
     viewOrder: {
       N: '2',
     },
   },
-  {
-    ...baseProduct,
-    id: {
-      S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c19',
-    },
-    orderType: {
-      S: 'subscriptionOrder',
-    },
-    name: {
-      S: '定期便商品C',
-    },
-    purchasePrice: {
-      N: '2400',
-    },
-    unitPrice: {
-      N: '3000',
-    },
-    viewOrder: {
-      N: '3',
-    },
-  },
-  {
-    ...baseProduct,
-    id: {
-      S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c20',
-    },
-    orderType: {
-      S: 'subscriptionOrder',
-    },
-    name: {
-      S: 'CSV出力無効定期便商品A',
-    },
-    purchasePrice: {
-      N: '3200',
-    },
-    unitPrice: {
-      N: '4000',
-    },
-    viewOrder: {
-      N: '4',
-    },
-    isExportCSV: {
-      BOOL: false,
-    },
-  },
-  {
-    ...baseProduct,
-    id: {
-      S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c21',
-    },
-    orderType: {
-      S: 'subscriptionOrder',
-    },
-    name: {
-      S: 'CSV出力無効定期便商品B',
-    },
-    purchasePrice: {
-      N: '4000',
-    },
-    unitPrice: {
-      N: '5000',
-    },
-    viewOrder: {
-      N: '5',
-    },
-    isExportCSV: {
-      BOOL: false,
-    },
-  },
-  {
-    ...baseProduct,
-    id: {
-      S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c22',
-    },
-    orderType: {
-      S: 'subscriptionOrder',
-    },
-    name: {
-      S: 'CSV出力無効定期便商品C',
-    },
-    purchasePrice: {
-      N: '4800',
-    },
-    unitPrice: {
-      N: '6000',
-    },
-    viewOrder: {
-      N: '6',
-    },
-    isExportCSV: {
-      BOOL: false,
-    },
-  },
+  // {
+  //   ...baseProduct,
+  //   id: {
+  //     S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c19',
+  //   },
+  //   orderType: {
+  //     S: 'subscriptionOrder',
+  //   },
+  //   name: {
+  //     S: '定期便商品C',
+  //   },
+  //   purchasePrice: {
+  //     N: '2400',
+  //   },
+  //   unitPrice: {
+  //     N: '3000',
+  //   },
+  //   viewOrder: {
+  //     N: '3',
+  //   },
+  // },
+  // {
+  //   ...baseProduct,
+  //   id: {
+  //     S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c20',
+  //   },
+  //   orderType: {
+  //     S: 'subscriptionOrder',
+  //   },
+  //   name: {
+  //     S: 'CSV出力無効定期便商品A',
+  //   },
+  //   purchasePrice: {
+  //     N: '3200',
+  //   },
+  //   unitPrice: {
+  //     N: '4000',
+  //   },
+  //   viewOrder: {
+  //     N: '4',
+  //   },
+  //   isExportCSV: {
+  //     BOOL: false,
+  //   },
+  // },
+  // {
+  //   ...baseProduct,
+  //   id: {
+  //     S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c21',
+  //   },
+  //   orderType: {
+  //     S: 'subscriptionOrder',
+  //   },
+  //   name: {
+  //     S: 'CSV出力無効定期便商品B',
+  //   },
+  //   purchasePrice: {
+  //     N: '4000',
+  //   },
+  //   unitPrice: {
+  //     N: '5000',
+  //   },
+  //   viewOrder: {
+  //     N: '5',
+  //   },
+  //   isExportCSV: {
+  //     BOOL: false,
+  //   },
+  // },
+  // {
+  //   ...baseProduct,
+  //   id: {
+  //     S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c22',
+  //   },
+  //   orderType: {
+  //     S: 'subscriptionOrder',
+  //   },
+  //   name: {
+  //     S: 'CSV出力無効定期便商品C',
+  //   },
+  //   purchasePrice: {
+  //     N: '4800',
+  //   },
+  //   unitPrice: {
+  //     N: '6000',
+  //   },
+  //   viewOrder: {
+  //     N: '6',
+  //   },
+  //   isExportCSV: {
+  //     BOOL: false,
+  //   },
+  // },
 ];
