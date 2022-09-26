@@ -50,6 +50,10 @@ export const useSendMail = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { name, id, __typename, createdAt, updatedAt, owner, ...restClinic } = clinic;
     // 小計、税、合計を計算
+    // subtotal ... 小計(税抜) = 単価(税抜) * 個数
+    // total ... 合計 = 小計(税抜) + 消費税
+    // taxes ... 内消費税 = 小計 * 0.1
+    // 注) 消費税の端数は四捨五入される
     const { total, taxes, subtotal } = calcTotalFromProductList(products);
 
     // requestパラメータ設定
@@ -57,12 +61,13 @@ export const useSendMail = () => {
       toAddresses: [clinic.mailAddress, toOperationAddress],
       sendMailType: sendMailType,
       products: products.map((product) => {
+        // 商品毎の単価(税抜)の合計金額(税抜)を計算
         const total = (product.unitPrice * product.quantity).toLocaleString();
         return `${product.name}  単価 ${product.unitPrice}円  数量 ${product.quantity}  金額 ${total}円`;
       }),
-      subtotal: subtotal,
-      tax: taxes,
-      total: total,
+      subtotal: subtotal, // 小計(税抜)
+      tax: taxes, // 消費税
+      total: total, // 合計(税込)
       clinicName: name,
       staffName: `${staff.lastName} ${staff.firstName}`,
       deliveryType: deliveryType,

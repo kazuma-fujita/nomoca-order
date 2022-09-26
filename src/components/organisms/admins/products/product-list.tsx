@@ -23,11 +23,11 @@ const header = [
     minWidth: 160,
   },
   {
-    label: '仕入れ値',
+    label: '仕入れ値(税抜)',
     minWidth: 80,
   },
   {
-    label: '単価',
+    label: '単価(税抜)',
     minWidth: 80,
   },
   {

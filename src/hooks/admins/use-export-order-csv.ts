@@ -66,8 +66,13 @@ const header = {
 };
 
 const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: NormalizedProduct, now: Date) => {
-  //  purchasePriceは仕入れ値。新世紀に支払いする金額でCSVに出力する金額
+  //  purchasePriceは仕入れ値。新世紀に支払いする金額でCSVに出力する税抜金額
   const { total, taxes, subtotal } = calcTotalFromPriceAndQuantity(product.purchasePrice, product.quantity);
+  // 金額のCSV項目に対する内訳は以下
+  // subtotal ... 小計(税抜) = 仕入れ値(税抜) * 個数
+  // total ... 合計 = 小計(税抜) + 消費税
+  // tax ... 内消費税 = 小計 * 0.1
+  // 注) 消費税の端数は四捨五入される
   return {
     id: `"${order.id}"`,
     empty1: '',
