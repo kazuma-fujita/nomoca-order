@@ -14,7 +14,6 @@ export const useCompleteOrder = () => {
   const { orderType, mutate: orderFormMutate } = useOrderFormParam();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
 
-  console.log('swrKey', singleOrderSWRKey);
   // 一覧更新
   mutate(orderType === OrderType.singleOrder ? singleOrderSWRKey : SWRKey.subscriptionOrderList);
 

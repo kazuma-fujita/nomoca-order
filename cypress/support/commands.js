@@ -39,9 +39,6 @@ const awsconfig = {
 };
 Auth.configure(awsconfig);
 
-console.log('pool id', awsconfig.aws_user_pools_id);
-console.log('client id', awsconfig.aws_user_pools_web_client_id);
-
 Cypress.Commands.add('cognitoLogin', (username, password) => {
   cy.then(() => Auth.signIn(username, password)).then((cognitoUser) => {
     const idToken = cognitoUser.signInUserSession.idToken.jwtToken;
@@ -139,11 +136,8 @@ const clearAllRecords = async () => {
       if (scan.Items && scan.Items.length > 0) {
         // BatchDelete処理上限25件づつの多次元配列生成
         const deleteItemsList = flatMapWithCount(scan.Items, batchWriteLimit);
-        console.log('delete tableName', tableName);
         deleteItemsList.map(async (deleteItems) => {
-          console.log('delete items', deleteItems);
           const params = createParamsToDeleteRecords(tableName, deleteItems);
-          console.log('delete params', params);
           await db.batchWriteItem(params).promise();
         });
       }
@@ -157,7 +151,6 @@ const clearAllRecords = async () => {
 const putProducts = async () => {
   try {
     const params = createParamsToPutProductRecords(seedProducts);
-    console.log('insert params', params);
     await db.batchWriteItem(params).promise();
   } catch (err) {
     console.error(err);

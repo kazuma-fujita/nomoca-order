@@ -16,9 +16,7 @@ const fetcher = async () => {
     throw Error('It was returned null after the API had fetched data.');
   }
   // 文字列型をDate型に変換。サーバからはUTC時刻が返却されるので、Dateオブジェクトで+9時間JST時刻に変換
-  console.log('server time', result.data.getCurrentDate.currentDate);
   const now = new Date(result.data.getCurrentDate.currentDate);
-  console.log('date time', now);
   return now;
 };
 

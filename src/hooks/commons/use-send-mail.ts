@@ -87,7 +87,6 @@ export const useSendMail = () => {
         throw Error('It returned null that an API which executed to send mail.');
       }
 
-      console.log('order sendMailResult', sendMailResult.data.sendOrderMail);
       return sendMailResult.data.sendOrderMail;
     } catch (error) {
       const parseError = parseResponseError(error);

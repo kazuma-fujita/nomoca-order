@@ -52,7 +52,6 @@ export const useVerifyAuthenticated = () => {
   useEffect(() => {
     (async () => {
       try {
-        console.log('after login');
         // Cognitoから認証情報取得
         const currentUser = await Auth.currentAuthenticatedUser();
         // 認証済みの場合Global stateの更新。useSWRの第2引数にfalseを指定すると再検証(再fetch)をしない
@@ -72,10 +71,8 @@ export const useVerifyAuthenticated = () => {
 export const useVerifyBeforeAuthenticate = () => {
   const router = useRouter();
   useEffect(() => {
-    console.log('before login');
     // 画面ステータスをみてログイン後画面に遷移
     return onAuthUIStateChange((nextAuthState, authData) => {
-      console.log('nextAuthState', nextAuthState);
       // ログイン直後判定
       if (nextAuthState === AuthState.SignedIn && authData) {
         afterAuthTransition(router);
@@ -130,7 +127,6 @@ export const useSignOut = () => {
   const signOut = useCallback(async (): Promise<void> => {
     setIsLoading(true);
     try {
-      console.log('sign out');
       // globalにsign out実行。他にログインしている端末があれば全てsign out
       await Auth.signOut({ global: true });
       // useSWRのcacheクリア

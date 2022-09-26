@@ -235,7 +235,6 @@ const createMailBody = (
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  console.log('EVENT', event);
   const {
     toAddresses,
     // bccAddress,
@@ -280,8 +279,6 @@ exports.handler = async (event) => {
     deliveryStartMonth,
     deliveryInterval,
   );
-  console.log(mailSubject);
-  console.log(mailBody);
   // 送信するEmailのparamsを設定
   const baseParams = {
     Message: {
@@ -316,7 +313,6 @@ exports.handler = async (event) => {
       };
       console.table(requestParams);
       await ses.sendEmail(requestParams).promise();
-      console.log('Success to Send an Email');
     }),
   );
   return clinicName;

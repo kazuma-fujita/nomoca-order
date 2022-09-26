@@ -141,7 +141,6 @@ const updateDeliveryStatus = async (filteredOrders: ExtendedOrder<Order>[], now:
         if (!result.data || !result.data.updateOrder) {
           throw Error('It returned null that an API which executed to update order data.');
         }
-        console.log('updatedOrder:', result.data.updateOrder);
       } catch (err) {
         const error = parseResponseError(err);
         console.error('updates delivery status error:', error);

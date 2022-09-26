@@ -4,7 +4,6 @@ const AWS = require('aws-sdk');
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  console.log('EVENT', event);
   const { toAddress, subject, body } = event.arguments;
 
   const defaultCharset = 'UTF-8';
@@ -35,7 +34,6 @@ exports.handler = async (event) => {
   const ses = new AWS.SES();
   // sendEmail実行時に発生したExceptionはそのままAPIのResponseとして返却する為、try - catchしない
   await ses.sendEmail(params).promise();
-  console.log('Success to Send an Email');
   return;
 
   // return {

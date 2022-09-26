@@ -37,7 +37,6 @@ export const useCancelOrder = () => {
         throw Error('The API deleted data but it returned null.');
       }
       setError(null);
-      console.log('canceledOrder:', result.data.updateOrder);
       // 再フェッチ実行
       mutate(swrKey);
     } catch (error) {

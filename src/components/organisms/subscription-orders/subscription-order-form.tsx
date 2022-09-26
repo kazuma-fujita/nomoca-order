@@ -47,8 +47,6 @@ const DeliveryStartYearMonthSelectBox = ({ register, setValue, control }: UseFor
   const nowYear = currentDate.getFullYear();
   const nowMonth = currentDate.getMonth() + 1;
 
-  console.log('canCreateSubscriptionOrderForTheCurrentMonth', canCreateSubscriptionOrderForTheCurrentMonth);
-
   // 配送開始月SelectField初期値。初期値として翌月を設定
   let nextMonth = nowMonth + 1 === 13 ? 1 : nowMonth + 1;
 

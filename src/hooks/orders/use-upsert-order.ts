@@ -63,7 +63,6 @@ const updateSubscriptionOrderProducts = async (
     if (!result.data || !result.data.deleteSubscriptionOrderProduct) {
       throw Error('It returned null that an API which executed to delete an order and a product relation data.');
     }
-    console.log('deleteOrderProduct', result.data.deleteSubscriptionOrderProduct);
   }
   // Order と Product のリレーション作成
   await createSubscriptionOrderProducts(updateOrderID, updateProducts);
@@ -90,7 +89,6 @@ const createSubscriptionOrderProducts = async (newSubscriptionOrderID: string, c
     if (!result.data || !result.data.createSubscriptionOrderProduct) {
       throw Error('The API created connection data but it returned null.');
     }
-    console.log('newSubscriptionOrderProduct', result.data.createSubscriptionOrderProduct);
   }
 };
 
@@ -117,7 +115,6 @@ const createOrderProducts = async (newOrderID: string, productRelations: Normali
     if (!result.data || !result.data.createOrderProduct) {
       throw Error('It returned null that an API witch executed to create an order and a product relation data.');
     }
-    console.log('newOrderProduct', result.data.createOrderProduct);
   }
 };
 
