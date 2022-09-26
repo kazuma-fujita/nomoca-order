@@ -1,21 +1,19 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
+import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
 import Link from 'components/atoms/link';
 import { HeaderItem } from 'components/molecules/header';
 import { SignOutMenuItem } from 'components/organisms/sign-out/sign-out-menu-item';
+import { TermsMenuItem } from 'components/organisms/terms/terms-menu-item';
 import { Path } from 'constants/path';
 import React, { useState } from 'react';
 import { useCurrentUser } from 'stores/use-current-user';
-import { TermsDialog } from '../organisms/terms/terms-dialog';
-import useToggle from 'react-use/lib/useToggle';
 
 type Props = {
   menuItems: HeaderItem[][];
 };
 
-export const ProfileMenu = (props: Props) => {
-  const [on, toggle] = useToggle(false);
+export const ProfileMenu = ({ menuItems }: Props) => {
   const { email } = useCurrentUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -77,38 +75,32 @@ export const ProfileMenu = (props: Props) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {props.menuItems.map((items, index) => (
-          <div key={index}>
-            {items.map((item) =>
-              item.path === Path.signOut ? (
-                <SignOutMenuItem handleClose={handleClose} key={item.path}>
-                  <ListItemIcon>
-                    <SvgIcon component={item.icon} fontSize='small' />
-                  </ListItemIcon>
-                  <ListItemText primary={item.label} />
-                </SignOutMenuItem>
-              ) : item.path === Path.terms ? (
-                <>
-                  <MenuItem onClick={toggle} key={item.path}>
-                    <ListItemIcon>
-                      <SvgIcon component={item.icon} fontSize='small' />
-                    </ListItemIcon>
-                    <ListItemText primary={item.label} />
-                  </MenuItem>
-                  <TermsDialog on={on} toggle={toggle} />
-                </>
-              ) : (
-                <MenuItem key={item.path} component={Link} href={item.path}>
-                  <ListItemIcon>
-                    <SvgIcon component={item.icon} fontSize='small' />
-                  </ListItemIcon>
-                  <ListItemText primary={item.label} />
-                </MenuItem>
-              ),
-            )}
-            {index === 0 && items.length > 1 && <Divider />}
-          </div>
-        ))}
+        {menuItems.map((items) =>
+          items.map((item) =>
+            item.path === Path.signOut ? (
+              <SignOutMenuItem handleClose={handleClose} key={item.path}>
+                <ListItemIcon>
+                  <SvgIcon component={item.icon} fontSize='small' />
+                </ListItemIcon>
+                <ListItemText primary={item.label} />
+              </SignOutMenuItem>
+            ) : item.path === Path.terms ? (
+              <TermsMenuItem key={item.path}>
+                <ListItemIcon>
+                  <SvgIcon component={item.icon} fontSize='small' />
+                </ListItemIcon>
+                <ListItemText primary={item.label} />
+              </TermsMenuItem>
+            ) : (
+              <MenuItem key={item.path} component={Link} href={item.path}>
+                <ListItemIcon>
+                  <SvgIcon component={item.icon} fontSize='small' />
+                </ListItemIcon>
+                <ListItemText primary={item.label} />
+              </MenuItem>
+            ),
+          ),
+        )}
       </Menu>
     </>
   );
