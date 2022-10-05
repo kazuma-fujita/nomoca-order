@@ -33,7 +33,6 @@ const deleteSubscriptionOrderProducts = async (products: NormalizedProduct[]) =>
     if (!result.data || !result.data.deleteSubscriptionOrderProduct) {
       throw Error('The API deleted connection data but it returned null.');
     }
-    console.log('deleteSubscriptionOrderProduct', result.data.deleteSubscriptionOrderProduct);
   }
 };
 
@@ -60,7 +59,6 @@ export const useDeleteSubscriptionOrder = () => {
       if (!result.data || !result.data.deleteSubscriptionOrder) {
         throw Error('The API deleted data but it returned null.');
       }
-      console.log('deleteSubscriptionOrder:', result.data.deleteSubscriptionOrder);
 
       setError(null);
       // 再フェッチ実行

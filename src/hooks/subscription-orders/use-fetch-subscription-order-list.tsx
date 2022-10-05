@@ -70,7 +70,6 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
     if (!item || !item.products || !item.products.items) {
       throw Error('The API fetched products but it returned null.');
     }
-    console.table(item.products.items);
   }
 
   const extendedItems: ExtendedOrder<SubscriptionOrder>[] = items.map((item) => ({

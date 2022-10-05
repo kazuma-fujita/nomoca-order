@@ -1,4 +1,4 @@
-import { TableCell } from '@mui/material';
+import { Alert, TableCell } from '@mui/material';
 import { SubscriptionOrder } from 'API';
 import { CommonTableContainer } from 'components/molecules/common-table-container';
 import { CommonTableRow } from 'components/molecules/common-table-row';
@@ -49,9 +49,14 @@ const header: TableHeader[] = [
 export const SubscriptionOrderList = () => {
   const fetchReturn = useFetchSubscriptionOrderList();
   return (
-    <CommonTableContainer {...fetchReturn} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
-      {fetchReturn.data && fetchReturn.data.map((item) => <Row key={item.id} item={item} />)}
-    </CommonTableContainer>
+    <>
+      <Alert severity='info' sx={{ mb: 2 }}>
+        定期便とは定期的にロール紙をお届けするサービスです。配送予定月の中旬頃にお届けします。
+      </Alert>
+      <CommonTableContainer {...fetchReturn} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
+        {fetchReturn.data && fetchReturn.data.map((item) => <Row key={item.id} item={item} />)}
+      </CommonTableContainer>
+    </>
   );
 };
 

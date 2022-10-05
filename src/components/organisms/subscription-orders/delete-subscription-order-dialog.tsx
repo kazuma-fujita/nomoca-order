@@ -21,7 +21,14 @@ export const DeleteSubscriptionOrderDialog = (props: Props) => {
     <Dialog open={props.on}>
       <DialogTitle>定期便を{props.label}する</DialogTitle>
       <DialogContent>
-        <DialogContentText>こちらの定期便を{props.label}します。よろしいですか？</DialogContentText>
+        <DialogContentText>
+          定期便を{props.label}します。宜しいですか？ <br />
+          <br />
+          ※ 定期便は配送予定月の中旬頃にお届けします。
+          <br />
+          配送予定月中旬頃の解約の場合、既に発送手配が完了している商品に関しては配送されます。
+          <br />
+        </DialogContentText>
         {props.error && <ErrorAlert>{props.error}</ErrorAlert>}
         {/* <Box mt={2} mb={2}>
           <Typography>{props.name}</Typography>

@@ -4,7 +4,8 @@ import { NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscript
 export type Receipt = { total: number; taxes: number; subtotal: number };
 
 const calcTotalFromSubtotal = (subtotal: number): Receipt => {
-  const taxes = taxRate * subtotal;
+  // 消費税の端数は四捨五入
+  const taxes = Math.round(taxRate * subtotal);
   const total = taxes + subtotal;
   return { total, taxes, subtotal };
 };
@@ -15,11 +16,11 @@ export const calcTotalFromPriceAndQuantity = (unitPrice: number, quantity: numbe
   return { total, taxes, subtotal };
 };
 
+export const calcSubtotalFromProductList = (products: NormalizedProduct[]): number =>
+  products.map((product) => product.unitPrice * product.quantity).reduce((sum, value) => sum + value, 0);
+
 export const calcTotalFromProductList = (products: NormalizedProduct[]): Receipt => {
   const subtotal = calcSubtotalFromProductList(products);
   const { total, taxes } = calcTotalFromSubtotal(subtotal);
   return { total, taxes, subtotal };
 };
-
-export const calcSubtotalFromProductList = (products: NormalizedProduct[]): number =>
-  products.map((product) => product.unitPrice * product.quantity).reduce((sum, value) => sum + value, 0);
