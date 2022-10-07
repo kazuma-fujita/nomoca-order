@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
 import { SearchDeliveryStatusSelectBox } from './search-delivery-status-select-box';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
+import { SearchPhoneNumberTextField } from 'components/molecules/text-fields/phone-number-text-field';
 
 export type SingleOrderSearchParam = {
   deliveryStatus: DeliveryStatus;
@@ -30,6 +31,7 @@ export const SingleOrderSearchForm = ({ setSelectedItems }: Props) => {
   const submitHandler = handleSubmit(
     useCallback(
       (param: SingleOrderSearchParam) => {
+        console.log('search param', param);
         // グローバルなcontextに検索条件保存。検索条件が更新されるとuseFetchOrderList内でリスト再取得が走る
         setSearchState(param);
         // 選択済みのチェックボックスは全件クリア
@@ -47,10 +49,10 @@ export const SingleOrderSearchForm = ({ setSelectedItems }: Props) => {
         </Grid>
         {/* <Grid item>
           <SearchClinicNameTextField {...useFormReturn} disabled={isLoading} />
-        </Grid>
+        </Grid> */}
         <Grid item>
           <SearchPhoneNumberTextField {...useFormReturn} disabled={isLoading} />
-        </Grid> */}
+        </Grid>
         <Grid item>
           <SearchButton isLoading={isLoading} />
         </Grid>

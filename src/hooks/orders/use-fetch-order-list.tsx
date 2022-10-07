@@ -6,16 +6,22 @@ import {
   ModelSortDirection,
   Order,
   Type,
+  ListClinicsQuery,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SingleOrderSearchParam } from 'components/organisms/admins/single-orders/search-form/single-order-search-form';
 import { SWRKey } from 'constants/swr-key';
-import { listOrdersSortedByCreatedAt } from 'graphql/queries';
+import { listClinics, listOrdersSortedByCreatedAt } from 'graphql/queries';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 import { useSingleOrderSearchParam } from 'hooks/admins/single-orders/use-single-order-search-param';
 import { useCurrentUser } from 'stores/use-current-user';
+import {
+  ListClinicsQueryVariables,
+  Clinic,
+  ModelOrderFilterInput,
+} from '../../../amplify/backend/function/listSubscriptionOrdersContainedNextDeliveryDate/src/API';
 
 const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
   if (!order.products) {
@@ -38,6 +44,51 @@ const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
   });
 };
 
+const fetchClinicIDsByPhoneNumber = async (phoneNumber: string) => {
+  if (!phoneNumber) {
+    return [];
+  }
+  if (phoneNumber) {
+    const variables: ListClinicsQueryVariables = { filter: { phoneNumber: { eq: phoneNumber } } };
+    const result = (await API.graphql(graphqlOperation(listClinics, variables))) as GraphQLResult<ListClinicsQuery>;
+    if (!result.data || !result.data.listClinics || !result.data.listClinics.items) {
+      throw Error('The API fetched clinics data but it returned null.');
+    }
+    const clinics = result.data.listClinics.items as Clinic[];
+    return clinics.map((clinic) => clinic.id);
+  }
+};
+
+const generateFetingFilter = async (deliveryStatus: DeliveryStatus, phoneNumber: string) => {
+  const deliveryStatusFilter =
+    deliveryStatus !== DeliveryStatus.none ? { deliveryStatus: { eq: deliveryStatus } } : null;
+
+  const clinicIDs = await fetchClinicIDsByPhoneNumber(phoneNumber);
+  const clinicIDsFilter =
+    clinicIDs && clinicIDs.length > 0
+      ? {
+          or: clinicIDs.map((id) => {
+            return {
+              clinicID: {
+                eq: id,
+              },
+            };
+          }),
+        }
+      : null;
+
+  let filter: ModelOrderFilterInput | null = null;
+  if (deliveryStatusFilter && clinicIDsFilter) {
+    filter = { and: [deliveryStatusFilter, clinicIDsFilter] };
+  } else if (deliveryStatusFilter) {
+    filter = deliveryStatusFilter;
+  } else if (clinicIDsFilter) {
+    filter = clinicIDsFilter;
+  }
+
+  return filter;
+};
+
 const fetcher = async (
   _: string,
   isOperator: boolean,
@@ -49,11 +100,16 @@ const fetcher = async (
     sortDirection: ModelSortDirection.DESC,
   };
 
+  const filter = isOperator ? await generateFetingFilter(searchState.deliveryStatus, searchState.phoneNumber) : null;
+  console.log('filter', filter);
+  console.table(filter);
+
   // admin権限かつ検索条件が全件検索以外はfilter指定をしてAPI実行
-  const variables =
-    isOperator && searchState.deliveryStatus !== DeliveryStatus.none
-      ? { ...sortVariables, filter: { deliveryStatus: { eq: searchState.deliveryStatus } } }
-      : sortVariables;
+  // const variables =
+  //   isOperator && searchState.deliveryStatus !== DeliveryStatus.none
+  //     ? { ...sortVariables, filter: { deliveryStatus: { eq: searchState.deliveryStatus } } }
+  //     : sortVariables;
+  const variables = filter ? { ...sortVariables, filter: filter } : sortVariables;
 
   const result = (await API.graphql(
     graphqlOperation(listOrdersSortedByCreatedAt, variables),
@@ -102,6 +158,7 @@ export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, childr
   const { isOperator } = useCurrentUser();
   // グローバルに保存された注文検索条件(admin管理画面用)
   const { searchState } = useSingleOrderSearchParam();
+  console.log('search State', searchState);
   // 検索条件もSWRキャッシュの対象
   const swrKey = [SWRKey.orderList, isOperator, searchState];
   const fetchResponse = useFetch<ExtendedOrder<Order>[]>(swrKey, fetcher, {}, mockResponse);

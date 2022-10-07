@@ -17,7 +17,7 @@ export const SingleOrderSearchParamContextProvider: React.FC = ({ children }) =>
   const initialState: SingleOrderSearchParam = {
     // 配送状況。デフォルト未発送
     deliveryStatus: DeliveryStatus.ordered,
-    // clinic name, phoneNumber検索は未実装
+    // clinic name, phoneNumber検索
     name: '',
     phoneNumber: '',
   };

@@ -62,7 +62,7 @@ export const SearchPhoneNumberTextField = ({ formState, register, setValue, disa
       disabled={disabled}
       autoComplete='off'
       error={Boolean(formState.errors.phoneNumber)}
-      helperText={formState.errors.phoneNumber ? formState.errors.phoneNumber.message : 'ハイフンを除く 例 0312345678'}
+      helperText={formState.errors.phoneNumber && formState.errors.phoneNumber.message}
       inputProps={{
         maxLength: MAX_LENGTH,
       }}
