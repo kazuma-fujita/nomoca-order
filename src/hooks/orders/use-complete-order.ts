@@ -5,12 +5,12 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { useOrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
-import { useFetchOrderList } from './use-fetch-order-list';
+import { useFetchSingleOrderList } from './use-fetch-single-order-list';
 
 export const useCompleteOrder = () => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
-  const { swrKey: singleOrderSWRKey } = useFetchOrderList();
+  const { swrKey: singleOrderSWRKey } = useFetchSingleOrderList();
   const { orderType, mutate: orderFormMutate } = useOrderFormParam();
   const basePath = orderType === OrderType.singleOrder ? Path.singleOrder : Path.subscriptionOrder;
 

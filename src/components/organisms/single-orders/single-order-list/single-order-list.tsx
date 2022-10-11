@@ -6,7 +6,7 @@ import { CommonTableContainer } from 'components/molecules/common-table-containe
 import { CommonTableRow } from 'components/molecules/common-table-row';
 import { CancelSingleOrderButton } from 'components/organisms/single-orders/cancel-single-order-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
-import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
+import { useFetchSingleOrderList } from 'hooks/orders/use-fetch-single-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import React from 'react';
 import { TableHeader } from 'types/table-header';
@@ -39,7 +39,7 @@ const header: TableHeader[] = [
 ];
 
 export const SingleOrderList = () => {
-  const fetchReturn = useFetchOrderList();
+  const fetchReturn = useFetchSingleOrderList();
   return (
     <CommonTableContainer {...fetchReturn} tableHeaders={header} emptyListDescription='現在注文の商品はありません'>
       {fetchReturn.data && fetchReturn.data.map((item: ExtendedOrder<Order>) => <Row key={item.id} item={item} />)}

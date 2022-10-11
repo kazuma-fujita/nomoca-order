@@ -3,7 +3,7 @@ import { Auth } from 'aws-amplify';
 import { Path } from 'constants/path';
 import { SWRKey } from 'constants/swr-key';
 import { UserGroup } from 'constants/user-group';
-import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
+import { useFetchSingleOrderList } from 'hooks/orders/use-fetch-single-order-list';
 import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NextRouter, useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -111,7 +111,7 @@ export const useSignOut = () => {
   const router = useRouter();
   // useSWR cacheクリアの為個別に設定しているswrKeyを取得
   const { cache } = useSWRConfig();
-  const { swrKey: orderListKey } = useFetchOrderList();
+  const { swrKey: orderListKey } = useFetchSingleOrderList();
   const { swrKey: productListKey } = useFetchProductList();
 
   useEffect(() => {

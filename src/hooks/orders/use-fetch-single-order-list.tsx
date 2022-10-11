@@ -7,6 +7,9 @@ import {
   Order,
   Type,
   ListClinicsQuery,
+  ListClinicsQueryVariables,
+  Clinic,
+  ModelOrderFilterInput,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SingleOrderSearchParam } from 'components/organisms/admins/single-orders/search-form/single-order-search-form';
@@ -17,11 +20,6 @@ import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
 import { useSingleOrderSearchParam } from 'hooks/admins/single-orders/use-single-order-search-param';
 import { useCurrentUser } from 'stores/use-current-user';
-import {
-  ListClinicsQueryVariables,
-  Clinic,
-  ModelOrderFilterInput,
-} from '../../../amplify/backend/function/listSubscriptionOrdersContainedNextDeliveryDate/src/API';
 
 const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
   if (!order.products) {
@@ -105,10 +103,6 @@ const fetcher = async (
   console.table(filter);
 
   // admin権限かつ検索条件が全件検索以外はfilter指定をしてAPI実行
-  // const variables =
-  //   isOperator && searchState.deliveryStatus !== DeliveryStatus.none
-  //     ? { ...sortVariables, filter: { deliveryStatus: { eq: searchState.deliveryStatus } } }
-  //     : sortVariables;
   const variables = filter ? { ...sortVariables, filter: filter } : sortVariables;
 
   const result = (await API.graphql(
@@ -142,7 +136,7 @@ const fetcher = async (
 
 const OrderListContext = createContext({} as ProviderProps);
 
-export const useFetchOrderList = () => useContext(OrderListContext);
+export const useFetchSingleOrderList = () => useContext(OrderListContext);
 
 // storybook用mock param
 type Props = {

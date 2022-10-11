@@ -14,12 +14,12 @@ import { useCallback, useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
 import { ExtendedOrder } from '../subscription-orders/use-fetch-subscription-order-list';
-import { useFetchOrderList } from './use-fetch-order-list';
+import { useFetchSingleOrderList } from './use-fetch-single-order-list';
 
 export const useCancelOrder = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const { swrKey } = useFetchOrderList();
+  const { swrKey } = useFetchSingleOrderList();
   const { mutate } = useSWRConfig();
   const { sendMail } = useSendMail();
 

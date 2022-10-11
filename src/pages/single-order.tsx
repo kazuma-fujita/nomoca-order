@@ -10,7 +10,7 @@ import { useVerifyAuthenticated } from 'stores/use-current-user';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
-import { OrderListContextProvider } from 'hooks/orders/use-fetch-order-list';
+import { OrderListContextProvider } from 'hooks/orders/use-fetch-single-order-list';
 import { SingleOrderSearchParamContextProvider } from 'hooks/admins/single-orders/use-single-order-search-param';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
