@@ -1,10 +1,10 @@
 import { MenuItem, TextField } from '@mui/material';
 import { DeliveryStatus } from 'API';
+import { SearchParam } from 'hooks/admins/use-search-param';
 import { Control, Controller } from 'react-hook-form';
-import { SingleOrderSearchParam } from './single-order-search-form';
 
 type Props = {
-  control: Control<SingleOrderSearchParam, object>;
+  control: Control<SearchParam, object>;
 };
 
 export const SearchDeliveryStatusSelectBox = ({ control }: Props) => (

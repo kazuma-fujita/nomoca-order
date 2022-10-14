@@ -2,7 +2,7 @@ import { Main } from 'components/molecules/main';
 import { SubscriptionOrderHistoryTemplate } from 'components/templates/subscription-order-histories/subscription-order-history-template';
 import { ScreenName } from 'constants/screen-name';
 import { TitleSuffix } from 'constants/title-suffix';
-import { SubscriptionOrderHistorySearchParamContextProvider } from 'hooks/admins/subscription-order-histories/use-subscription-order-history-search-param';
+import { SearchParamContextProvider } from 'hooks/admins/use-search-param';
 import { SubscriptionOrderHistoryListContextProvider } from 'hooks/subscription-order-histories/use-fetch-subscription-order-history-list';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
@@ -16,13 +16,13 @@ const SubscriptionOrderHistoryPage = ({ pageTitle }: InferGetStaticPropsType<typ
         <title>{pageTitle}</title>
       </Head>
       {/* admin側の処理と統一する為、使用しないがsearchParamContextを定義 */}
-      <SubscriptionOrderHistorySearchParamContextProvider>
+      <SearchParamContextProvider>
         <SubscriptionOrderHistoryListContextProvider>
           <Main>
             <SubscriptionOrderHistoryTemplate />
           </Main>
         </SubscriptionOrderHistoryListContextProvider>
-      </SubscriptionOrderHistorySearchParamContextProvider>
+      </SearchParamContextProvider>
     </>
   );
 };

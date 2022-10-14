@@ -9,16 +9,15 @@ import {
   ListClinicsQuery,
   ListClinicsQueryVariables,
   Clinic,
-  ModelOrderFilterInput,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SingleOrderSearchParam } from 'components/organisms/admins/single-orders/search-form/single-order-search-form';
 import { SWRKey } from 'constants/swr-key';
+import { addDays, format } from 'date-fns';
 import { listClinics, listOrdersSortedByCreatedAt } from 'graphql/queries';
+import { SearchParam, useSearchParam } from 'hooks/admins/use-search-param';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
-import { useSingleOrderSearchParam } from 'hooks/admins/single-orders/use-single-order-search-param';
 import { useCurrentUser } from 'stores/use-current-user';
 
 const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
@@ -42,7 +41,7 @@ const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
   });
 };
 
-const fetchClinicIDsByPhoneNumber = async (phoneNumber: string) => {
+const fetchClinicIDsByPhoneNumber = async (phoneNumber: string | null) => {
   if (!phoneNumber) {
     return [];
   }
@@ -57,48 +56,93 @@ const fetchClinicIDsByPhoneNumber = async (phoneNumber: string) => {
   }
 };
 
-const generateFetingFilter = async (deliveryStatus: DeliveryStatus, phoneNumber: string) => {
-  const deliveryStatusFilter =
-    deliveryStatus !== DeliveryStatus.none ? { deliveryStatus: { eq: deliveryStatus } } : null;
-
-  const clinicIDs = await fetchClinicIDsByPhoneNumber(phoneNumber);
-  const clinicIDsFilter =
-    clinicIDs && clinicIDs.length > 0
-      ? {
-          or: clinicIDs.map((id) => {
-            return {
-              clinicID: {
-                eq: id,
-              },
-            };
-          }),
-        }
-      : null;
-
-  let filter: ModelOrderFilterInput | null = null;
-  if (deliveryStatusFilter && clinicIDsFilter) {
-    filter = { and: [deliveryStatusFilter, clinicIDsFilter] };
-  } else if (deliveryStatusFilter) {
-    filter = deliveryStatusFilter;
-  } else if (clinicIDsFilter) {
-    filter = clinicIDsFilter;
+const generateClinicIDsFilter = async (phoneNumber: string | null) => {
+  if (!phoneNumber) {
+    return null;
   }
-
-  return filter;
+  const clinicIDs = await fetchClinicIDsByPhoneNumber(phoneNumber);
+  return clinicIDs && clinicIDs.length > 0
+    ? {
+        or: clinicIDs.map((id) => {
+          return {
+            clinicID: {
+              eq: id,
+            },
+          };
+        }),
+      }
+    : null;
 };
 
-const fetcher = async (
-  _: string,
-  isOperator: boolean,
-  searchState: SingleOrderSearchParam,
-): Promise<ExtendedOrder<Order>[]> => {
+const isValidDate = (dateString: string, formatString = 'yyyy-MM-dd'): boolean => {
+  const regexp = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+  if (!regexp.test(dateString)) {
+    return false;
+  }
+  const date = new Date(dateString);
+  try {
+    const formatDate = format(date, formatString);
+    return dateString === formatDate;
+  } catch (error) {
+    return false;
+  }
+};
+
+const generateSearchTermFilter = (fromDate: string | null, toDate: string | null) => {
+  if ((!fromDate && !toDate) || (fromDate && !isValidDate(fromDate)) || (toDate && !isValidDate(toDate))) {
+    return null;
+  }
+
+  const hms = 'T00:00:00.000Z';
+  let formattedFromDate = `1900-01-01${hms}`;
+  let formattedToDate = `${format(addDays(new Date(), 1), 'yyyy-MM-dd')}${hms}`;
+  if (fromDate) {
+    formattedFromDate = `${fromDate}${hms}`;
+  }
+  if (toDate) {
+    formattedToDate = `${format(addDays(new Date(toDate), 1), 'yyyy-MM-dd')}${hms}`;
+  }
+
+  console.log('formattedFromDate', formattedFromDate);
+  console.log('formattedToDate', formattedToDate);
+  return { deliveredAt: { between: [formattedFromDate, formattedToDate] } };
+};
+
+const generateFetingFilter = async (searchState: SearchParam) => {
+  const deliveryStatusFilter =
+    searchState.deliveryStatus !== DeliveryStatus.none ? { deliveryStatus: { eq: searchState.deliveryStatus } } : null;
+
+  const clinicIDsFilter = await generateClinicIDsFilter(searchState.phoneNumber);
+  const searchTermFilter = generateSearchTermFilter(searchState.fromDate, searchState.toDate);
+
+  const filters = [deliveryStatusFilter, clinicIDsFilter, searchTermFilter].filter((filter) => filter);
+  if (filters.length === 0) {
+    return null;
+  } else if (filters.length === 1) {
+    return filters[0];
+  } else {
+    return { and: filters };
+  }
+
+  // const filterInput: ModelOrderFilterInput | null = { and: filters.filter((filter) => filter) };
+  // // if (deliveryStatusFilter && clinicIDsFilter) {
+  // //   filter = { and: [deliveryStatusFilter, clinicIDsFilter] };
+  // // } else if (deliveryStatusFilter) {
+  // //   filter = deliveryStatusFilter;
+  // // } else if (clinicIDsFilter) {
+  // //   filter = clinicIDsFilter;
+  // // }
+  // return filterInput;
+};
+
+const fetcher = async (_: string, isOperator: boolean, searchState: SearchParam): Promise<ExtendedOrder<Order>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
   const sortVariables: ListOrdersSortedByCreatedAtQueryVariables = {
     type: Type.order,
     sortDirection: ModelSortDirection.DESC,
   };
 
-  const filter = isOperator ? await generateFetingFilter(searchState.deliveryStatus, searchState.phoneNumber) : null;
+  const filter = isOperator ? await generateFetingFilter(searchState) : null;
   console.log('filter', filter);
   console.table(filter);
 
@@ -144,14 +188,14 @@ type Props = {
 };
 
 type ProviderProps = FetchResponse<ExtendedOrder<Order>[]> & {
-  swrKey: (string | boolean | SingleOrderSearchParam)[];
+  swrKey: (string | boolean | SearchParam)[];
 };
 
 export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
   // adminユーザのみ検索をかける為、ログインユーザ権限取得
   const { isOperator } = useCurrentUser();
   // グローバルに保存された注文検索条件(admin管理画面用)
-  const { searchState } = useSingleOrderSearchParam();
+  const { searchState } = useSearchParam();
   console.log('search State', searchState);
   // 検索条件もSWRキャッシュの対象
   const swrKey = [SWRKey.orderList, isOperator, searchState];

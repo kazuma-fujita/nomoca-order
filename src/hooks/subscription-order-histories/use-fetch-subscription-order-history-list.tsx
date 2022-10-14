@@ -12,10 +12,9 @@ import {
   Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
-import { SingleOrderSearchParam } from 'components/organisms/admins/single-orders/search-form/single-order-search-form';
 import { SWRKey } from 'constants/swr-key';
 import { listClinics, listSubscriptionOrderHistoriesSortedByCreatedAt } from 'graphql/queries';
-import { useSubscriptionOrderHistorySearchParam } from 'hooks/admins/subscription-order-histories/use-subscription-order-history-search-param';
+import { SearchParam, useSearchParam } from 'hooks/admins/use-search-param';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
@@ -90,7 +89,7 @@ const generateFetingFilter = async (deliveryStatus: DeliveryStatus, phoneNumber:
 const fetcher = async (
   _: string,
   isOperator: boolean,
-  searchState: SingleOrderSearchParam,
+  searchState: SearchParam,
 ): Promise<ExtendedOrder<SubscriptionOrderHistory>[]> => {
   // schema.graphqlのKeyディレクティブでtypeとcreatedAtのsort条件を追加。sortを実行する為にtypeを指定。
   const sortVariables: ListSubscriptionOrderHistoriesSortedByCreatedAtQueryVariables = {
@@ -98,9 +97,9 @@ const fetcher = async (
     sortDirection: ModelSortDirection.DESC,
   };
 
-  const filter = isOperator ? await generateFetingFilter(searchState.deliveryStatus, searchState.phoneNumber) : null;
-  console.log('filter', filter);
-  console.table(filter);
+  // const filter = isOperator ? await generateFetingFilter(searchState.deliveryStatus, searchState.phoneNumber) : null;
+  // console.log('filter', filter);
+  // console.table(filter);
 
   // admin権限かつ検索条件が全件検索以外はfilter指定をしてAPI実行
   // const variables = filter ? { ...sortVariables, filter: filter } : sortVariables;
@@ -149,14 +148,14 @@ type Props = {
 };
 
 type ProviderProps = FetchResponse<ExtendedOrder<SubscriptionOrderHistory>[]> & {
-  swrKey: (string | boolean | SingleOrderSearchParam)[];
+  swrKey: (string | boolean | SearchParam)[];
 };
 
 export const SubscriptionOrderHistoryListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
   // adminユーザのみ検索をかける為、ログインユーザ権限取得
   const { isOperator } = useCurrentUser();
   // グローバルに保存された注文検索条件(admin管理画面用)
-  const { searchState } = useSubscriptionOrderHistorySearchParam();
+  const { searchState } = useSearchParam();
   console.log('search State', searchState);
   // 検索条件もSWRキャッシュの対象
   const swrKey = [SWRKey.subscriptionOrderHistoryList, isOperator, searchState];

@@ -11,7 +11,7 @@ import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 import { ProductListContextProvider } from 'hooks/products/use-fetch-product-list';
 import { StaffListContextProvider } from 'hooks/staffs/use-fetch-staff-list';
 import { OrderListContextProvider } from 'hooks/orders/use-fetch-single-order-list';
-import { SingleOrderSearchParamContextProvider } from 'hooks/admins/single-orders/use-single-order-search-param';
+import { SearchParamContextProvider } from 'hooks/admins/use-search-param';
 
 const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useVerifyAuthenticated();
@@ -21,7 +21,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
         <title>{pageTitle}</title>
       </Head>
       {/* admin側の処理と統一する為、使用しないがsearchParamContextを定義 */}
-      <SingleOrderSearchParamContextProvider>
+      <SearchParamContextProvider>
         <OrderListContextProvider>
           {/* isRevalidateOnFocusはWindowにフォーカスが外れて再度当たった時のrevalidation実行可否フラグ。入力フォームのプルダウンデータはfalse */}
           <ProductListContextProvider
@@ -40,7 +40,7 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
             </StaffListContextProvider>
           </ProductListContextProvider>
         </OrderListContextProvider>
-      </SingleOrderSearchParamContextProvider>
+      </SearchParamContextProvider>
     </>
   );
 };
