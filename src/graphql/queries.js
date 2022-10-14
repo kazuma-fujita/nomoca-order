@@ -526,6 +526,7 @@ export const getSubscriptionOrderHistory = /* GraphQL */ `
       deliveryInterval
       nextDeliveryYear
       nextDeliveryMonth
+      deliveredAt
       createdAt
       type
       owner
@@ -594,6 +595,7 @@ export const listSubscriptionOrderHistories = /* GraphQL */ `
         deliveryInterval
         nextDeliveryYear
         nextDeliveryMonth
+        deliveredAt
         createdAt
         type
         owner
@@ -670,6 +672,7 @@ export const listSubscriptionOrderHistoriesSortedByCreatedAt = /* GraphQL */ `
         deliveryInterval
         nextDeliveryYear
         nextDeliveryMonth
+        deliveredAt
         createdAt
         type
         owner

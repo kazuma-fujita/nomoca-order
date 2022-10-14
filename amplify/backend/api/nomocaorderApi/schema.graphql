@@ -140,7 +140,8 @@ type SubscriptionOrderHistory
   deliveryInterval: Int!
   nextDeliveryYear: Int
   nextDeliveryMonth: Int
-  createdAt: AWSDateTime! # 定期便発送日時
+  deliveredAt: AWSDateTime! # 発送日時
+  createdAt: AWSDateTime!
   type: Type!
     @index(
       name: "sortByCreatedAt"

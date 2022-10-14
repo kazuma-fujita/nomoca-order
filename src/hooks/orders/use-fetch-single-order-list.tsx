@@ -101,7 +101,10 @@ export const formatSearchTerm = (fromDate: string | null, toDate: string | null)
   return [formattedFromDate, formattedToDate];
 };
 
-const generateSearchTermFilter = (fromDate: string | null, toDate: string | null): ModelOrderFilterInput | null => {
+export const generateSearchTermFilter = (
+  fromDate: string | null,
+  toDate: string | null,
+): ModelOrderFilterInput | null => {
   if ((!fromDate && !toDate) || (fromDate && !isValidDate(fromDate)) || (toDate && !isValidDate(toDate))) {
     return null;
   }

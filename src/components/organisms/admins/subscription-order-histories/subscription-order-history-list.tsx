@@ -61,7 +61,7 @@ const Row = ({ rowItem }: RowProps) => {
           clinic={rowItem.clinic}
         />
       </TableCell>
-      <TableCell align='center'>{formatDateHourMinute(rowItem.createdAt)}</TableCell>
+      <TableCell align='center'>{formatDateHourMinute(rowItem.deliveredAt)}</TableCell>
     </CommonTableRow>
   );
 };

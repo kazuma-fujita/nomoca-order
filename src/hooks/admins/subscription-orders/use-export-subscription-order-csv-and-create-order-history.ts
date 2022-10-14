@@ -170,6 +170,7 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
           deliveryInterval: order.deliveryInterval,
           nextDeliveryYear: order.nextDeliveryYear,
           nextDeliveryMonth: order.nextDeliveryMonth,
+          deliveredAt: now.toISOString(),
           owner: order.owner, // 定期便作成カスタマーユーザが履歴を見れるようにSubscriptionOrderのownerをOrderのownerコピー
         };
 

@@ -38,7 +38,7 @@ type RowProps = {
 const Row = ({ item }: RowProps) => {
   return (
     <CommonTableRow colSpan={header.length} products={item.normalizedProducts}>
-      <TableCell align='center'>{formatDateHourMinute(item.createdAt)}</TableCell>
+      <TableCell align='center'>{formatDateHourMinute(item.deliveredAt)}</TableCell>
     </CommonTableRow>
   );
 };

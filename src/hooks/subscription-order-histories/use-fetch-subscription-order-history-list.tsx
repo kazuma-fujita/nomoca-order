@@ -11,7 +11,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
 import { listSubscriptionOrderHistoriesSortedByCreatedAt } from 'graphql/queries';
 import { SearchParam, useSearchParam } from 'hooks/admins/use-search-param';
-import { formatSearchTerm, generateClinicIDsFilter, isValidDate } from 'hooks/orders/use-fetch-single-order-list';
+import { generateClinicIDsFilter, generateSearchTermFilter } from 'hooks/orders/use-fetch-single-order-list';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
@@ -36,19 +36,6 @@ const generateNormalizedProducts = (order: SubscriptionOrderHistory): Normalized
       isExportCSV: orderProduct.isExportCSV,
     } as NormalizedProduct;
   });
-};
-
-const generateSearchTermFilter = (
-  fromDate: string | null,
-  toDate: string | null,
-): ModelSubscriptionOrderHistoryFilterInput | null => {
-  if ((!fromDate && !toDate) || (fromDate && !isValidDate(fromDate)) || (toDate && !isValidDate(toDate))) {
-    return null;
-  }
-  const [formattedFromDate, formattedToDate] = formatSearchTerm(fromDate, toDate);
-  console.log('formattedFromDate', formattedFromDate);
-  console.log('formattedToDate', formattedToDate);
-  return { createdAt: { between: [formattedFromDate, formattedToDate] } };
 };
 
 const generateFetingFilter = async (
