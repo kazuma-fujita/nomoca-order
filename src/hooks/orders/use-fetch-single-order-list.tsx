@@ -9,6 +9,7 @@ import {
   ListClinicsQuery,
   ListClinicsQueryVariables,
   Clinic,
+  ModelOrderFilterInput,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
@@ -41,10 +42,7 @@ const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
   });
 };
 
-const fetchClinicIDsByPhoneNumber = async (phoneNumber: string | null) => {
-  if (!phoneNumber) {
-    return [];
-  }
+const fetchClinicIDsByPhoneNumber = async (phoneNumber: string) => {
   if (phoneNumber) {
     const variables: ListClinicsQueryVariables = { filter: { phoneNumber: { eq: phoneNumber } } };
     const result = (await API.graphql(graphqlOperation(listClinics, variables))) as GraphQLResult<ListClinicsQuery>;
@@ -56,7 +54,7 @@ const fetchClinicIDsByPhoneNumber = async (phoneNumber: string | null) => {
   }
 };
 
-const generateClinicIDsFilter = async (phoneNumber: string | null) => {
+export const generateClinicIDsFilter = async (phoneNumber: string | null) => {
   if (!phoneNumber) {
     return null;
   }
@@ -74,7 +72,7 @@ const generateClinicIDsFilter = async (phoneNumber: string | null) => {
     : null;
 };
 
-const isValidDate = (dateString: string, formatString = 'yyyy-MM-dd'): boolean => {
+export const isValidDate = (dateString: string, formatString = 'yyyy-MM-dd'): boolean => {
   const regexp = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
   if (!regexp.test(dateString)) {
     return false;
@@ -88,13 +86,11 @@ const isValidDate = (dateString: string, formatString = 'yyyy-MM-dd'): boolean =
   }
 };
 
-const generateSearchTermFilter = (fromDate: string | null, toDate: string | null) => {
-  if ((!fromDate && !toDate) || (fromDate && !isValidDate(fromDate)) || (toDate && !isValidDate(toDate))) {
-    return null;
-  }
-
+export const formatSearchTerm = (fromDate: string | null, toDate: string | null): string[] => {
   const hms = 'T00:00:00.000Z';
+  // デフォルト検索開始日は1900-01-01の0時
   let formattedFromDate = `1900-01-01${hms}`;
+  // デフォルト検索終了日は翌日の0時
   let formattedToDate = `${format(addDays(new Date(), 1), 'yyyy-MM-dd')}${hms}`;
   if (fromDate) {
     formattedFromDate = `${fromDate}${hms}`;
@@ -102,13 +98,20 @@ const generateSearchTermFilter = (fromDate: string | null, toDate: string | null
   if (toDate) {
     formattedToDate = `${format(addDays(new Date(toDate), 1), 'yyyy-MM-dd')}${hms}`;
   }
+  return [formattedFromDate, formattedToDate];
+};
 
+const generateSearchTermFilter = (fromDate: string | null, toDate: string | null): ModelOrderFilterInput | null => {
+  if ((!fromDate && !toDate) || (fromDate && !isValidDate(fromDate)) || (toDate && !isValidDate(toDate))) {
+    return null;
+  }
+  const [formattedFromDate, formattedToDate] = formatSearchTerm(fromDate, toDate);
   console.log('formattedFromDate', formattedFromDate);
   console.log('formattedToDate', formattedToDate);
   return { deliveredAt: { between: [formattedFromDate, formattedToDate] } };
 };
 
-const generateFetingFilter = async (searchState: SearchParam) => {
+const generateFetingFilter = async (searchState: SearchParam): Promise<ModelOrderFilterInput | null> => {
   const deliveryStatusFilter =
     searchState.deliveryStatus !== DeliveryStatus.none ? { deliveryStatus: { eq: searchState.deliveryStatus } } : null;
 
@@ -123,16 +126,6 @@ const generateFetingFilter = async (searchState: SearchParam) => {
   } else {
     return { and: filters };
   }
-
-  // const filterInput: ModelOrderFilterInput | null = { and: filters.filter((filter) => filter) };
-  // // if (deliveryStatusFilter && clinicIDsFilter) {
-  // //   filter = { and: [deliveryStatusFilter, clinicIDsFilter] };
-  // // } else if (deliveryStatusFilter) {
-  // //   filter = deliveryStatusFilter;
-  // // } else if (clinicIDsFilter) {
-  // //   filter = clinicIDsFilter;
-  // // }
-  // return filterInput;
 };
 
 const fetcher = async (_: string, isOperator: boolean, searchState: SearchParam): Promise<ExtendedOrder<Order>[]> => {

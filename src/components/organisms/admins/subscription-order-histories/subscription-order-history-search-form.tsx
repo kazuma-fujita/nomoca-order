@@ -3,6 +3,7 @@ import { ErrorAlert } from 'components/atoms/alerts/error-alert';
 import { SearchButton } from 'components/atoms/buttons/search-button';
 import Form from 'components/atoms/form';
 import { SearchPhoneNumberTextField } from 'components/molecules/text-fields/phone-number-text-field';
+import { SearchFromDateTextField, SearchToDateTextField } from 'components/molecules/text-fields/search-date-textField';
 import { SearchParam, useSearchParam } from 'hooks/admins/use-search-param';
 import { useFetchSubscriptionOrderHistoryList } from 'hooks/subscription-order-histories/use-fetch-subscription-order-history-list';
 import { useCallback } from 'react';
@@ -31,6 +32,11 @@ export const SubscriptionOrderHistorySearchForm = () => {
       <Grid container direction='row' alignItems='center' spacing={4}>
         <Grid item>
           <SearchPhoneNumberTextField {...useFormReturn} disabled={isLoading} />
+        </Grid>
+        <Grid item>
+          <SearchFromDateTextField {...useFormReturn} disabled={isLoading} />
+          &nbsp;
+          <SearchToDateTextField {...useFormReturn} disabled={isLoading} />
         </Grid>
         <Grid item>
           <SearchButton isLoading={isLoading} />

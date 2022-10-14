@@ -1,6 +1,6 @@
 import { Box, Grid } from '@mui/material';
+import { SubscriptionOrderHistoryList } from 'components/organisms/admins/subscription-order-histories/subscription-order-history-list';
 import { SubscriptionOrderHistorySearchForm } from 'components/organisms/admins/subscription-order-histories/subscription-order-history-search-form';
-import { SubscriptionOrderHistoryList } from 'components/organisms/subscription-order-histories/subscription-order-list/subscription-order-history-list';
 
 export const SubscriptionOrderHistoryTemplate = () => {
   return (

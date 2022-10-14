@@ -1,20 +1,17 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import {
-  Clinic,
-  DeliveryStatus,
-  ListClinicsQuery,
-  ListClinicsQueryVariables,
   ListSubscriptionOrderHistoriesSortedByCreatedAtQuery,
   ListSubscriptionOrderHistoriesSortedByCreatedAtQueryVariables,
-  ModelOrderFilterInput,
   ModelSortDirection,
+  ModelSubscriptionOrderHistoryFilterInput,
   SubscriptionOrderHistory,
   Type,
 } from 'API';
 import { API, graphqlOperation } from 'aws-amplify';
 import { SWRKey } from 'constants/swr-key';
-import { listClinics, listSubscriptionOrderHistoriesSortedByCreatedAt } from 'graphql/queries';
+import { listSubscriptionOrderHistoriesSortedByCreatedAt } from 'graphql/queries';
 import { SearchParam, useSearchParam } from 'hooks/admins/use-search-param';
+import { formatSearchTerm, generateClinicIDsFilter, isValidDate } from 'hooks/orders/use-fetch-single-order-list';
 import { ExtendedOrder, NormalizedProduct } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { FetchResponse, useFetch } from 'hooks/swr/use-fetch';
 import { createContext, useContext } from 'react';
@@ -41,49 +38,33 @@ const generateNormalizedProducts = (order: SubscriptionOrderHistory): Normalized
   });
 };
 
-const fetchClinicIDsByPhoneNumber = async (phoneNumber: string) => {
-  if (!phoneNumber) {
-    return [];
+const generateSearchTermFilter = (
+  fromDate: string | null,
+  toDate: string | null,
+): ModelSubscriptionOrderHistoryFilterInput | null => {
+  if ((!fromDate && !toDate) || (fromDate && !isValidDate(fromDate)) || (toDate && !isValidDate(toDate))) {
+    return null;
   }
-  if (phoneNumber) {
-    const variables: ListClinicsQueryVariables = { filter: { phoneNumber: { eq: phoneNumber } } };
-    const result = (await API.graphql(graphqlOperation(listClinics, variables))) as GraphQLResult<ListClinicsQuery>;
-    if (!result.data || !result.data.listClinics || !result.data.listClinics.items) {
-      throw Error('The API fetched clinics data but it returned null.');
-    }
-    const clinics = result.data.listClinics.items as Clinic[];
-    return clinics.map((clinic) => clinic.id);
-  }
+  const [formattedFromDate, formattedToDate] = formatSearchTerm(fromDate, toDate);
+  console.log('formattedFromDate', formattedFromDate);
+  console.log('formattedToDate', formattedToDate);
+  return { createdAt: { between: [formattedFromDate, formattedToDate] } };
 };
 
-const generateFetingFilter = async (deliveryStatus: DeliveryStatus, phoneNumber: string) => {
-  const deliveryStatusFilter =
-    deliveryStatus !== DeliveryStatus.none ? { deliveryStatus: { eq: deliveryStatus } } : null;
+const generateFetingFilter = async (
+  searchState: SearchParam,
+): Promise<ModelSubscriptionOrderHistoryFilterInput | null> => {
+  const clinicIDsFilter = await generateClinicIDsFilter(searchState.phoneNumber);
+  const searchTermFilter = generateSearchTermFilter(searchState.fromDate, searchState.toDate);
 
-  const clinicIDs = await fetchClinicIDsByPhoneNumber(phoneNumber);
-  const clinicIDsFilter =
-    clinicIDs && clinicIDs.length > 0
-      ? {
-          or: clinicIDs.map((id) => {
-            return {
-              clinicID: {
-                eq: id,
-              },
-            };
-          }),
-        }
-      : null;
-
-  let filter: ModelOrderFilterInput | null = null;
-  if (deliveryStatusFilter && clinicIDsFilter) {
-    filter = { and: [deliveryStatusFilter, clinicIDsFilter] };
-  } else if (deliveryStatusFilter) {
-    filter = deliveryStatusFilter;
-  } else if (clinicIDsFilter) {
-    filter = clinicIDsFilter;
+  const filters = [clinicIDsFilter, searchTermFilter].filter((filter) => filter);
+  if (filters.length === 0) {
+    return null;
+  } else if (filters.length === 1) {
+    return filters[0];
+  } else {
+    return { and: filters };
   }
-
-  return filter;
 };
 
 const fetcher = async (
@@ -97,16 +78,15 @@ const fetcher = async (
     sortDirection: ModelSortDirection.DESC,
   };
 
-  // const filter = isOperator ? await generateFetingFilter(searchState.deliveryStatus, searchState.phoneNumber) : null;
-  // console.log('filter', filter);
-  // console.table(filter);
+  const filter = isOperator ? await generateFetingFilter(searchState) : null;
+  console.log('filter', filter);
+  console.table(filter);
 
   // admin権限かつ検索条件が全件検索以外はfilter指定をしてAPI実行
-  // const variables = filter ? { ...sortVariables, filter: filter } : sortVariables;
+  const variables = filter ? { ...sortVariables, filter: filter } : sortVariables;
 
   const result = (await API.graphql(
-    graphqlOperation(listSubscriptionOrderHistoriesSortedByCreatedAt, sortVariables),
-    // graphqlOperation(listSubscriptionOrderHistoriesSortedByCreatedAt, variables),
+    graphqlOperation(listSubscriptionOrderHistoriesSortedByCreatedAt, variables),
   )) as GraphQLResult<ListSubscriptionOrderHistoriesSortedByCreatedAtQuery>;
 
   if (
