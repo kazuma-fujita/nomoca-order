@@ -128,6 +128,7 @@ export enum DeliveryType {
 export enum Type {
   order = "order",
   subscriptionOrder = "subscriptionOrder",
+  subscriptionOrderHistory = "subscriptionOrderHistory",
   product = "product",
   staff = "staff",
   clinic = "clinic",

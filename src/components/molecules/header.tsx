@@ -5,6 +5,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
+import HistoryIcon from '@mui/icons-material/History';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material/SvgIcon/SvgIcon';
 import { SideDrawer } from 'components/atoms/side-drawer';
@@ -37,6 +38,11 @@ export const Header = () => {
             icon: WifiProtectedSetupIcon,
             label: ScreenName.adminsSubscriptionOrder,
           },
+          {
+            path: Path.adminsSubscriptionOrderHistory,
+            icon: HistoryIcon,
+            label: ScreenName.subscriptionOrderHistory,
+          },
         ],
         [
           { path: Path.singleOrderProduct, icon: CategoryIcon, label: ScreenName.singleOrderProduct },
@@ -47,6 +53,11 @@ export const Header = () => {
         [
           { path: Path.singleOrder, icon: ShoppingCartIcon, label: ScreenName.singleOrder },
           { path: Path.subscriptionOrder, icon: WifiProtectedSetupIcon, label: ScreenName.subscriptionOrder },
+          {
+            path: Path.subscriptionOrderHistory,
+            icon: HistoryIcon,
+            label: ScreenName.subscriptionOrderHistory,
+          },
         ],
         [
           { path: Path.staff, icon: PeopleIcon, label: ScreenName.staff },

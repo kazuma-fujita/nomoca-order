@@ -162,7 +162,7 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
 
         // SubscriptionOrderからOrder履歴データ作成
         const input: CreateSubscriptionOrderHistoryInput = {
-          type: Type.order,
+          type: Type.subscriptionOrderHistory,
           clinicID: order.clinicID,
           staffID: order.staffID,
           deliveryStartYear: order.deliveryStartYear,

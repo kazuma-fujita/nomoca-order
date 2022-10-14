@@ -1,6 +1,7 @@
 enum Type {
   order
   subscriptionOrder
+  subscriptionOrderHistory
   product
   staff
   clinic
