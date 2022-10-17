@@ -59,6 +59,7 @@ type Order
   deliveryType: DeliveryType! # 配送方法
   deliveredAt: AWSDateTime # 発送日時
   createdAt: AWSDateTime! # 注文日時
+  note: String # 備考
   type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
 }
 
@@ -142,6 +143,7 @@ type SubscriptionOrderHistory
   nextDeliveryMonth: Int
   deliveredAt: AWSDateTime! # 発送日時
   createdAt: AWSDateTime!
+  note: String # 備考
   type: Type!
     @index(
       name: "sortByCreatedAt"

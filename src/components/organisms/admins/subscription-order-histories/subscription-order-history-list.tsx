@@ -7,6 +7,7 @@ import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
 import { useFetchSubscriptionOrderHistoryList } from 'hooks/subscription-order-histories/use-fetch-subscription-order-history-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { TableHeader } from 'types/table-header';
+import { UpdateOrderNoteButton } from '../order-notes/update-order-note-button';
 
 const header: TableHeader[] = [
   {
@@ -27,6 +28,10 @@ const header: TableHeader[] = [
   },
   {
     label: '発送日時',
+    minWidth: 80,
+  },
+  {
+    label: '',
     minWidth: 80,
   },
 ];
@@ -62,6 +67,9 @@ const Row = ({ rowItem }: RowProps) => {
         />
       </TableCell>
       <TableCell align='center'>{formatDateHourMinute(rowItem.deliveredAt)}</TableCell>
+      <TableCell align='center'>
+        <UpdateOrderNoteButton id={rowItem.id} note={rowItem.note} />
+      </TableCell>
     </CommonTableRow>
   );
 };

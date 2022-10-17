@@ -6,7 +6,7 @@ import Form from 'components/atoms/form';
 import { BaseSyntheticEvent, ReactElement } from 'react';
 
 type Props = {
-  dialogTitle: string;
+  dialogTitle?: string | null;
   submitButtonLabel: string;
   startIcon: ReactElement;
   on: boolean;
@@ -15,6 +15,7 @@ type Props = {
   error: Error | null;
   submitHandler: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
   cancelHandler: () => void;
+  fullWidth?: boolean;
   children: ReactElement;
 };
 
@@ -28,15 +29,18 @@ export const InputDialog: React.FC<Props> = ({
   isLoading,
   submitHandler,
   cancelHandler,
+  fullWidth = false,
   children,
 }) => {
   return (
-    <Dialog open={on}>
+    <Dialog open={on} fullWidth={fullWidth}>
       <Box display='flex' justifyContent='center' alignItems='center' mt={4}>
         <Box width='80%'>
-          <Box display='flex' justifyContent='center' mb={4}>
-            <Typography variant='h5'>{dialogTitle}</Typography>
-          </Box>
+          {dialogTitle && (
+            <Box display='flex' justifyContent='center' mb={4}>
+              <Typography variant='h5'>{dialogTitle}</Typography>
+            </Box>
+          )}
           {error && <ErrorAlert>{error}</ErrorAlert>}
           {/* 注文画面のform二重送信を回避する為、formのid属性とsubmit buttonのform属性に同じidを設定する。かつ、submit buttonをformタグの外に出す */}
           <Form id={formId} onSubmit={submitHandler}>

@@ -42,6 +42,7 @@ import { useCallback, useState } from 'react';
 import { OrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { useFetchSingleOrderList } from './use-fetch-single-order-list';
 
 const updateSubscriptionOrderProducts = async (
   updateOrderID: string,
@@ -214,6 +215,7 @@ export const useCreateOrder = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
+  const { swrKey: singleOrderSWRKey } = useFetchSingleOrderList();
   const { sendMail } = useSendMail();
 
   const createOrder = async (orderType: OrderType, param: OrderFormParam) => {
@@ -222,7 +224,7 @@ export const useCreateOrder = () => {
       // OrderTypeはpagesでContextに保存している値
       orderType === OrderType.singleOrder ? await createSingleOrder(param) : await createSubscriptionOrder(param);
       // 更新後データ再fetch実行
-      mutate(orderType === OrderType.singleOrder ? SWRKey.orderList : SWRKey.subscriptionOrderList);
+      mutate(orderType === OrderType.singleOrder ? singleOrderSWRKey : SWRKey.subscriptionOrderList);
       setError(null);
     } catch (error) {
       setIsLoading(false);

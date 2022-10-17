@@ -10,6 +10,7 @@ import { useFetchSingleOrderList } from 'hooks/orders/use-fetch-single-order-lis
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import React, { useCallback } from 'react';
 import { TableHeader } from 'types/table-header';
+import { UpdateOrderNoteButton } from '../order-notes/update-order-note-button';
 
 const header: TableHeader[] = [
   {
@@ -46,6 +47,10 @@ const header: TableHeader[] = [
   },
   {
     label: '発送日時',
+    minWidth: 80,
+  },
+  {
+    label: '',
     minWidth: 80,
   },
 ];
@@ -140,6 +145,9 @@ const Row = ({ rowItem, selectedItems, setSelectedItems }: RowProps) => {
         <DeliveryStatusChip status={rowItem.deliveryStatus} />
       </TableCell>
       <TableCell align='center'>{rowItem.deliveredAt ? formatDateHourMinute(rowItem.deliveredAt) : '-'}</TableCell>
+      <TableCell align='center'>
+        <UpdateOrderNoteButton id={rowItem.id} note={rowItem.note} />
+      </TableCell>
     </CommonTableRow>
   );
 };
