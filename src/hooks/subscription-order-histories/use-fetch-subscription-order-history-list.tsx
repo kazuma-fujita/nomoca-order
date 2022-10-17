@@ -116,6 +116,7 @@ type Props = {
 
 type ProviderProps = FetchResponse<ExtendedOrder<SubscriptionOrderHistory>[]> & {
   swrKey: (string | boolean | SearchParam)[];
+  count: number;
 };
 
 export const SubscriptionOrderHistoryListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
@@ -127,8 +128,9 @@ export const SubscriptionOrderHistoryListContextProvider: React.FC<Props> = ({ m
   // 検索条件もSWRキャッシュの対象
   const swrKey = [SWRKey.subscriptionOrderHistoryList, isOperator, searchState];
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrderHistory>[]>(swrKey, fetcher, {}, mockResponse);
+  const count = fetchResponse.data ? fetchResponse.data.length : 0;
   return (
-    <SubscriptionOrderHistoryListContext.Provider value={{ ...fetchResponse, swrKey }}>
+    <SubscriptionOrderHistoryListContext.Provider value={{ ...fetchResponse, swrKey, count }}>
       {children}
     </SubscriptionOrderHistoryListContext.Provider>
   );

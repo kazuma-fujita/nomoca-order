@@ -50,7 +50,7 @@ const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct
     });
 };
 
-const SubscriptionOrderListContext = createContext({} as FetchResponse<ExtendedOrder<SubscriptionOrder>[]>);
+const SubscriptionOrderListContext = createContext({} as ProviderProps);
 
 export const useFetchSubscriptionOrderList = () => useContext(SubscriptionOrderListContext);
 
@@ -84,6 +84,10 @@ type Props = {
   mockResponse?: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>;
 };
 
+type ProviderProps = FetchResponse<ExtendedOrder<SubscriptionOrder>[]> & {
+  count: number;
+};
+
 export const SubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrder>[]>(
     SWRKey.subscriptionOrderList,
@@ -91,8 +95,10 @@ export const SubscriptionOrderListContextProvider: React.FC<Props> = ({ mockResp
     {},
     mockResponse,
   );
-
+  const count = fetchResponse.data ? fetchResponse.data.length : 0;
   return (
-    <SubscriptionOrderListContext.Provider value={fetchResponse}>{children}</SubscriptionOrderListContext.Provider>
+    <SubscriptionOrderListContext.Provider value={{ ...fetchResponse, count }}>
+      {children}
+    </SubscriptionOrderListContext.Provider>
   );
 };

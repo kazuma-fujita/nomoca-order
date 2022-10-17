@@ -185,6 +185,7 @@ type Props = {
 
 type ProviderProps = FetchResponse<ExtendedOrder<Order>[]> & {
   swrKey: (string | boolean | SearchParam)[];
+  count: number;
 };
 
 export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, children }) => {
@@ -196,5 +197,6 @@ export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, childr
   // 検索条件もSWRキャッシュの対象
   const swrKey = [SWRKey.orderList, isOperator, searchState];
   const fetchResponse = useFetch<ExtendedOrder<Order>[]>(swrKey, fetcher, {}, mockResponse);
-  return <OrderListContext.Provider value={{ ...fetchResponse, swrKey }}>{children}</OrderListContext.Provider>;
+  const count = fetchResponse.data ? fetchResponse.data.length : 0;
+  return <OrderListContext.Provider value={{ ...fetchResponse, swrKey, count }}>{children}</OrderListContext.Provider>;
 };
