@@ -69,7 +69,7 @@ export const generateClinicIDsFilter = async (phoneNumber: string | null) => {
           };
         }),
       }
-    : null;
+    : { clinicID: { eq: '' } };
 };
 
 export const isValidDate = (dateString: string, formatString = 'yyyy-MM-dd'): boolean => {

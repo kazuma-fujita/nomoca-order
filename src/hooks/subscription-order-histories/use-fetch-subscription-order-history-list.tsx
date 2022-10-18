@@ -124,7 +124,6 @@ export const SubscriptionOrderHistoryListContextProvider: React.FC<Props> = ({ m
   const { isOperator } = useCurrentUser();
   // グローバルに保存された注文検索条件(admin管理画面用)
   const { searchState } = useSearchParam();
-  console.log('search State', searchState);
   // 検索条件もSWRキャッシュの対象
   const swrKey = [SWRKey.subscriptionOrderHistoryList, isOperator, searchState];
   const fetchResponse = useFetch<ExtendedOrder<SubscriptionOrderHistory>[]>(swrKey, fetcher, {}, mockResponse);

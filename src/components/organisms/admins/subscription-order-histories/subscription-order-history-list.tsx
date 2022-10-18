@@ -44,7 +44,7 @@ export const SubscriptionOrderHistoryList = () => {
     <CommonTableContainer
       {...fetchReturn}
       tableHeaders={header}
-      emptyListDescription='現在発送済みの定期便商品はありません'
+      emptyListDescription='発送済みの定期便商品はありません'
     >
       {data && data.map((item) => <Row key={item.id} rowItem={item} />)}
     </CommonTableContainer>

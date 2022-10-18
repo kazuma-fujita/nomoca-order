@@ -83,7 +83,7 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
     <CommonTableContainer
       {...fetchReturn}
       tableHeaders={header}
-      emptyListDescription='現在注文の商品はありません'
+      emptyListDescription='注文の商品はありません'
       selectAllCheckbox={
         // 注文全件選択/解除チェックボックス
         <Checkbox

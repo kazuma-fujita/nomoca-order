@@ -10,6 +10,7 @@ enum Type {
 enum OrderType {
   singleOrder
   subscriptionOrder
+  subscriptionOrderHistory
 }
 
 enum DeliveryStatus {
