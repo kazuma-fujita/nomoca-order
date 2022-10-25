@@ -106,6 +106,9 @@ export const seedProducts = [
     isExportCSV: {
       BOOL: false,
     },
+    disabled: {
+      BOOL: true,
+    },
   },
   {
     ...baseProduct,
@@ -130,6 +133,9 @@ export const seedProducts = [
     isExportCSV: {
       BOOL: false,
     },
+    disabled: {
+      BOOL: true,
+    },
   },
   {
     ...baseProduct,
@@ -153,6 +159,9 @@ export const seedProducts = [
     },
     isExportCSV: {
       BOOL: false,
+    },
+    disabled: {
+      BOOL: true,
     },
   },
   {
@@ -197,97 +206,4 @@ export const seedProducts = [
       N: '2',
     },
   },
-  // {
-  //   ...baseProduct,
-  //   id: {
-  //     S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c19',
-  //   },
-  //   orderType: {
-  //     S: 'subscriptionOrder',
-  //   },
-  //   name: {
-  //     S: '定期便商品C',
-  //   },
-  //   purchasePrice: {
-  //     N: '2400',
-  //   },
-  //   unitPrice: {
-  //     N: '3000',
-  //   },
-  //   viewOrder: {
-  //     N: '3',
-  //   },
-  // },
-  // {
-  //   ...baseProduct,
-  //   id: {
-  //     S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c20',
-  //   },
-  //   orderType: {
-  //     S: 'subscriptionOrder',
-  //   },
-  //   name: {
-  //     S: 'CSV出力無効定期便商品A',
-  //   },
-  //   purchasePrice: {
-  //     N: '3200',
-  //   },
-  //   unitPrice: {
-  //     N: '4000',
-  //   },
-  //   viewOrder: {
-  //     N: '4',
-  //   },
-  //   isExportCSV: {
-  //     BOOL: false,
-  //   },
-  // },
-  // {
-  //   ...baseProduct,
-  //   id: {
-  //     S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c21',
-  //   },
-  //   orderType: {
-  //     S: 'subscriptionOrder',
-  //   },
-  //   name: {
-  //     S: 'CSV出力無効定期便商品B',
-  //   },
-  //   purchasePrice: {
-  //     N: '4000',
-  //   },
-  //   unitPrice: {
-  //     N: '5000',
-  //   },
-  //   viewOrder: {
-  //     N: '5',
-  //   },
-  //   isExportCSV: {
-  //     BOOL: false,
-  //   },
-  // },
-  // {
-  //   ...baseProduct,
-  //   id: {
-  //     S: 'b11736c6-710f-4fbb-833c-8fc7c5e31c22',
-  //   },
-  //   orderType: {
-  //     S: 'subscriptionOrder',
-  //   },
-  //   name: {
-  //     S: 'CSV出力無効定期便商品C',
-  //   },
-  //   purchasePrice: {
-  //     N: '4800',
-  //   },
-  //   unitPrice: {
-  //     N: '6000',
-  //   },
-  //   viewOrder: {
-  //     N: '6',
-  //   },
-  //   isExportCSV: {
-  //     BOOL: false,
-  //   },
-  // },
 ];
