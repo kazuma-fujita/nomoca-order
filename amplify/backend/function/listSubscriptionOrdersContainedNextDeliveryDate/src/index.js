@@ -23,13 +23,9 @@ global.fetch = require('node-fetch');
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('EVENT', event);
     const groups = event.identity.claims['cognito:groups'];
     const username = event.identity.username;
     const isOperator = groups && groups.length === 1 && groups[0] === 'Operators';
-    console.log('groups', groups);
-    console.log('isOperator', isOperator);
-    console.log('username', username);
     let credentials = {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -94,7 +90,6 @@ const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
         ? nextDeliveryDateItems // 当月のみのリストに絞り込み。配送予定月が現在年月であればAPIレスポンスとして返却
             .filter((item) => item.nextDeliveryYear === nowYear && item.nextDeliveryMonth === nowMonth)
         : nextDeliveryDateItems;
-    console.log('responseItems', responseItems);
     return responseItems;
     // ExceptionをそのままAPI responseとして返却する為 try-catch しない
     // } catch (err) {

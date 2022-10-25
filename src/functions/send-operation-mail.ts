@@ -16,7 +16,6 @@ type Options = {
 
 // 注文・定期便・定期便更新メール送信
 export const sendOperationMail = async ({ subject, body }: Options) => {
-  console.log('operation toAddress', toAddress);
   const mailSubject = `[${ProductName}] ${subject}`;
 
   const sendMailVariables: SendErrorMailQueryVariables = {
@@ -30,7 +29,7 @@ export const sendOperationMail = async ({ subject, body }: Options) => {
     const sendMailResult = (await API.graphql(
       graphqlOperation(sendErrorMailQueries, sendMailVariables),
     )) as GraphQLResult<SendErrorMailQuery>;
-    console.log('sendErrorMailResult', sendMailResult.data?.sendErrorMail);
+    return sendMailResult.data?.sendErrorMail;
   } catch (error) {
     const parseError = parseResponseError(error);
     console.error('To send error mail was occurred', parseError);

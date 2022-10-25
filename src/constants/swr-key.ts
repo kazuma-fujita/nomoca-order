@@ -5,6 +5,7 @@ export const SWRKey = {
   productList: 'productList',
   orderList: 'orderList',
   subscriptionOrderList: 'subscriptionOrderList',
+  subscriptionOrderHistoryList: 'subscriptionOrderHistoryList',
   orderFormParam: 'orderFormParam',
   singleOrderSearchParam: 'singleOrderSearchParam',
 } as const;

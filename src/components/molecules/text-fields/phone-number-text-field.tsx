@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import { Clinic } from 'API';
-import { SingleOrderSearchParam } from 'components/organisms/admins/single-orders/search-form/single-order-search-form';
 import { numericZenkaku2Hankaku } from 'functions/strings/converters';
+import { SearchParam } from 'hooks/admins/use-search-param';
 import { UseFormReturn } from 'react-hook-form';
 
 type Props = UseFormReturn<Clinic> & {
@@ -44,7 +44,7 @@ export const PhoneNumberTextField = ({ formState, register, setValue, disabled }
   );
 };
 
-type SearchProps = UseFormReturn<SingleOrderSearchParam> & {
+type SearchProps = UseFormReturn<SearchParam> & {
   disabled: boolean;
 };
 

@@ -1,6 +1,7 @@
 enum Type {
   order
   subscriptionOrder
+  subscriptionOrderHistory
   product
   staff
   clinic
@@ -9,6 +10,7 @@ enum Type {
 enum OrderType {
   singleOrder
   subscriptionOrder
+  subscriptionOrderHistory
 }
 
 enum DeliveryStatus {
@@ -58,6 +60,7 @@ type Order
   deliveryType: DeliveryType! # 配送方法
   deliveredAt: AWSDateTime # 発送日時
   createdAt: AWSDateTime! # 注文日時
+  note: String # 備考
   type: Type! @index(name: "sortByCreatedAt", queryField: "listOrdersSortedByCreatedAt", sortKeyFields: ["createdAt"])
 }
 
@@ -139,7 +142,9 @@ type SubscriptionOrderHistory
   deliveryInterval: Int!
   nextDeliveryYear: Int
   nextDeliveryMonth: Int
-  createdAt: AWSDateTime! # 定期便発送日時
+  deliveredAt: AWSDateTime! # 発送日時
+  createdAt: AWSDateTime!
+  note: String # 備考
   type: Type!
     @index(
       name: "sortByCreatedAt"

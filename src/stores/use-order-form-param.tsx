@@ -15,6 +15,7 @@ export type OrderFormParam = {
   deliveryStartYear?: number | null;
   deliveryStartMonth?: number | null;
   deliveryInterval?: number | null;
+  note?: string | null;
 };
 
 type ProviderProps = FetchResponse<OrderFormParam> & {

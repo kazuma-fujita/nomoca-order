@@ -1,5 +1,5 @@
 import type { ComponentStoryObj } from '@storybook/react';
-import { OrderListContextProvider } from 'hooks/orders/use-fetch-order-list';
+import { OrderListContextProvider } from 'hooks/orders/use-fetch-single-order-list';
 import { FetchResponse } from 'hooks/swr/use-fetch';
 import { adminOrderListMock } from 'mocks/order-list.mock';
 import { SingleOrderTemplate } from './single-order-template';

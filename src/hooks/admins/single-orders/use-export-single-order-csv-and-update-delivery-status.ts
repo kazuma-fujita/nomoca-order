@@ -9,7 +9,7 @@ import { sendOperationMail } from 'functions/send-operation-mail';
 import { updateOrder } from 'graphql/mutations';
 import { useExportOrderCSV } from 'hooks/admins/use-export-order-csv';
 import { useSendMail } from 'hooks/commons/use-send-mail';
-import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
+import { useFetchSingleOrderList } from 'hooks/orders/use-fetch-single-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { useCallback, useState } from 'react';
 import { useNowDate } from 'stores/use-now-date';
@@ -19,7 +19,7 @@ import { parseResponseError } from 'utilities/parse-response-error';
 export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
   const { data: now } = useNowDate();
   const { mutate } = useSWRConfig();
-  const { swrKey } = useFetchOrderList();
+  const { swrKey } = useFetchSingleOrderList();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -99,7 +99,7 @@ export const useExportSingleOrderCSVAndUpdateDeliveryStatus = () => {
     }
 
     // 注文状況変更反映の為、注文一覧データ再取得・更新
-    // swrKeyはuseFetchOrderListで一覧検索条件もkeyとして保持している
+    // swrKeyはuseFetchSingleOrderListで一覧検索条件もkeyとして保持している
     mutate(swrKey);
 
     // エラーは全てPromise.allSettledでハンドリングする為、try-catchしない
@@ -141,7 +141,6 @@ const updateDeliveryStatus = async (filteredOrders: ExtendedOrder<Order>[], now:
         if (!result.data || !result.data.updateOrder) {
           throw Error('It returned null that an API which executed to update order data.');
         }
-        console.log('updatedOrder:', result.data.updateOrder);
       } catch (err) {
         const error = parseResponseError(err);
         console.error('updates delivery status error:', error);

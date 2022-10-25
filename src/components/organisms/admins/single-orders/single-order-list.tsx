@@ -6,10 +6,11 @@ import { CommonTableContainer } from 'components/molecules/common-table-containe
 import { CommonTableRow } from 'components/molecules/common-table-row';
 import { ClinicDetailButton } from 'components/organisms/clinics/clinic-detail-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
-import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
+import { useFetchSingleOrderList } from 'hooks/orders/use-fetch-single-order-list';
 import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import React, { useCallback } from 'react';
 import { TableHeader } from 'types/table-header';
+import { UpdateOrderNoteButton } from '../order-notes/update-order-note-button';
 
 const header: TableHeader[] = [
   {
@@ -48,6 +49,10 @@ const header: TableHeader[] = [
     label: '発送日時',
     minWidth: 80,
   },
+  {
+    label: '',
+    minWidth: 80,
+  },
 ];
 
 type Props = {
@@ -56,7 +61,7 @@ type Props = {
 };
 
 export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
-  const fetchReturn = useFetchOrderList();
+  const fetchReturn = useFetchSingleOrderList();
   const { data } = fetchReturn;
   // 注文全件選択/解除チェックボックス クリックハンドラー
   const handleAllSelectItem = useCallback(
@@ -78,7 +83,7 @@ export const SingleOrderList = ({ selectedItems, setSelectedItems }: Props) => {
     <CommonTableContainer
       {...fetchReturn}
       tableHeaders={header}
-      emptyListDescription='現在注文の商品はありません'
+      emptyListDescription='注文の商品はありません'
       selectAllCheckbox={
         // 注文全件選択/解除チェックボックス
         <Checkbox
@@ -140,6 +145,9 @@ const Row = ({ rowItem, selectedItems, setSelectedItems }: RowProps) => {
         <DeliveryStatusChip status={rowItem.deliveryStatus} />
       </TableCell>
       <TableCell align='center'>{rowItem.deliveredAt ? formatDateHourMinute(rowItem.deliveredAt) : '-'}</TableCell>
+      <TableCell align='center'>
+        <UpdateOrderNoteButton id={rowItem.id} note={rowItem.note} />
+      </TableCell>
     </CommonTableRow>
   );
 };

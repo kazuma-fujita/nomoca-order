@@ -42,6 +42,7 @@ import { useCallback, useState } from 'react';
 import { OrderFormParam } from 'stores/use-order-form-param';
 import { useSWRConfig } from 'swr';
 import { parseResponseError } from 'utilities/parse-response-error';
+import { useFetchSingleOrderList } from './use-fetch-single-order-list';
 
 const updateSubscriptionOrderProducts = async (
   updateOrderID: string,
@@ -63,7 +64,6 @@ const updateSubscriptionOrderProducts = async (
     if (!result.data || !result.data.deleteSubscriptionOrderProduct) {
       throw Error('It returned null that an API which executed to delete an order and a product relation data.');
     }
-    console.log('deleteOrderProduct', result.data.deleteSubscriptionOrderProduct);
   }
   // Order と Product のリレーション作成
   await createSubscriptionOrderProducts(updateOrderID, updateProducts);
@@ -90,7 +90,6 @@ const createSubscriptionOrderProducts = async (newSubscriptionOrderID: string, c
     if (!result.data || !result.data.createSubscriptionOrderProduct) {
       throw Error('The API created connection data but it returned null.');
     }
-    console.log('newSubscriptionOrderProduct', result.data.createSubscriptionOrderProduct);
   }
 };
 
@@ -117,7 +116,6 @@ const createOrderProducts = async (newOrderID: string, productRelations: Normali
     if (!result.data || !result.data.createOrderProduct) {
       throw Error('It returned null that an API witch executed to create an order and a product relation data.');
     }
-    console.log('newOrderProduct', result.data.createOrderProduct);
   }
 };
 
@@ -217,6 +215,7 @@ export const useCreateOrder = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const { mutate } = useSWRConfig();
+  const { swrKey: singleOrderSWRKey } = useFetchSingleOrderList();
   const { sendMail } = useSendMail();
 
   const createOrder = async (orderType: OrderType, param: OrderFormParam) => {
@@ -225,7 +224,7 @@ export const useCreateOrder = () => {
       // OrderTypeはpagesでContextに保存している値
       orderType === OrderType.singleOrder ? await createSingleOrder(param) : await createSubscriptionOrder(param);
       // 更新後データ再fetch実行
-      mutate(orderType === OrderType.singleOrder ? SWRKey.orderList : SWRKey.subscriptionOrderList);
+      mutate(orderType === OrderType.singleOrder ? singleOrderSWRKey : SWRKey.subscriptionOrderList);
       setError(null);
     } catch (error) {
       setIsLoading(false);

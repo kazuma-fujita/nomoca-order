@@ -162,7 +162,7 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
 
         // SubscriptionOrderからOrder履歴データ作成
         const input: CreateSubscriptionOrderHistoryInput = {
-          type: Type.order,
+          type: Type.subscriptionOrderHistory,
           clinicID: order.clinicID,
           staffID: order.staffID,
           deliveryStartYear: order.deliveryStartYear,
@@ -170,6 +170,7 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
           deliveryInterval: order.deliveryInterval,
           nextDeliveryYear: order.nextDeliveryYear,
           nextDeliveryMonth: order.nextDeliveryMonth,
+          deliveredAt: now.toISOString(),
           owner: order.owner, // 定期便作成カスタマーユーザが履歴を見れるようにSubscriptionOrderのownerをOrderのownerコピー
         };
 
@@ -183,7 +184,6 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
           throw Error('It returned null that an API which executed to create subscription order history data.');
         }
         const newOrder = result.data.createSubscriptionOrderHistory;
-        console.log('create new order history', newOrder);
 
         // Order と Product のリレーション作成
         for (const item of order.products.items) {
@@ -202,7 +202,6 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
             owner: order.owner, // 定期便作成カスタマーユーザが履歴を見れるようにSubscriptionOrderのownerをOrderのownerコピー
           };
 
-          console.log('newOrderID', newOrder.id, 'name', item.product.name);
           // データ新規登録実行
           const variables: CreateSubscriptionOrderHistoryProductMutationVariables = { input: input };
           const result = (await API.graphql(
@@ -212,7 +211,6 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
           if (!result.data || !result.data.createSubscriptionOrderHistoryProduct) {
             throw Error('It returned null that an API witch executed to create an order and a product relation data.');
           }
-          console.log('newSubscriptionOrderHistoryProduct', result.data.createSubscriptionOrderHistoryProduct);
         }
 
         // SubscriptionOrderのlastDeliveredAtの更新
@@ -230,8 +228,6 @@ const createOrderHistory = async (orders: ExtendedOrder<SubscriptionOrder>[], no
         if (!subscriptionOrderResult.data || !subscriptionOrderResult.data.updateSubscriptionOrder) {
           throw Error('It returned null that an API which executed to update subscription order data.');
         }
-
-        console.log('updateSubscriptionOrder', subscriptionOrderResult.data.updateSubscriptionOrder);
       } catch (err) {
         const error = parseResponseError(err);
         console.error('create order history error:', error);
@@ -272,8 +268,6 @@ const updateOrderDeliveredAt = async (orders: ExtendedOrder<SubscriptionOrder>[]
         if (!subscriptionOrderResult.data || !subscriptionOrderResult.data.updateSubscriptionOrder) {
           throw Error('It returned null that an API which executed to update subscription order data.');
         }
-
-        console.log('updateSubscriptionOrder', subscriptionOrderResult.data.updateSubscriptionOrder);
       } catch (err) {
         const error = parseResponseError(err);
         console.error('updates delivered at error:', error);

@@ -107,6 +107,7 @@ export const onCreateOrder = /* GraphQL */ `
       deliveryType
       deliveredAt
       createdAt
+      note
       type
       updatedAt
       owner
@@ -164,6 +165,7 @@ export const onUpdateOrder = /* GraphQL */ `
       deliveryType
       deliveredAt
       createdAt
+      note
       type
       updatedAt
       owner
@@ -221,6 +223,7 @@ export const onDeleteOrder = /* GraphQL */ `
       deliveryType
       deliveredAt
       createdAt
+      note
       type
       updatedAt
       owner
@@ -615,7 +618,9 @@ export const onCreateSubscriptionOrderHistory = /* GraphQL */ `
       deliveryInterval
       nextDeliveryYear
       nextDeliveryMonth
+      deliveredAt
       createdAt
+      note
       type
       owner
       updatedAt
@@ -674,7 +679,9 @@ export const onUpdateSubscriptionOrderHistory = /* GraphQL */ `
       deliveryInterval
       nextDeliveryYear
       nextDeliveryMonth
+      deliveredAt
       createdAt
+      note
       type
       owner
       updatedAt
@@ -733,7 +740,9 @@ export const onDeleteSubscriptionOrderHistory = /* GraphQL */ `
       deliveryInterval
       nextDeliveryYear
       nextDeliveryMonth
+      deliveredAt
       createdAt
+      note
       type
       owner
       updatedAt

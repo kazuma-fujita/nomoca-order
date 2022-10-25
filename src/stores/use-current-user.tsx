@@ -3,7 +3,7 @@ import { Auth } from 'aws-amplify';
 import { Path } from 'constants/path';
 import { SWRKey } from 'constants/swr-key';
 import { UserGroup } from 'constants/user-group';
-import { useFetchOrderList } from 'hooks/orders/use-fetch-order-list';
+import { useFetchSingleOrderList } from 'hooks/orders/use-fetch-single-order-list';
 import { useFetchProductList } from 'hooks/products/use-fetch-product-list';
 import { NextRouter, useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -52,7 +52,6 @@ export const useVerifyAuthenticated = () => {
   useEffect(() => {
     (async () => {
       try {
-        console.log('after login');
         // Cognitoから認証情報取得
         const currentUser = await Auth.currentAuthenticatedUser();
         // 認証済みの場合Global stateの更新。useSWRの第2引数にfalseを指定すると再検証(再fetch)をしない
@@ -72,10 +71,8 @@ export const useVerifyAuthenticated = () => {
 export const useVerifyBeforeAuthenticate = () => {
   const router = useRouter();
   useEffect(() => {
-    console.log('before login');
     // 画面ステータスをみてログイン後画面に遷移
     return onAuthUIStateChange((nextAuthState, authData) => {
-      console.log('nextAuthState', nextAuthState);
       // ログイン直後判定
       if (nextAuthState === AuthState.SignedIn && authData) {
         afterAuthTransition(router);
@@ -114,7 +111,7 @@ export const useSignOut = () => {
   const router = useRouter();
   // useSWR cacheクリアの為個別に設定しているswrKeyを取得
   const { cache } = useSWRConfig();
-  const { swrKey: orderListKey } = useFetchOrderList();
+  const { swrKey: orderListKey } = useFetchSingleOrderList();
   const { swrKey: productListKey } = useFetchProductList();
 
   useEffect(() => {
@@ -130,7 +127,6 @@ export const useSignOut = () => {
   const signOut = useCallback(async (): Promise<void> => {
     setIsLoading(true);
     try {
-      console.log('sign out');
       // globalにsign out実行。他にログインしている端末があれば全てsign out
       await Auth.signOut({ global: true });
       // useSWRのcacheクリア

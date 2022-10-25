@@ -12,10 +12,11 @@ import { useToggle } from 'react-use';
 type Props = {
   colSpan: number;
   products: NormalizedProduct[];
+  isProductsRowOpen?: boolean;
 };
 
-export const CommonTableRow: React.FC<Props> = ({ colSpan, products, children }) => {
-  const [on, toggle] = useToggle(false);
+export const CommonTableRow: React.FC<Props> = ({ colSpan, products, isProductsRowOpen = false, children }) => {
+  const [on, toggle] = useToggle(isProductsRowOpen);
   return (
     <>
       <TableRow>
