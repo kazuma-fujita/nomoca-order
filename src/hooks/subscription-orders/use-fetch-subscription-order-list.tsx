@@ -50,10 +50,6 @@ const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct
     });
 };
 
-const SubscriptionOrderListContext = createContext({} as ProviderProps);
-
-export const useFetchSubscriptionOrderList = () => useContext(SubscriptionOrderListContext);
-
 const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   const result = (await API.graphql(
     graphqlOperation(listSubscriptionOrdersContainedNextDeliveryDate),
@@ -80,11 +76,15 @@ const fetcher = async (): Promise<ExtendedOrder<SubscriptionOrder>[]> => {
   return extendedItems;
 };
 
+const SubscriptionOrderListContext = createContext({} as SubscriptionOrderListProviderProps);
+
+export const useFetchSubscriptionOrderList = () => useContext(SubscriptionOrderListContext);
+
 type Props = {
   mockResponse?: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>;
 };
 
-type ProviderProps = FetchResponse<ExtendedOrder<SubscriptionOrder>[]> & {
+export type SubscriptionOrderListProviderProps = FetchResponse<ExtendedOrder<SubscriptionOrder>[]> & {
   count: number;
 };
 

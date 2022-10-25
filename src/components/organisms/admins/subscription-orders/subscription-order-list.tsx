@@ -4,8 +4,10 @@ import { CommonTableContainer } from 'components/molecules/common-table-containe
 import { CommonTableRow } from 'components/molecules/common-table-row';
 import { ClinicDetailButton } from 'components/organisms/clinics/clinic-detail-button';
 import { formatDateHourMinute } from 'functions/dates/format-date-hour-minute';
-import { ExtendedOrder } from 'hooks/subscription-orders/use-fetch-subscription-order-list';
-import { FetchResponse } from 'hooks/swr/use-fetch';
+import {
+  ExtendedOrder,
+  SubscriptionOrderListProviderProps,
+} from 'hooks/subscription-orders/use-fetch-subscription-order-list';
 import { TableHeader } from 'types/table-header';
 
 const header: TableHeader[] = [
@@ -43,7 +45,7 @@ const header: TableHeader[] = [
   },
 ];
 
-export const SubscriptionOrderList = (props: FetchResponse<ExtendedOrder<SubscriptionOrder>[]>) => {
+export const SubscriptionOrderList = (props: SubscriptionOrderListProviderProps) => {
   const { data } = props;
   return (
     <CommonTableContainer {...props} tableHeaders={header} emptyListDescription='現在定期便の商品はありません'>
