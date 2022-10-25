@@ -109,8 +109,6 @@ export const generateSearchTermFilter = (
     return null;
   }
   const [formattedFromDate, formattedToDate] = formatSearchTerm(fromDate, toDate);
-  console.log('formattedFromDate', formattedFromDate);
-  console.log('formattedToDate', formattedToDate);
   return { deliveredAt: { between: [formattedFromDate, formattedToDate] } };
 };
 
@@ -139,8 +137,6 @@ const fetcher = async (_: string, isOperator: boolean, searchState: SearchParam)
   };
 
   const filter = isOperator ? await generateFetingFilter(searchState) : null;
-  console.log('filter', filter);
-  console.table(filter);
 
   // admin権限かつ検索条件が全件検索以外はfilter指定をしてAPI実行
   const variables = filter ? { ...sortVariables, filter: filter } : sortVariables;
@@ -193,7 +189,6 @@ export const OrderListContextProvider: React.FC<Props> = ({ mockResponse, childr
   const { isOperator } = useCurrentUser();
   // グローバルに保存された注文検索条件(admin管理画面用)
   const { searchState } = useSearchParam();
-  console.log('search State', searchState);
   // 検索条件もSWRキャッシュの対象
   const swrKey = [SWRKey.orderList, isOperator, searchState];
   const fetchResponse = useFetch<ExtendedOrder<Order>[]>(swrKey, fetcher, {}, mockResponse);

@@ -24,19 +24,19 @@
       "function": {
         "currentDate": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/currentDate-4f4935746a7348364532-build.zip"
+          "s3Key": "amplify-builds/currentDate-644c486d4a797a6c4334-build.zip"
         },
         "sendOrderMail": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/sendOrderMail-3771564b48567a456466-build.zip"
+          "s3Key": "amplify-builds/sendOrderMail-703037724b7043764745-build.zip"
         },
         "listSubscriptionOrdersContainedNextDeliveryDate": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-43694e6334514f4c4354-build.zip"
+          "s3Key": "amplify-builds/listSubscriptionOrdersContainedNextDeliveryDate-656632327a746b565861-build.zip"
         },
         "sendErrorMail": {
           "deploymentBucketName": "amplify-nomocaorder-develop-152014-deployment",
-          "s3Key": "amplify-builds/sendErrorMail-64495868556d2f6a3541-build.zip"
+          "s3Key": "amplify-builds/sendErrorMail-4233422b62436c324333-build.zip"
         }
       }
     }

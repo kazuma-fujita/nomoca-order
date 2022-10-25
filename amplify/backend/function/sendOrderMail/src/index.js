@@ -311,7 +311,6 @@ exports.handler = async (event) => {
           ToAddresses: [toAddress],
         },
       };
-      console.table(requestParams);
       await ses.sendEmail(requestParams).promise();
     }),
   );

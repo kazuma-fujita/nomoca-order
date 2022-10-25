@@ -66,8 +66,6 @@ const fetcher = async (
   };
 
   const filter = isOperator ? await generateFetingFilter(searchState) : null;
-  console.log('filter', filter);
-  console.table(filter);
 
   // admin権限かつ検索条件が全件検索以外はfilter指定をしてAPI実行
   const variables = filter ? { ...sortVariables, filter: filter } : sortVariables;

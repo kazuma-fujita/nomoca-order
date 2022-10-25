@@ -19,7 +19,6 @@ export const SubscriptionOrderHistorySearchForm = () => {
   const submitHandler = handleSubmit(
     useCallback(
       (param: SearchParam) => {
-        console.log('search param', param);
         // グローバルなcontextに検索条件保存。検索条件が更新されるとuseFetchSingleOrderList内でリスト再取得が走る
         setSearchState(param);
       },
