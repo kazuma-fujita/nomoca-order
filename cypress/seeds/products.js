@@ -29,7 +29,7 @@ export const seedProducts = [
       S: 'singleOrder',
     },
     name: {
-      S: '高保存ロール紙(100m×10巻)',
+      S: '高保存ロール紙（112mm幅・100ｍ巻）＜標準＞',
     },
     purchasePrice: {
       N: '13860',
@@ -50,7 +50,7 @@ export const seedProducts = [
       S: 'singleOrder',
     },
     name: {
-      S: '高保存ロール紙(240m×10巻)',
+      S: '高保存ロール紙（112mm幅・240ｍ巻）＜大径＞',
     },
     purchasePrice: {
       N: '27720',
@@ -173,7 +173,7 @@ export const seedProducts = [
       S: 'subscriptionOrder',
     },
     name: {
-      S: '高保存ロール紙(100m×10巻)',
+      S: '高保存ロール紙（112mm幅・100ｍ巻）＜標準＞',
     },
     purchasePrice: {
       N: '13860',
@@ -194,7 +194,7 @@ export const seedProducts = [
       S: 'subscriptionOrder',
     },
     name: {
-      S: '高保存ロール紙(240m×10巻)',
+      S: '高保存ロール紙（112mm幅・240ｍ巻）＜大径＞',
     },
     purchasePrice: {
       N: '27720',
