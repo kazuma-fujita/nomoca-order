@@ -187,6 +187,8 @@ type Product
   orderType: OrderType!
   viewOrder: Int!
   isExportCSV: Boolean!
+  bCartDeliveryGroupId: Int # CSVのBカート配送グループ列
+  bCartSetId: Int # CSVのBカートセットID列
   disabled: Boolean!
   type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }

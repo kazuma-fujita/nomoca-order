@@ -297,6 +297,8 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
             orderType
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
             disabled
             type
             createdAt
@@ -366,6 +368,8 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
             orderType
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
             disabled
             type
             createdAt
@@ -435,6 +439,8 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
             orderType
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
             disabled
             type
             createdAt
@@ -501,6 +507,8 @@ export const onCreateSubscriptionOrderProduct = /* GraphQL */ `
         orderType
         viewOrder
         isExportCSV
+        bCartDeliveryGroupId
+        bCartSetId
         disabled
         type
         createdAt
@@ -527,6 +535,8 @@ export const onUpdateSubscriptionOrderProduct = /* GraphQL */ `
         orderType
         viewOrder
         isExportCSV
+        bCartDeliveryGroupId
+        bCartSetId
         disabled
         type
         createdAt
@@ -553,6 +563,8 @@ export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
         orderType
         viewOrder
         isExportCSV
+        bCartDeliveryGroupId
+        bCartSetId
         disabled
         type
         createdAt
@@ -809,6 +821,8 @@ export const onCreateProduct = /* GraphQL */ `
       orderType
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
       disabled
       type
       createdAt
@@ -826,6 +840,8 @@ export const onUpdateProduct = /* GraphQL */ `
       orderType
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
       disabled
       type
       createdAt
@@ -843,6 +859,8 @@ export const onDeleteProduct = /* GraphQL */ `
       orderType
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
       disabled
       type
       createdAt
