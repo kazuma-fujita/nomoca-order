@@ -35,6 +35,18 @@ const header = [
     minWidth: 40,
   },
   {
+    label: 'Bカート配送グループ',
+    minWidth: 40,
+  },
+  {
+    label: 'BカートセットID',
+    minWidth: 40,
+  },
+  {
+    label: 'Bカート別配送経路',
+    minWidth: 40,
+  },
+  {
     label: '無効',
     minWidth: 40,
   },
@@ -102,6 +114,11 @@ export const ProductList = () => {
                           <StyledTableCell>{item.purchasePrice.toLocaleString()}</StyledTableCell>
                           <StyledTableCell>{item.unitPrice.toLocaleString()}</StyledTableCell>
                           <StyledTableCell align='center'>{item.isExportCSV ? '◯' : '-'}</StyledTableCell>
+                          <StyledTableCell>{item.bCartDeliveryGroupId}</StyledTableCell>
+                          <StyledTableCell>{item.bCartSetId}</StyledTableCell>
+                          <StyledTableCell align='center'>
+                            {item.isBCartSeparateDeliveryRoute ? '◯' : '-'}
+                          </StyledTableCell>
                           <StyledTableCell align='center'>{item.disabled ? '◯' : '-'}</StyledTableCell>
                           <StyledTableCell align='center' {...provided.dragHandleProps}>
                             <FormatLineSpacingIcon />

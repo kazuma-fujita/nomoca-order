@@ -5,17 +5,18 @@ import { useToggle } from 'react-use';
 import { useUpsertProduct } from './use-upsert-product';
 
 export const useUpsertProductForm = (product?: Product) => {
-  const defaultValues = {
-    defaultValues: {
-      id: product ? product.id : '',
-      name: product ? product.name : '',
-      unitPrice: product ? product.unitPrice : 0,
-      purchasePrice: product ? product.purchasePrice : 0,
-      isExportCSV: product ? product.isExportCSV : false,
-      disabled: product ? product.disabled : false,
-    },
-  };
-  const useFormReturn = useForm<Product>(defaultValues);
+  // const defaultValues = {
+  //   defaultValues: {
+  //     id: product ? product.id : '',
+  //     name: product ? product.name : '',
+  //     unitPrice: product ? product.unitPrice : 0,
+  //     purchasePrice: product ? product.purchasePrice : 0,
+  //     isExportCSV: product ? product.isExportCSV : false,
+  //     disabled: product ? product.disabled : false,
+  //   },
+  // };
+  // const useFormReturn = useForm<Product>(defaultValues);
+  const useFormReturn = useForm<Product>({ defaultValues: product });
   const { handleSubmit, reset: resetForm, clearErrors } = useFormReturn;
   const { upsertProduct, isLoading, error, resetState } = useUpsertProduct();
   const [on, toggle] = useToggle(false);

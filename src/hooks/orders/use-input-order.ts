@@ -95,16 +95,24 @@ const mergeOrderFormProductList = (
     if (!product) {
       throw Error('A product master is not found.');
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, orderType: _1, type: _2, disabled: _3, createdAt: _4, updatedAt: _5, ...rest } = product;
     return {
-      relationID: product.id,
-      productID: product.id,
-      name: product.name,
-      purchasePrice: product.purchasePrice,
-      unitPrice: product.unitPrice,
+      relationID: id,
+      productID: id,
       quantity: item.quantity,
-      viewOrder: product.viewOrder,
-      isExportCSV: product.isExportCSV,
+      ...rest,
     };
+    // return {
+    //   relationID: product.id,
+    //   productID: product.id,
+    //   name: product.name,
+    //   purchasePrice: product.purchasePrice,
+    //   unitPrice: product.unitPrice,
+    //   quantity: item.quantity,
+    //   viewOrder: product.viewOrder,
+    //   isExportCSV: product.isExportCSV,
+    // };
   });
 
   // DBに登録されているproductマスターデータのviewOrder昇順でsort

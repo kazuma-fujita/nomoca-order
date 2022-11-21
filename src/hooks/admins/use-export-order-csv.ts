@@ -13,7 +13,7 @@ import { parseResponseError } from 'utilities/parse-response-error';
 
 const header = {
   flag: '"処理フラグ"', // 固定値n
-  id: '"受注まとめコード"', // order.IDのハイフンを削除したフォーマット
+  id: '"受注まとめコード"', // order.IDのハイフンを削除したフォーマット。isBCartSeparateDeliveryRouteがtrueの場合独自UUIDを発行しセット
   empty1: '"受注番号"',
   bCartId: '"Bカート会員ID"', // 固定値10024
   empty2: '"貴社独自会員ID"',
@@ -53,7 +53,7 @@ const header = {
   empty16: '"お客様への連絡事項"',
   empty17: '"受注日時"',
   status: '"対応状況"', // 固定値 新規注文
-  deliveryGroup: '"配送グループ"', // 固定値 3
+  deliveryGroup: '"配送グループ"',
   empty18: '"Bカート発送ID"',
   empty19: '"配送希望日"',
   empty20: '"配送希望時間"',
@@ -65,19 +65,19 @@ const header = {
   empty26: '"発送メモ"',
   empty27: '"商品管理番号"',
   productName: '"商品名"', // 高保存ロール紙＜'G社販売単価'＞
-  empty28: '"BカートセットID"',
+  setId: '"BカートセットID"',
   productSetName: '"セット名"', // 商品マスターに登録されている商品名
-  empty29: '"品番"',
-  empty30: '"JANコード"',
-  empty31: '"ロケーション"',
-  empty32: '"配送サイズ"',
-  empty33: '"商品カスタム項目名1"',
-  empty34: '"商品カスタム項目名2"',
-  empty35: '"商品カスタム項目名3"',
-  empty36: '"セットカスタム項目名1"',
-  empty37: '"セットカスタム項目名2"',
-  empty38: '"セットカスタム項目名3"',
-  empty39: '"商品オプション"',
+  empty28: '"品番"',
+  empty29: '"JANコード"',
+  empty30: '"ロケーション"',
+  empty31: '"配送サイズ"',
+  empty32: '"商品カスタム項目名1"',
+  empty33: '"商品カスタム項目名2"',
+  empty34: '"商品カスタム項目名3"',
+  empty35: '"セットカスタム項目名1"',
+  empty36: '"セットカスタム項目名2"',
+  empty37: '"セットカスタム項目名3"',
+  empty38: '"商品オプション"',
   purchasePrice: '"単価"', // 仕入れ値
   lotSize: '"入数"', // 固定値 1
   unit: '"単位"', // 固定値 箱
@@ -89,7 +89,7 @@ const header = {
 const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: NormalizedProduct) => {
   return {
     flag: '"n"',
-    id: `"${order.id.replace(/-/g, '')}"`, // ID (e5e44bcf-26ac-465f-b42b-7f6ba4602065) に含まれているハイフンを除外
+    id: createBCartUniqueId(order.id, product.isBCartSeparateDeliveryRoute), // ID (e5e44bcf-26ac-465f-b42b-7f6ba4602065) に含まれているハイフンを除外
     empty1: '',
     bCartId: 10024,
     empty2: '',
@@ -129,7 +129,7 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
     empty16: '',
     empty17: '',
     status: '"新規注文"',
-    deliveryGroup: 3,
+    deliveryGroup: product.bCartDeliveryGroupId,
     empty18: '',
     empty19: '',
     empty20: '',
@@ -141,8 +141,9 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
     empty26: '',
     empty27: '',
     productName: `"高保存ロール紙＜${product.unitPrice.toLocaleString()}＞"`, // 高保存ロール紙＜'G社販売単価'＞
-    empty28: '',
+    setId: product.bCartSetId,
     productSetName: `"${escapeDoubleQuotesForCSV(product.name)}"`,
+    empty28: '',
     empty29: '',
     empty30: '',
     empty31: '',
@@ -153,7 +154,6 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
     empty36: '',
     empty37: '',
     empty38: '',
-    empty39: '',
     purchasePrice: product.purchasePrice,
     lotSize: 1,
     unit: '"箱"',
@@ -161,6 +161,12 @@ const createRecord = (order: ExtendedOrder<SubscriptionOrder | Order>, product: 
     taxRate: taxRate * 100, // 固定値10
     taxClass: 1,
   };
+};
+
+const createBCartUniqueId = (orderId: string, isBCartSeparateDeliveryRoute?: boolean | null): string => {
+  // 別配送経路フラグがTrueの場合独自uuidを生成
+  const uuid = isBCartSeparateDeliveryRoute ? crypto.randomUUID() : orderId;
+  return `"${uuid.replace(/-/g, '')}"`; // ID (e5e44bcf-26ac-465f-b42b-7f6ba4602065) に含まれているハイフンを除外;
 };
 
 export const useExportOrderCSV = () => {

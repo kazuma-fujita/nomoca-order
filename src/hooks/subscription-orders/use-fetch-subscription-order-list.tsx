@@ -14,6 +14,9 @@ export type NormalizedProduct = {
   unitPrice: number; // 単価。売値。顧客が支払う金額
   quantity: number;
   isExportCSV: boolean; // useExportOrderCSV 内でisExportCSV=falseの場合、csv行に出力しない
+  bCartDeliveryGroupId?: number | null; // CSVのBカート配送グループ列
+  bCartSetId?: number | null; // CSVのBカートセットID列
+  isBCartSeparateDeliveryRoute?: boolean | null; // trueの場合、CSV出力時に独自UUIDを発行しまとめコード列にセット
   viewOrder?: number | null; // 入力確認画面で商品を表示するソート順。useCreateOrderでは値をOrderProductに登録
 };
 
@@ -38,15 +41,24 @@ const generateNormalizedProducts = (order: SubscriptionOrder): NormalizedProduct
       if (!orderProduct) {
         throw Error('A subscription order product relation is null.');
       }
+      const { id, productID, product, ...rest } = orderProduct;
+      // SubscriptionOrderProductとProductの入れ子構造をflatなオブジェクトに詰め替える
       return {
-        relationID: orderProduct.id,
-        productID: orderProduct.productID,
-        name: orderProduct.product.name,
-        purchasePrice: orderProduct.product.purchasePrice,
-        unitPrice: orderProduct.product.unitPrice,
-        quantity: orderProduct.quantity,
-        isExportCSV: orderProduct.product.isExportCSV,
+        relationID: id,
+        productID: productID,
+        ...rest,
+        ...product,
       };
+      // return {
+      //   relationID: orderProduct.id,
+      //   productID: orderProduct.productID,
+      //   name: orderProduct.product.name,
+      //   purchasePrice: orderProduct.product.purchasePrice,
+      //   unitPrice: orderProduct.product.unitPrice,
+      //   quantity: orderProduct.quantity,
+      //   isExportCSV: orderProduct.product.isExportCSV,
+      //   isBCartSeparateDeliveryRoute: orderProduct.product.isBCartSeparateDeliveryRoute,
+      // };
     });
 };
 

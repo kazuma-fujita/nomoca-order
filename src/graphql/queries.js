@@ -58,6 +58,9 @@ export const getOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          bCartDeliveryGroupId
+          bCartSetId
+          isBCartSeparateDeliveryRoute
           createdAt
           updatedAt
           owner
@@ -121,6 +124,9 @@ export const listOrders = /* GraphQL */ `
             quantity
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
+            isBCartSeparateDeliveryRoute
             createdAt
             updatedAt
             owner
@@ -196,6 +202,9 @@ export const listOrdersSortedByCreatedAt = /* GraphQL */ `
             quantity
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
+            isBCartSeparateDeliveryRoute
             createdAt
             updatedAt
             owner
@@ -261,6 +270,7 @@ export const getSubscriptionOrder = /* GraphQL */ `
             isExportCSV
             bCartDeliveryGroupId
             bCartSetId
+            isBCartSeparateDeliveryRoute
             disabled
             type
             createdAt
@@ -341,6 +351,7 @@ export const listSubscriptionOrders = /* GraphQL */ `
               isExportCSV
               bCartDeliveryGroupId
               bCartSetId
+              isBCartSeparateDeliveryRoute
               disabled
               type
               createdAt
@@ -429,6 +440,7 @@ export const listSubscriptionOrdersSortedByCreatedAt = /* GraphQL */ `
               isExportCSV
               bCartDeliveryGroupId
               bCartSetId
+              isBCartSeparateDeliveryRoute
               disabled
               type
               createdAt
@@ -706,6 +718,7 @@ export const getProduct = /* GraphQL */ `
       isExportCSV
       bCartDeliveryGroupId
       bCartSetId
+      isBCartSeparateDeliveryRoute
       disabled
       type
       createdAt
@@ -730,6 +743,7 @@ export const listProducts = /* GraphQL */ `
         isExportCSV
         bCartDeliveryGroupId
         bCartSetId
+        isBCartSeparateDeliveryRoute
         disabled
         type
         createdAt
@@ -766,6 +780,7 @@ export const listProductsSortedByViewOrder = /* GraphQL */ `
         isExportCSV
         bCartDeliveryGroupId
         bCartSetId
+        isBCartSeparateDeliveryRoute
         disabled
         type
         createdAt
@@ -863,6 +878,7 @@ export const listSubscriptionOrdersContainedNextDeliveryDate = /* GraphQL */ `
             isExportCSV
             bCartDeliveryGroupId
             bCartSetId
+            isBCartSeparateDeliveryRoute
             disabled
             type
             createdAt

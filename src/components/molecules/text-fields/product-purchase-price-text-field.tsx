@@ -34,6 +34,7 @@ export const ProductPurchasePriceTextField: React.FC<Props> = ({ formState, regi
         },
         maxLength: { value: maxLength, message: `仕入れ値は${maxLength}桁以内で入力してください` },
         min: { value: minNumber, message: `仕入れ値は${minNumber}円以上で入力してください` },
+        valueAsNumber: true,
       })}
     />
   );

@@ -17,6 +17,9 @@ const baseProduct = {
   owner: {
     S: '3cf5b284-0131-4801-9e65-3b5421c00910',
   },
+  isBCartSeparateDeliveryRoute: {
+    BOOL: false,
+  },
 };
 
 export const seedProducts = [
@@ -32,13 +35,19 @@ export const seedProducts = [
       S: '高保存ロール紙（112mm幅・100ｍ巻）＜標準＞',
     },
     purchasePrice: {
-      N: '13860',
+      N: 13860,
     },
     unitPrice: {
-      N: '19800',
+      N: 19800,
     },
     viewOrder: {
-      N: '1',
+      N: 1,
+    },
+    bCartDeliveryGroupId: {
+      N: 3,
+    },
+    bCartSetId: {
+      N: 45,
     },
   },
   {
@@ -53,13 +62,19 @@ export const seedProducts = [
       S: '高保存ロール紙（112mm幅・240ｍ巻）＜大径＞',
     },
     purchasePrice: {
-      N: '27720',
+      N: 27720,
     },
     unitPrice: {
-      N: '39600',
+      N: 39600,
     },
     viewOrder: {
-      N: '2',
+      N: 2,
+    },
+    bCartDeliveryGroupId: {
+      N: 3,
+    },
+    bCartSetId: {
+      N: 46,
     },
   },
   {
@@ -71,16 +86,25 @@ export const seedProducts = [
       S: 'singleOrder',
     },
     name: {
-      S: 'コインメックカセットチューブ(1個)',
+      S: 'コインメックカセットチューブ',
     },
     purchasePrice: {
-      N: '7500',
+      N: 7500,
     },
     unitPrice: {
-      N: '12500',
+      N: 12500,
     },
     viewOrder: {
-      N: '3',
+      N: 3,
+    },
+    bCartDeliveryGroupId: {
+      N: 4,
+    },
+    bCartSetId: {
+      N: 59,
+    },
+    isBCartSeparateDeliveryRoute: {
+      BOOL: true,
     },
   },
   {
@@ -95,13 +119,13 @@ export const seedProducts = [
       S: 'インクリボン(黒/1500枚分1セット)',
     },
     purchasePrice: {
-      N: '5060',
+      N: 5060,
     },
     unitPrice: {
-      N: '4600',
+      N: 4600,
     },
     viewOrder: {
-      N: '4',
+      N: 4,
     },
     isExportCSV: {
       BOOL: false,
@@ -122,13 +146,13 @@ export const seedProducts = [
       S: 'クリーニングカード(10枚1セット)',
     },
     purchasePrice: {
-      N: '800',
+      N: 800,
     },
     unitPrice: {
-      N: '727',
+      N: 727,
     },
     viewOrder: {
-      N: '5',
+      N: 5,
     },
     isExportCSV: {
       BOOL: false,
@@ -149,13 +173,13 @@ export const seedProducts = [
       S: '無停電電源装置(UPS)',
     },
     purchasePrice: {
-      N: '11770',
+      N: 11770,
     },
     unitPrice: {
-      N: '20000',
+      N: 20000,
     },
     viewOrder: {
-      N: '6',
+      N: 6,
     },
     isExportCSV: {
       BOOL: false,
@@ -176,13 +200,19 @@ export const seedProducts = [
       S: '高保存ロール紙（112mm幅・100ｍ巻）＜標準＞',
     },
     purchasePrice: {
-      N: '13860',
+      N: 13860,
     },
     unitPrice: {
-      N: '19800',
+      N: 19800,
     },
     viewOrder: {
-      N: '1',
+      N: 1,
+    },
+    bCartDeliveryGroupId: {
+      N: 3,
+    },
+    bCartSetId: {
+      N: 45,
     },
   },
   {
@@ -197,13 +227,19 @@ export const seedProducts = [
       S: '高保存ロール紙（112mm幅・240ｍ巻）＜大径＞',
     },
     purchasePrice: {
-      N: '27720',
+      N: 27720,
     },
     unitPrice: {
-      N: '39600',
+      N: 39600,
     },
     viewOrder: {
-      N: '2',
+      N: 2,
+    },
+    bCartDeliveryGroupId: {
+      N: 3,
+    },
+    bCartSetId: {
+      N: 46,
     },
   },
 ];

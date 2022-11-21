@@ -34,6 +34,7 @@ export const ProductUnitPriceTextField: React.FC<Props> = ({ formState, register
         },
         maxLength: { value: maxLength, message: `単価は${maxLength}桁以内で入力してください` },
         min: { value: minNumber, message: `単価は${minNumber}円以上で入力してください` },
+        valueAsNumber: true,
       })}
     />
   );
