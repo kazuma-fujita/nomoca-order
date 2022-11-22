@@ -19,17 +19,17 @@ const SingleOrderPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStatic
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <SearchParamContextProvider>
-        <OrderListContextProvider>
-          <NowDateContextProvider>
+      <NowDateContextProvider>
+        <SearchParamContextProvider>
+          <OrderListContextProvider>
             <OrderFormParamContextProvider orderType={OrderType.singleOrder}>
               <Main>
                 <SingleOrderTemplate />
               </Main>
             </OrderFormParamContextProvider>
-          </NowDateContextProvider>
-        </OrderListContextProvider>
-      </SearchParamContextProvider>
+          </OrderListContextProvider>
+        </SearchParamContextProvider>
+      </NowDateContextProvider>
     </>
   );
 };

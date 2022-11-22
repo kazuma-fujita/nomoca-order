@@ -144,6 +144,7 @@ const fetcher = async (_: string, isOperator: boolean, searchState: SearchParam)
   // admin権限かつ検索条件が全件検索以外はfilter指定をしてAPI実行
   const variables = filter ? { ...sortVariables, filter: filter } : sortVariables;
 
+  console.log('variables', variables);
   const result = (await API.graphql(
     graphqlOperation(listOrdersSortedByCreatedAt, variables),
   )) as GraphQLResult<ListOrdersSortedByCreatedAtQuery>;
