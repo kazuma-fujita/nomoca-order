@@ -30,14 +30,17 @@ const generateNormalizedProducts = (order: Order): NormalizedProduct[] => {
     if (!orderProduct) {
       throw Error('An order product relation is null.');
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, orderID, ...rest } = orderProduct;
     return {
       relationID: orderProduct.id,
       productID: orderProduct.orderID,
-      name: orderProduct.name,
-      purchasePrice: orderProduct.purchasePrice,
-      unitPrice: orderProduct.unitPrice,
-      quantity: orderProduct.quantity,
-      isExportCSV: orderProduct.isExportCSV,
+      // name: orderProduct.name,
+      // purchasePrice: orderProduct.purchasePrice,
+      // unitPrice: orderProduct.unitPrice,
+      // quantity: orderProduct.quantity,
+      // isExportCSV: orderProduct.isExportCSV,
+      ...rest,
     } as NormalizedProduct;
   });
 };

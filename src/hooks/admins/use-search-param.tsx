@@ -1,4 +1,6 @@
 import { DeliveryStatus } from 'API';
+import { DateFormat } from 'constants/date-format';
+import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { createContext, Dispatch, SetStateAction, useContext, useState } from 'react';
 
 export type SearchParam = {
@@ -20,14 +22,14 @@ export const useSearchParam = () => useContext(SearchParamContext);
 
 // admin画面の注文検索条件状態context
 export const SearchParamContextProvider: React.FC = ({ children }) => {
+  const now = new Date();
   // useStateの初期値
   const initialState: SearchParam = {
-    // 配送状況はデフォルト未発送
-    deliveryStatus: DeliveryStatus.ordered,
+    deliveryStatus: DeliveryStatus.ordered, // 配送状況はデフォルト未発送
     name: null,
     phoneNumber: null,
-    fromDate: null,
-    toDate: null,
+    fromDate: format(startOfMonth(now), DateFormat.simpleDate), // 検索開始日時はデフォルト当月月初
+    toDate: format(endOfMonth(now), DateFormat.simpleDate), // 検索終了日時はデフォルト当月月末
   };
 
   // グローバルに持つ検索条件

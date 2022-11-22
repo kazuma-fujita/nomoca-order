@@ -77,6 +77,9 @@ type OrderProduct
   quantity: Int!
   viewOrder: Int!
   isExportCSV: Boolean!
+  bCartDeliveryGroupId: Int # CSVのBカート配送グループ列
+  bCartSetId: Int # CSVのBカートセットID列
+  isBCartSeparateDeliveryRoute: Boolean # Bカート上で別配送扱いフラグ。CSVのまとめコード列で独自UUIDを発行
 }
 
 type SubscriptionOrder
@@ -187,6 +190,9 @@ type Product
   orderType: OrderType!
   viewOrder: Int!
   isExportCSV: Boolean!
+  bCartDeliveryGroupId: Int # CSVのBカート配送グループ列
+  bCartSetId: Int # CSVのBカートセットID列
+  isBCartSeparateDeliveryRoute: Boolean # Bカート上で別配送扱いフラグ。CSVのまとめコード列で独自UUIDを発行
   disabled: Boolean!
   type: Type! @index(name: "sortByViewOrder", queryField: "listProductsSortedByViewOrder", sortKeyFields: ["viewOrder"])
 }

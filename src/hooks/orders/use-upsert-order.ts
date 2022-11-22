@@ -96,17 +96,24 @@ const createSubscriptionOrderProducts = async (newSubscriptionOrderID: string, c
 const createOrderProducts = async (newOrderID: string, productRelations: NormalizedProduct[]) => {
   // Order と Product のリレーション作成
   for (const item of productRelations) {
-    if (!item.viewOrder) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { viewOrder, relationID: _1, productID: _2, ...rest } = item;
+    if (!viewOrder) {
       throw Error('The view order of products is not found.');
     }
+    // const input: CreateOrderProductInput = {
+    //   orderID: newOrderID,
+    //   name: item.name,
+    //   purchasePrice: item.purchasePrice,
+    //   unitPrice: item.unitPrice,
+    //   quantity: item.quantity,
+    //   viewOrder: item.viewOrder,
+    //   isExportCSV: item.isExportCSV,
+    // };
     const input: CreateOrderProductInput = {
       orderID: newOrderID,
-      name: item.name,
-      purchasePrice: item.purchasePrice,
-      unitPrice: item.unitPrice,
-      quantity: item.quantity,
-      viewOrder: item.viewOrder,
-      isExportCSV: item.isExportCSV,
+      viewOrder: viewOrder,
+      ...rest,
     };
     const variables: CreateOrderProductMutationVariables = { input: input };
     // データ新規登録実行

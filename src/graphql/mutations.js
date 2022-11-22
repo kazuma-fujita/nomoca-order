@@ -81,6 +81,9 @@ export const createOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          bCartDeliveryGroupId
+          bCartSetId
+          isBCartSeparateDeliveryRoute
           createdAt
           updatedAt
           owner
@@ -142,6 +145,9 @@ export const updateOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          bCartDeliveryGroupId
+          bCartSetId
+          isBCartSeparateDeliveryRoute
           createdAt
           updatedAt
           owner
@@ -203,6 +209,9 @@ export const deleteOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          bCartDeliveryGroupId
+          bCartSetId
+          isBCartSeparateDeliveryRoute
           createdAt
           updatedAt
           owner
@@ -261,6 +270,9 @@ export const createOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       createdAt
       updatedAt
       owner
@@ -281,6 +293,9 @@ export const updateOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       createdAt
       updatedAt
       owner
@@ -301,6 +316,9 @@ export const deleteOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       createdAt
       updatedAt
       owner
@@ -327,6 +345,9 @@ export const createSubscriptionOrder = /* GraphQL */ `
             orderType
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
+            isBCartSeparateDeliveryRoute
             disabled
             type
             createdAt
@@ -399,6 +420,9 @@ export const updateSubscriptionOrder = /* GraphQL */ `
             orderType
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
+            isBCartSeparateDeliveryRoute
             disabled
             type
             createdAt
@@ -471,6 +495,9 @@ export const deleteSubscriptionOrder = /* GraphQL */ `
             orderType
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
+            isBCartSeparateDeliveryRoute
             disabled
             type
             createdAt
@@ -540,6 +567,9 @@ export const createSubscriptionOrderProduct = /* GraphQL */ `
         orderType
         viewOrder
         isExportCSV
+        bCartDeliveryGroupId
+        bCartSetId
+        isBCartSeparateDeliveryRoute
         disabled
         type
         createdAt
@@ -569,6 +599,9 @@ export const updateSubscriptionOrderProduct = /* GraphQL */ `
         orderType
         viewOrder
         isExportCSV
+        bCartDeliveryGroupId
+        bCartSetId
+        isBCartSeparateDeliveryRoute
         disabled
         type
         createdAt
@@ -598,6 +631,9 @@ export const deleteSubscriptionOrderProduct = /* GraphQL */ `
         orderType
         viewOrder
         isExportCSV
+        bCartDeliveryGroupId
+        bCartSetId
+        isBCartSeparateDeliveryRoute
         disabled
         type
         createdAt
@@ -884,6 +920,9 @@ export const createProduct = /* GraphQL */ `
       orderType
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       disabled
       type
       createdAt
@@ -904,6 +943,9 @@ export const updateProduct = /* GraphQL */ `
       orderType
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       disabled
       type
       createdAt
@@ -924,6 +966,9 @@ export const deleteProduct = /* GraphQL */ `
       orderType
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       disabled
       type
       createdAt

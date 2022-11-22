@@ -29,13 +29,9 @@ export const useUpsertProduct = () => {
       setIsLoading(true);
       try {
         let ret: Product[] = [];
-        const inputParam = {
-          name: param.name,
-          unitPrice: Number(param.unitPrice),
-          purchasePrice: Number(param.purchasePrice),
-          isExportCSV: param.isExportCSV,
-          disabled: param.disabled,
-        };
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id: _1, viewOrder: _2, type: _3, orderType: _4, createdAt: _5, updatedAt: _6, ...rest } = param;
+
         if (!param.id) {
           // fetch query実行時にviewOrderでsortする為、typeには 'Product' 文字列を設定
           // sort対象のviewOrderは配列長 + 1を設定
@@ -43,7 +39,7 @@ export const useUpsertProduct = () => {
             viewOrder: data ? data.length + 1 : 1,
             type: Type.product,
             orderType: orderType,
-            ...inputParam,
+            ...rest,
           };
           const variables: CreateProductMutationVariables = { input: input };
           const result = (await API.graphql(
@@ -60,7 +56,7 @@ export const useUpsertProduct = () => {
           // Update product
           const input: UpdateProductInput = {
             id: param.id,
-            ...inputParam,
+            ...rest,
           };
           const variables: UpdateProductMutationVariables = { input: input };
           const result = (await API.graphql(

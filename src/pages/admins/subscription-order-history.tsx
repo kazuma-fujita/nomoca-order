@@ -8,6 +8,7 @@ import { SubscriptionOrderHistoryListContextProvider } from 'hooks/subscription-
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useVerifyAuthenticated } from 'stores/use-current-user';
+import { NowDateContextProvider } from 'stores/use-now-date';
 import { OrderFormParamContextProvider } from 'stores/use-order-form-param';
 
 const SubscriptionOrderHistoryPage = ({ pageTitle }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -17,15 +18,17 @@ const SubscriptionOrderHistoryPage = ({ pageTitle }: InferGetStaticPropsType<typ
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <SearchParamContextProvider>
-        <SubscriptionOrderHistoryListContextProvider>
-          <OrderFormParamContextProvider orderType={OrderType.subscriptionOrderHistory}>
-            <Main>
-              <SubscriptionOrderHistoryTemplate />
-            </Main>
-          </OrderFormParamContextProvider>
-        </SubscriptionOrderHistoryListContextProvider>
-      </SearchParamContextProvider>
+      <NowDateContextProvider>
+        <SearchParamContextProvider>
+          <SubscriptionOrderHistoryListContextProvider>
+            <OrderFormParamContextProvider orderType={OrderType.subscriptionOrderHistory}>
+              <Main>
+                <SubscriptionOrderHistoryTemplate />
+              </Main>
+            </OrderFormParamContextProvider>
+          </SubscriptionOrderHistoryListContextProvider>
+        </SearchParamContextProvider>
+      </NowDateContextProvider>
     </>
   );
 };

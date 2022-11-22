@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 import { hyphenZenkaku2Hankaku, numericZenkaku2Hankaku } from 'functions/strings/converters';
-import { SearchParam } from 'hooks/admins/use-search-param';
+import { SearchParam, useSearchParam } from 'hooks/admins/use-search-param';
 import { UseFormReturn } from 'react-hook-form';
 
 const MIN_LENGTH = 10;
@@ -11,6 +11,7 @@ type SearchProps = UseFormReturn<SearchParam> & {
 };
 
 export const SearchFromDateTextField = ({ formState, register, setValue, disabled }: SearchProps) => {
+  const { searchState } = useSearchParam();
   // TextFieldからフォーカスが外れたら入力値の全角数字ハイフン -> 半角数字ハイフン変換、trim処理
   const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setValue('fromDate', numericZenkaku2Hankaku(hyphenZenkaku2Hankaku(event.target.value.trim())));
@@ -21,6 +22,7 @@ export const SearchFromDateTextField = ({ formState, register, setValue, disable
       type='text'
       id='deliveredAt'
       label='発送日検索開始日'
+      defaultValue={searchState.fromDate}
       disabled={disabled}
       autoComplete='off'
       error={Boolean(formState.errors.fromDate)}
@@ -42,6 +44,7 @@ export const SearchFromDateTextField = ({ formState, register, setValue, disable
 };
 
 export const SearchToDateTextField = ({ formState, register, setValue, disabled }: SearchProps) => {
+  const { searchState } = useSearchParam();
   // TextFieldからフォーカスが外れたら入力値の全角数字ハイフン -> 半角数字ハイフン変換、trim処理
   const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setValue('toDate', numericZenkaku2Hankaku(hyphenZenkaku2Hankaku(event.target.value.trim())));
@@ -52,6 +55,7 @@ export const SearchToDateTextField = ({ formState, register, setValue, disabled 
       type='text'
       id='deliveredAt'
       label='終了日'
+      defaultValue={searchState.toDate}
       disabled={disabled}
       autoComplete='off'
       error={Boolean(formState.errors.toDate)}

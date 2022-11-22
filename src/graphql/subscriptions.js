@@ -69,6 +69,9 @@ export const onCreateOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          bCartDeliveryGroupId
+          bCartSetId
+          isBCartSeparateDeliveryRoute
           createdAt
           updatedAt
           owner
@@ -127,6 +130,9 @@ export const onUpdateOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          bCartDeliveryGroupId
+          bCartSetId
+          isBCartSeparateDeliveryRoute
           createdAt
           updatedAt
           owner
@@ -185,6 +191,9 @@ export const onDeleteOrder = /* GraphQL */ `
           quantity
           viewOrder
           isExportCSV
+          bCartDeliveryGroupId
+          bCartSetId
+          isBCartSeparateDeliveryRoute
           createdAt
           updatedAt
           owner
@@ -240,6 +249,9 @@ export const onCreateOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       createdAt
       updatedAt
       owner
@@ -257,6 +269,9 @@ export const onUpdateOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       createdAt
       updatedAt
       owner
@@ -274,6 +289,9 @@ export const onDeleteOrderProduct = /* GraphQL */ `
       quantity
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       createdAt
       updatedAt
       owner
@@ -297,6 +315,9 @@ export const onCreateSubscriptionOrder = /* GraphQL */ `
             orderType
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
+            isBCartSeparateDeliveryRoute
             disabled
             type
             createdAt
@@ -366,6 +387,9 @@ export const onUpdateSubscriptionOrder = /* GraphQL */ `
             orderType
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
+            isBCartSeparateDeliveryRoute
             disabled
             type
             createdAt
@@ -435,6 +459,9 @@ export const onDeleteSubscriptionOrder = /* GraphQL */ `
             orderType
             viewOrder
             isExportCSV
+            bCartDeliveryGroupId
+            bCartSetId
+            isBCartSeparateDeliveryRoute
             disabled
             type
             createdAt
@@ -501,6 +528,9 @@ export const onCreateSubscriptionOrderProduct = /* GraphQL */ `
         orderType
         viewOrder
         isExportCSV
+        bCartDeliveryGroupId
+        bCartSetId
+        isBCartSeparateDeliveryRoute
         disabled
         type
         createdAt
@@ -527,6 +557,9 @@ export const onUpdateSubscriptionOrderProduct = /* GraphQL */ `
         orderType
         viewOrder
         isExportCSV
+        bCartDeliveryGroupId
+        bCartSetId
+        isBCartSeparateDeliveryRoute
         disabled
         type
         createdAt
@@ -553,6 +586,9 @@ export const onDeleteSubscriptionOrderProduct = /* GraphQL */ `
         orderType
         viewOrder
         isExportCSV
+        bCartDeliveryGroupId
+        bCartSetId
+        isBCartSeparateDeliveryRoute
         disabled
         type
         createdAt
@@ -809,6 +845,9 @@ export const onCreateProduct = /* GraphQL */ `
       orderType
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       disabled
       type
       createdAt
@@ -826,6 +865,9 @@ export const onUpdateProduct = /* GraphQL */ `
       orderType
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       disabled
       type
       createdAt
@@ -843,6 +885,9 @@ export const onDeleteProduct = /* GraphQL */ `
       orderType
       viewOrder
       isExportCSV
+      bCartDeliveryGroupId
+      bCartSetId
+      isBCartSeparateDeliveryRoute
       disabled
       type
       createdAt
