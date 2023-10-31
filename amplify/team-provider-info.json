@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "nomocaorder6482d3326482d332": {}
+        "nomocaorder6482d3326482d332": {},
+        "userPoolGroups": {}
       },
       "hosting": {
         "amplifyhosting": {

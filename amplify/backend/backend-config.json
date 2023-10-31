@@ -1,50 +1,80 @@
 {
-  "auth": {
-    "userPoolGroups": {
-      "service": "Cognito-UserPool-Groups",
-      "providerPlugin": "awscloudformation",
+  "api": {
+    "nomocaorderApi": {
       "dependsOn": [
         {
+          "attributes": [
+            "UserPoolId"
+          ],
           "category": "auth",
-          "resourceName": "nomocaorder6482d3326482d332",
+          "resourceName": "nomocaorder6482d3326482d332"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authnomocaorder6482d3326482d332"
+            }
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "nomocaorder6482d3326482d332": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_UPPERCASE",
+            "REQUIRES_NUMBERS"
+          ],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
             "AppClientID",
             "IdentityPoolId"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "nomocaorder6482d3326482d332"
         }
-      ]
-    },
-    "nomocaorder6482d3326482d332": {
-      "service": "Cognito",
+      ],
       "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false,
-      "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
-        "signupAttributes": [
-          "EMAIL"
-        ],
-        "passwordProtectionSettings": {
-          "passwordPolicyMinLength": 8,
-          "passwordPolicyCharacters": [
-            "REQUIRES_LOWERCASE",
-            "REQUIRES_UPPERCASE",
-            "REQUIRES_NUMBERS"
-          ]
-        },
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
-        ],
-        "verificationMechanisms": [
-          "EMAIL"
-        ]
-      }
+      "service": "Cognito-UserPool-Groups"
     }
   },
   "function": {
@@ -53,67 +83,119 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "sendOrderMail": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "listSubscriptionOrdersContainedNextDeliveryDate": {
       "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
       "dependsOn": [
         {
-          "category": "api",
-          "resourceName": "nomocaorderApi",
           "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
-          ]
+          ],
+          "category": "api",
+          "resourceName": "nomocaorderApi"
         }
-      ]
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     },
     "sendErrorMail": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    }
-  },
-  "api": {
-    "nomocaorderApi": {
-      "service": "AppSync",
+    },
+    "sendOrderMail": {
+      "build": true,
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "auth",
-          "resourceName": "nomocaorder6482d3326482d332",
-          "attributes": [
-            "UserPoolId"
-          ]
-        }
-      ],
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authnomocaorder6482d3326482d332"
-            }
-          },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AWS_IAM"
-            }
-          ]
-        }
-      }
+      "service": "Lambda"
     }
   },
   "hosting": {
     "amplifyhosting": {
+      "lastPushTimeStamp": "2022-05-18T11:32:37.980Z",
       "service": "amplifyhosting",
-      "type": "cicd",
-      "lastPushTimeStamp": "2022-05-18T11:32:37.980Z"
+      "type": "cicd"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_currentDate_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "currentDate"
+        }
+      ]
+    },
+    "AMPLIFY_function_currentDate_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "currentDate"
+        }
+      ]
+    },
+    "AMPLIFY_function_listSubscriptionOrdersContainedNextDeliveryDate_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "listSubscriptionOrdersContainedNextDeliveryDate"
+        }
+      ]
+    },
+    "AMPLIFY_function_listSubscriptionOrdersContainedNextDeliveryDate_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "listSubscriptionOrdersContainedNextDeliveryDate"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendErrorMail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendErrorMail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendErrorMail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendErrorMail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendOrderMail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendOrderMail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendOrderMail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendOrderMail"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_appId": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_type": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
     }
   }
 }
